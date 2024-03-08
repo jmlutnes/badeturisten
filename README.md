@@ -1,4 +1,4 @@
-# team-37
+# Team-37
 Johan (jmutnes) \
 Thanh (dantn) \
 Adam Nils Giæver (adamng) \
