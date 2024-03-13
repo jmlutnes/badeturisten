@@ -8,8 +8,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel = viewModel()) {
-    val temp = homeViewModel._locationTemperature.collectAsState().value.temp
-    Column {
-        Text(text = "Temp = $temp")
-    }
+    // meny i top bar/venstre oevre hjoerne
+    //luft temp
+    //vear ikon
+    //varsel knapp/melding
+    //strand kort (near deg)
+}
+
+fun beachCard(){
+    //luft temp
+    //navn
+    //bilde
+    //favoritt
+    // statistikk
+    // anmeldelser
 }
