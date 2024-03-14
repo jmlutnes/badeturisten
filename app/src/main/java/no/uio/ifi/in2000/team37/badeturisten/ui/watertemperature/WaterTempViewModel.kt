@@ -18,7 +18,7 @@ data class WaterTemperatureUIState (
 class WaterTempViewModel: ViewModel() {
 
 
-    val waterTemperatureRepository = WaterTemperatureRepository(WaterTemperatureDataSource())
+    val waterTemperatureRepository = WaterTemperatureRepository()
 
     val waterTemperatureState: StateFlow<WaterTemperatureUIState> = waterTemperatureRepository.getObservations()
         .map { WaterTemperatureUIState(beaches = it) }

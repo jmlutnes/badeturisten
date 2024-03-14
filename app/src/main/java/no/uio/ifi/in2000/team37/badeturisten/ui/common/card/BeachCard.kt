@@ -23,16 +23,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun beachCard(beach: Beach) {
+fun beachCard(beach: Beach, navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer,
         ) {
         Card(
-            onClick = { },
+            onClick = { navController.navigate("beachProfile/${beach.name}")},
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()

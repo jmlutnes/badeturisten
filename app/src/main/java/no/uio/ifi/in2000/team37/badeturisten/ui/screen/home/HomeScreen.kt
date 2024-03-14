@@ -35,13 +35,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.watertemperature.WaterTempViewModel
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.common.card.beachCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: WaterTempViewModel = viewModel()) {
+fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: WaterTempViewModel = viewModel(), navController : NavController) {
     val temp = homeViewModel._locationTemperature.collectAsState().value.temp
     val waterTemperatureUIState = waterTempViewModel.waterTemperatureState.collectAsState().value
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -123,7 +124,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             .background(MaterialTheme.colorScheme.primary)
                         ){
                             items(waterTemperatureUIState.beaches) { beach ->
-                                beachCard(beach = beach)
+                                beachCard(beach = beach, navController)
                             }
                         }
 

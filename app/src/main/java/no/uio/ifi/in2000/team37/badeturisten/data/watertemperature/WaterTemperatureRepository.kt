@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.Tsery
 
-class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
+class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()){ //??W
 
     private val observations = MutableStateFlow<List<Beach>>(listOf())
 
@@ -21,6 +21,13 @@ class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
         observations.update {
             makeBeaches(observationsFromDataSource)
         }
+    }
+
+    suspend fun loadBeach(beachName : String?) {
+        val observationsFromDataSource = dataSource.getData(59.91, 10.74, 10, 50)
+
+        observations.update { makeBeaches(observationsFromDataSource).filter { beach -> beach.name == beachName } }
+
     }
 
     suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
