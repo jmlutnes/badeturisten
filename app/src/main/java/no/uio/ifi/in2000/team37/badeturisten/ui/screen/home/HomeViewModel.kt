@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.home
+package no.uio.ifi.in2000.team37.badeturisten.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,7 +20,9 @@ import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.Tsery
 data class TemperatureLocationForecast(val temp: Double? = null)
 
 class HomeViewModel: ViewModel() {
-    var _locationTemperature = MutableStateFlow<TemperatureLocationForecast>(TemperatureLocationForecast())
+    var _locationTemperature = MutableStateFlow<TemperatureLocationForecast>(
+        TemperatureLocationForecast()
+    )
 
     var LocationForecastrepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
 
