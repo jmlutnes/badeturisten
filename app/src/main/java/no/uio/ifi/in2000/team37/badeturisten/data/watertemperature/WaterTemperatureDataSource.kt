@@ -7,8 +7,8 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
 import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
-import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.FrostJsonResponse
-import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.watertemperature.FrostJsonResponse
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.watertemperature.Tsery
 
 class WaterTemperatureDataSource {
     private val client = HttpClient() {
