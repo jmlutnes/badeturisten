@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -106,7 +107,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                         }
                     }
 
-                    Spacer(Modifier.height(300.dp))
+                    Spacer(Modifier.height(250.dp))
 
                     Column {
                         Text(
@@ -119,7 +120,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             textAlign = TextAlign.Center
                         )
 
-                        LazyColumn (Modifier
+                        LazyRow (Modifier
                             //.padding(innerPadding)
                             .background(MaterialTheme.colorScheme.primary)
                         ){

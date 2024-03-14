@@ -34,9 +34,9 @@ fun beachCard(beach: Beach) {
         Card(
             onClick = { },
             modifier = Modifier
-                .padding(8.dp)
+                .padding(100.dp)
                 .fillMaxWidth()
-                .wrapContentWidth(Alignment.CenterHorizontally)
+                //.wrapContentWidth(Alignment.CenterHorizontally)
 
         ) {
             Column(
@@ -44,7 +44,7 @@ fun beachCard(beach: Beach) {
                 modifier = Modifier
                     .background(color = Color.White)
                     .width(300.dp)
-                    .height(100.dp)
+                    .height(80.dp)
             ) {
                 Text(
                     text = beach.name,
