@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.watertemperature
+package no.uio.ifi.in2000.team37.badeturisten.ui.ViewModels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

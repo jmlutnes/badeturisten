@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.common.card
+package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

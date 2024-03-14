@@ -10,8 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import no.uio.ifi.in2000.team37.badeturisten.ui.screen.home.HomeScreen
-import no.uio.ifi.in2000.team37.badeturisten.ui.screen.home.HomeViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.screen.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
 class MainActivity : ComponentActivity() {
