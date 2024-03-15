@@ -8,7 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
-import no.uio.ifi.in2000.team37.badeturisten.model.JsonToKotlinLocationForecast.LocationForecastData
+import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.JsonToKotlinLocationForecast.LocationForecastData
 import java.nio.channels.UnresolvedAddressException
 
 class LocationForecastDataSource {

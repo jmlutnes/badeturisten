@@ -1,6 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -16,8 +15,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import no.uio.ifi.in2000.team37.badeturisten.ui.screen.home.HomeViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.watertemperature.WaterTempViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.watertemperature
+package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
 

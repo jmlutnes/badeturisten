@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.screen.home
+package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,8 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import no.uio.ifi.in2000.team37.badeturisten.ui.watertemperature.WaterTempViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 import no.uio.ifi.in2000.team37.badeturisten.R
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.common.card.beachCard
 
 @OptIn(ExperimentalMaterial3Api::class)

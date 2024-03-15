@@ -6,18 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import no.uio.ifi.in2000.team37.badeturisten.ui.screen.BeachProfile
-import no.uio.ifi.in2000.team37.badeturisten.ui.screen.home.HomeScreen
-import no.uio.ifi.in2000.team37.badeturisten.ui.screen.home.HomeViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.screen.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen()
+                    NavScreen()
                 }
             }
         }
@@ -38,11 +35,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Screen(modifier: Modifier = Modifier) {
+fun NavScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(navController, startDestination = "homeScreen") {
-        composable("homeScreen") {
+        composable(route = "homeScreen") {
             HomeScreen(navController = navController)
         }
         composable(
