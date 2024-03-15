@@ -13,8 +13,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperat
 
 data class TemperatureLocationForecast(val temp: Double? = null)
 
-class HomeViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
-    private val beachName : String = checkNotNull(savedStateHandle["beachName"])
+class HomeViewModel(): ViewModel() {
     private val waterTempRepository : WaterTemperatureRepository = WaterTemperatureRepository()
 
 
@@ -28,14 +27,7 @@ class HomeViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     init {
         viewModelScope.launch (Dispatchers.IO) {
             val forecastResult = TemperatureLocationForecast(LocationForecastrepository.getTemperature())
-            val beach = waterTempRepository.loadBeach(beachName)
             _locationTemperature.update { forecastResult }
         }
     }
-/* flytter den til eget viewmodel
-    fun fetchBeach(beachname: String?) {
-        viewModelScope.launch (Dispatchers.IO) {
-            waterTempRepository.loadBeach(beachname)
-        }
-    }*/
 }
