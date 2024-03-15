@@ -99,11 +99,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                         Row {
                             Text(text = "$temp °C",
                                 fontSize = 30.sp)
-                            Image(
-                                painter = painterResource(R.drawable.sun),
-                                contentDescription = "Ikon",
-                                modifier = Modifier.size(200.dp, 65.dp)
-                            )
                         }
                     }
 
