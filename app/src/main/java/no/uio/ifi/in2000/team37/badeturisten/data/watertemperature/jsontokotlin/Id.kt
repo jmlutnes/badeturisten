@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.model.watertemperature
+package no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.watertemperature
 
 
 import com.google.gson.annotations.SerializedName
