@@ -4,8 +4,8 @@ import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.watertemperature.Tsery
 
 class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
 
@@ -39,5 +39,12 @@ class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
             Log.e("water repos", e.message.toString())
             emptyList<Beach>()
         }
+    }
+
+    suspend fun getBeach(beachName: String): Beach? {
+        val observationsFromDataSource = dataSource.getData(59.91, 10.74, 10, 50)
+        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        beachlist = beachlist.filter { beach -> beach.name == beachName }
+        return beachlist.firstOrNull()
     }
 }

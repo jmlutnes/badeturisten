@@ -1,8 +1,7 @@
-package no.uio.ifi.in2000.team37.badeturisten.model.watertemperature
+package no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin
 
 
 import com.google.gson.annotations.SerializedName
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.watertemperature.Data
 
 data class WaterTemperatureAPIResponse(
     @SerializedName("data")

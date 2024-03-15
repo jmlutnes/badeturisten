@@ -17,7 +17,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

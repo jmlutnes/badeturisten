@@ -36,10 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 import no.uio.ifi.in2000.team37.badeturisten.R
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.common.card.beachCard
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
