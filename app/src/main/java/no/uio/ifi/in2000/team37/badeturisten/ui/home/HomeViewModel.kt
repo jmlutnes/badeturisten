@@ -13,7 +13,6 @@ import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.JsonToKotlinLocationForecast.LocationForecastData
 import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.Tsery
 
 data class TemperatureLocationForecast(val temp: Double? = null)
