@@ -5,7 +5,7 @@ import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.gson.gson
-import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.JsonToKotlinWatertemperature.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.WaterTemperatureAPIResponse
 
 class WaterTemperatureDataSource {

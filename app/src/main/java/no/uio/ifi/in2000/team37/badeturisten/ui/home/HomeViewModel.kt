@@ -13,12 +13,12 @@ import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
 
 data class TemperatureLocationForecast(val temp: Double? = null)
 
 data class WaterTemperatureUIState (
-    val observations: List<Tsery> = listOf()
+    val observations: List<Beach> = listOf()
 )
 
 class HomeViewModel: ViewModel() {
@@ -41,7 +41,7 @@ class HomeViewModel: ViewModel() {
         viewModelScope.launch {
             val result = TemperatureLocationForecast(repository.getTemperature())
             _locationTemperature.update { result }
-            waterTemperatureRepository.loadObservations()
+            waterTemperatureRepository.loadBeaches()
         }
     }
 
