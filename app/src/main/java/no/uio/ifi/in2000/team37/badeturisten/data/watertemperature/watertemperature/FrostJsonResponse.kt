@@ -2,9 +2,8 @@ package no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.watertempera
 
 
 import com.google.gson.annotations.SerializedName
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.watertemperature.DataX
 
-data class FrostJsonResponse(
+data class WaterTemperatureAPIResponse(
     @SerializedName("data")
-    val `data`: DataX
+    val `data`: Data
 )
