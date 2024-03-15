@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:app/src/main/java/no/uio/ifi/in2000/team37/badeturisten/ui/viewmodel/WaterTempViewModel.kt
 package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
+========
+package no.uio.ifi.in2000.team37.badeturisten.ui.ViewModels
+>>>>>>>> master:app/src/main/java/no/uio/ifi/in2000/team37/badeturisten/ui/ViewModels/WaterTempViewModel.kt
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

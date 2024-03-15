@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.common.card
+package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -35,9 +35,9 @@ fun beachCard(beach: Beach, navController: NavController) {
         Card(
             onClick = { navController.navigate("beachProfile/${beach.name}")},
             modifier = Modifier
-                .padding(8.dp)
+                .padding(100.dp)
                 .fillMaxWidth()
-                .wrapContentWidth(Alignment.CenterHorizontally)
+                //.wrapContentWidth(Alignment.CenterHorizontally)
 
         ) {
             Column(
@@ -45,7 +45,7 @@ fun beachCard(beach: Beach, navController: NavController) {
                 modifier = Modifier
                     .background(color = Color.White)
                     .width(300.dp)
-                    .height(100.dp)
+                    .height(80.dp)
             ) {
                 Text(
                     text = beach.name,
