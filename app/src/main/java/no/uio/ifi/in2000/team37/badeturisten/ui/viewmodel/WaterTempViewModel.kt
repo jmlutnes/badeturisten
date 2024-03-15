@@ -11,12 +11,8 @@ import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
 
-data class WaterTemperatureUIState (
-    val beaches: List<Beach> = listOf()
-)
+data class WaterTemperatureUIState (val beaches: List<Beach> = listOf())
 class WaterTempViewModel: ViewModel() {
-
-
     val waterTemperatureRepository = WaterTemperatureRepository()
 
     val waterTemperatureState: StateFlow<WaterTemperatureUIState> = waterTemperatureRepository.getObservations()

@@ -15,15 +15,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BeachProfile(homeViewModel : HomeViewModel = viewModel(), waterTempViewModel : WaterTempViewModel = viewModel(), navController : NavController, beachName : String?) {
-    val temp = homeViewModel._locationTemperature.collectAsState().value.temp
-    val waterTemperatureUIState = waterTempViewModel.waterTemperatureState.collectAsState().value
-    homeViewModel.fetchBeach(beachName)
+fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController : NavController, beachName : String?) {
+    val beach = beachViewModel.beachUIState.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -38,9 +37,7 @@ fun BeachProfile(homeViewModel : HomeViewModel = viewModel(), waterTempViewModel
         }
     ) {paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)){
-            //Text()
-
-
+            item { beach.beach?.let { Text(text = it.name) } }
         }
 
     }

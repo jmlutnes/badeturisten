@@ -32,10 +32,10 @@ class HomeViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             _locationTemperature.update { forecastResult }
         }
     }
-
+/* flytter den til eget viewmodel
     fun fetchBeach(beachname: String?) {
         viewModelScope.launch (Dispatchers.IO) {
             waterTempRepository.loadBeach(beachname)
         }
-    }
+    }*/
 }
