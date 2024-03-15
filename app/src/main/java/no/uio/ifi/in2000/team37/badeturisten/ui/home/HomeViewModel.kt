@@ -1,7 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,21 +11,16 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.MetAlertsDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.JsonToKotlinLocationForecast.LocationForecastData
-import no.uio.ifi.in2000.team37.badeturisten.model.watertemperature.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
 
 data class TemperatureLocationForecast(val temp: Double? = null)
 
 data class WaterTemperatureUIState (
-    val observations: List<Tsery> = listOf()
+    val observations: List<Beach> = listOf()
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel: ViewModel() {
 
     var _locationTemperature = MutableStateFlow<TemperatureLocationForecast>(TemperatureLocationForecast())
@@ -44,18 +37,11 @@ class HomeViewModel: ViewModel() {
     initialValue = WaterTemperatureUIState()
     )
 
-    private val _metAlertsWarnings = MutableStateFlow<List<WeatherWarning>>(emptyList())
-    private var rep : MetAlertsRepository = MetAlertsRepository(dataSource = MetAlertsDataSource())
-    val metAlertsWarnings: StateFlow<List<WeatherWarning>> = _metAlertsWarnings
-
     init {
         viewModelScope.launch {
             val result = TemperatureLocationForecast(repository.getTemperature())
             _locationTemperature.update { result }
-            waterTemperatureRepository.loadObservations()
-
-            val weatherWarnings = rep.getWeatherWarnings()
-            _metAlertsWarnings.value = weatherWarnings
+            waterTemperatureRepository.loadBeaches()
         }
     }
 
