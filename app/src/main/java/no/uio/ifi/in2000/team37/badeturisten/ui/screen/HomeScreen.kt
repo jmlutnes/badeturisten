@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -36,14 +35,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.ViewModels.WaterTempViewModel
+import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
-import no.uio.ifi.in2000.team37.badeturisten.ui.ViewModels.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: WaterTempViewModel = viewModel()) {
+fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: WaterTempViewModel = viewModel(), navController : NavController) {
     val temp = homeViewModel._locationTemperature.collectAsState().value.temp
     val waterTemperatureUIState = waterTempViewModel.waterTemperatureState.collectAsState().value
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -99,11 +99,10 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                         Row {
                             Text(text = "$temp °C",
                                 fontSize = 30.sp)
-
                         }
                     }
 
-                    Spacer(Modifier.height(250.dp))
+                    Spacer(Modifier.height(300.dp))
 
                     Column {
                         Text(
@@ -116,12 +115,12 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             textAlign = TextAlign.Center
                         )
 
-                        LazyRow (Modifier
+                        LazyColumn (Modifier
                             //.padding(innerPadding)
                             .background(MaterialTheme.colorScheme.primary)
                         ){
                             items(waterTemperatureUIState.beaches) { beach ->
-                                beachCard(beach = beach)
+                                beachCard(beach = beach, navController)
                             }
                         }
 
@@ -135,5 +134,19 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
     }
 
 }
+
+    // meny i top bar/venstre oevre hjoerne
+    //luft temp
+    //vear ikon
+    //varsel knapp/melding
+    //strand kort (near deg)
+
+
+//luft temp
+//navn
+//bilde
+//favoritt
+// statistikk
+// anmeldelser
 
 

@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.ViewModels
+package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -12,12 +12,8 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperat
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.Beach.Beach
 
-data class WaterTemperatureUIState (
-    val beaches: List<Beach> = listOf()
-)
+data class WaterTemperatureUIState (val beaches: List<Beach> = listOf())
 class WaterTempViewModel: ViewModel() {
-
-
     val waterTemperatureRepository = WaterTemperatureRepository(WaterTemperatureDataSource())
 
     val waterTemperatureState: StateFlow<WaterTemperatureUIState> = waterTemperatureRepository.getObservations()
