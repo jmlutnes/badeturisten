@@ -136,18 +136,4 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
 
 }
 
-    // meny i top bar/venstre oevre hjoerne
-    //luft temp
-    //vear ikon
-    //varsel knapp/melding
-    //strand kort (near deg)
-
-
-//luft temp
-//navn
-//bilde
-//favoritt
-// statistikk
-// anmeldelser
-
 
