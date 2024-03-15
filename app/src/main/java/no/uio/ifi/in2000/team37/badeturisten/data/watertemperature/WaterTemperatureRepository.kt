@@ -50,8 +50,8 @@ class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource = W
 
     suspend fun getBeach(beachName: String): Beach? {
         val observationsFromDataSource = dataSource.getData(59.91, 10.74, 10, 50)
-        val beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
-        beachlist.filter { beach -> beach.name == beachName }
+        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
     }
 }
