@@ -1,15 +1,13 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast
+package no.uio.ifi.in2000.team37.badeturisten.data.locationforecast
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
-import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
-import no.uio.ifi.in2000.team37.badeturisten.data.LocationForecast.JsonToKotlinLocationForecast.LocationForecastData
-import java.nio.channels.UnresolvedAddressException
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.jsontokotlin.LocationForecastData
 
 class LocationForecastDataSource {
     private val client = HttpClient() {
