@@ -2,6 +2,7 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,6 +75,23 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                         ) {
                             beach.beach?.let { Text(text = it.name) }
                         }
+
+                        Spacer(Modifier
+                            .height(15.dp)
+                            .background(color = MaterialTheme.colorScheme.primaryContainer))
+
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .background(color = Color.White)
+                                .padding(100.dp)
+                                .width(300.dp)
+                                .height(40.dp)
+                        ) {
+                            Text(text = "Badetemperatur ")
+                            Text(text = "Vannkvalitet")
+                        }
+
                     }
                 }
             }
