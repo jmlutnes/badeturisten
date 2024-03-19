@@ -14,7 +14,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import no.uio.ifi.in2000.team37.badeturisten.ui.screen.BeachProfile
+import no.uio.ifi.in2000.team37.badeturisten.ui.screen.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.screen.HomeScreen
+import no.uio.ifi.in2000.team37.badeturisten.ui.screen.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
 class MainActivity : ComponentActivity() {
@@ -48,6 +50,12 @@ fun NavScreen(modifier: Modifier = Modifier) {
         ) { backStackEntry ->
             val beachName = backStackEntry.arguments?.getString("beachName")
             BeachProfile(navController = navController, beachName = beachName)
+        }
+        composable(route = "favoritesScreen") {
+            FavouritesScreen(navController = navController)
+        }
+        composable(route = "homeScreen") {
+            SearchScreen(navController = navController)
         }
     }
 }

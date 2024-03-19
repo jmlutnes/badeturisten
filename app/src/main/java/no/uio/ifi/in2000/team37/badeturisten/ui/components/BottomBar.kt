@@ -17,23 +17,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 
 @Composable
-fun BottomBar(content: @Composable() () -> Unit){
+fun BottomBar(navController : NavHostController){
     Scaffold(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { navController.navigate("homeScreen") }) {
                         Icon(Icons.Filled.Home, contentDescription = "Home")
                     }
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { navController.navigate("favoritesScreen") }) {
                         Icon(
                             Icons.Filled.Favorite,
                             contentDescription = "Favorite",
                         )
                     }
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = { navController.navigate("searchScreen") }) {
                         Icon(
                             Icons.Filled.Search,
                             contentDescription = "Search",
@@ -44,7 +45,6 @@ fun BottomBar(content: @Composable() () -> Unit){
         },
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            content
         }
     }
 }
