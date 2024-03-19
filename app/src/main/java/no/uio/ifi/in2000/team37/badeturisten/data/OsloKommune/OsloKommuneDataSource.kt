@@ -59,8 +59,8 @@ class OsloKommuneDatasource {
     }
 
     suspend fun getData(
-        longitude: Double,
-        latitude: Double
+        longitude: Double?,
+        latitude: Double?
     ): jsontokotlin_kommune { //lat og lon send med
 
         val data =

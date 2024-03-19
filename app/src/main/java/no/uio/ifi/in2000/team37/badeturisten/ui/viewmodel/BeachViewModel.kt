@@ -16,8 +16,8 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperat
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-data class BeachUIState(val beach: Beach? = null)
-data class UiKommune(val badevannsinfo: BadevannsInfo?)
+data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?)
+//data class UiKommune(val badevannsinfo: BadevannsInfo?)
 
 //Viewmodel som henter strom fra kun en strand
 class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
@@ -26,14 +26,16 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
         WaterTemperatureDataSource()
     )
 
-    private val _beachUIState = MutableStateFlow(BeachUIState())
+    private val _beachUIState = MutableStateFlow(BeachUIState(null,
+        BadevannsInfo("", "")
+    ))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
     //--------------------OsloKommune----------------//
     private val osloKommuneRepository =
         OsloKommuneRepository(datasource = OsloKommuneDatasource())
-    private val _UiKommune = MutableStateFlow<UiKommune>(UiKommune(null))
-    var UiKommune: StateFlow<UiKommune> = _UiKommune.asStateFlow()
+    //private val _UiKommune = MutableStateFlow<UiKommune>(UiKommune(null))
+    //var UiKommune: StateFlow<UiKommune> = _UiKommune.asStateFlow()
     //-----------------------------------------------//
 
     /*val waterTemperatureState: StateFlow<WaterTemperatureUIState> = waterTempRepository.getObservations()
@@ -44,34 +46,49 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             initialValue = WaterTemperatureUIState()
         )*/
 
-
-
     init {
         loadBeachInfo()
-        loadKommune()
+        //loadKommune()
     }
 
     private fun loadBeachInfo() {
         viewModelScope.launch (Dispatchers.IO) {
             val beachinfo = waterTempRepository.getBeach(beachName)
-            _beachUIState.update {beachUIState ->
-                beachUIState.copy(beach = beachinfo)
-            }
+
+            val lon = beachinfo?.pos?.lat?.toDouble()
+            val lat = beachinfo?.pos?.lon?.toDouble()
+            println("lon:$lon \nlat:$lat")
+
+            if (lat != null && lon != null) {
+                val vannkvalitet: BadevannsInfo? = osloKommuneRepository.getVannkvalitet(lat, lon)
+                _beachUIState.update { currentUIState ->
+                    currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
             /*waterTempRepository.loadBeach(beachName)*/
+                }
+            } else {
+                println("Ingen gyldig posisjon funnet for stranden.")
+            }
         }
     }
+    /*
     private fun loadKommune() {
         //Placeholder lokasjoner
-        val lon = 59.97023
-        val lat = 10.61805
 
-        viewModelScope.launch {
-            //Returnerer en string som inneholder URL til badested
-            val vannkvalitet: BadevannsInfo? =  osloKommuneRepository.getVannkvalitet(lat, lon)
+        viewModelScope.launch(Dispatchers.IO)  {
+            val lat = beachUIState.value.beach?.pos?.lat?.toDouble()
+            val lon = beachUIState.value.beach?.pos?.lon?.toDouble()
+
+            //println("lon:$lon \nlat:$lat")
+
+            val vannkvalitet: BadevannsInfo? =
+                lat?.let { lon?.let { it1 -> osloKommuneRepository.getVannkvalitet(it, it1) } }
 
             _UiKommune.update {
-                UiKommune(vannkvalitet)
+                return@update UiKommune(vannkvalitet)
             }
+
         }
     }
+
+     */
 }

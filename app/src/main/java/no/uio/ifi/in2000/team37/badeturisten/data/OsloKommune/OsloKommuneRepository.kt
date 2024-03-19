@@ -2,15 +2,16 @@ package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
 
 class OsloKommuneRepository (private val datasource: OsloKommuneDatasource) {
     //Henter naermeste badested basert på soek, og gjoer nytt soek med oppdatert lokasjon til badested
-    suspend fun getClass(lat: Double, lon: Double): jsontokotlin_kommune {
+    suspend fun getClass(lat: Double?, lon: Double?): jsontokotlin_kommune {
         val item = datasource.getData(lat, lon)
-        val feat = item.meta?.inputs?.items?.firstOrNull()?.value
-        println("Gammel lokasjon: $item")
+        val feat = item.meta.inputs.items.firstOrNull()?.value
+        //println("Gammel lokasjon: $item")
         if (feat is Value) {
-            val lon = feat.longitude
-            val lat = feat.latitude
-            val item = getRight(lat, lon)
-            println("Ny lokasjon:$item")
+            //val lon = feat.longitude
+            //val lat = feat.latitude
+            //val item = getRight(lat, lon)
+            //println("Ny lokasjon:$item")
+            return item
         }
         return item
     }
@@ -32,7 +33,7 @@ class OsloKommuneRepository (private val datasource: OsloKommuneDatasource) {
         return item
     }
 
-    suspend fun getVannkvalitet(lat: Double, lon: Double): BadevannsInfo? {
+    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
         val nettsideUrl: String? =
            getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
         println("old: $nettsideUrl")
@@ -43,7 +44,7 @@ class OsloKommuneRepository (private val datasource: OsloKommuneDatasource) {
             println("Ingen URL funnet.")
         }
         val skrapOsloKommune = nynettsideUrl?.let { skrapUrl(it) }
-        println("Skrapt innhold: $skrapOsloKommune")
+        //println("Skrapt innhold: $skrapOsloKommune")
         return skrapOsloKommune
     }
 

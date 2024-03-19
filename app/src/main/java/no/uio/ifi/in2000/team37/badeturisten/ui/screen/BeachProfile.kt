@@ -37,7 +37,7 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 @Composable
 fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: NavController, beachName: String?) {
     val beach = beachViewModel.beachUIState.collectAsState().value
-    val badeinfo = beachViewModel.UiKommune.collectAsState().value
+    //val badeinfo = beachViewModel.UiKommune.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -70,7 +70,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                     .fillMaxWidth()
                                     .height(200.dp)
                             ) {
-                                beach.beach?.let { Text(text = it.name,
+                                beach.beach?.let { Text(text = "${it.name} ${it.pos}",
                                     modifier = Modifier
                                         .align(Alignment.TopCenter)
                                         .padding(top = 16.dp)) }
@@ -108,7 +108,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                                 .align(Alignment.Top)
                                                 .padding(top = 16.dp))
                                         Spacer(modifier = Modifier.width(100.dp))
-                                        Text(text = "${badeinfo.badevannsinfo?.kvalitetInfo}\n", modifier = Modifier
+                                        Text(text = "${beach.badevannsinfo?.kvalitetInfo}\n", modifier = Modifier
                                             .padding(top = 16.dp))
 
                                     }
@@ -139,7 +139,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                 Column() {
                                     Text(text = "Anmeldelser")
                                     Spacer(modifier = Modifier.height(8.dp))
-                                    Text(text = "${badeinfo.badevannsinfo?.generellInfo}")
+                                    Text(text = "${beach.badevannsinfo?.generellInfo}")
 
 
                                 }
