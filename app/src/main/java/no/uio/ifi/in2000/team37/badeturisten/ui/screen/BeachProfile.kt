@@ -22,7 +22,7 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
 @Composable
 fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController : NavController, beachName : String?) {
     val beach = beachViewModel.beachUIState.collectAsState().value
-
+    val badeinfo = beachViewModel.UiKommune.collectAsState().value
     Scaffold(
         topBar = {
             TopAppBar(
@@ -36,7 +36,8 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController : N
         }
     ) {paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)){
-            item { beach.beach?.let { Text(text = it.name) } }
+            item { beach.beach?.let { Text(text = "${it.name} ${badeinfo.badevannsinfo?.generellInfo}\n${badeinfo.badevannsinfo?.kvalitetInfo}")}
+            }
         }
 
     }

@@ -53,6 +53,7 @@ android {
 
 
 dependencies {
+    implementation("com.google.android.datatransport:transport-runtime:3.2.0")
     val ktor_version = "2.3.8"
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-android:$ktor_version")
@@ -75,6 +76,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    implementation("org.jsoup:jsoup:1.13.1")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
     val nav_version = "2.7.7"
