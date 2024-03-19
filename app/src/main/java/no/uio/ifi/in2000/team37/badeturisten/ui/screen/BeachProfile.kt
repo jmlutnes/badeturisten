@@ -1,7 +1,9 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,39 +62,105 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.primaryContainer,
                 ) {
-                    Card(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                    Column {
+                        Card(
                             modifier = Modifier
-                                .background(color = Color.White)
-                                .padding(100.dp)
-                                .width(300.dp)
-                                .height(80.dp)
+                                .padding(16.dp)
+                                .fillMaxWidth()
                         ) {
-                            beach.beach?.let { Text(text = it.name) }
+                            Box(
+                                modifier = Modifier
+                                    .background(color = Color.White)
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                            ) {
+                                beach.beach?.let { Text(text = it.name,
+                                    modifier = Modifier
+                                        .align(Alignment.TopCenter)
+                                        .padding(top = 16.dp)) }
+                            }
+                        }
+                        Spacer(
+                            Modifier
+                                .height(15.dp)
+                                .background(color = MaterialTheme.colorScheme.primaryContainer))
+
+                        Card(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .background(color = Color.White)
+                                    .fillMaxWidth()
+                                    .height(100.dp)
+                            ) {
+                                Column {
+                                    Row() {
+                                        Text(text = "Badetemperatur",
+                                            modifier = Modifier
+                                                .align(Alignment.Top)
+                                                .padding(top = 16.dp))
+                                        Spacer(modifier = Modifier.width(120.dp))
+                                        Text(text = "dummydata", modifier = Modifier
+                                            .padding(top = 16.dp))
+                                    }
+                                    Row() {
+                                        Text(text = "Vannkvalitet",
+                                            modifier = Modifier
+                                                .align(Alignment.Top)
+                                                .padding(top = 16.dp))
+                                        Spacer(modifier = Modifier.width(150.dp))
+                                        Text(text = "dummydata", modifier = Modifier
+                                            .padding(top = 16.dp))
+                                    }
+
+                                }
+
+
+                            }
                         }
 
-                        Spacer(Modifier
-                            .height(15.dp)
-                            .background(color = MaterialTheme.colorScheme.primaryContainer))
+                        Spacer(
+                            Modifier
+                                .height(15.dp)
+                                .background(color = MaterialTheme.colorScheme.primaryContainer))
 
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                        Card(
                             modifier = Modifier
-                                .background(color = Color.White)
-                                .padding(100.dp)
-                                .width(300.dp)
-                                .height(40.dp)
+                                .padding(16.dp)
+                                .fillMaxWidth()
                         ) {
-                            Text(text = "Badetemperatur ")
-                            Text(text = "Vannkvalitet")
+                            Box(
+                                modifier = Modifier
+                                    .background(color = Color.White)
+                                    .fillMaxWidth()
+                                    .height(100.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column() {
+                                    Text(text = "Anmeldelser")
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text("stjerner her?")
+
+
+                                }
+
+
+                            }
                         }
+
+                        Spacer(
+                            Modifier
+                                .height(500.dp)
+                                .background(color = MaterialTheme.colorScheme.primaryContainer))
 
                     }
+
+
+
+
                 }
             }
         }
