@@ -70,7 +70,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                     .fillMaxWidth()
                                     .height(200.dp)
                             ) {
-                                beach.beach?.let { Text(text = "${it.name} ${it.pos}",
+                                beach.beach?.let { Text(text = it.name,
                                     modifier = Modifier
                                         .align(Alignment.TopCenter)
                                         .padding(top = 16.dp)) }
@@ -98,9 +98,9 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                             modifier = Modifier
                                                 .align(Alignment.Top)
                                                 .padding(top = 16.dp))
-                                        Spacer(modifier = Modifier.width(110.dp))
-                                        Text(text = "dummydata", modifier = Modifier
-                                            .padding(top = 16.dp))
+                                        Spacer(modifier = Modifier.width(120.dp))
+                                        Text(text = "${beach.beach?.waterTemp}°C",
+                                            modifier = Modifier.padding(top = 16.dp))
                                     }
                                     Row() {
                                         Text(text = "Vannkvalitet",
@@ -133,18 +133,14 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                 modifier = Modifier
                                     .background(color = Color.White)
                                     .fillMaxWidth()
-                                    .height(150.dp),
+                                    .height(100.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Column() {
+                                Column {
                                     Text(text = "Anmeldelser")
                                     Spacer(modifier = Modifier.height(8.dp))
-                                    Text(text = "${beach.badevannsinfo?.generellInfo}")
-
-
+                                    Text("stjerner her?")
                                 }
-
-
                             }
                         }
 
@@ -154,10 +150,6 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                 .background(color = MaterialTheme.colorScheme.primaryContainer))
 
                     }
-
-
-
-
                 }
             }
         }

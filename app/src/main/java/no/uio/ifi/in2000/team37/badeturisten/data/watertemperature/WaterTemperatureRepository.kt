@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
+class WaterTemperatureRepository (private val dataSource: WaterTemperatureDataSource){
 
     private val observations = MutableStateFlow<List<Beach>>(listOf())
 
@@ -30,8 +30,10 @@ class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
             val liste: MutableList<Beach> = mutableListOf<Beach>()
 
             data.forEach { data ->
+                val beachName = data.header.extra.name
                 // lager strand objekter og legger til i liste
-                liste.add(Beach(data.header.extra.name, data.header.extra.pos))
+                val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
+                liste.add(Beach(data.header.extra.name, data.header.extra.pos, waterTemperature))
             }
 
             return liste

@@ -13,8 +13,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
 import no.uio.ifi.in2000.team37.badeturisten.ui.screen.BeachProfile
+import no.uio.ifi.in2000.team37.badeturisten.ui.screen.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.screen.HomeScreen
+import no.uio.ifi.in2000.team37.badeturisten.ui.screen.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,12 +38,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavScreen(modifier: Modifier = Modifier) {
+fun NavScreen() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "homeScreen") {
-        composable(route = "homeScreen") {
-            HomeScreen(navController = navController)
+    NavHost(navController, startDestination = "bottomBar") {
+        composable(route = "bottomBar") {
+            BottomBar(navController = navController)
         }
         composable(
             route = "beachProfile/{beachName}",
@@ -49,5 +52,16 @@ fun NavScreen(modifier: Modifier = Modifier) {
             val beachName = backStackEntry.arguments?.getString("beachName")
             BeachProfile(navController = navController, beachName = beachName)
         }
+        /*
+        composable(route = "homeScreen") {
+            HomeScreen(navController = navController)
+        }
+        composable(route = "favoritesScreen") {
+            FavouritesScreen(navController = navController)
+        }
+        composable(route = "searchScreen") {
+            SearchScreen(navController = navController)
+        }
+        */
     }
 }
