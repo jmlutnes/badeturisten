@@ -1,5 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,8 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: NavController, beachName: String?) {
@@ -49,7 +53,8 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                     }
                 }
             )
-        }
+        },
+        bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             item {
