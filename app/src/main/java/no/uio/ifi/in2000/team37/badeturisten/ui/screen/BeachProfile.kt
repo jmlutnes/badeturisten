@@ -36,10 +36,12 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController : N
         }
     ) {paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)){
-            item { beach.beach?.let { Text(text = it.name) } }
+            item {
+                beach.beach?.let {
+                    Text(text = it.name)
+                    Text(text = "Badetemperatur: ${it.waterTemp}°C")
+                }
+            }
         }
-
     }
-
-
 }
