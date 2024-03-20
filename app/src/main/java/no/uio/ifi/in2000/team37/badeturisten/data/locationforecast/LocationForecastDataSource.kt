@@ -10,7 +10,7 @@ import io.ktor.util.appendIfNameAbsent
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.jsontokotlin.LocationForecastData
 
 class LocationForecastDataSource {
-    private val client = HttpClient() {
+    private val client = HttpClient {
         defaultRequest {
             url("https://gw-uio.intark.uh-it.no/in2000/")
             headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
@@ -20,11 +20,15 @@ class LocationForecastDataSource {
         }
     }
 
-    suspend fun getForecastData(): LocationForecastData {
+    suspend fun getForecastData(): LocationForecastData? {
         val response =
         client.get("weatherapi/locationforecast/2.0/compact?lat=60.10&lon=9.58")
-        val toClass = response.body<LocationForecastData>()
-        return toClass
+
+        return if (response.status.value in 200 .. 299) {
+            response.body<LocationForecastData>()
+        } else {
+            null
+        }
     }
 }
 

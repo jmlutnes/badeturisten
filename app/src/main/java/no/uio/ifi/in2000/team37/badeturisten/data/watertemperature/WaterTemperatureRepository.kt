@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
+class WaterTemperatureRepository (private val dataSource: WaterTemperatureDataSource){
 
     private val observations = MutableStateFlow<List<Beach>>(listOf())
 
