@@ -1,8 +1,10 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -37,14 +39,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavScreen() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "bottomBar") {
-        composable(route = "bottomBar") {
-            BottomBar(navController = navController)
-        }
+    NavHost(navController, startDestination = "homeScreen") {
         composable(
             route = "beachProfile/{beachName}",
             arguments = listOf(navArgument("beachName") { type = NavType.StringType })
@@ -52,16 +52,16 @@ fun NavScreen() {
             val beachName = backStackEntry.arguments?.getString("beachName")
             BeachProfile(navController = navController, beachName = beachName)
         }
-        /*
+
         composable(route = "homeScreen") {
             HomeScreen(navController = navController)
         }
+
         composable(route = "favoritesScreen") {
             FavouritesScreen(navController = navController)
         }
         composable(route = "searchScreen") {
             SearchScreen(navController = navController)
         }
-        */
     }
 }
