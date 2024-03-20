@@ -47,5 +47,4 @@ class OsloKommuneRepository (private val datasource: OsloKommuneDatasource) {
         //println("Skrapt innhold: $skrapOsloKommune")
         return skrapOsloKommune
     }
-
 }
