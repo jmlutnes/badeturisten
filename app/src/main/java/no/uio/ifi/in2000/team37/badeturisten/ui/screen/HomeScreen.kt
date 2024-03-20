@@ -1,5 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -10,10 +12,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,8 +30,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -37,8 +46,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.MetAlertsViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 
 val imageMap = mapOf(
@@ -127,12 +138,22 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: WaterTempViewModel = viewModel(), navController : NavController) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = viewModel(),
+    waterTempViewModel: WaterTempViewModel = viewModel(),
+    metAlertsViewModel: MetAlertsViewModel = viewModel(),
+    navController: NavController
+) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val waterTemperatureUIState = waterTempViewModel.waterTemperatureState.collectAsState().value
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+
+    var clicked by remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
 
@@ -143,7 +164,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                   /* Image( Hvis vi vil ha logo eller bilde senere
+                    /* Image( Hvis vi vil ha logo eller bilde senere
                         painter = painterResource(R.drawable.logo),
                         contentDescription = "Logo",
                         modifier = Modifier.size(200.dp, 65.dp)
@@ -162,12 +183,12 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
             )
         },
 
-    ) { innerPadding ->
-        // Innhold her
+        ) { innerPadding ->
         Column(
             Modifier
                 .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.primaryContainer)) {
+                .background(MaterialTheme.colorScheme.primaryContainer)
+        ) {
 
             BoxWithConstraints {
                 Column(modifier = Modifier.fillMaxHeight()) {
@@ -182,15 +203,21 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             textAlign = TextAlign.Center,
                             fontFamily = FontFamily.Default
                         )
-                        Row (modifier = Modifier.fillMaxWidth()){
+                        Row(modifier = Modifier.fillMaxWidth()) {
                             var tempText = ""
                             var precipitationText = ""
                             if (forecastState != null) {
                                 tempText = "${forecastState.temp}°"
                                 precipitationText = "${forecastState.precipitation} mm"
                             }
-                            Text(text = tempText,
-                                fontSize = 30.sp)
+                            Text(
+                                text = tempText,
+                                fontSize = 30.sp,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .wrapContentWidth(Alignment.Start)
+                                    .padding(16.dp)
+                            )
                             if (forecastState != null) {
                                 val imageName = forecastState.symbolCode
                                 val imageID = imageMap[imageName]
@@ -202,12 +229,68 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                                     )
                                 }
                             }
-                            Text(text = precipitationText,
-                                fontSize = 30.sp)
+                            Text(
+                                text = precipitationText,
+                                fontSize = 30.sp
+                            )
+                        }
+                    }
+                    Column {
+                        Button(
+                            onClick = {
+                                if (!clicked) {
+                                    clicked = true
+                                } else {
+                                    clicked = false
+                                }
+                            },
+                            modifier = Modifier
+                                //.weight(1f)
+                                //.wrapContentWidth(Alignment.End)
+                                .padding(10.dp)
+                        ) {
+                            Text(
+                                text = "Farevarsel"
+                            )
+                        }
+                        if (!clicked) {
+                            Card {
+                                Text(
+                                    "Det er farlig å være ute i dag. Ha på brodder." +
+                                            "Ikke bad alene da havet kan suge deg opp.",
+                                    modifier = Modifier
+                                        .padding(20.dp)
+                                )
+
+                            }
+                        }
+
+                        if (clicked) {
+                            var aktiveVarsler: Boolean = false
+                            LazyColumn {
+                                items(metAlertsViewModel.metAlertsUiState.alerts) { weatherWarning ->
+                                    if (MetAlertCard(weatherWarning = weatherWarning)) {
+                                        aktiveVarsler = true
+                                    }
+                                }
+                            }
+                            if (!aktiveVarsler) {
+                                Card(
+                                    modifier = Modifier
+                                        .padding(20.dp)
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = "Ingen farevarsler",
+                                        modifier = Modifier
+                                            .padding(20.dp)
+                                    )
+                                }
+                            }
                         }
                     }
 
-                    Spacer(Modifier.height(300.dp))
+                    Spacer(Modifier.height(200.dp)) // 300
 
                     Column {
                         Text(
@@ -220,38 +303,24 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             textAlign = TextAlign.Center
                         )
 
-                        LazyColumn (Modifier
-                            //.padding(innerPadding)
-                            .background(MaterialTheme.colorScheme.primary)
-                        ){
+                        LazyColumn(
+                            Modifier
+                                //.padding(innerPadding)
+                                .background(MaterialTheme.colorScheme.primary)
+                        ) {
                             items(waterTemperatureUIState.beaches) { beach ->
                                 beachCard(beach = beach, navController)
                             }
                         }
-
                     }
-
                 }
             }
-
         }
-
     }
-
 }
 
-    // meny i top bar/venstre oevre hjoerne
-    //luft temp
-    //vear ikon
-    //varsel knapp/melding
-    //strand kort (near deg)
 
 
-//luft temp
-//navn
-//bilde
-//favoritt
-// statistikk
-// anmeldelser
+
 
 

@@ -32,10 +32,8 @@ class HomeViewModel(): ViewModel() {
             initialValue = ForecastUIState()
         )
 
-
-
     init {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch {
             locationForecastRepository.loadForecastNextHour()
         }
     }
