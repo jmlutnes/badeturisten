@@ -18,13 +18,11 @@ class HomeViewModel(): ViewModel() {
         WaterTemperatureDataSource()
     )
 
-
     var _locationTemperature = MutableStateFlow<TemperatureLocationForecast>(
         TemperatureLocationForecast()
     )
 
     var LocationForecastrepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
-
 
     init {
         viewModelScope.launch (Dispatchers.IO) {
