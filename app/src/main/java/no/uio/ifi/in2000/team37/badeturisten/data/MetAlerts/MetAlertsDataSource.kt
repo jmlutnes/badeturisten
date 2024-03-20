@@ -7,7 +7,7 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
 import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
-import no.uio.ifi.in2000.team37.badeturisten.model.JsonToKotlinMetAlerts.MetAlerts
+import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.JsonToKotlinMetAlerts.MetAlerts
 import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import java.util.logging.Logger
 
