@@ -55,6 +55,13 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.MetAlertsViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
 
+@Composable
+fun FareVarselCard() {
+    Card{
+        Text("Ingen farevarsler.")
+    }
+}
+
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,7 +70,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
     val temp = homeViewModel._locationTemperature.collectAsState().value.temp
     val waterTemperatureUIState = waterTempViewModel.waterTemperatureState.collectAsState().value
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
 
 
     var clicked by remember { mutableStateOf(false) }
@@ -78,7 +84,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 title = {
-                   /* Image( Hvis vi vil ha logo eller bilde senere
+                    /* Image( Hvis vi vil ha logo eller bilde senere
                         painter = painterResource(R.drawable.logo),
                         contentDescription = "Logo",
                         modifier = Modifier.size(200.dp, 65.dp)
@@ -97,7 +103,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
             )
         },
 
-    ) { innerPadding ->
+        ) { innerPadding ->
         // Innhold her
         Column(
             Modifier
@@ -128,12 +134,14 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                                     .padding(16.dp)
                             )
                             Button(
-                                onClick = { if (!clicked) {
-                                    clicked = true
+                                onClick = {
+                                    if (!clicked) {
+                                        clicked = true
                                     } else {
                                         clicked = false
-                                }
-                                     },
+                                    }
+                                },
+
                                 modifier = Modifier
                                     .weight(1f)
                                     .wrapContentWidth(Alignment.End)
@@ -168,50 +176,51 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
 
                             }
                         }
+                        var antIkkeAktiv = 0
+
                         if (clicked) {
-                            var aktiveVarsler: Boolean = false
                             LazyColumn {
+                                var antIkkeAktiv = 0
+                                //metAlertsViewModel.metAlertsUiState.alerts.size
+
                                 items(metAlertsViewModel.metAlertsUiState.alerts) { weatherWarning ->
-                                    if (MetAlertCard(weatherWarning = weatherWarning)) {
-                                        aktiveVarsler = true
+                                    if (weatherWarning.status == "Aktiv") {
+                                        MetAlertCard(weatherWarning = weatherWarning)
+                                    } else {
+                                        antIkkeAktiv++;
                                     }
                                 }
+
+
                             }
-                            if (!aktiveVarsler) {
-                                Card(
-                                    modifier = Modifier
-                                        .padding(20.dp)
-                                        .fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = "ingen farevarsler",
-                                        modifier = Modifier
-                                            .padding(20.dp)
-                                    )
+                            if (antIkkeAktiv == metAlertsViewModel.metAlertsUiState.alerts.size) {
+                                Card {
+                                    Text("Ingen farevarsler.")
                                 }
+
                             }
-                        }
 
-                        Spacer(Modifier.height(200.dp)) // 300
+                            Spacer(Modifier.height(200.dp)) // 300
 
-                        Column {
-                            Text(
-                                text = "Badesteder",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
+                            Column {
+                                Text(
+                                    text = "Badesteder",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(16.dp),
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
 
-                            LazyColumn(
-                                Modifier
-                                    //.padding(innerPadding)
-                                    .background(MaterialTheme.colorScheme.primary)
-                            ) {
-                                items(waterTemperatureUIState.beaches) { beach ->
-                                    beachCard(beach = beach, navController)
+                                LazyColumn(
+                                    Modifier
+                                        //.padding(innerPadding)
+                                        .background(MaterialTheme.colorScheme.primary)
+                                ) {
+                                    items(waterTemperatureUIState.beaches) { beach ->
+                                        beachCard(beach = beach, navController)
+                                    }
                                 }
                             }
                         }
@@ -221,6 +230,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
         }
     }
 }
+
 
 
 
