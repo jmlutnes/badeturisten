@@ -1,7 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
-import android.content.Context
-import android.content.res.Resources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
