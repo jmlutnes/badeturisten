@@ -29,8 +29,10 @@ class WaterTemperatureRepository (val dataSource: WaterTemperatureDataSource){
             val liste: MutableList<Beach> = mutableListOf<Beach>()
 
             data.forEach { data ->
+                val beachName = data.header.extra.name
                 // lager strand objekter og legger til i liste
-                liste.add(Beach(data.header.extra.name, ))
+                val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
+                liste.add(Beach(beachName, waterTemperature))
             }
 
             return liste
