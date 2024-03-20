@@ -1,6 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.model.beach
 
-public data class Beach (
+data class Beach (
     val name: String,
     val waterTemp: Double
     /*val airTemp: Double?,
