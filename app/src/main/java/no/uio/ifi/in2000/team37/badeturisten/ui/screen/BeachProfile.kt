@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,10 +35,12 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController : N
         }
     ) {paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)){
-            item { beach.beach?.let { Text(text = it.name) } }
+            item {
+                beach.beach?.let {
+                    Text(text = it.name)
+                    Text(text = "Badetemperatur: ${it.waterTemp}°C")
+                }
+            }
         }
-
     }
-
-
 }
