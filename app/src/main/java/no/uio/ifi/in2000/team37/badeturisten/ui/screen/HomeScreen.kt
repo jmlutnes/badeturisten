@@ -169,27 +169,25 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             }
                         }
                         if (clicked) {
+                            var aktiveVarsler: Boolean = false
                             LazyColumn {
-                                var aktiveVarsler: Boolean = false
                                 items(metAlertsViewModel.metAlertsUiState.alerts) { weatherWarning ->
                                     if (MetAlertCard(weatherWarning = weatherWarning)) {
                                         aktiveVarsler = true
                                     }
                                 }
-                                if (!aktiveVarsler) {
-                                    item {
-                                        Card(
-                                            modifier = Modifier
-                                                .padding(20.dp)
-                                                .fillMaxWidth()
-                                        ) {
-                                            Text(
-                                                text = "ingen farevarsler",
-                                                modifier = Modifier
-                                                    .padding(20.dp)
-                                            )
-                                        }
-                                    }
+                            }
+                            if (!aktiveVarsler) {
+                                Card(
+                                    modifier = Modifier
+                                        .padding(20.dp)
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = "ingen farevarsler",
+                                        modifier = Modifier
+                                            .padding(20.dp)
+                                    )
                                 }
                             }
                         }
@@ -216,17 +214,12 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                                     beachCard(beach = beach, navController)
                                 }
                             }
-
                         }
-
                     }
                 }
             }
-
         }
-
     }
-
 }
 
 
