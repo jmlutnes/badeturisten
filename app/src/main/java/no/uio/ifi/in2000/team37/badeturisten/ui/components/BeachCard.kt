@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +56,15 @@ fun beachCard(beach: Beach, navController: NavController) {
                         .fillMaxWidth()
                         .padding(16.dp)
                     )
+                Text(
+                    text = "Badetemperatur: ${beach.waterTemp}°C",
+                    textAlign = TextAlign.Center,
+                    fontSize = 16.sp,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
                 /*Image(
                 painter = rememberImagePainter(partyInfo.img),
                 contentDescription = partyInfo.name,
