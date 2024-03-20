@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.WeatherWarning
 
 @Composable
-fun MetAlertCard(weatherWarning: WeatherWarning) {
+fun MetAlertCard(weatherWarning: WeatherWarning): Boolean {
     if (weatherWarning.status == "Aktiv") {
         Card(
             modifier = Modifier
@@ -30,19 +30,9 @@ fun MetAlertCard(weatherWarning: WeatherWarning) {
             //Text("Status: " + weatherWarning.status)
             //Text("Web: " + weatherWarning.web)
         }
-        /*
-    } else {
-        Card(
-            modifier = Modifier
-                .padding(20.dp)
-                .fillMaxWidth()
-        ) {
-            Text(text = "ingen farevarsel")
-        }
-
-         */
+        return true
     }
-
+    return false
 
 }
 
