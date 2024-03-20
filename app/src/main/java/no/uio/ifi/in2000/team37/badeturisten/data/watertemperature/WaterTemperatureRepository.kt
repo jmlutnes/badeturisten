@@ -23,6 +23,7 @@ class WaterTemperatureRepository (private val dataSource: WaterTemperatureDataSo
         }
     }
 
+    //Kan vi lagre geometri ogsaa
     suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
         return try {
             //gjoer data om til liste med strender
@@ -32,7 +33,7 @@ class WaterTemperatureRepository (private val dataSource: WaterTemperatureDataSo
                 val beachName = data.header.extra.name
                 // lager strand objekter og legger til i liste
                 val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
-                liste.add(Beach(beachName, waterTemperature))
+                liste.add(Beach(data.header.extra.name, data.header.extra.pos, waterTemperature))
             }
 
             return liste
