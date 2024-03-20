@@ -172,16 +172,23 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             LazyColumn {
                                 var aktiveVarsler: Boolean = false
                                 items(metAlertsViewModel.metAlertsUiState.alerts) { weatherWarning ->
-                                    if (MetAlertCard(weatherWarning = weatherWarning) == true) {
+                                    if (MetAlertCard(weatherWarning = weatherWarning)) {
                                         aktiveVarsler = true
                                     }
                                 }
                                 if (!aktiveVarsler) {
                                     item {
-                                        Text(text = "ingen farevarsler",
+                                        Card(
                                             modifier = Modifier
                                                 .padding(20.dp)
-                                        )
+                                                .fillMaxWidth()
+                                        ) {
+                                            Text(
+                                                text = "ingen farevarsler",
+                                                modifier = Modifier
+                                                    .padding(20.dp)
+                                            )
+                                        }
                                     }
                                 }
                             }
