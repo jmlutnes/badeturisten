@@ -158,18 +158,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                             }
                         }
 
-                        if (!clicked) {
-                            Card {
-                                Text(
-                                    "Det er farlig å være ute i dag. Ha på brodder." +
-                                            "Ikke bad alene da havet kan suge deg opp.",
-                                    modifier = Modifier
-                                        .padding(20.dp)
-                                )
-
-                            }
-                        }
-
                         if (clicked) {
                             var aktiveVarsler: Boolean = false
                             LazyColumn {
