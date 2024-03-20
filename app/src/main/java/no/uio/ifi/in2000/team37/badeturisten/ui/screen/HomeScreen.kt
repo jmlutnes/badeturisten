@@ -168,35 +168,21 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
 
                             }
                         }
-                        /*
-                            if (clicked) {
-                                LazyColumn {
-                                    items(metAlertsViewModel.metAlertsUiState.alerts) { weatherWarning ->
-                                        MetAlertCard(weatherWarning = weatherWarning)
-                                    }
-                                }
-                            }
-
-                         */
-
                         if (clicked) {
                             LazyColumn {
+                                var aktiveVarsler: Boolean = false
                                 items(metAlertsViewModel.metAlertsUiState.alerts) { weatherWarning ->
-                                    MetAlertCard(weatherWarning = weatherWarning)
+                                    if (MetAlertCard(weatherWarning = weatherWarning) == true) {
+                                        aktiveVarsler = true
+                                    }
                                 }
-                                item {
-                                    Text(
-                                        text = "Badesteder",
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(16.dp),
-                                        fontSize = 24.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                                items(waterTemperatureUIState.beaches) { beach ->
-                                    beachCard(beach = beach, navController)
+                                if (!aktiveVarsler) {
+                                    item {
+                                        Text(text = "ingen farevarsler",
+                                            modifier = Modifier
+                                                .padding(20.dp)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -227,14 +213,14 @@ fun HomeScreen(homeViewModel: HomeViewModel = viewModel(), waterTempViewModel: W
                         }
 
                     }
-                    }
                 }
-
             }
 
         }
 
     }
+
+}
 
 
 
