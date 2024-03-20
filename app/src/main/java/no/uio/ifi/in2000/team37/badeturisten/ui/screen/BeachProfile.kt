@@ -36,7 +36,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,8 +102,8 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                                 .align(Alignment.Top)
                                                 .padding(top = 16.dp))
                                         Spacer(modifier = Modifier.width(120.dp))
-                                        Text(text = "dummydata", modifier = Modifier
-                                            .padding(top = 16.dp))
+                                        Text(text = "${beach.beach?.waterTemp}°C",
+                                            modifier = Modifier.padding(top = 16.dp))
                                     }
                                     Row() {
                                         Text(text = "Vannkvalitet",
@@ -139,12 +138,10 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                     .height(100.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Column() {
+                                Column {
                                     Text(text = "Anmeldelser")
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Text("stjerner her?")
-
-
                                 }
 
 
@@ -157,10 +154,6 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                 .background(color = MaterialTheme.colorScheme.primaryContainer))
 
                     }
-
-
-
-
                 }
             }
         }

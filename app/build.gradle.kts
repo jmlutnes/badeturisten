@@ -53,6 +53,7 @@ android {
 
 
 dependencies {
+    implementation("androidx.room:room-ktx:2.6.1")
     val ktor_version = "2.3.8"
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-android:$ktor_version")
