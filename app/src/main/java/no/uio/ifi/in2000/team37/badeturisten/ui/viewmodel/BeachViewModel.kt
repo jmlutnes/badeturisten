@@ -3,44 +3,29 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.BadevannsInfo
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?)
+data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannInfo?)
 //data class UiKommune(val badevannsinfo: BadevannsInfo?)
 
 //Viewmodel som henter strom fra kun en strand
 class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
-    private val beachName : String = checkNotNull(savedStateHandle["beachName"])
-    private val waterTempRepository : WaterTemperatureRepository = WaterTemperatureRepository(
-        WaterTemperatureDataSource()
-    )
+    private val _beachName : String = checkNotNull(savedStateHandle["beachName"])
 
-    private val _beachUIState = MutableStateFlow(BeachUIState(null,
-        BadevannsInfo("", "")
-    ))
+    private val _beachRepository: BeachRepository = BeachRepository()
+
+    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannInfo("", "", null)))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
-    private val osloKommuneRepository =
-        OsloKommuneRepository(datasource = OsloKommuneDatasource())
-
-    /*val waterTemperatureState: StateFlow<WaterTemperatureUIState> = waterTempRepository.getObservations()
-        .map { WaterTemperatureUIState(beaches = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = WaterTemperatureUIState()
-        )*/
+    private val osloKommuneRepository = OsloKommuneRepository()
 
     init {
         loadBeachInfo()
@@ -49,14 +34,13 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
 
     private fun loadBeachInfo() {
         viewModelScope.launch {
-            val beachinfo = waterTempRepository.getBeach(beachName)
+            val beachinfo = _beachRepository.getBeach(_beachName)
 
             val lon = beachinfo?.pos?.lat?.toDouble()
             val lat = beachinfo?.pos?.lon?.toDouble()
-            println("lon:$lon \nlat:$lat")
 
             if (lat != null && lon != null) {
-                val vannkvalitet: BadevannsInfo? = osloKommuneRepository.getVannkvalitet(lat, lon)
+                val vannkvalitet: BadevannInfo? = osloKommuneRepository.getVannkvalitet(lat, lon)
                 _beachUIState.update { currentUIState ->
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
             /*waterTempRepository.loadBeach(beachName)*/

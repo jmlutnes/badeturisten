@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class jsontokotlin_kommune(
     @SerializedName("data")
-    val `data`: Data,
+    val data: Data,
     @SerializedName("meta")
     val meta: Meta
 )

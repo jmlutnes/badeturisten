@@ -12,17 +12,18 @@ import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.WeatherWarning
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.WaterTemperatureDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
 data class MetAlertsUIState(
     val alerts: List<WeatherWarning> = listOf()
 )
-data class WaterTemperatureUIState (
+data class BeachesUIState (
     val beaches: List<Beach> = listOf()
 )
 data class ForecastUIState(
@@ -30,7 +31,7 @@ data class ForecastUIState(
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeViewModel(): ViewModel() {
+class HomeViewModel: ViewModel() {
 
     //henter vaer melding
     private val _locationForecastRepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
@@ -50,18 +51,18 @@ class HomeViewModel(): ViewModel() {
 
     //henter strender
     //trenger en annen maate aa hente alle strender paa
-    private val _waterTemperatureRepository = WaterTemperatureRepository(WaterTemperatureDataSource())
-    val waterTemperatureState: StateFlow<WaterTemperatureUIState> = _waterTemperatureRepository.getObservations()
-        .map { WaterTemperatureUIState(beaches = it) }
+    private val _beachesRepository = BeachRepository()
+    val beachesState: StateFlow<BeachesUIState> = _beachesRepository.getBeachObservations()
+        .map { BeachesUIState(beaches = it) }
         .stateIn(
             viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = WaterTemperatureUIState()
+            initialValue = BeachesUIState()
         )
 
     init {
         viewModelScope.launch {
-            _waterTemperatureRepository.loadBeaches()
+            _beachesRepository.loadBeaches()
         }
     }
 
