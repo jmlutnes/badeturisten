@@ -41,9 +41,13 @@ class WaterTemperatureDataSource {
         val timeFrame = sevenDaysAgoAPIFormat+currentDateAPIFormat
 
         val response = client.get("https://havvarsel-frost.met.no/api/v1/obs/badevann/get?incobs=true&time=${timeFrame}&nearest=%7B%22maxdist%22%3A10%2C%22maxcount%22%3A50%2C%22points%22%3A%5B%7B%22lon%22%3A10.74%2C%22lat%22%3A59.91%7D%5D%7D")
-            .body<WaterTemperatureAPIResponse>()
 
 
-        return response.data.tseries
+        return if (response.status.value in 200 .. 299) {
+            val deserializedResponse = response.body<WaterTemperatureAPIResponse>()
+            return deserializedResponse.data.tseries
+        } else {
+            listOf()
+        }
     }
 }
