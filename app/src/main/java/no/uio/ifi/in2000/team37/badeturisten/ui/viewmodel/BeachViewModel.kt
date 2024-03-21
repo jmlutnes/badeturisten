@@ -21,18 +21,12 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val _beachName : String = checkNotNull(savedStateHandle["beachName"])
 
     private val _beachRepository: BeachRepository = BeachRepository()
-
     private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannInfo("", "", null)))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
     private val osloKommuneRepository = OsloKommuneRepository()
 
     init {
-        loadBeachInfo()
-        //loadKommune()
-    }
-
-    private fun loadBeachInfo() {
         viewModelScope.launch {
             val beachinfo = _beachRepository.getBeach(_beachName)
 
@@ -40,35 +34,14 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             val lat = beachinfo?.pos?.lon?.toDouble()
 
             if (lat != null && lon != null) {
-                val vannkvalitet: BadevannInfo? = osloKommuneRepository.getVannkvalitet(lat, lon)
+                val vannkvalitet: BadevannInfo? = osloKommuneRepository.getWaterQuality(lat, lon)
                 _beachUIState.update { currentUIState ->
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
-            /*waterTempRepository.loadBeach(beachName)*/
                 }
             } else {
                 println("Ingen gyldig posisjon funnet for stranden.")
             }
         }
     }
-    /*
-    private fun loadKommune() {
-        //Placeholder lokasjoner
 
-        viewModelScope.launch  {
-            val lat = beachUIState.value.beach?.pos?.lat?.toDouble()
-            val lon = beachUIState.value.beach?.pos?.lon?.toDouble()
-
-            //println("lon:$lon \nlat:$lat")
-
-            val vannkvalitet: BadevannsInfo? =
-                lat?.let { lon?.let { it1 -> osloKommuneRepository.getVannkvalitet(it, it1) } }
-
-            _UiKommune.update {
-                return@update UiKommune(vannkvalitet)
-            }
-
-        }
-    }
-
-     */
 }

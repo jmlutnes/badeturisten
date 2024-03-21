@@ -37,9 +37,10 @@ class OsloKommuneRepository {
         return item
     }
 
-    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannInfo? {
+    suspend fun getWaterQuality(lat: Double?, lon: Double?): BadevannInfo? {
+        val kommuneClass: jsontokotlin_kommune = getClass(lat = lat, lon = lon)
         val nettsideUrl: String? =
-           getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
+            kommuneClass.data.geoJson.features.firstOrNull()?.properties?.popupContent
         println("old: $nettsideUrl")
         val nynettsideUrl = nettsideUrl?.let { extractUrl(it) }
         if (nynettsideUrl != null) {
