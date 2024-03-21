@@ -1,7 +1,7 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
+package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.JsonToKotlinOsloKommune
 
 
-import com.google.gson.annotations.SerializedName
+import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.Algolia
 
 data class Item(
     val id: String,

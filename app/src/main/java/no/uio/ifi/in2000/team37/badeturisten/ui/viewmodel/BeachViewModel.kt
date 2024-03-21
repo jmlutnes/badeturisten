@@ -31,12 +31,8 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     ))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
-    //--------------------OsloKommune----------------//
     private val osloKommuneRepository =
         OsloKommuneRepository(datasource = OsloKommuneDatasource())
-    //private val _UiKommune = MutableStateFlow<UiKommune>(UiKommune(null))
-    //var UiKommune: StateFlow<UiKommune> = _UiKommune.asStateFlow()
-    //-----------------------------------------------//
 
     /*val waterTemperatureState: StateFlow<WaterTemperatureUIState> = waterTempRepository.getObservations()
         .map { WaterTemperatureUIState(beaches = it) }
@@ -52,7 +48,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     }
 
     private fun loadBeachInfo() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch {
             val beachinfo = waterTempRepository.getBeach(beachName)
 
             val lon = beachinfo?.pos?.lat?.toDouble()
@@ -74,7 +70,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private fun loadKommune() {
         //Placeholder lokasjoner
 
-        viewModelScope.launch(Dispatchers.IO)  {
+        viewModelScope.launch  {
             val lat = beachUIState.value.beach?.pos?.lat?.toDouble()
             val lon = beachUIState.value.beach?.pos?.lon?.toDouble()
 

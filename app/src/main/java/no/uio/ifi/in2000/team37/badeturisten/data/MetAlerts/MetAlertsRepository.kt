@@ -2,6 +2,9 @@ package no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -19,26 +22,34 @@ data class WeatherWarning(
 )
 
 class MetAlertsRepository(private val dataSource: MetAlertsDataSource) {
+
+    //lager en flow av MetAlerts
+    private val metAlertsObservations = MutableStateFlow<List<WeatherWarning>>(listOf())
+    fun getMetAlertsObservations() = metAlertsObservations.asStateFlow()
+
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getWeatherWarnings(): List<WeatherWarning> {
+    suspend fun getWeatherWarnings() {
         val result = dataSource.getData()
         val featuresArray = result.features
 
-        return featuresArray.mapNotNull { feature ->
-            feature.properties?.let { prop ->
-                if (prop.county.contains("03")) {
-                    WeatherWarning(
-                        area = prop.area,
-                        description = prop.description,
-                        event = prop.event,
-                        severity = prop.severity,
-                        instruction = prop.instruction,
-                        eventEndingTime = prop.eventEndingTime,
-                        status = calculateStatus(prop.eventEndingTime),
-                        web = prop.web
-                    )
-                } else {
-                    null
+        //oppdaterer flow
+        metAlertsObservations.update {
+            featuresArray.mapNotNull { feature ->
+                feature.properties?.let { prop ->
+                    if (prop.county.contains("03")) {
+                        WeatherWarning(
+                            area = prop.area,
+                            description = prop.description,
+                            event = prop.event,
+                            severity = prop.severity,
+                            instruction = prop.instruction,
+                            eventEndingTime = prop.eventEndingTime,
+                            status = calculateStatus(prop.eventEndingTime),
+                            web = prop.web
+                        )
+                    } else {
+                        null
+                    }
                 }
             }
         }
