@@ -1,8 +1,7 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.JsonToKotlinMetAlerts
+package no.uio.ifi.in2000.team37.badeturisten.data.metalerts.jsontokotlinmetalerts
 
 
 import com.google.gson.annotations.SerializedName
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.JsonToKotlinMetAlerts.Resource
 
 data class Properties(
     @SerializedName("altitude_above_sea_level")

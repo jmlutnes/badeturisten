@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
+package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.content.ClipData
 import com.google.gson.Gson
@@ -15,7 +15,7 @@ import java.lang.reflect.Type
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.JsonToKotlinOsloKommune.Item
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import org.jsoup.Jsoup
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
 

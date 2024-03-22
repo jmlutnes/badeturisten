@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.MetAlertsDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.WeatherWarning
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository

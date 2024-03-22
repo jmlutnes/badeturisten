@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts
+package no.uio.ifi.in2000.team37.badeturisten.data.metalerts
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -7,9 +7,7 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
 import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.JsonToKotlinMetAlerts.MetAlerts
-import okhttp3.internal.concurrent.TaskRunner.Companion.logger
-import java.util.logging.Logger
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.jsontokotlinmetalerts.MetAlerts
 
 class MetAlertsDataSource {
 

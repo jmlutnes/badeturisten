@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
+package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
 
