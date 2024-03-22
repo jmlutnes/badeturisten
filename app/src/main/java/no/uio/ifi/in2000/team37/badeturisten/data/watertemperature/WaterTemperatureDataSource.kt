@@ -1,12 +1,12 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature
+package no.uio.ifi.in2000.team37.badeturisten.data.watertemperature
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.gson.gson
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.jsontokotlin.Tsery
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.jsontokotlin.WaterTemperatureAPIResponse
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.WaterTemperatureAPIResponse
 
 class WaterTemperatureDataSource {
     private val client = HttpClient() {

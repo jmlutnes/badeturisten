@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.jsontokotlin
+package no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin
 
 
 

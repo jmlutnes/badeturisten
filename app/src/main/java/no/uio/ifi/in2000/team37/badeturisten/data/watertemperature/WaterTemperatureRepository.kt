@@ -1,10 +1,10 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature
+package no.uio.ifi.in2000.team37.badeturisten.data.watertemperature
 
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.jsontokotlin.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class WaterTemperatureRepository{

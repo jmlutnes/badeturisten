@@ -15,8 +15,8 @@ import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.WaterTemperatureDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.WaterTemperatureRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 

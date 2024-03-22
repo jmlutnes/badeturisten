@@ -41,7 +41,6 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 @Composable
 fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: NavController, beachName: String?) {
     val beach = beachViewModel.beachUIState.collectAsState().value
-    //val badeinfo = beachViewModel.UiKommune.collectAsState().value
 
     Scaffold(
         topBar = {

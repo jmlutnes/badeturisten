@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.jsontokotlin_kommune
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.WaterTemperatureRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.watertemperature.jsontokotlin.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
@@ -57,5 +57,9 @@ class BeachRepository {
         var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
+    }
+
+    suspend fun getWaterQuality(lat: Double, lon: Double): BadevannInfo? {
+        return osloKommuneRepository.getWaterQuality(lat = lat, lon = lon)
     }
 }
