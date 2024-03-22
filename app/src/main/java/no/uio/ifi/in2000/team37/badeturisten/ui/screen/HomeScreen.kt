@@ -163,7 +163,7 @@ fun HomeScreen(
         .padding(5.dp)
         .background(Color.White)
 
-    Scaffold (
+    Scaffold(
         bottomBar = { BottomBar(navController = navController) })
     { padding ->
         Column(
@@ -208,7 +208,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .weight(1f)
                                     .wrapContentWidth(Alignment.Start)
-                                    .padding(16.dp)
+                                    .padding(10.dp)
                             )
                             Button(
                                 onClick = {
@@ -230,6 +230,7 @@ fun HomeScreen(
                                     text = "Farevarsel",
                                 )
                             }
+                            /*
                             if (forecastState != null) {
                                 val imageName = forecastState.symbolCode
                                 val imageID = imageMap[imageName]
@@ -241,16 +242,20 @@ fun HomeScreen(
                                     )
                                 }
                             }
-
+                            */
                             Text(
                                 text = precipitationText,
-                                fontSize = 30.sp
+                                fontSize = 30.sp,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .wrapContentWidth(Alignment.Start)
+                                    .padding(10.dp)
                             )
                         }
 
                         Column(
-                        Modifier
-                            .background(Color.Transparent)
+                            Modifier
+                                .background(Color.Transparent)
                         ) {
 
 
@@ -295,7 +300,7 @@ fun HomeScreen(
                             .background(MaterialTheme.colorScheme.primary)
                         Column(
                             Modifier
-                                //.padding(innerPadding)
+                            //.padding(innerPadding)
                         ) {
                             Text(
                                 text = "Badesteder",
@@ -309,8 +314,8 @@ fun HomeScreen(
 
                             LazyColumn(
                                 Modifier
-                                    //.padding(innerPadding)
-                                    //.background(Color.LightGray)
+                                //.padding(innerPadding)
+                                //.background(Color.LightGray)
                             ) {
                                 items(waterTemperatureUIState.beaches) { beach ->
                                     beachCard(beach = beach, navController)
