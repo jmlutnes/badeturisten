@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
+package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach

@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.screen
+package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)

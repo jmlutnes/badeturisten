@@ -15,10 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
-import no.uio.ifi.in2000.team37.badeturisten.ui.screen.BeachProfile
+import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
 import no.uio.ifi.in2000.team37.badeturisten.ui.screen.FavouritesScreen
-import no.uio.ifi.in2000.team37.badeturisten.ui.screen.HomeScreen
+import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.screen.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
