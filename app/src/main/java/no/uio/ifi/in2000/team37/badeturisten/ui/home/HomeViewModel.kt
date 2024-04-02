@@ -4,11 +4,15 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
@@ -24,6 +28,9 @@ data class MetAlertsUIState(
 data class BeachesUIState (
     val beaches: List<Beach> = listOf()
 )
+
+data class kommuneBeachList(val beachList: List<Beach> = listOf())
+
 data class ForecastUIState(
     val forecastNextHour: ForecastNextHour? = null
 )
@@ -31,8 +38,15 @@ data class ForecastUIState(
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel: ViewModel() {
 
+    private val osloKommuneRepository = OsloKommuneRepository()
+
+    //STATEFLOW
+    private val _kommuneBeachList = MutableStateFlow(kommuneBeachList())
+
+    val kommuneBeachList: StateFlow<kommuneBeachList> = _kommuneBeachList.asStateFlow()
     //henter vaer melding
     private val _locationForecastRepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
+
     val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
         .map { ForecastUIState(forecastNextHour = it) }
         .stateIn(
@@ -44,6 +58,9 @@ class HomeViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             _locationForecastRepository.loadForecastNextHour()
+            _kommuneBeachList.update{
+                kommuneBeachList(osloKommuneRepository.makeBeaches(0.0,0.0))
+            }
         }
     }
 
