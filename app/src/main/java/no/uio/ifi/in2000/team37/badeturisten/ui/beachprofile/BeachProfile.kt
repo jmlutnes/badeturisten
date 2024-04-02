@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -56,106 +59,142 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
         },
         bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
-        LazyColumn(modifier = Modifier.padding(paddingValues)) {
+        LazyColumn(modifier = Modifier
+                .padding(paddingValues)
+        ){
             item {
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxHeight(),
                     color = MaterialTheme.colorScheme.primaryContainer,
                 ) {
-                    Column {
+                    Column  (Modifier
+                        .padding(16.dp)
+                        .fillMaxSize()
+                    ){
                         Card(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .fillMaxWidth()
+                                .fillMaxSize()
                         ) {
                             Box(
                                 modifier = Modifier
                                     .background(color = Color.White)
-                                    .fillMaxWidth()
+                                    .fillMaxSize()
                                     .height(200.dp)
                             ) {
-                                beach.beach?.let { Text(text = "${it.name}",
-                                    modifier = Modifier
-                                        .align(Alignment.TopCenter)
-                                        .padding(top = 16.dp)) }
+                                beach.beach?.let {
+                                    Text(
+                                        text = "${it.name}",
+                                        modifier = Modifier
+                                            .align(Alignment.TopCenter)
+                                            .padding(top = 16.dp)
+                                    )
+                                }
                             }
                         }
                         Spacer(
                             Modifier
                                 .height(15.dp)
-                                .background(color = MaterialTheme.colorScheme.primaryContainer))
+                                .background(color = MaterialTheme.colorScheme.primaryContainer)
+                        )
 
                         Card(
                             modifier = Modifier
                                 .padding(16.dp)
-                                .fillMaxWidth()
+                                .fillMaxSize()
                         ) {
                             Box(
                                 modifier = Modifier
                                     .background(color = Color.White)
-                                    .fillMaxWidth()
-                                    .height(300.dp)
+                                    .fillMaxSize()
+                                    //.height(300.dp)
                             ) {
                                 Column {
                                     Row() {
-                                        Text(text = "Badetemperatur",
+                                        Text(
+                                            text = "Badetemperatur",
                                             modifier = Modifier
                                                 .align(Alignment.Top)
-                                                .padding(top = 16.dp))
-                                        Spacer(modifier = Modifier.width(120.dp))
-                                        Text(text = "${beach.beach?.waterTemp}°C",
-                                            modifier = Modifier.padding(top = 16.dp))
-                                    }
-                                    Row() {
-                                        Text(text = "Vannkvalitet",
-                                            modifier = Modifier
-                                                .align(Alignment.Top)
-                                                .padding(top = 16.dp))
+                                                .padding(10.dp),
+                                        )
                                         Spacer(modifier = Modifier.width(100.dp))
-                                        Text(text = "${beach.badevannsinfo?.kvalitetInfo}\n", modifier = Modifier
-                                            .padding(top = 16.dp))
+                                        beach.beach?.waterTemp?.let {
+                                            Text(
+                                                text = "${it}°C",
+                                                modifier = Modifier
+                                                .padding(10.dp),
+
+                                                )
+                                        } ?: Text(
+                                            text = "Ingen informasjon.",
+                                            modifier = Modifier.padding(top = 16.dp)
+                                        )
+                                    }
+                                        Row() {
+                                            Text(
+                                                text = "Vannkvalitet",
+                                                modifier = Modifier
+                                                    .padding(10.dp),
+
+                                                )
+                                            Spacer(modifier = Modifier.width(100.dp))
+                                            beach.badevannsinfo?.kvalitetInfo?.let {
+                                                Text(
+                                                    text = it, modifier = Modifier
+                                                        .padding(10.dp),
+
+                                                    )
+                                            } ?: Text(
+                                                text = "Ingen informasjon.", modifier = Modifier
+                                                    .padding(10.dp),
+
+                                                )
+
+                                        }
 
                                     }
 
                                 }
 
-
                             }
-                        }
 
-                        Spacer(
-                            Modifier
-                                .height(15.dp)
-                                .background(color = MaterialTheme.colorScheme.primaryContainer))
+                            Spacer(
+                                Modifier
+                                    .height(15.dp)
+                                    .background(color = MaterialTheme.colorScheme.primaryContainer)
+                            )
 
-                        Card(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Box(
+                            Card(
                                 modifier = Modifier
-                                    .background(color = Color.White)
-                                    .fillMaxWidth()
-                                    .height(100.dp),
-                                contentAlignment = Alignment.Center
+                                    .padding(16.dp)
+                                    .fillMaxSize()
+                                    .defaultMinSize(400.dp, 300.dp)
                             ) {
-                                Column {
-                                    Text(text = "\n${beach.badevannsinfo?.title}")
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    Text("stjerner her?")
+                                Box(
+                                    modifier = Modifier
+                                        .background(color = Color.White)
+                                        .fillMaxSize()
+                                        .defaultMinSize(400.dp, 300.dp)
+                                        .padding(10.dp),
+                                    //contentAlignment = Alignment.Center
+                                ) {
+                                    Column {
+                                        Text(text = "Fasiliteter")
+                                            Spacer(modifier = Modifier.height(8.dp))
+                                        beach.badevannsinfo?.fasiliteterInfo?.let {
+                                            Text(text = it)
+                                            //Text("stjerner her?")
+                                        }
+                                            ?: Text(text = "Ingen informasjon.")
+                                    }
                                 }
+                                    Spacer(modifier = Modifier
+                                        .background(color = MaterialTheme.colorScheme.primaryContainer)
+                                )
                             }
                         }
-
-                        Spacer(
-                            Modifier
-                                .height(500.dp)
-                                .background(color = MaterialTheme.colorScheme.primaryContainer))
-
                     }
-                }
             }
         }
     }
