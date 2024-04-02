@@ -67,7 +67,7 @@ class OsloKommuneDatasource {
         val fasiliteterSection = document.select("div.io-facts").firstOrNull()
         fasiliteterSection?.let { section ->
             val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul")
-            //fasiliteterBuilder.append("Fasiliteter:\n\t")
+            fasiliteterBuilder.append("\t")
             fasiliteterListe.select("li").forEach { li ->
                 fasiliteterBuilder.append(li.text()).append("\n\t")
             }
