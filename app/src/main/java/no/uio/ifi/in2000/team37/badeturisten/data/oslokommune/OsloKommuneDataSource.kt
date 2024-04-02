@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
+package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
 
 import android.content.ClipData
 import com.google.gson.Gson
@@ -15,9 +15,10 @@ import java.lang.reflect.Type
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import org.jsoup.Jsoup
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
+
+data class BadevannsInfo(val generellInfo: String, val kvalitetInfo: String, val title: String
+)
 
 class OsloKommuneDatasource {
     val client = HttpClient() {
@@ -40,8 +41,8 @@ class OsloKommuneDatasource {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
         val document = Jsoup.parse(responseBody)
-        val badevannskvalitetSection = document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo("Informasjon om badevannskvalitet ble ikke funnet.", "")
-
+        val badevannskvalitetSection = document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo("Informasjon om badevannskvalitet ble ikke funnet.", "", "")
+        val title = document.title()
         // Henter generell informasjon om badevannskvalitet og temperatur
         val generellInfo = badevannskvalitetSection.select("div.ods-grid__column--12:not(:has(div))").text()
 
@@ -54,10 +55,10 @@ class OsloKommuneDatasource {
         }
         val måltKvalitetInfo = måltKvalitetInfoBuilder.toString().trim()
 
-        return BadevannsInfo(generellInfo, måltKvalitetInfo)
+        return BadevannsInfo(generellInfo, måltKvalitetInfo, title)
     }
 
-    suspend fun getData(
+    suspend fun getDataFromLoc(
         longitude: Double?,
         latitude: Double?
     ): jsontokotlin_kommune { //lat og lon send med
@@ -68,8 +69,20 @@ class OsloKommuneDatasource {
         val response = data.body<jsontokotlin_kommune>()
         return response
     }
+    suspend fun getData(
+        longitude: Double?,
+        latitude: Double?
+    ): jsontokotlin_kommune { //lat og lon send med
+
+        val data =
+            client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
+
+        val response = data.body<jsontokotlin_kommune>()
+        return response
+    }
 
 }
+
 
 //Dette er metode som fikser problemet med at APIET har to forskjellige verdier med navn "value" hvor en er string og den andre er Value
 val gson = Gson()
