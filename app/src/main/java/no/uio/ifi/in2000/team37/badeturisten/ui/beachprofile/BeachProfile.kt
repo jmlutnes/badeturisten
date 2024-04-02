@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
+package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -34,12 +34,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: NavController, beachName: String?) {
     val beach = beachViewModel.beachUIState.collectAsState().value
+    //val badeinfo = beachViewModel.UiKommune.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -73,7 +75,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                     .fillMaxWidth()
                                     .height(200.dp)
                             ) {
-                                beach.beach?.let { Text(text = it.name,
+                                beach.beach?.let { Text(text = "${it.name}",
                                     modifier = Modifier
                                         .align(Alignment.TopCenter)
                                         .padding(top = 16.dp)) }
@@ -93,7 +95,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                 modifier = Modifier
                                     .background(color = Color.White)
                                     .fillMaxWidth()
-                                    .height(150.dp)
+                                    .height(300.dp)
                             ) {
                                 Column {
                                     Row() {
@@ -140,7 +142,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                 contentAlignment = Alignment.Center
                             ) {
                                 Column {
-                                    Text(text = "Anmeldelser")
+                                    Text(text = "\n${beach.badevannsinfo?.title}")
                                     Spacer(modifier = Modifier.height(8.dp))
                                     Text("stjerner her?")
                                 }
