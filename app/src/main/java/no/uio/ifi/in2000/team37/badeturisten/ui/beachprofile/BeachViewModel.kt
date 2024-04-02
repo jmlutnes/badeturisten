@@ -10,10 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.BadevannsInfo
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
@@ -28,7 +26,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val beachRepository: BeachRepository = BeachRepository()
 
     private val _beachUIState = MutableStateFlow(BeachUIState(null,
-        BadevannsInfo("", "", "")
+        BadevannsInfo("", "", "", "")
     ))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 

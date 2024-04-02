@@ -6,22 +6,26 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.util.appendIfNameAbsent
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.get
-import io.ktor.serialization.gson.gson
-import java.lang.reflect.Type
 import io.ktor.client.call.body
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.serialization.gson.gson
+import io.ktor.util.appendIfNameAbsent
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Algolia
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import org.jsoup.Jsoup
+import java.lang.reflect.Type
 
-data class BadevannsInfo(val generellInfo: String, val kvalitetInfo: String, val title: String
+data class BadevannsInfo(
+    val generellInfo: String,
+    val kvalitetInfo: String,
+    val title: String,
+    val fasiliteterInfo: String
 )
 
 class OsloKommuneDatasource {
@@ -45,21 +49,34 @@ class OsloKommuneDatasource {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
         val document = Jsoup.parse(responseBody)
-        val badevannskvalitetSection = document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo("Informasjon om badevannskvalitet ble ikke funnet.", "", "")
+        val badevannskvalitetSection = document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo(
+            "Informasjon om badevannskvalitet ble ikke funnet.",
+            "",
+            "",
+            ""
+        )
         val title = document.title()
-        // Henter generell informasjon om badevannskvalitet og temperatur
+
         val generellInfo = badevannskvalitetSection.select("div.ods-grid__column--12:not(:has(div))").text()
 
-        // Henter spesifikk målt badevannskvalitet
-        val måltKvalitetInfoBuilder = StringBuilder()
-        badevannskvalitetSection.select("div.ods-grid__column--12 div.ods-text--align-center").forEach { column ->
-            if (!column.text().contains("Ingen målt temperatur")) {
-                måltKvalitetInfoBuilder.append(column.text()).append("\n")
+        val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
+        val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
+        val kvalitetsInfo = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
+
+        val fasiliteterBuilder = StringBuilder()
+        val fasiliteterSection = document.select("div.io-facts").firstOrNull()
+        fasiliteterSection?.let { section ->
+            val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul")
+            //fasiliteterBuilder.append("Fasiliteter:\n\t")
+            fasiliteterListe.select("li").forEach { li ->
+                fasiliteterBuilder.append(li.text()).append("\n\t")
             }
         }
-        val måltKvalitetInfo = måltKvalitetInfoBuilder.toString().trim()
+        val fasiliteterInfo = fasiliteterBuilder.toString().trim().ifEmpty {
+            "Ingen informasjon."
+        }
 
-        return BadevannsInfo(generellInfo, måltKvalitetInfo, title)
+        return BadevannsInfo(generellInfo, kvalitetsInfo, title, fasiliteterInfo)
     }
 
     suspend fun getDataFromLoc(
