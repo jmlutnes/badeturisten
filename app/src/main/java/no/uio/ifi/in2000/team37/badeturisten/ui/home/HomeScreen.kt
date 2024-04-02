@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,9 +47,7 @@ import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.HomeViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.MetAlertsViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.WaterTempViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,
@@ -143,13 +139,12 @@ val imageMap = mapOf(
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
-    waterTempViewModel: WaterTempViewModel = viewModel(),
-    metAlertsViewModel: MetAlertsViewModel = viewModel(),
     navController: NavController
 ) {
     var clicked by remember { mutableStateOf(false) }
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
-    val waterTemperatureUIState = waterTempViewModel.waterTemperatureState.collectAsState().value
+    val beachState = homeViewModel.beachesState.collectAsState().value
+    val alertState = homeViewModel.metAlertsState.collectAsState().value
     val imageModifier = Modifier
         .size(100.dp)
         .clip(CircleShape)
@@ -230,19 +225,6 @@ fun HomeScreen(
                                     text = "Farevarsel",
                                 )
                             }
-                            /*
-                            if (forecastState != null) {
-                                val imageName = forecastState.symbolCode
-                                val imageID = imageMap[imageName]
-                                if (imageID != null) {
-                                    val image = painterResource(id = imageID)
-                                    Image(
-                                        painter = image,
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-                            */
                             Text(
                                 text = precipitationText,
                                 fontSize = 30.sp,
@@ -271,7 +253,7 @@ fun HomeScreen(
                             } else {
                                 var aktiveVarsler: Boolean = false
                                 LazyColumn {
-                                    items(metAlertsViewModel.metAlertsUiState.alerts) { weatherWarning ->
+                                    items(alertState.alerts) { weatherWarning ->
                                         if (MetAlertCard(weatherWarning = weatherWarning)) {
                                             aktiveVarsler = true
                                         }
@@ -317,7 +299,7 @@ fun HomeScreen(
                                 //.padding(innerPadding)
                                 //.background(Color.LightGray)
                             ) {
-                                items(waterTemperatureUIState.beaches) { beach ->
+                                items(beachState.beaches) { beach ->
                                     beachCard(beach = beach, navController)
                                 }
                             }
