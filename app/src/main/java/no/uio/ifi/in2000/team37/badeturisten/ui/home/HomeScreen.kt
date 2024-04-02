@@ -308,6 +308,7 @@ fun HomeScreen(
                                 //.padding(innerPadding)
                                 //.background(Color.LightGray)
 
+
                             ) {
                                 items(beachState.beaches) { beach ->
                                     beachCard(beach = beach, navController)
