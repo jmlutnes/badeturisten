@@ -13,11 +13,12 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(navController: NavController) {
-    Scaffold (
+    Scaffold(
         bottomBar = { BottomBar(navController = navController) }
-    ) { padding  ->
+    ) { padding ->
         Text(
             text = "dette er search screen",
-            modifier = Modifier.padding(padding))
+            modifier = Modifier.padding(padding)
+        )
     }
 }

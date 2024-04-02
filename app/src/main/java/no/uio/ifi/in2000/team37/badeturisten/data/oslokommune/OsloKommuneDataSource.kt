@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
+package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.content.ClipData
 import com.google.gson.Gson
@@ -14,19 +14,15 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Algolia
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Value
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
+
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
-data class BadevannsInfo(
-    val generellInfo: String,
-    val kvalitetInfo: String,
-    val title: String,
-    val fasiliteterInfo: String
-)
 
 class OsloKommuneDatasource {
     val client = HttpClient() {
@@ -49,27 +45,37 @@ class OsloKommuneDatasource {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
         val document = Jsoup.parse(responseBody)
-        val badevannskvalitetSection = document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo(
-            "Informasjon om badevannskvalitet ble ikke funnet.",
-            "",
-            "",
-            ""
-        )
+        val badevannskvalitetSection =
+            document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo(
+                "Informasjon om badevannskvalitet ble ikke funnet.",
+                "",
+                "",
+                ""
+            )
         val title = document.title()
 
-        val generellInfo = badevannskvalitetSection.select("div.ods-grid__column--12:not(:has(div))").text()
+        val generellInfo =
+            badevannskvalitetSection.select("div.ods-grid__column--12:not(:has(div))").text()
 
         val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
-        val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
+        val forsteKvalitetsH3 =
+            kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
         val kvalitetsInfo = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
 
         val fasiliteterBuilder = StringBuilder()
         val fasiliteterSection = document.select("div.io-facts").firstOrNull()
         fasiliteterSection?.let { section ->
             val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul")
-            fasiliteterBuilder.append("\t")
             fasiliteterListe.select("li").forEach { li ->
-                fasiliteterBuilder.append(li.text()).append("\n\t")
+                val elementer = li.html().split("<br>").map { Jsoup.parse(it).text().trim() }
+                elementer.forEach { tekst ->
+                    if (tekst.contains("•")){
+                        fasiliteterBuilder.append("$tekst\n")
+                    }
+                    else{
+                        fasiliteterBuilder.append("• $tekst\n")
+                    }
+                }
             }
         }
         val fasiliteterInfo = fasiliteterBuilder.toString().trim().ifEmpty {
@@ -93,7 +99,7 @@ class OsloKommuneDatasource {
     suspend fun getData(
         longitude: Double?,
         latitude: Double?
-    ): jsontokotlin_kommune { //lat og lon send med
+    ): jsontokotlin_kommune { //lat og lon har ingen funksjon her
 
         val data =
             client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")

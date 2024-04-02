@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
+package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,88 +9,47 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.BadevannsInfo
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?)
-//data class UiKommune(val badevannsinfo: BadevannsInfo?)
-
-//Viewmodel som henter strom fra kun en strand
-class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
-    private val beachName : String = checkNotNull(savedStateHandle["beachName"])
-    private val waterTempRepository : WaterTemperatureRepository = WaterTemperatureRepository(
+class BeachViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
+    private val beachName: String = checkNotNull(savedStateHandle["beachName"])
+    private val waterTempRepository: WaterTemperatureRepository = WaterTemperatureRepository(
     )
     private val beachRepository: BeachRepository = BeachRepository()
-
-    private val _beachUIState = MutableStateFlow(BeachUIState(null,
-        BadevannsInfo("", "", "", "")
-    ))
+    private val _beachUIState = MutableStateFlow(
+        BeachUIState(
+            null,
+            BadevannsInfo("", "", "", "")
+        )
+    )
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
-
-    //--------------------OsloKommune----------------//
     private val osloKommuneRepository =
         OsloKommuneRepository()
-    //private val _UiKommune = MutableStateFlow<UiKommune>(UiKommune(null))
-    //var UiKommune: StateFlow<UiKommune> = _UiKommune.asStateFlow()
-    //-----------------------------------------------//
-
-    /*val waterTemperatureState: StateFlow<WaterTemperatureUIState> = waterTempRepository.getObservations()
-        .map { WaterTemperatureUIState(beaches = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = WaterTemperatureUIState()
-        )*/
 
     init {
         loadBeachInfo()
-        //loadKommune()
     }
 
     private fun loadBeachInfo() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val beachinfo = beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lat?.toDouble()
             val lat = beachinfo?.pos?.lon?.toDouble()
             println("lon:$lon \nlat:$lat")
-
-            //if (lat != null && lon != null) {
-                val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
-                _beachUIState.update { currentUIState ->
-                    if(beachinfo!=null){
-                        currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
-                    }
-                    else{
-                        currentUIState.copy(beach = osloKommuneBeachInfo, badevannsinfo = vannkvalitet)
-                    }
-            /*waterTempRepository.loadBeach(beachName)*/
+            val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
+            _beachUIState.update { currentUIState ->
+                if (beachinfo != null) {
+                    currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
+                } else {
+                    currentUIState.copy(beach = osloKommuneBeachInfo, badevannsinfo = vannkvalitet)
                 }
-
-        }
-    }
-    /*
-    private fun loadKommune() {
-        //Placeholder lokasjoner
-
-        viewModelScope.launch(Dispatchers.IO)  {
-            val lat = beachUIState.value.beach?.pos?.lat?.toDouble()
-            val lon = beachUIState.value.beach?.pos?.lon?.toDouble()
-
-            //println("lon:$lon \nlat:$lat")
-
-            val vannkvalitet: BadevannsInfo? =
-                lat?.let { lon?.let { it1 -> osloKommuneRepository.getVannkvalitet(it, it1) } }
-
-            _UiKommune.update {
-                return@update UiKommune(vannkvalitet)
             }
-
         }
     }
-
-     */
 }

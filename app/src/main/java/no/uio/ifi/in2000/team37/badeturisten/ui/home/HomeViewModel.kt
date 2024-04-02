@@ -12,31 +12,32 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
 data class MetAlertsUIState(
-    val alerts: List<WeatherWarning> = listOf()
+    val alerts: List<WeatherWarning> = listOf(),
 )
-data class BeachesUIState (
-    val beaches: List<Beach> = listOf()
+
+data class BeachesUIState(
+    val beaches: List<Beach> = listOf(),
 )
 
 data class kommuneBeachList(val beachList: List<Beach> = listOf())
 
 data class ForecastUIState(
-    val forecastNextHour: ForecastNextHour? = null
+    val forecastNextHour: ForecastNextHour? = null,
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeViewModel: ViewModel() {
+class HomeViewModel : ViewModel() {
 
     private val osloKommuneRepository = OsloKommuneRepository()
 
@@ -44,22 +45,25 @@ class HomeViewModel: ViewModel() {
     private val _kommuneBeachList = MutableStateFlow(kommuneBeachList())
 
     val kommuneBeachList: StateFlow<kommuneBeachList> = _kommuneBeachList.asStateFlow()
-    //henter vaer melding
-    private val _locationForecastRepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
 
-    val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
-        .map { ForecastUIState(forecastNextHour = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ForecastUIState()
-        )
+    //henter vaer melding
+    private val _locationForecastRepository: LocationForecastRepository =
+        LocationForecastRepository(dataSource = LocationForecastDataSource())
+
+    val forecastState: StateFlow<ForecastUIState> =
+        _locationForecastRepository.observeForecastNextHour()
+            .map { ForecastUIState(forecastNextHour = it) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = ForecastUIState()
+            )
 
     init {
         viewModelScope.launch {
             _locationForecastRepository.loadForecastNextHour()
-            _kommuneBeachList.update{
-                kommuneBeachList(osloKommuneRepository.makeBeaches(0.0,0.0))
+            _kommuneBeachList.update {
+                kommuneBeachList(osloKommuneRepository.makeBeaches(0.0, 0.0))
             }
         }
     }
@@ -83,13 +87,14 @@ class HomeViewModel: ViewModel() {
 
     //henter farevarsler
     private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
-    val metAlertsState: StateFlow<MetAlertsUIState> = _metAlertsRepository.getMetAlertsObservations()
-        .map { MetAlertsUIState(alerts = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MetAlertsUIState()
-        )
+    val metAlertsState: StateFlow<MetAlertsUIState> =
+        _metAlertsRepository.getMetAlertsObservations()
+            .map { MetAlertsUIState(alerts = it) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = MetAlertsUIState()
+            )
 
     init {
         viewModelScope.launch {
