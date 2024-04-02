@@ -3,15 +3,18 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -37,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -141,10 +146,11 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
     navController: NavController
 ) {
-    var clicked by remember { mutableStateOf(false) }
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachState = homeViewModel.beachesState.collectAsState().value
     val alertState = homeViewModel.metAlertsState.collectAsState().value
+    var clicked by remember { mutableStateOf(false) }
+    val oslokommuneBeachUIState = homeViewModel.kommuneBeachList.collectAsState().value.beachList
     val imageModifier = Modifier
         .size(100.dp)
         .clip(CircleShape)
@@ -294,12 +300,18 @@ fun HomeScreen(
                                 textAlign = TextAlign.Center
                             )
 
+                            val state = rememberLazyListState()
                             LazyColumn(
-                                Modifier
+                                state = state,
+                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
                                 //.padding(innerPadding)
                                 //.background(Color.LightGray)
+
                             ) {
                                 items(beachState.beaches) { beach ->
+                                    beachCard(beach = beach, navController)
+                                }
+                                items(oslokommuneBeachUIState) { beach ->
                                     beachCard(beach = beach, navController)
                                 }
                             }
