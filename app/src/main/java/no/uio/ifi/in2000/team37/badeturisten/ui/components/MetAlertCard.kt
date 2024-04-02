@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import no.uio.ifi.in2000.team37.badeturisten.data.MetAlerts.WeatherWarning
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 
 @Composable
 fun MetAlertCard(weatherWarning: WeatherWarning): Boolean {
