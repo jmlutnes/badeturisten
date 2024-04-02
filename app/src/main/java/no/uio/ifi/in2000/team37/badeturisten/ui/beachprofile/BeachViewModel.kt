@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -23,8 +24,8 @@ data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsIn
 class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val beachName : String = checkNotNull(savedStateHandle["beachName"])
     private val waterTempRepository : WaterTemperatureRepository = WaterTemperatureRepository(
-        WaterTemperatureDataSource()
     )
+    private val beachRepository: BeachRepository = BeachRepository()
 
     private val _beachUIState = MutableStateFlow(BeachUIState(null,
         BadevannsInfo("", "", "")
@@ -33,7 +34,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
 
     //--------------------OsloKommune----------------//
     private val osloKommuneRepository =
-        OsloKommuneRepository(datasource = OsloKommuneDatasource())
+        OsloKommuneRepository()
     //private val _UiKommune = MutableStateFlow<UiKommune>(UiKommune(null))
     //var UiKommune: StateFlow<UiKommune> = _UiKommune.asStateFlow()
     //-----------------------------------------------//
@@ -53,7 +54,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
 
     private fun loadBeachInfo() {
         viewModelScope.launch (Dispatchers.IO) {
-            val beachinfo = waterTempRepository.getBeach(beachName)
+            val beachinfo = beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lat?.toDouble()
             val lat = beachinfo?.pos?.lon?.toDouble()

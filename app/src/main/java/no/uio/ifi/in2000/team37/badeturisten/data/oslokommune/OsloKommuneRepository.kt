@@ -1,10 +1,14 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
 
 import android.util.Log
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Feature
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Value
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-class OsloKommuneRepository (private val datasource: OsloKommuneDatasource) {
+class OsloKommuneRepository () {
+    private val datasource: OsloKommuneDatasource = OsloKommuneDatasource()
     val liste: MutableList<Beach> = mutableListOf<Beach>()
 
     //Henter naermeste badested basert på soek, og gjoer nytt soek med oppdatert lokasjon til badested

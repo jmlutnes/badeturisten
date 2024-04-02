@@ -4,10 +4,9 @@ import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
@@ -58,7 +57,18 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
-    suspend fun getWaterQuality(lat: Double, lon: Double): BadevannsInfo? {
-        return osloKommuneRepository.getVannkvalitet(lat = lat, lon = lon)
+    suspend fun getVannkvalitetLoc(lat: Double?, lon: Double?): no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.BadevannsInfo? {
+        val nettsideUrl: String? =
+            osloKommuneRepository.getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
+        println("old: $nettsideUrl")
+        val nynettsideUrl = nettsideUrl?.let { osloKommuneRepository.extractUrl(it) }
+        if (nynettsideUrl != null) {
+            println("Ekstrahert URL: $nynettsideUrl")
+        } else {
+            println("Ingen URL funnet.")
+        }
+        val skrapOsloKommune = nynettsideUrl?.let { osloKommuneRepository.skrapUrl(it) }
+        //println("Skrapt innhold: $skrapOsloKommune")
+        return skrapOsloKommune
     }
 }

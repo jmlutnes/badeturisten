@@ -15,6 +15,10 @@ import java.lang.reflect.Type
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Algolia
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Value
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import org.jsoup.Jsoup
 
 data class BadevannsInfo(val generellInfo: String, val kvalitetInfo: String, val title: String
