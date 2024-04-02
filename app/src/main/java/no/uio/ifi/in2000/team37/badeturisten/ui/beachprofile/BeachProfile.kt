@@ -182,8 +182,8 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                     Column {
                                         Text(text = "Fasiliteter")
                                             Spacer(modifier = Modifier.height(8.dp))
-                                        beach.badevannsinfo?.fasiliteterInfo?.let {
-                                            Text(text = it)
+                                        //beach.badevannsinfo?.fasiliteterInfo?.let {
+                                        //    Text(text = it)
                                             //Text("stjerner her?")
                                         }
                                             ?: Text(text = "Ingen informasjon.")
@@ -198,5 +198,5 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
             }
         }
     }
-}
+//}
 
