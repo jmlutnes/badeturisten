@@ -31,7 +31,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             val lat = beachinfo?.pos?.lon?.toDouble()
 
             if (lat != null && lon != null) {
-                val vannkvalitet: BadevannsInfo? = _beachRepository.getWaterQuality(lat, lon)
+                val vannkvalitet: BadevannsInfo? = _beachRepository.getVannkvalitet(lat, lon)
                 _beachUIState.update { currentUIState ->
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
                 }

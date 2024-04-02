@@ -65,7 +65,18 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
-    suspend fun getWaterQuality(lat: Double, lon: Double): BadevannsInfo? {
-        return osloKommuneRepository.getVannkvalitet(lat = lat, lon = lon)
+    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
+        val nettsideUrl: String? =
+            osloKommuneRepository.getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
+        println("old: $nettsideUrl")
+        val nynettsideUrl = nettsideUrl?.let { osloKommuneRepository.extractUrl(it) }
+        if (nynettsideUrl != null) {
+            println("Ekstrahert URL: $nynettsideUrl")
+        } else {
+            println("Ingen URL funnet.")
+        }
+        val skrapOsloKommune = nynettsideUrl?.let { osloKommuneRepository.skrapUrl(it) }
+        //println("Skrapt innhold: $skrapOsloKommune")
+        return skrapOsloKommune
     }
 }
