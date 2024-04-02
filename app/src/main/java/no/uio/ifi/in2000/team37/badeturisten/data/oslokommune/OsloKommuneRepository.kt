@@ -1,13 +1,13 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 
 class OsloKommuneRepository {
 
     private val datasource: OsloKommuneDatasource = OsloKommuneDatasource()
     //Henter naermeste badested basert paa posisjon, og gjoer nytt soek med oppdatert lokasjon til badested
     suspend fun getClass(lat: Double?, lon: Double?): jsontokotlin_kommune {
-        val item: jsontokotlin_kommune = datasource.getData(lat, lon)
+        val item = datasource.getData(lat, lon)
         val feat = item.meta.inputs.items.firstOrNull()?.value
         //println("Gammel lokasjon: $item")
         if (feat is Value) {
@@ -32,15 +32,14 @@ class OsloKommuneRepository {
         return matchResult?.groups?.get(1)?.value ?: ""
     }
 
-    suspend fun skrapUrl(input: String): BadevannInfo {
+    suspend fun skrapUrl(input: String): BadevannsInfo {
         val item = datasource.skrapUrl(input)
         return item
     }
 
-    suspend fun getWaterQuality(lat: Double?, lon: Double?): BadevannInfo? {
-        val kommuneClass: jsontokotlin_kommune = getClass(lat = lat, lon = lon)
+    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
         val nettsideUrl: String? =
-            kommuneClass.data.geoJson.features.firstOrNull()?.properties?.popupContent
+            getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
         println("old: $nettsideUrl")
         val nynettsideUrl = nettsideUrl?.let { extractUrl(it) }
         if (nynettsideUrl != null) {

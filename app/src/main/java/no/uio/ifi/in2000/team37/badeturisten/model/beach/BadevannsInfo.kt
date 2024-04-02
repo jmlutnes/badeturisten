@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.model.beach
 
-data class BadevannInfo(
+data class BadevannsInfo(
     val generellInfo: String?,
-    val kvalitetInfo: String?,
-    val waterTemp: Double?
+    val kvalitetInfo: String?
 )

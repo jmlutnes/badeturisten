@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
@@ -58,7 +58,7 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
-    suspend fun getWaterQuality(lat: Double, lon: Double): BadevannInfo? {
-        return osloKommuneRepository.getWaterQuality(lat = lat, lon = lon)
+    suspend fun getWaterQuality(lat: Double, lon: Double): BadevannsInfo? {
+        return osloKommuneRepository.getVannkvalitet(lat = lat, lon = lon)
     }
 }

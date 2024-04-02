@@ -10,17 +10,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannInfo?)
+data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?)
 
 //Viewmodel som henter strom fra kun en strand
 class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val _beachName : String = checkNotNull(savedStateHandle["beachName"])
 
     private val _beachRepository: BeachRepository = BeachRepository()
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannInfo("", "", null)))
+    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo("", "")))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
     init {
@@ -31,7 +31,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             val lat = beachinfo?.pos?.lon?.toDouble()
 
             if (lat != null && lon != null) {
-                val vannkvalitet: BadevannInfo? = _beachRepository.getWaterQuality(lat, lon)
+                val vannkvalitet: BadevannsInfo? = _beachRepository.getWaterQuality(lat, lon)
                 _beachUIState.update { currentUIState ->
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
                 }

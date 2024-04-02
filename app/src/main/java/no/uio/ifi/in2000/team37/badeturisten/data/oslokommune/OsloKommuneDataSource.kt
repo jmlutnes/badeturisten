@@ -17,7 +17,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import org.jsoup.Jsoup
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 
 class OsloKommuneDatasource {
     val client = HttpClient() {
@@ -35,11 +35,12 @@ class OsloKommuneDatasource {
         }
     }
 
-    suspend fun skrapUrl(url: String): BadevannInfo {
+
+    suspend fun skrapUrl(url: String): BadevannsInfo {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
         val document = Jsoup.parse(responseBody)
-        val badevannskvalitetSection = document.select("div.io-bathingsite").firstOrNull() ?: return BadevannInfo("Informasjon om badevannskvalitet ble ikke funnet.", "", null)
+        val badevannskvalitetSection = document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo("Informasjon om badevannskvalitet ble ikke funnet.", "")
 
         // Henter generell informasjon om badevannskvalitet og temperatur
         val generellInfo = badevannskvalitetSection.select("div.ods-grid__column--12:not(:has(div))").text()
@@ -53,18 +54,21 @@ class OsloKommuneDatasource {
         }
         val måltKvalitetInfo = måltKvalitetInfoBuilder.toString().trim()
 
-        return BadevannInfo(generellInfo, måltKvalitetInfo, null)
+        return BadevannsInfo(generellInfo, måltKvalitetInfo)
     }
 
-    //henter data fra posisjon
-    suspend fun getData(longitude: Double?, latitude: Double?): jsontokotlin_kommune {
+    suspend fun getData(
+        longitude: Double?,
+        latitude: Double?
+    ): jsontokotlin_kommune { //lat og lon send med
+
         val data =
             client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30&address=%7B%22latitude%22:%22$latitude%22,%22longitude%22:%22$longitude%22,%22street_id%22:%22%22,%22street_name%22:%22%22,%22distance%22:2500%7D")
 
-        //returnerer et objekt over kommune info
         val response = data.body<jsontokotlin_kommune>()
         return response
     }
+
 }
 
 //Dette er metode som fikser problemet med at APIET har to forskjellige verdier med navn "value" hvor en er string og den andre er Value

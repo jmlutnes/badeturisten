@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.screen
+package no.uio.ifi.in2000.team37.badeturisten.ui.search
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -12,12 +12,12 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FavouritesScreen(navController: NavController) {
+fun SearchScreen(navController: NavController) {
     Scaffold (
         bottomBar = { BottomBar(navController = navController) }
     ) { padding  ->
         Text(
-            text = "dette er favoritt screen",
-        modifier = Modifier.padding(padding))
+            text = "dette er search screen",
+            modifier = Modifier.padding(padding))
     }
 }
