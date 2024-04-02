@@ -5,20 +5,27 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
-    private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
-    val waterTempRepository : WaterTemperatureRepository = WaterTemperatureRepository()
+    //henter fra oslo kommune repository
     val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
+
+    //henter fra watertemperature data source
+    private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
+
+    suspend fun waterTempGetData(): List<Tsery> {
+        return waterTempDataSource.getData(59.91, 10.74, 10, 50)
+    }
+    private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
 
     fun getBeachObservations() = beachObservations.asStateFlow()
 
     suspend fun loadBeaches() {
-        val observationsFromDataSource = waterTempRepository.getData()
+        val observationsFromDataSource = waterTempGetData()
 
         //oppdaterer i homeviewmodel i stedet
         beachObservations.update {
@@ -52,7 +59,7 @@ class BeachRepository {
     }
 
     suspend fun getBeach(beachName: String): Beach? {
-        val observationsFromDataSource = waterTempRepository.getData()
+        val observationsFromDataSource = waterTempGetData()
         var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
