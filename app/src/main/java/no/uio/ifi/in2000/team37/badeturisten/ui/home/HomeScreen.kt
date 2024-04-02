@@ -3,9 +3,12 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.screen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.snapping.SnapLayoutInfoProvider
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -19,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -135,6 +139,7 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
@@ -294,10 +299,12 @@ fun HomeScreen(
                                 textAlign = TextAlign.Center
                             )
 
+                            val state = rememberLazyListState()
                             LazyColumn(
-                                Modifier
-                                //.padding(innerPadding)
+                                //modifier = Modifier.padding(innerPadding)
                                 //.background(Color.LightGray)
+                                state = state,
+                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
                             ) {
                                 items(beachState.beaches) { beach ->
                                     beachCard(beach = beach, navController)
