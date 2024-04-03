@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
+package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.content.ClipData
 import com.google.gson.Gson
@@ -15,14 +15,13 @@ import java.lang.reflect.Type
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Algolia
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Value
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import org.jsoup.Jsoup
 
-data class BadevannsInfo(val generellInfo: String, val kvalitetInfo: String, val title: String
-)
 
 class OsloKommuneDatasource {
     val client = HttpClient() {

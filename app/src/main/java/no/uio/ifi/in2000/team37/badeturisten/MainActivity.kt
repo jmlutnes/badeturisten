@@ -143,35 +143,3 @@ fun BottomNavigationBar() {
         }
     }
 }
-
-
-/*
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-fun NavScreen() {
-    val navController = rememberNavController()
-
-    NavHost(navController, startDestination = "homeScreen") {
-        composable(
-            route = "beachProfile/{beachName}",
-            arguments = listOf(navArgument("beachName") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val beachName = backStackEntry.arguments?.getString("beachName")
-            BeachProfile(navController = navController, beachName = beachName)
-        }
-
-        composable(route = "homeScreen") {
-            HomeScreen(navController = navController)
-        }
-
-        composable(route = "favoritesScreen") {
-            FavouritesScreen(navController = navController)
-        }
-        composable(route = "searchScreen") {
-            SearchScreen(navController = navController)
-        }
-    }
-}
-
-
- */

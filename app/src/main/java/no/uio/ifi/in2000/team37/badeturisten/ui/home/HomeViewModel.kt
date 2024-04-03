@@ -19,6 +19,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
@@ -33,6 +34,10 @@ data class kommuneBeachList(val beachList: List<Beach> = listOf())
 
 data class ForecastUIState(
     val forecastNextHour: ForecastNextHour? = null
+)
+
+data class kommuneBeachList(
+    val beachList: List<Beach> = listOf()
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -65,7 +70,11 @@ class HomeViewModel: ViewModel() {
     }
 
     //henter strender
-    //trenger en annen maate aa hente alle strender paa
+    private val osloKommuneRepository = OsloKommuneRepository()
+    private val _kommuneBeachList = MutableStateFlow(kommuneBeachList())
+
+    val kommuneBeachList: StateFlow<kommuneBeachList> = _kommuneBeachList.asStateFlow()
+
     private val _beachesRepository = BeachRepository()
     val beachesState: StateFlow<BeachesUIState> = _beachesRepository.getBeachObservations()
         .map { BeachesUIState(beaches = it) }
@@ -78,6 +87,9 @@ class HomeViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             _beachesRepository.loadBeaches()
+            _kommuneBeachList.update{
+                kommuneBeachList(osloKommuneRepository.makeBeaches(0.0,0.0))
+            }
         }
     }
 
