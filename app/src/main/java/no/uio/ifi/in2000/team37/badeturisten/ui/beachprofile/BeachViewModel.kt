@@ -3,7 +3,6 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +20,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val beachRepository: BeachRepository = BeachRepository()
 
     private val _beachRepository: BeachRepository = BeachRepository()
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo("", "", "")))
+    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo("", "", "", "")))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
