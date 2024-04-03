@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.screen
+package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -57,7 +57,6 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                 }
             )
         },
-        bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
         LazyColumn(modifier = Modifier
                 .padding(paddingValues)

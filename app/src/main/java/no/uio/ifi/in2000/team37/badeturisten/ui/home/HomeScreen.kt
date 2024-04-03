@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.screen
+package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -165,8 +165,7 @@ fun HomeScreen(
         .padding(5.dp)
         .background(Color.White)
 
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) })
+    Scaffold( )
     { padding ->
         Column(
             Modifier
