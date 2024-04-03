@@ -40,7 +40,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)*/
 
             if (lat != null && lon != null) {
-                val vannkvalitet: BadevannsInfo? = _beachRepository.getVannkvalitet(lat, lon)
+                val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
                 _beachUIState.update { currentUIState ->
                     if (beachinfo != null) {
                         currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
