@@ -20,7 +20,6 @@ class BeachRepository {
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
@@ -43,7 +42,6 @@ class BeachRepository {
         }
     }
 
-    //komponenter i metoder for aa oppdatere flows
     suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
         return try {
             //gjoer data om til liste med strender
@@ -63,10 +61,6 @@ class BeachRepository {
             Log.e("beach repository", e.message.toString())
             emptyList<Beach>()
         }
-    }
-
-    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
-        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
     }
 
     suspend fun getBeach(beachName: String): Beach? {
@@ -108,5 +102,5 @@ class BeachRepository {
         }
         return beachlist*/
     }
-*/
+
 }
