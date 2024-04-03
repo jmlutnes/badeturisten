@@ -63,7 +63,10 @@ class BeachRepository {
         return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
     }
 
+<<<<<<< HEAD
     @RequiresApi(Build.VERSION_CODES.O)
+=======
+>>>>>>> 5476a4c (rebase til master)
     suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
@@ -73,7 +76,10 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
+<<<<<<< HEAD
     @RequiresApi(Build.VERSION_CODES.O)
+=======
+>>>>>>> 5476a4c (rebase til master)
     suspend fun getFavourites(): List<Beach> {
         val observationsFromDataSource = waterTempGetData()
         var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)

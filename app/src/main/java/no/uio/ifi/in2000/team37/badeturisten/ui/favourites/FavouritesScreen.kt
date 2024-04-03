@@ -16,13 +16,6 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-<<<<<<< Updated upstream
-fun FavouritesScreen(navController: NavController) {
-    Scaffold ( ) { padding  ->
-        Text(
-            text = "dette er favoritt screen",
-        modifier = Modifier.padding(padding))
-=======
 fun FavouritesScreen(
     favouritesViewModel: FavouritesViewModel = viewModel(),
     navController: NavController
@@ -38,6 +31,5 @@ fun FavouritesScreen(
         items(favouritesState.favourites) { beach ->
             beachCard(beach = beach, navController = navController)
         }
->>>>>>> Stashed changes
     }
 }
