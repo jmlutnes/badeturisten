@@ -54,7 +54,6 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                 }
             )
         },
-        bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             item {
