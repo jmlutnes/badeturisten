@@ -55,6 +55,10 @@ class BeachRepository {
         }
     }
 
+    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
+        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
+    }
+
     suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
@@ -64,8 +68,11 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
-    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
-        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
+    suspend fun getFavourites(): List<Beach> {
+        val observationsFromDataSource = waterTempGetData()
+        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        beachlist = beachlist.filter { beach -> beach.favorite }
+        return beachlist
     }
 
 }
