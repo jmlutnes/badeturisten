@@ -16,7 +16,6 @@ fun SearchScreen(navController: NavController) {
     Scaffold ( ) { padding  ->
         Text(
             text = "dette er search screen",
-            modifier = Modifier.padding(padding)
-        )
+            modifier = Modifier.padding(padding))
     }
 }
