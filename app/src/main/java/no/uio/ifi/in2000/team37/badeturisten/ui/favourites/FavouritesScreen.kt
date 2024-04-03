@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.favourites
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -29,6 +30,7 @@ fun FavouritesScreen(
         flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
     ) {
         items(favouritesState.favourites) { beach ->
+            Log.d("FavoScreen, cards", "$beach")
             beachCard(beach = beach, navController = navController)
         }
     }
