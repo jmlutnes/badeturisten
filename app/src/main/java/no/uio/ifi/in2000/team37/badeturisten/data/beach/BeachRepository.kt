@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.beach
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +16,6 @@ class BeachRepository {
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
@@ -28,7 +25,6 @@ class BeachRepository {
     //henter flows
     fun getBeachObservations() = beachObservations.asStateFlow()
     //oppdaterer flows
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
 
@@ -59,11 +55,6 @@ class BeachRepository {
         }
     }
 
-    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
-        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
@@ -73,12 +64,8 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun getFavourites(): List<Beach> {
-        val observationsFromDataSource = waterTempGetData()
-        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
-        beachlist = beachlist.filter { beach -> beach.favorite }
-        return beachlist
+    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
+        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
     }
 
 }
