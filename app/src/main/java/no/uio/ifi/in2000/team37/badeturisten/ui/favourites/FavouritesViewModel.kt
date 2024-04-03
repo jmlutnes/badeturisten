@@ -1,0 +1,38 @@
+package no.uio.ifi.in2000.team37.badeturisten.ui.favourites
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+
+data class FavouritesUIState(
+    val favourites: List<Beach> = listOf()
+)
+class FavouritesViewModel: ViewModel() {
+    private val _beachRepository: BeachRepository = BeachRepository()
+    private val _osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
+
+    val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getBeachObservations()
+        .map { FavouritesUIState(favourites = it) }
+        .stateIn(
+            viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = FavouritesUIState()
+        )
+
+
+
+    init {
+        viewModelScope.launch {
+            _beachRepository.getFavourites()
+            //val osloKommuneBeachInfo: List<Beach> = _osloKommuneRepository.getFavourites()
+
+        }
+    }
+}
