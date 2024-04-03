@@ -63,6 +63,10 @@ class BeachRepository {
         }
     }
 
+    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
+        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
+    }
+
     suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
