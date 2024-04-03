@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,15 +27,16 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun beachCard(beach: Beach, navController: NavController) {
-    Surface(modifier = Modifier.fillMaxSize(),
+    Surface(
+        modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer,
-        ) {
+    ) {
         Card(
-            onClick = { navController.navigate("beachProfile/${beach.name}")},
+            onClick = { navController.navigate("beachProfile/${beach.name}") },
             modifier = Modifier
                 .padding(100.dp)
                 .fillMaxWidth()
-                //.wrapContentWidth(Alignment.CenterHorizontally)
+            //.wrapContentWidth(Alignment.CenterHorizontally)
 
         ) {
             Column(
@@ -48,14 +48,14 @@ fun beachCard(beach: Beach, navController: NavController) {
             ) {
                 Text(
                     text = beach.name,
-                   textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                    )
+                )
                 Text(
                     text = "Badetemperatur: ${beach.waterTemp}°C",
                     textAlign = TextAlign.Center,
