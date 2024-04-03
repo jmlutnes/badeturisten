@@ -1,13 +1,12 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune
+package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune
 
 import android.util.Log
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Feature
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.Value
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.data.OsloKommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-class OsloKommuneRepository () {
+class OsloKommuneRepository() {
     private val datasource: OsloKommuneDatasource = OsloKommuneDatasource()
     val liste: MutableList<Beach> = mutableListOf<Beach>()
 
@@ -90,56 +89,49 @@ class OsloKommuneRepository () {
                 }
             }
         }
-            println("ingen badeinfo funnet")
-            return null
+        println("ingen badeinfo funnet")
+        return null
     }
 
-        //METODE SOM HENTER ALLE BADESTEDER PÅ OSLO KOMMUNE (MED LOCATION) I LISTE
-        suspend fun makeBeaches(lon: Double, lat: Double): List<Beach> {
-            return try {
-                //Liste som skal ha alle badestedene
+    //METODE SOM HENTER ALLE BADESTEDER PÅ OSLO KOMMUNE (MED LOCATION) I LISTE
+    suspend fun makeBeaches(lon: Double, lat: Double): List<Beach> {
+        return try {
+            //Liste som skal ha alle badestedene
 
-                //Liste med Alle Features
-                val features = getBadeplasser(lon, lat)
+            //Liste med Alle Features
+            val features = getBadeplasser(lon, lat)
 
-                //Itterer og hent koordinater og navn
-                //geometry -> type -> Coordinates = Koordinater
-                //properties -> popupContent -> bakers på streng før </a></h2
-                println(features)
-                features.forEach { feature ->
-                    //Henter navn
-                    val beachNameNotConverted: String? = feature.properties.popupContent
-                    val beachNameConverted: String? =
-                        extractBeachFromHTML(beachNameNotConverted.toString())
+            //Itterer og hent koordinater og navn
+            //geometry -> type -> Coordinates = Koordinater
+            //properties -> popupContent -> bakers på streng før </a></h2
+            println(features)
+            features.forEach { feature ->
+                //Henter navn
+                val beachNameNotConverted: String? = feature.properties.popupContent
+                val beachNameConverted: String? =
+                    extractBeachFromHTML(beachNameNotConverted.toString())
 
-                    //Henter location
-                    val location = feature.geometry.coordinates
-                    val lon: String = location.get(0).toString()
-                    val lat: String = location.get(1).toString()
-                    //println(location)
-                    //println(beachNameConverted)
-                    val posisjon: Pos = Pos(lat, lon)
-                    // lager strand objekter og legger til i liste
-                    liste.add(Beach(beachNameConverted.toString(), posisjon, null, false))
-                }
-                //LAGER DATAKLASSE MED ALLE BEACHES
-                return liste
-
-            } catch (e: Exception) {
-                Log.d("Oslo Kommune repository", "failed to make beaches")
-                Log.e("Oslo Kommune repos", e.message.toString())
-                emptyList<Beach>()
+                //Henter location
+                val location = feature.geometry.coordinates
+                val lon: String = location.get(0).toString()
+                val lat: String = location.get(1).toString()
+                //println(location)
+                //println(beachNameConverted)
+                val posisjon: Pos = Pos(lat, lon)
+                // lager strand objekter og legger til i liste
+                liste.add(Beach(beachNameConverted.toString(), posisjon, null, false))
             }
-        }
+            //LAGER DATAKLASSE MED ALLE BEACHES
+            return liste
 
-        suspend fun getBeach(beachName: String): Beach? {
-            //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
-            //val observationsFromDataSource = datasource.getData(59.91, 10.74)
-            var beachlist: List<Beach> = makeBeaches(59.91, 10.74)
-            beachlist = beachlist.filter { beach -> beach.name == beachName }
-            return beachlist.firstOrNull()
+        } catch (e: Exception) {
+            Log.d("Oslo Kommune repository", "failed to make beaches")
+            Log.e("Oslo Kommune repos", e.message.toString())
+            emptyList<Beach>()
         }
     }
+
+}
 
 
 

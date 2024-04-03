@@ -4,10 +4,13 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
@@ -15,6 +18,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
@@ -26,6 +30,10 @@ data class BeachesUIState (
 )
 data class ForecastUIState(
     val forecastNextHour: ForecastNextHour? = null
+)
+
+data class kommuneBeachList(
+    val beachList: List<Beach> = listOf()
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -48,7 +56,11 @@ class HomeViewModel: ViewModel() {
     }
 
     //henter strender
-    //trenger en annen maate aa hente alle strender paa
+    private val osloKommuneRepository = OsloKommuneRepository()
+    private val _kommuneBeachList = MutableStateFlow(kommuneBeachList())
+
+    val kommuneBeachList: StateFlow<kommuneBeachList> = _kommuneBeachList.asStateFlow()
+
     private val _beachesRepository = BeachRepository()
     val beachesState: StateFlow<BeachesUIState> = _beachesRepository.getBeachObservations()
         .map { BeachesUIState(beaches = it) }
@@ -61,6 +73,9 @@ class HomeViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             _beachesRepository.loadBeaches()
+            _kommuneBeachList.update{
+                kommuneBeachList(osloKommuneRepository.makeBeaches(0.0,0.0))
+            }
         }
     }
 
