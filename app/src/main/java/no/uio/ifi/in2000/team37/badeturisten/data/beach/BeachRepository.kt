@@ -12,13 +12,13 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
+@RequiresApi(Build.VERSION_CODES.O)
 class BeachRepository {
     //henter fra oslo kommune repository
     val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
@@ -28,7 +28,6 @@ class BeachRepository {
     //henter flows
     fun getBeachObservations() = beachObservations.asStateFlow()
     //oppdaterer flows
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
 
@@ -59,14 +58,6 @@ class BeachRepository {
         }
     }
 
-    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
-        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
-    }
-
-<<<<<<< HEAD
-    @RequiresApi(Build.VERSION_CODES.O)
-=======
->>>>>>> 5476a4c (rebase til master)
     suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
@@ -76,10 +67,6 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
-<<<<<<< HEAD
-    @RequiresApi(Build.VERSION_CODES.O)
-=======
->>>>>>> 5476a4c (rebase til master)
     suspend fun getFavourites(): List<Beach> {
         val observationsFromDataSource = waterTempGetData()
         var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
