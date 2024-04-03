@@ -20,11 +20,18 @@ class OsloKommuneRepository () {
         if (feat is Value) {
             val lon = feat.longitude
             val lat = feat.latitude
+            val item = getRight(lat, lon)
+            println("Ny lokasjon:$item")
             return item
         }
         return item
     }
 
+
+    suspend fun getRight(lat: Double, lon: Double): jsontokotlin_kommune {
+        val item = datasource.getData(lat, lon)
+        return item
+    }
 
     fun extractUrl(inputString: String): String {
         val streng = """href="(.*?)"""".toRegex()
