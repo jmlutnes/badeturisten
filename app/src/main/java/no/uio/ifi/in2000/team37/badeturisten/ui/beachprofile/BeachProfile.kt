@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.screen
+package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
 import androidx.annotation.RequiresApi

@@ -68,14 +68,14 @@ data class BottomNavigationItem(
                 route = Screens.Home.route
             ),
             BottomNavigationItem(
+                label = "Favourite",
+                icon = Icons.Filled.Favorite,
+                route = Screens.Favorite.route
+            ),
+            BottomNavigationItem(
                 label = "Search",
                 icon = Icons.Filled.Search,
                 route = Screens.Search.route
-            ),
-            BottomNavigationItem(
-                label = "Favourite",
-                icon = Icons.Filled.Favorite,
-                route = Screens.Profile.route
             ),
         )
     }
