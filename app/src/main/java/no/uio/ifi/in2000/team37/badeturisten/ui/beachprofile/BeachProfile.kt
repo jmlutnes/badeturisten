@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -58,23 +59,21 @@ fun BeachProfile(
                 }
             )
         },
-        bottomBar = { BottomBar(navController = navController) }
     ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
+        LazyColumn(modifier = Modifier
                 .padding(paddingValues)
-        ) {
+        ){
             item {
                 Surface(
                     modifier = Modifier
                         .fillMaxHeight(),
                     color = MaterialTheme.colorScheme.primaryContainer,
                 ) {
-                    Column(
-                        Modifier
-                            .padding(16.dp)
-                            .fillMaxSize()
-                    ) {
+
+                    Column  (Modifier
+                        .padding(16.dp)
+                        .fillMaxSize()
+                    ){
                         Card(
                             modifier = Modifier
                                 .padding(16.dp)
@@ -111,10 +110,10 @@ fun BeachProfile(
                                 modifier = Modifier
                                     .background(color = Color.White)
                                     .fillMaxSize()
-                                //.height(300.dp)
+                                    //.height(300.dp)
                             ) {
                                 Column {
-                                    Row {
+                                    Row() {
                                         Text(
                                             text = "Badetemperatur",
                                             modifier = Modifier
@@ -126,7 +125,7 @@ fun BeachProfile(
                                             Text(
                                                 text = "${it}°C",
                                                 modifier = Modifier
-                                                    .padding(10.dp),
+                                                .padding(10.dp),
 
                                                 )
                                         } ?: Text(
@@ -134,27 +133,28 @@ fun BeachProfile(
                                             modifier = Modifier.padding(top = 16.dp)
                                         )
                                     }
-                                    Row {
-                                        Text(
-                                            text = "Vannkvalitet",
-                                            modifier = Modifier
-                                                .padding(10.dp),
-
-                                            )
-                                        Spacer(modifier = Modifier.width(100.dp))
-                                        beach.badevannsinfo?.kvalitetInfo?.let {
+                                        Row() {
                                             Text(
-                                                text = it,
+                                                text = "Vannkvalitet",
                                                 modifier = Modifier
                                                     .padding(10.dp),
 
                                                 )
-                                        } ?: Text(
-                                            text = "Ingen informasjon.",
-                                            modifier = Modifier
-                                                .padding(10.dp),
+                                            Spacer(modifier = Modifier.width(100.dp))
+                                            beach.badevannsinfo?.kvalitetInfo?.let {
+                                                Text(
+                                                    text = it, modifier = Modifier
+                                                        .padding(10.dp),
 
-                                            )
+                                                    )
+                                            } ?: Text(
+                                                text = "Ingen informasjon.", modifier = Modifier
+                                                    .padding(10.dp),
+
+
+                                                )
+
+                                        }
 
                                     }
 
@@ -162,37 +162,39 @@ fun BeachProfile(
 
                             }
 
-                        }
+                            Spacer(
+                                Modifier
+                                    .height(15.dp)
+                                    .background(color = MaterialTheme.colorScheme.primaryContainer)
+                            )
 
-                        Spacer(
-                            Modifier
-                                .height(15.dp)
-                                .background(color = MaterialTheme.colorScheme.primaryContainer)
-                        )
-
-                        Card(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxSize()
-                                .defaultMinSize(400.dp, 300.dp)
-                        ) {
-                            Box(
+                            Card(
                                 modifier = Modifier
-                                    .background(color = Color.White)
+                                    .padding(16.dp)
                                     .fillMaxSize()
                                     .defaultMinSize(400.dp, 300.dp)
-                                    .padding(10.dp),
-                                //contentAlignment = Alignment.Center
                             ) {
-                                Column {
-                                    Text(text = "Fasiliteter")
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    beach.badevannsinfo?.fasiliteterInfo?.let {
-                                        Text(text = it)
-                                        //Text("stjerner her?")
+                                Box(
+                                    modifier = Modifier
+                                        .background(color = Color.White)
+                                        .fillMaxSize()
+                                        .defaultMinSize(400.dp, 300.dp)
+                                        .padding(10.dp),
+                                    //contentAlignment = Alignment.Center
+                                ) {
+                                    Column {
+                                        Text(text = "Fasiliteter")
+                                            Spacer(modifier = Modifier.height(8.dp))
+                                        //beach.badevannsinfo?.fasiliteterInfo?.let {
+                                        //    Text(text = it)
+                                            //Text("stjerner her?")
+                                        }
+                                            ?: Text(text = "Ingen informasjon.")
                                     }
-                                        ?: Text(text = "Ingen informasjon.")
                                 }
+                                    Spacer(modifier = Modifier
+                                        .background(color = MaterialTheme.colorScheme.primaryContainer)
+                                )
                             }
                             Spacer(
                                 modifier = Modifier
@@ -200,9 +202,8 @@ fun BeachProfile(
                             )
                         }
                     }
-                }
             }
         }
     }
-}
+//}
 

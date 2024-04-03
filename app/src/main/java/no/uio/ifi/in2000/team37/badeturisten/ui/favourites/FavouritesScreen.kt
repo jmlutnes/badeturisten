@@ -13,9 +13,8 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FavouritesScreen(navController: NavController) {
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
-    ) { padding ->
+
+    Scaffold ( ) { padding  ->
         Text(
             text = "dette er favoritt screen",
             modifier = Modifier.padding(padding)

@@ -114,7 +114,7 @@ class OsloKommuneRepository () {
                     //println(beachNameConverted)
                     val posisjon: Pos = Pos(lat, lon)
                     // lager strand objekter og legger til i liste
-                    liste.add(Beach(beachNameConverted.toString(), posisjon, null))
+                    liste.add(Beach(beachNameConverted.toString(), posisjon, null, false))
                 }
                 //LAGER DATAKLASSE MED ALLE BEACHES
                 return liste
@@ -134,8 +134,6 @@ class OsloKommuneRepository () {
             return beachlist.firstOrNull()
         }
     }
-
-
 
 
 

@@ -148,8 +148,9 @@ fun HomeScreen(
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachState = homeViewModel.beachesState.collectAsState().value
     val alertState = homeViewModel.metAlertsState.collectAsState().value
+    val oslokommuneBeachState = homeViewModel.kommuneBeachList.collectAsState().value.beachList
+
     var clicked by remember { mutableStateOf(false) }
-    val oslokommuneBeachUIState = homeViewModel.kommuneBeachList.collectAsState().value.beachList
     val imageModifier = Modifier
         .size(100.dp)
         .clip(CircleShape)
@@ -163,8 +164,7 @@ fun HomeScreen(
         .padding(5.dp)
         .background(Color.White)
 
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) })
+    Scaffold( )
     { padding ->
         Column(
             Modifier
@@ -305,10 +305,10 @@ fun HomeScreen(
 
                             ) {
                                 items(beachState.beaches) { beach ->
-                                    beachCard(beach = beach, navController)
+                                    beachCard(beach = beach, navController = navController)
                                 }
-                                items(oslokommuneBeachUIState) { beach ->
-                                    beachCard(beach = beach, navController)
+                                items(oslokommuneBeachState) { beach ->
+                                    beachCard(beach = beach, navController = navController)
                                 }
                             }
                         }

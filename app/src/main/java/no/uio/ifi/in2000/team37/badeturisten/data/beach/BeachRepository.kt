@@ -6,19 +6,30 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureRepository
+
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
+
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
-    private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
-    val waterTempRepository : WaterTemperatureRepository = WaterTemperatureRepository()
+    //henter fra oslo kommune repository
     val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
-    fun getBeachObservations() = beachObservations.asStateFlow()
+    //water temp
+    private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
+    suspend fun waterTempGetData(): List<Tsery> {
+        return waterTempDataSource.getData(59.91, 10.74, 10, 50)
+    }
 
+    //flows
+    private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
+    //henter flows
+    fun getBeachObservations() = beachObservations.asStateFlow()
+    //oppdaterer flows
     suspend fun loadBeaches() {
-        val observationsFromDataSource = waterTempRepository.getData()
+        val observationsFromDataSource = waterTempGetData()
 
         //oppdaterer i homeviewmodel i stedet
         beachObservations.update {
@@ -26,7 +37,6 @@ class BeachRepository {
         }
     }
 
-    //Kan vi lagre geometri ogsaa
     suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
         return try {
             //gjoer data om til liste med strender
@@ -36,11 +46,8 @@ class BeachRepository {
                 // oppretter strand objekter og legger til i liste
                 val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
                 val position = data.header.extra.pos
-                if (position.lat.toDouble() != null && position.lon.toDouble() != null) {
-                    //val vannkvalitet: BadevannInfo? = osloKommuneRepository.getWaterQuality(position.lat.toDouble(), position.lon.toDouble())
-                }
 
-                liste.add(Beach(beachName, position, waterTemperature))
+                liste.add(Beach(beachName, position, waterTemperature, false))
             }
 
             return liste
@@ -52,7 +59,9 @@ class BeachRepository {
     }
 
     suspend fun getBeach(beachName: String): Beach? {
-        val observationsFromDataSource = waterTempRepository.getData()
+        //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
+        //val observationsFromDataSource = datasource.getData(59.91, 10.74)
+        val observationsFromDataSource = waterTempGetData()
         var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
@@ -71,5 +80,7 @@ class BeachRepository {
         val skrapOsloKommune = nynettsideUrl?.let { osloKommuneRepository.skrapUrl(it) }
         //println("Skrapt innhold: $skrapOsloKommune")
         return skrapOsloKommune
+
     }
+
 }

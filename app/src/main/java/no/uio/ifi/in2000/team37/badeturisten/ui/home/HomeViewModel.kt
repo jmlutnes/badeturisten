@@ -19,6 +19,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
+
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
@@ -30,10 +31,12 @@ data class BeachesUIState(
     val beaches: List<Beach> = listOf(),
 )
 
-data class kommuneBeachList(val beachList: List<Beach> = listOf())
-
 data class ForecastUIState(
     val forecastNextHour: ForecastNextHour? = null,
+)
+
+data class KommuneBeachList(
+    val beachList: List<Beach> = listOf()
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -45,6 +48,7 @@ class HomeViewModel : ViewModel() {
     private val _kommuneBeachList = MutableStateFlow(kommuneBeachList())
 
     val kommuneBeachList: StateFlow<kommuneBeachList> = _kommuneBeachList.asStateFlow()
+
 
     //henter vaer melding
     private val _locationForecastRepository: LocationForecastRepository =
@@ -64,13 +68,18 @@ class HomeViewModel : ViewModel() {
             _locationForecastRepository.loadForecastNextHour()
             _kommuneBeachList.update {
                 kommuneBeachList(osloKommuneRepository.makeBeaches(0.0, 0.0))
+
             }
         }
     }
 
     //henter strender
-    //trenger en annen maate aa hente alle strender paa
+    private val osloKommuneRepository = OsloKommuneRepository()
     private val _beachesRepository = BeachRepository()
+
+    private val _kommuneBeachList = MutableStateFlow(KommuneBeachList())
+
+    val kommuneBeachList: StateFlow<KommuneBeachList> = _kommuneBeachList.asStateFlow()
     val beachesState: StateFlow<BeachesUIState> = _beachesRepository.getBeachObservations()
         .map { BeachesUIState(beaches = it) }
         .stateIn(
@@ -82,6 +91,9 @@ class HomeViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             _beachesRepository.loadBeaches()
+            _kommuneBeachList.update{
+                KommuneBeachList(osloKommuneRepository.makeBeaches(0.0,0.0))
+            }
         }
     }
 
