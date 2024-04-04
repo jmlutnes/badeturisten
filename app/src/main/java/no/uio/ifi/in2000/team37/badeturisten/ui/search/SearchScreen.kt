@@ -57,26 +57,8 @@ fun SearchScreen(
     val sokResultater by sokViewModel.sokResultater.collectAsState()
     val state = rememberLazyListState()
 
-    val badevakt = remember { mutableStateOf(false) }
-    val barnevennlig = remember { mutableStateOf(false) }
-    val grill = remember { mutableStateOf(false) }
-    val kiosk = remember { mutableStateOf(false) }
-    val tilpasning = remember { mutableStateOf(false) }
-    val toalett = remember { mutableStateOf(false) }
-    val badebrygge = remember { mutableStateOf(false) }
-
-    val lastClickedFilter = remember { mutableStateOf("") }
-
-    LaunchedEffect(badevakt.value, barnevennlig.value, grill.value, kiosk.value, tilpasning.value, toalett.value, badebrygge.value) {
-        sokViewModel.loadBeachesByFilter(
-            badevakt = badevakt.value,
-            barnevennlig = barnevennlig.value,
-            grill = grill.value,
-            kiosk = kiosk.value,
-            tilpasning = tilpasning.value,
-            toalett = toalett.value,
-            badebrygge = badebrygge.value
-        )
+    LaunchedEffect(sokViewModel.badevakt.value, sokViewModel.barnevennlig.value, sokViewModel.grill.value, sokViewModel.kiosk.value, sokViewModel.tilpasning.value, sokViewModel.toalett.value, sokViewModel.badebrygge.value) {
+        sokViewModel.loadBeachesByFilter(sokViewModel.badevakt.value, sokViewModel.barnevennlig.value, sokViewModel.grill.value, sokViewModel.kiosk.value, sokViewModel.tilpasning.value, sokViewModel.toalett.value, sokViewModel.badebrygge.value)
     }
 
     Column(
@@ -95,18 +77,22 @@ fun SearchScreen(
                     textAlign = TextAlign.Center
                 )
                 FilterButtons(
-                    badevakt = badevakt.value, onBadevaktChange = { badevakt.value = !badevakt.value },
-                    barnevennlig = barnevennlig.value, onBarnevennligChange = { barnevennlig.value = !barnevennlig.value },
-                    grill = grill.value, onGrillChange = { grill.value = !grill.value },
-                    kiosk = kiosk.value, onKioskChange = { kiosk.value = !kiosk.value },
-                    tilpasning = tilpasning.value, onTilpasningChange = { tilpasning.value = !tilpasning.value },
-                    toalett = toalett.value, onToalettChange = { toalett.value = !toalett.value },
-                    badebrygge = badebrygge.value, onBadebryggeChange = { badebrygge.value = !badebrygge.value }
+                    badevakt = sokViewModel.badevakt.value,
+                    onBadevaktChange = { sokViewModel.updateFilterState("Badevakt", !sokViewModel.badevakt.value) },
+                    barnevennlig = sokViewModel.barnevennlig.value,
+                    onBarnevennligChange = { sokViewModel.updateFilterState("Barnevennlig", !sokViewModel.barnevennlig.value) },
+                    grill = sokViewModel.grill.value,
+                    onGrillChange = { sokViewModel.updateFilterState("Grill", !sokViewModel.grill.value) },
+                    kiosk = sokViewModel.kiosk.value,
+                    onKioskChange = { sokViewModel.updateFilterState("Kiosk", !sokViewModel.kiosk.value) },
+                    tilpasning = sokViewModel.tilpasning.value,
+                    onTilpasningChange = { sokViewModel.updateFilterState("Tilpasning", !sokViewModel.tilpasning.value) },
+                    toalett = sokViewModel.toalett.value,
+                    onToalettChange = { sokViewModel.updateFilterState("Toalett", !sokViewModel.toalett.value) },
+                    badebrygge = sokViewModel.badebrygge.value,
+                    onBadebryggeChange = { sokViewModel.updateFilterState("Badebrygge", !sokViewModel.badebrygge.value) }
                 )
-                if (lastClickedFilter.value.isNotEmpty()) {
-                    Text("Valgt filter: ${lastClickedFilter.value}",
-                        modifier = Modifier.padding(8.dp))
-                }
+
                 LazyColumn(
                     state = state,
                     flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
@@ -124,15 +110,13 @@ fun SearchScreen(
 @Composable
 fun CustomToggleButton(
     checked: Boolean,
-    onCheckedChange: () -> Unit, // Oppdatert til å akseptere en funksjon som ikke tar noen parametere
+    onCheckedChange: () -> Unit,
     text: String,
     modifier: Modifier = Modifier
 ) {
     val buttonColors = ButtonDefaults.buttonColors(
         if (checked) Color.Green else Color.Gray
     )
-
-    // Tilpasset shadow effekt basert på om knappen er trykket på
     val shadowModifier = if (checked) {
         modifier.shadow(
             elevation = 20.dp,
@@ -143,10 +127,10 @@ fun CustomToggleButton(
         modifier
     }
     Button(
-        onClick = { onCheckedChange() }, // Kaller onCheckedChange når knappen er trykket
+        onClick = { onCheckedChange() },
         colors = ButtonDefaults.buttonColors(
             if (checked) Color.Gray else Color.LightGray,
-            contentColor = Color.White // Setter tekstfarge, juster etter behov
+            contentColor = Color.White
         ),
         modifier = modifier
     ) {

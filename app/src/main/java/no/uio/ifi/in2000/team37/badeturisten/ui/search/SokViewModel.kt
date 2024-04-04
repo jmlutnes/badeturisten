@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.search
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,14 +14,19 @@ import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-data class SokBeachesUIState (
-    val beaches: List<Beach> = listOf()
-)
-
 data class SokKommuneBeachList(
     val beachList: List<Beach> = listOf()
 )
 class SokViewModel: ViewModel() {
+    var badevakt = mutableStateOf(false)
+    var barnevennlig = mutableStateOf(false)
+    var grill = mutableStateOf(false)
+    var kiosk = mutableStateOf(false)
+    var tilpasning = mutableStateOf(false)
+    var toalett = mutableStateOf(false)
+    var badebrygge = mutableStateOf(false)
+
+
     private val osloKommuneRepository = OsloKommuneRepository()
 
     private val _sokResultater = MutableStateFlow(SokKommuneBeachList())
@@ -28,17 +34,17 @@ class SokViewModel: ViewModel() {
 
     init {
         viewModelScope.launch {
-                loadBeachesByFilter(
-                    badevakt = false,
-                    barnevennlig = false,
-                    grill = false,
-                    kiosk = false,
-                    tilpasning = false,
-                    toalett = false,
-                    badebrygge = false
-                )
-            }
+            loadBeachesByFilter(
+                badevakt = false,
+                barnevennlig = false,
+                grill = false,
+                kiosk = false,
+                tilpasning = false,
+                toalett = false,
+                badebrygge = false
+            )
         }
+    }
 
     fun loadBeachesByFilter(
         badevakt: Boolean,
@@ -50,8 +56,28 @@ class SokViewModel: ViewModel() {
         badebrygge: Boolean
     ) {
         viewModelScope.launch {
-            val oppdaterteStrender = osloKommuneRepository.makeBeachesFasiliteter(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
+            val oppdaterteStrender = osloKommuneRepository.makeBeachesFasiliteter(
+                badevakt,
+                barnevennlig,
+                grill,
+                kiosk,
+                tilpasning,
+                toalett,
+                badebrygge
+            )
             _sokResultater.value = SokKommuneBeachList(oppdaterteStrender)
-            }
         }
     }
+
+    fun updateFilterState(filter: String, state: Boolean) {
+        when (filter) {
+            "Badevakt" -> badevakt.value = state
+            "Barnevennlig" -> barnevennlig.value = state
+            "Grill" -> grill.value = state
+            "Kiosk" -> kiosk.value = state
+            "Tilpasning" -> tilpasning.value = state
+            "Toalett" -> toalett.value = state
+            "Badebrygge" -> badebrygge.value = state
+        }
+    }
+}
