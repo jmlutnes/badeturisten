@@ -12,7 +12,6 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachRepository {
     //henter fra oslo kommune repository
@@ -26,12 +25,8 @@ class BeachRepository {
 
     //flows
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
-    private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
     //henter flows
     fun getBeachObservations() = beachObservations.asStateFlow()
-
-    //metoder for aa oppdatere flows
-    fun getFavouriteObservations() = favouriteObservations.asStateFlow()
     //oppdaterer flows
     suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
@@ -52,7 +47,7 @@ class BeachRepository {
                 val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
                 val position = data.header.extra.pos
 
-                liste.add(Beach(beachName, position, waterTemperature))
+                liste.add(Beach(beachName, position, waterTemperature, false))
             }
 
             return liste
@@ -75,36 +70,12 @@ class BeachRepository {
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
     }
-    /*
+
     suspend fun getFavourites(): List<Beach> {
-    suspend fun updateFavourites(beach: Beach?): List<Beach> {
-        val observationsFromStateFlow = getFavouriteObservations()
-        var beachlist: List<Beach> = observationsFromStateFlow.value
-        if (beach != null) {
-            beachlist = beachlist.toMutableList()
-            if (beach in beachlist) {
-                beachlist.remove(beach)
-            } else {
-                beachlist.add(beach)
-            }
-            favouriteObservations.update {
-                beachlist
-            }
-        }
-        return beachlist
-        /*// henter liste over strender
         val observationsFromDataSource = waterTempGetData()
         var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
-        beachlist.forEach { beach -> Log.d("BeRepo, getFavourites", "${beach.name}: ${beach.favorite}") }
-        //favourites ble ikke endret paa etter at jeg trykket paa knapp i card
-        Log.d("BeRepo, getFavourites", "for filter: $beachlist")
         beachlist = beachlist.filter { beach -> beach.favorite }
-        //alltid tom etter
-        Log.d("BeRepo, getFavourites", "etter filter: $beachlist")
-        favouriteObservations.update {
-            beachlist
-        }
-        return beachlist*/
+        return beachlist
     }
 
 }
