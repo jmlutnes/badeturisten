@@ -22,6 +22,7 @@ class FavouritesViewModel: ViewModel() {
     private val _beachRepository: BeachRepository = BeachRepository()
     private val _osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
+    //har laget egen mutablestateflow og metode for aa observere i beachrepo
     val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavouriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(
