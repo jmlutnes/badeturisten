@@ -1,6 +1,8 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.beach
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -10,20 +12,24 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
+@RequiresApi(Build.VERSION_CODES.O)
 class BeachRepository {
     //henter fra oslo kommune repository
     val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
+
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
 
     //flows
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
+    private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
     //henter flows
     fun getBeachObservations() = beachObservations.asStateFlow()
+    fun getFavouriteObservations() = favouriteObservations.asStateFlow()
     //oppdaterer flows
     suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
@@ -71,7 +77,14 @@ class BeachRepository {
     suspend fun getFavourites(): List<Beach> {
         val observationsFromDataSource = waterTempGetData()
         var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        //beachlist.forEach { beach -> Log.d("BeRepo, getFavourites", "${beach.name}: ${beach.favorite}") }
+        //favourites endres naar jeg proever aa endre
+        Log.d("BeRepo, getFavourites", "for filter: $beachlist")
         beachlist = beachlist.filter { beach -> beach.favorite }
+        Log.d("BeRepo, getFavourites", "etter filter: $beachlist")
+        favouriteObservations.update {
+            beachlist
+        }
         return beachlist
     }
 
