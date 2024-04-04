@@ -68,19 +68,20 @@ class BeachRepository {
     suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
-        val observationsFromDataSource = waterTempGetData()
-        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        val observationsFromStateFlow = getBeachObservations()
+        var beachlist: List<Beach> = observationsFromStateFlow.value
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
     }
 
     suspend fun getFavourites(): List<Beach> {
-        val observationsFromDataSource = waterTempGetData()
-        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        val observationsFromStateFlow = getBeachObservations()
+        var beachlist: List<Beach> = observationsFromStateFlow.value
         //beachlist.forEach { beach -> Log.d("BeRepo, getFavourites", "${beach.name}: ${beach.favorite}") }
-        //favourites endres naar jeg proever aa endre
+        //favourites ble ikke endret paa etter at jeg trykket paa knapp i card
         Log.d("BeRepo, getFavourites", "for filter: $beachlist")
         beachlist = beachlist.filter { beach -> beach.favorite }
+        //alltid tom etter
         Log.d("BeRepo, getFavourites", "etter filter: $beachlist")
         favouriteObservations.update {
             beachlist
