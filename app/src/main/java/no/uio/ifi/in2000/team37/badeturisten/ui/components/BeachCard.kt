@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,8 +35,9 @@ fun beachCard(beach: Beach, navController: NavController) {
         Card(
             onClick = { navController.navigate("beachProfile/${beach.name}")},
             modifier = Modifier
-                .padding(100.dp)
-                .fillMaxWidth()
+                .padding(20.dp)
+                .fillMaxWidth(),
+                border = BorderStroke(2.dp, Color.LightGray)
                 //.wrapContentWidth(Alignment.CenterHorizontally)
 
         ) {
@@ -43,15 +45,15 @@ fun beachCard(beach: Beach, navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .background(color = Color.White)
-                    .width(300.dp)
+                    .width(400.dp)
                     .height(80.dp)
             ) {
                 Text(
                     text = beach.name,
-                   textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Normal,
+                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
