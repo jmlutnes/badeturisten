@@ -51,4 +51,3 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             }
         }
     }
-
