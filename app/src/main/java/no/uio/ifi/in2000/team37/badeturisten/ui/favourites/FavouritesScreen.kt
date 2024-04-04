@@ -23,7 +23,6 @@ fun FavouritesScreen(
 ) {
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
 
-
     val state = rememberLazyListState()
     LazyColumn(
         state = state,
