@@ -16,6 +16,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 data class SokBeachesUIState (
     val beaches: List<Beach> = listOf()
 )
+
 data class SokKommuneBeachList(
     val beachList: List<Beach> = listOf()
 )

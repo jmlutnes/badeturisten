@@ -32,26 +32,23 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
         viewModelScope.launch {
             val beachinfo = beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = osloKommuneRepository.getBeach(beachName)
+            println(osloKommuneBeachInfo)
             val lon = beachinfo?.pos?.lat?.toDouble()
             val lat = beachinfo?.pos?.lon?.toDouble()
             println("lon:$lon \nlat:$lat")
-
-/*            if (lat != null && lon != null) {
-            val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)*/
-
-            if (lat != null && lon != null) {
-                val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
-                _beachUIState.update { currentUIState ->
-                    if (beachinfo != null) {
-                        currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
-                    } else {
-                        currentUIState.copy(
-                            beach = osloKommuneBeachInfo,
-                            badevannsinfo = vannkvalitet
+            val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
+            println("badeinfo: $vannkvalitet")
+            _beachUIState.update { currentUIState ->
+                if (beachinfo != null) {
+                    currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
+                } else {
+                    currentUIState.copy(
+                        beach = osloKommuneBeachInfo,
+                        badevannsinfo = vannkvalitet
                         )
                     }
                 }
             }
         }
     }
-}
+
