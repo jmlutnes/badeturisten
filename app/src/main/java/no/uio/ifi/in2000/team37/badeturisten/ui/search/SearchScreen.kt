@@ -169,7 +169,7 @@ fun SearchScreen(
             )
 
             val filtrerte = beachesUIState.beaches.filter { strand ->
-                strand.name.contains(søkeTekst)
+                strand.name.contains(søkeTekst, ignoreCase = true)
             }
 
             LazyColumn {
