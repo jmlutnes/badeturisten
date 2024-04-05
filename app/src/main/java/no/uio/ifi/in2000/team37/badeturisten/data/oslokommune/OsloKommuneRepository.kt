@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
+import android.annotation.SuppressLint
 import android.util.Log
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
@@ -11,6 +12,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 class OsloKommuneRepository () {
     private val datasource: OsloKommuneDatasource = OsloKommuneDatasource()
     val liste: MutableList<Beach> = mutableListOf<Beach>()
+    //val sokliste: MutableList<Beach> = mutableListOf<Beach>()
 
     //Henter naermeste badested basert på soek, og gjoer nytt soek med oppdatert lokasjon til badested
     suspend fun getClass(lat: Double?, lon: Double?): jsontokotlin_kommune {
@@ -27,6 +29,47 @@ class OsloKommuneRepository () {
         return item
     }
 
+    suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
+        val item = datasource.getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
+        return item
+    }
+    @SuppressLint("SuspiciousIndentation")
+    suspend fun makeBeachesFasiliteter(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): List<Beach>  {
+        val lokalSokListe = mutableListOf<Beach>() // Lokal instans av listen
+        val verdi = getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
+        return try {
+            //Liste som skal ha alle badestedene
+
+             val features = verdi.data.geoJson.features
+            //Liste med Alle Features
+            //Itterer og hent koordinater og navn
+            //geometry -> type -> Coordinates = Koordinater
+            //properties -> popupContent -> bakers på streng før </a></h2
+            println(features)
+            features.forEach { feature ->
+                //Henter navn
+                val beachNameNotConverted: String? = feature.properties.popupContent
+                val beachNameConverted: String? =
+                    extractBeachFromHTML(beachNameNotConverted.toString())
+
+                //Henter location
+                val location = feature.geometry.coordinates
+                val lon: String = location.get(0).toString()
+                val lat: String = location.get(1).toString()
+                //println(location)
+                //println(beachNameConverted)
+                val posisjon: Pos = Pos(lat, lon)
+                // lager strand objekter og legger til i liste
+                lokalSokListe.add(Beach(beachNameConverted.toString(), posisjon, null, false))
+            }
+                return lokalSokListe
+            }
+            catch (e: Exception) {
+                Log.d("Oslo Kommune repository", "failed to make beaches")
+                Log.e("Oslo Kommune repos", e.message.toString())
+                emptyList<Beach>()
+        }
+    }
 
     suspend fun getRight(lat: Double, lon: Double): jsontokotlin_kommune {
         val item = datasource.getData(lat, lon)

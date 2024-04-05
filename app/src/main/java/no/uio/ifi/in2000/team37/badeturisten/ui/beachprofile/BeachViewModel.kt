@@ -31,10 +31,9 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
 
     init { loadBeachInfo() }
 
-    //Gammel som funker
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
-        viewModelScope.launch (Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             val beachinfo = beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lat?.toDouble()
@@ -44,10 +43,9 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             //if (lat != null && lon != null) {
             val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
             _beachUIState.update { currentUIState ->
-                if(beachinfo!=null){
+                if (beachinfo != null) {
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
-                }
-                else{
+                } else {
                     currentUIState.copy(beach = osloKommuneBeachInfo, badevannsinfo = vannkvalitet)
                 }
             }
