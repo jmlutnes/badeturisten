@@ -24,7 +24,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val beachRepository: BeachRepository = BeachRepository()
 
     private val _beachRepository: BeachRepository = BeachRepository()
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo("", "", "")))
+    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo("", "", "", "")))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
@@ -33,23 +33,23 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val beachinfo = beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lat?.toDouble()
             val lat = beachinfo?.pos?.lon?.toDouble()
             println("lon:$lon \nlat:$lat")
-             val vannkvalitet: BadevannsInfo? = _beachRepository.getVannkvalitet(lat, lon)
-                _beachUIState.update { currentUIState ->
-                    if (beachinfo != null) {
-                        currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
-                    } else {
-                        currentUIState.copy(
-                            beach = osloKommuneBeachInfo,
-                            badevannsinfo = vannkvalitet
-                        )
-                    }
+
+            //if (lat != null && lon != null) {
+            val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
+            _beachUIState.update { currentUIState ->
+                if (beachinfo != null) {
+                    currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
+                } else {
+                    currentUIState.copy(beach = osloKommuneBeachInfo, badevannsinfo = vannkvalitet)
                 }
             }
+
         }
+    }
 }
