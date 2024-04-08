@@ -1,6 +1,8 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.entur.enturjourneyplanner
+package no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner
 
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.call.receive
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
@@ -13,6 +15,7 @@ import io.ktor.serialization.gson.gson
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 
 class EnTurJourneyPlannerDataSource {
     private val client = HttpClient {
@@ -27,13 +30,13 @@ class EnTurJourneyPlannerDataSource {
     }
 
     @OptIn(InternalAPI::class)
-    suspend fun getRute(id: String): Any {
+    suspend fun getRute(id: String): jsontokotlinenturjourneyplanner {
         val graphQLQuery = """
         query MinQuery {
           stopPlace(id: "$id") {
             id
             name
-            estimatedCalls(numberOfDepartures: 10) {
+            estimatedCalls(numberOfDepartures: 2) {
               expectedDepartureTime
               destinationDisplay {
                 frontText
@@ -56,16 +59,12 @@ class EnTurJourneyPlannerDataSource {
             put("query", graphQLQuery)
         }.toString()
 
-        try {
-            val response: HttpResponse = client.post() {
+        val response: HttpResponse = client.post() {
                 contentType(ContentType.Application.Json)
                 body = requestBody
-            }
-            return response
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return "Feil under henting av data: ${e.message}"
         }
+        return response.body<jsontokotlinenturjourneyplanner>()
+
 
     }
 }

@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.entur.enturgeocode
+package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -9,8 +9,10 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.gson.gson
-import io.ktor.util.appendIfNameAbsent
-import kotlinx.serialization.json.Json
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.jsontokotlinenturgeocoder.jsontokotlinenturgeocoder
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
+
+data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
 
 class EnTurDataSource {
     private val client = HttpClient {
@@ -24,12 +26,12 @@ class EnTurDataSource {
     }
     suspend fun getData(
         navn: String
-    ): JsonToKotlinEnTurGeoCoder {
+    ): jsontokotlinenturgeocoder {
 
         val data =
-            client.get("https://api.entur.io/geocoder/v1/autocomplete?text=$navn&layers=venue\n")
+            client.get("https://api.entur.io/geocoder/v1/autocomplete?text=$navn&layers=venue")
 
-        val response = data.body<JsonToKotlinEnTurGeoCoder>()
+        val response = data.body<jsontokotlinenturgeocoder>()
         return response
     }
 }
