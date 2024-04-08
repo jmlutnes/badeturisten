@@ -36,7 +36,7 @@ class FavouritesViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             Log.d("FavViMo, ", "viMoSco.lau")
-            _beachRepository.getFavourites()
+            _beachRepository.updateFavourites(null)
             //val osloKommuneBeachInfo: List<Beach> = _osloKommuneRepository.getFavourites()
         }
     }

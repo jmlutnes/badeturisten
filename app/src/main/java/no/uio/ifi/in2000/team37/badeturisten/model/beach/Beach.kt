@@ -10,8 +10,5 @@ data class Beach(
     val airTemp: Double?
     val img: String
     */
-) {
-    var favorite: Boolean = false
-    /*var firstNameNew = favorite
-        get() = "true"*/
-}
+
+)

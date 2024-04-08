@@ -1,6 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
-import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +24,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,8 +35,9 @@ fun beachCard(beach: Beach, navController: NavController) {
         Card(
             onClick = { navController.navigate("beachProfile/${beach.name}")},
             modifier = Modifier
-                .padding(100.dp)
-                .fillMaxWidth()
+                .padding(20.dp)
+                .fillMaxWidth(),
+                border = BorderStroke(2.dp, Color.LightGray)
                 //.wrapContentWidth(Alignment.CenterHorizontally)
 
         ) {
@@ -46,15 +45,15 @@ fun beachCard(beach: Beach, navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .background(color = Color.White)
-                    .width(300.dp)
+                    .width(400.dp)
                     .height(80.dp)
             ) {
                 Text(
                     text = beach.name,
-                   textAlign = TextAlign.Center,
+                    textAlign = TextAlign.Center,
                     fontSize = 20.sp,
                     fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Normal,
+                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
