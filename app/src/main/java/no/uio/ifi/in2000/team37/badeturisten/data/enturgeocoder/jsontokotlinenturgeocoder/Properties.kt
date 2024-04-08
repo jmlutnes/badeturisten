@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.entur.enturgeocode.jsontokotlinenturgeocoder
+package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.jsontokotlinenturgeocoder
 
 
 import com.google.gson.annotations.SerializedName
@@ -6,10 +6,6 @@ import com.google.gson.annotations.SerializedName
 data class Properties(
     @SerializedName("accuracy")
     val accuracy: String,
-    @SerializedName("borough")
-    val borough: String,
-    @SerializedName("borough_gid")
-    val boroughGid: String,
     @SerializedName("category")
     val category: List<String>,
     @SerializedName("country_a")

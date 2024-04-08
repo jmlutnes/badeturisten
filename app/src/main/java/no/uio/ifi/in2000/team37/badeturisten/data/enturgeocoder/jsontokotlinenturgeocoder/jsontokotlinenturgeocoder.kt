@@ -1,9 +1,9 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.entur.enturgeocode.jsontokotlinenturgeocoder
+package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.jsontokotlinenturgeocoder
 
 
 import com.google.gson.annotations.SerializedName
 
-data class JsonToKotlinEnTurGeoCoder(
+data class jsontokotlinenturgeocoder(
     @SerializedName("bbox")
     val bbox: List<Double>,
     @SerializedName("features")
