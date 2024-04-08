@@ -4,13 +4,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
@@ -19,23 +17,19 @@ import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
 data class MetAlertsUIState(
     val alerts: List<WeatherWarning> = listOf()
 )
-data class BeachesUIState (
-    val beaches: List<Beach> = listOf()
-)
 
 data class ForecastUIState(
     val forecastNextHour: ForecastNextHour? = null
 )
 
-data class KommuneBeachList(
-    val beachList: List<Beach> = listOf()
-)
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel: ViewModel() {
@@ -51,35 +45,16 @@ class HomeViewModel: ViewModel() {
             initialValue = ForecastUIState()
         )
 
-    init {
-        viewModelScope.launch {
-            _locationForecastRepository.loadForecastNextHour()
-            _kommuneBeachList.update{
-                KommuneBeachList(osloKommuneRepository.makeBeaches(0.0,0.0))
-            }
-        }
-    }
-
     //henter strender
-    private val osloKommuneRepository = OsloKommuneRepository()
+    private val _osloKommuneRepository = OsloKommuneRepository()
     private val _beachesRepository = BeachRepository()
 
-    private val _kommuneBeachList = MutableStateFlow(KommuneBeachList())
+    var beachList: List<Beach> = listOf()
 
-    val kommuneBeachList: StateFlow<KommuneBeachList> = _kommuneBeachList.asStateFlow()
-    val beachesState: StateFlow<BeachesUIState> = _beachesRepository.getBeachObservations()
-        .map { BeachesUIState(beaches = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = BeachesUIState()
-        )
-
-    init {
+    fun reloadBeaches() {
         viewModelScope.launch {
-            _beachesRepository.loadBeaches()
-            _kommuneBeachList.update{
-                KommuneBeachList(osloKommuneRepository.makeBeaches(0.0,0.0))
+            launch {
+                beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
             }
         }
     }
@@ -96,7 +71,11 @@ class HomeViewModel: ViewModel() {
 
     init {
         viewModelScope.launch {
+            _locationForecastRepository.loadForecastNextHour()
+            _beachesRepository.loadBeaches()
             _metAlertsRepository.getWeatherWarnings()
+
+            beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
         }
     }
 }

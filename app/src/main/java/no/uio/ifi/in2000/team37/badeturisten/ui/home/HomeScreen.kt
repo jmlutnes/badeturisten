@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,7 +40,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,8 +49,6 @@ import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
-import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,
@@ -148,9 +144,12 @@ fun HomeScreen(
     navController: NavController
 ) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
-    val beachState = homeViewModel.beachesState.collectAsState().value
+    var beachList = homeViewModel.beachList
+    if (beachList.isEmpty()) {
+        homeViewModel.reloadBeaches()
+        beachList = homeViewModel.beachList
+    }
     val alertState = homeViewModel.metAlertsState.collectAsState().value
-    val oslokommuneBeachState = homeViewModel.kommuneBeachList.collectAsState().value.beachList
 
     var clicked by remember { mutableStateOf(false) }
     val imageModifier = Modifier
@@ -310,10 +309,7 @@ fun HomeScreen(
 
 
                             ) {
-                                items(beachState.beaches) { beach ->
-                                    beachCard(beach = beach, navController = navController)
-                                }
-                                items(oslokommuneBeachState) { beach ->
+                                items(beachList) { beach ->
                                     beachCard(beach = beach, navController = navController)
                                 }
                             }
