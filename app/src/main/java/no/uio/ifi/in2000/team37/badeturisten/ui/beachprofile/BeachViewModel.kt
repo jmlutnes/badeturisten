@@ -12,20 +12,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.ui.search.SokKommuneBeachList
 
 data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
 data class Bussrute(val linje: String, val navn: String)
 
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
+    //Beach
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
     private val beachRepository: BeachRepository = BeachRepository()
 
@@ -36,10 +36,10 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
         kollektivRute = mutableListOf<Bussrute>()
     ))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
-
-
+    //Oslo Kommune
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
-    private val enTurRepository: EnTurRepository = EnTurRepository(EnTurDataSource())
+    //Ruter
+    private val enTurRepositoryGeocoderRepository: EnTurGeocoderRepository = EnTurGeocoderRepository(EnTurGeocoderDataSource())
     private val enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository = EnTurJourneyPlannerRepository(
         EnTurJourneyPlannerDataSource()
     )
@@ -54,11 +54,11 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             val lon = beachinfo?.pos?.lat?.toDouble()
             val lat = beachinfo?.pos?.lon?.toDouble()
             println("lon:$lon \nlat:$lat")
-            var flereruter: MutableList<MutableList<Bussrute>>
-            //Hent kollektivrute
-            val bussstasjoner = enTurRepository.hentBussrute(beachName)
+            //Henter ID for alle bussstasjoner som finnes basert paa navn
+            val bussstasjoner = enTurRepositoryGeocoderRepository.hentBussrute(beachName)
 
-            // Bruker et Set for å unngå duplikater
+            // Henter bussruter (linje og navn) basert paa id fra stasjoner
+            // Set for ingen duplikater
             val unikeBussruter = mutableSetOf<Bussrute>()
             bussstasjoner?.bussstasjon?.forEach { stasjon ->
                 stasjon.id?.let { id ->
@@ -67,11 +67,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
                     }
                 }
             }
-
-            // Konverterer Set til MutableList hvis det er nødvendig for UI-logikken
             val alleBussruter: MutableList<Bussrute> = unikeBussruter.toMutableList()
-
-
             val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {

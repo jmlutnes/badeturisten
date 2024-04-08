@@ -137,8 +137,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                             text = "Vannkvalitet",
                                             modifier = Modifier
                                                 .padding(10.dp),
-
-                                            )
+                                        )
                                         Spacer(modifier = Modifier.width(100.dp))
                                         beach.badevannsinfo?.kvalitetInfo?.let {
                                             Text(
@@ -168,49 +167,45 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                                         .padding(10.dp)
                                                 )
                                                 //Spacer(modifier = Modifier.width(100.dp))
-
-
                                             }
                                         }
-
                                     }
 
-                                }
-
-                                Spacer(
-                                    Modifier
-                                        .height(15.dp)
-                                        .background(color = MaterialTheme.colorScheme.primaryContainer)
-                                )
-
-                                Card(
-                                    modifier = Modifier
-                                        .padding(16.dp)
-                                        .fillMaxSize()
-                                        .defaultMinSize(400.dp, 300.dp)
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .background(color = Color.White)
-                                            .fillMaxSize()
-                                            .defaultMinSize(400.dp, 300.dp)
-                                            .padding(10.dp),
-                                        //contentAlignment = Alignment.Center
-                                    ) {
-                                        Column {
-                                            Text(text = "Fasiliteter")
-                                            Spacer(modifier = Modifier.height(8.dp))
-                                            beach.badevannsinfo?.fasiliteterInfo?.let {
-                                                Text(text = it)
-                                                //Text("stjerner her?")
-                                            }
-                                                ?: Text(text = "Ingen informasjon.")
-                                        }
-                                    }
                                     Spacer(
-                                        modifier = Modifier
+                                        Modifier
+                                            .height(15.dp)
                                             .background(color = MaterialTheme.colorScheme.primaryContainer)
                                     )
+
+                                    Card(
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .fillMaxSize()
+                                            .defaultMinSize(400.dp, 300.dp)
+                                    ) {
+                                        Box(
+                                            modifier = Modifier
+                                                .background(color = Color.White)
+                                                .fillMaxSize()
+                                                .defaultMinSize(400.dp, 300.dp)
+                                                .padding(10.dp),
+                                            //contentAlignment = Alignment.Center
+                                        ) {
+                                            Column {
+                                                Text(text = "Fasiliteter")
+                                                Spacer(modifier = Modifier.height(8.dp))
+                                                beach.badevannsinfo?.fasiliteterInfo?.let {
+                                                    Text(text = it)
+                                                    //Text("stjerner her?")
+                                                }
+                                                    ?: Text(text = "Ingen informasjon.")
+                                            }
+                                        }
+                                        Spacer(
+                                            modifier = Modifier
+                                                .background(color = MaterialTheme.colorScheme.primaryContainer)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -220,4 +215,3 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
         }
     }
 }
-
