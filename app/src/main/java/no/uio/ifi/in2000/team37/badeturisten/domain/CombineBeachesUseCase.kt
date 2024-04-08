@@ -6,9 +6,10 @@ import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-class CombineBeachesUseCase {
-    private val beachRepository = BeachRepository()
-    private val osloKommuneRepository = OsloKommuneRepository()
+class CombineBeachesUseCase (
+    private val beachRepository : BeachRepository,
+    private val osloKommuneRepository : OsloKommuneRepository
+){
     private val defaultDispatcher = Dispatchers.Default
 
     suspend operator fun invoke(): List<Beach> = withContext(defaultDispatcher) {
@@ -18,13 +19,16 @@ class CombineBeachesUseCase {
         combineBeaches(beachesFromMet = beachesFromMet, beachesFromOsloKommune = beachesFromOsloKommune)
     }
 
-    // Denne metoden fjerner duplikater, og ettersom badestedene fra MET legges inn sist,
-    // vil disse alltid overskrive et badested med samme navn fra OsloKommune.
-    // Det er ønskelig, fordi badestedene fra MET inkluderer badetemperatur
-    fun combineBeaches(beachesFromMet: List<Beach>, beachesFromOsloKommune: List<Beach>): List<Beach> {
-        val combinedMap = beachesFromOsloKommune.associateBy { it.name }.toMutableMap()
+    /*
+    * This function removes duplicates by overwriting beache from MET with beaches from Oslo Kommune.
+    * When two beaches have the same name, the ones from O-K are prioritized,
+    * because they include both temperature and facilities.
+    */
 
-        beachesFromMet.forEach { beach ->
+    fun combineBeaches(beachesFromMet: List<Beach>, beachesFromOsloKommune: List<Beach>): List<Beach> {
+        val combinedMap = beachesFromMet.associateBy { it.name }.toMutableMap()
+
+        beachesFromOsloKommune.forEach { beach ->
             combinedMap[beach.name] = beach
         }
 
