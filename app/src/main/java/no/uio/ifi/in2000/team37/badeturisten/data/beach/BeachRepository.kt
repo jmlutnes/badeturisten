@@ -50,7 +50,7 @@ class BeachRepository {
                 val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
                 val position = data.header.extra.pos
 
-                liste.add(Beach(beachName, position, waterTemperature, false))
+                liste.add(Beach(beachName, position, waterTemperature))
             }
 
             return liste
@@ -68,16 +68,31 @@ class BeachRepository {
     suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
-        val observationsFromStateFlow = getBeachObservations()
-        var beachlist: List<Beach> = observationsFromStateFlow.value
+        val observationsFromDataSource = waterTempGetData()
+        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
     }
 
-    suspend fun getFavourites(): List<Beach> {
-        val observationsFromStateFlow = getBeachObservations()
+    suspend fun updateFavourites(beach: Beach?): List<Beach> {
+        val observationsFromStateFlow = getFavouriteObservations()
         var beachlist: List<Beach> = observationsFromStateFlow.value
-        //beachlist.forEach { beach -> Log.d("BeRepo, getFavourites", "${beach.name}: ${beach.favorite}") }
+        if (beach != null) {
+            beachlist = beachlist.toMutableList()
+            if (beach in beachlist) {
+                beachlist.remove(beach)
+            } else {
+                beachlist.add(beach)
+            }
+            favouriteObservations.update {
+                beachlist
+            }
+        }
+        return beachlist
+        /*// henter liste over strender
+        val observationsFromDataSource = waterTempGetData()
+        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        beachlist.forEach { beach -> Log.d("BeRepo, getFavourites", "${beach.name}: ${beach.favorite}") }
         //favourites ble ikke endret paa etter at jeg trykket paa knapp i card
         Log.d("BeRepo, getFavourites", "for filter: $beachlist")
         beachlist = beachlist.filter { beach -> beach.favorite }
@@ -86,7 +101,7 @@ class BeachRepository {
         favouriteObservations.update {
             beachlist
         }
-        return beachlist
+        return beachlist*/
     }
 
 }
