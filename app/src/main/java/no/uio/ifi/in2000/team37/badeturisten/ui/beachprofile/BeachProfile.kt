@@ -77,7 +77,7 @@ fun LottieAnimation() {
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BeachProfile(
     beachViewModel: BeachViewModel = viewModel(),
@@ -116,8 +116,8 @@ fun BeachProfile(
                     ) {
                         Box(
                             modifier = Modifier
+                                .padding(16.dp)
                                 .fillMaxSize()
-
                         ) {
                             val imageUrl = beach.badevannsinfo?.bilde ?: "https://i.ibb.co/7KSxKnD/fis.webp"
 

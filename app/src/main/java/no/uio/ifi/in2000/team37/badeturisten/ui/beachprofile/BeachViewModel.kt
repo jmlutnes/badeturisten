@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?)
+data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?, val kollektivRute: String?)
 
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
@@ -24,14 +26,15 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val beachRepository: BeachRepository = BeachRepository()
 
     private val _beachRepository: BeachRepository = BeachRepository()
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo(
+    private val _beachUIState = MutableStateFlow(BeachUIState(
         null,
-        null,
-null
-    )))
+        BadevannsInfo("", "", ""),
+        kollektivRute = null
+    ))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
+    private val enTurRepository: EnTurRepository = EnTurRepository(EnTurDataSource())
 
     init { loadBeachInfo() }
 
@@ -44,13 +47,15 @@ null
             val lat = beachinfo?.pos?.lon?.toDouble()
             println("lon:$lon \nlat:$lat")
 
-            //if (lat != null && lon != null) {
+            //Hent kollektivrute
+            val kollektivrute = enTurRepository.hentBussrute(beachName)
+
             val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
-                    currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet)
+                    currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet, kollektivrute)
                 } else {
-                    currentUIState.copy(beach = osloKommuneBeachInfo, badevannsinfo = vannkvalitet)
+                    currentUIState.copy(beach = osloKommuneBeachInfo, badevannsinfo = vannkvalitet, kollektivrute)
                 }
             }
 
