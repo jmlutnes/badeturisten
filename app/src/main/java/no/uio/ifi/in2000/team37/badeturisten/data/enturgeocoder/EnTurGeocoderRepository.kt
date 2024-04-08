@@ -2,7 +2,7 @@ package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder
 
 import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
-class EnTurRepository(val dataSource: EnTurDataSource) {
+class EnTurGeocoderRepository(val dataSource: EnTurGeocoderDataSource) {
     suspend fun getData(navn: String): String? {
         val nearestStopPlace = dataSource.getData(navn)
         val value = nearestStopPlace.features.firstOrNull()?.properties?.name

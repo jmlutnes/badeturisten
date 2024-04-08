@@ -14,7 +14,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
 data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
 
-class EnTurDataSource {
+class EnTurGeocoderDataSource {
     private val client = HttpClient {
         defaultRequest {
             url("")

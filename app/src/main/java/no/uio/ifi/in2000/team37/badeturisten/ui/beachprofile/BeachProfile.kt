@@ -224,6 +224,7 @@ fun BeachProfile(
                                                 text = it,
                                                 modifier = Modifier
                                                     .padding(10.dp),
+
                                                 )
                                             }
                                         }
