@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.entur.jsontokotlinenturjourneyplanner
+package no.uio.ifi.in2000.team37.badeturisten.data.entur.enturjourneyplanner.jsontokotlinenturjourneyplanner
 
 
 import com.google.gson.annotations.SerializedName

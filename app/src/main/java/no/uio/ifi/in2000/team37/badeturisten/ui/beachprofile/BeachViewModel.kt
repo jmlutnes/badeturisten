@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurJourneyPlannerDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurJourneyPlannerRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.enturgeocode.EnTurDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.enturjourneyplanner.EnTurJourneyPlannerDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.enturjourneyplanner.EnTurJourneyPlannerRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.enturgeocode.EnTurRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -59,7 +59,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             bussstasjoner?.bussstasjon?.forEach { stasjon ->
                 stasjon.id?.let {
                     val ruter = enTurRepositoryJourneyPlanner.hentBussruterMedId(it)
-                    kollektivruter.add(ruter ?: "")
+                    kollektivruter.add((ruter ?: "").toString())
                 }
             }
 

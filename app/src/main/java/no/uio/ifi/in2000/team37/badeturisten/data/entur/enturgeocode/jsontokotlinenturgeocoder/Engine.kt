@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.entur.jsontokotlinenturgeocoder
+package no.uio.ifi.in2000.team37.badeturisten.data.entur.enturgeocode.jsontokotlinenturgeocoder
 
 
 import com.google.gson.annotations.SerializedName
