@@ -151,7 +151,13 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                                 )
 
                                         }
-
+                                    Row() {
+                                        Text(
+                                            text = "${beach.kollektivRute}",
+                                            modifier = Modifier
+                                                .padding(top = 16.dp)
+                                        )
+                                    }
                                     }
 
                                 }

@@ -152,32 +152,35 @@ fun SearchScreen(
 ) {
     val sokResultater by sokViewModel.sokResultater.collectAsState()
     val state = rememberLazyListState()
-    val beachesUIState by homeViewModel.beachesState.collectAsState()
-    var søkeTekst by remember { mutableStateOf("") }
+    //val beachesUIState by homeViewModel.beachesState.collectAsState()
+    var sokeTekst by remember { mutableStateOf("") }
+    val beachUi = homeViewModel.beachesState.collectAsState().value
 
     Column {
         Column(modifier = Modifier
             .height(150.dp)
         ) {
             TextField(
-                value = søkeTekst,
-                onValueChange = { søkeTekst = it },
+                value = sokeTekst,
+                onValueChange = { sokeTekst = it },
                 label = { Text("Søk etter strender") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             )
 
-            val filtrerte = beachesUIState.beaches.filter { strand ->
-                strand.name.contains(søkeTekst, ignoreCase = true)
+            val filtrerte = beachUi.beaches.filter { strand ->
+                strand.name.contains(sokeTekst, ignoreCase = true)
             }
 
             LazyColumn {
                 items(filtrerte) { strand ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            navController.navigate("beachProfile/${strand.name}")
-                        }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate("beachProfile/${strand.name}")
+                            }
                             .padding(16.dp)
                     ) {
                         Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
