@@ -1,9 +1,6 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.entur
-
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
+package no.uio.ifi.in2000.team37.badeturisten.data.entur.enturgeocode
 
 
-data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
 class EnTurRepository(val dataSource: EnTurDataSource) {
     suspend fun getData(navn: String): String? {
         val nearestStopPlace = dataSource.getData(navn)
