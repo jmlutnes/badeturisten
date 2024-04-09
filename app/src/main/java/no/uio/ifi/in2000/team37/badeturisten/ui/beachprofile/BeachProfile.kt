@@ -132,7 +132,6 @@ fun BeachProfile(
                         modifier = Modifier
                             .background(color = Color.White)
                             .fillMaxSize()
-                        //.height(300.dp)
                     ) {
                         Column {
                             Row() {
