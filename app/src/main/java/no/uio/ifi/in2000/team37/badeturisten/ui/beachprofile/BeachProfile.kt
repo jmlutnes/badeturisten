@@ -161,38 +161,39 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                             modifier = Modifier
                                                 .padding(10.dp)
                                         )
-                                        Column() {
-                                            if(beach.kollektivRute.isEmpty()){
+                                    }
+                                    Column {
+                                        if (beach.kollektivRute.isEmpty()) {
+                                            Text(
+                                                text = "ingen informasjon",
+                                                modifier = Modifier
+                                                    .padding(10.dp)
+                                            )
+                                        } else {
+                                            beach.kollektivRute.forEach() {
+                                                val transport = when (it.transportMode) {
+                                                    "bus" -> "Buss"
+                                                    "water" -> "Båt"
+                                                    "rail" -> "Tog"
+                                                    "tram" -> "Trikk"
+                                                    "metro" -> "T-Bane"
+                                                    "coach" -> "Buss"
+                                                    else -> it.transportMode.replaceFirstChar { letter ->
+                                                        if (letter.isLowerCase()) letter.titlecase(
+                                                            Locale.getDefault()
+                                                        ) else letter.toString()
+                                                    }
+                                                }
                                                 Text(
-                                                    text = "ingen informasjon",
+                                                    text = "• ${transport} ${it.linje} \n${it.navn}",
                                                     modifier = Modifier
                                                         .padding(10.dp)
                                                 )
-                                            }
-                                            else{
-                                                beach.kollektivRute.forEach() {
-                                                    val transport = when (it.transportMode) {
-                                                        "bus" -> "Buss"
-                                                        "water" -> "Båt"
-                                                        "rail" -> "Tog"
-                                                        "tram" -> "Trikk"
-                                                        "metro" -> "T-Bane"
-                                                        else -> it.transportMode.replaceFirstChar { letter ->
-                                                            if (letter.isLowerCase()) letter.titlecase(
-                                                                Locale.getDefault()
-                                                            ) else letter.toString()
-                                                        }
-                                                    }
-                                                    Text(
-                                                        text = "${transport} ${it.linje}: ${it.navn}",
-                                                        modifier = Modifier
-                                                            .padding(10.dp)
-                                                    )
-                                                    //Spacer(modifier = Modifier.width(100.dp))
-                                                }
+                                                //Spacer(modifier = Modifier.width(100.dp))
                                             }
                                         }
                                     }
+
 
                                     Spacer(
                                         Modifier
