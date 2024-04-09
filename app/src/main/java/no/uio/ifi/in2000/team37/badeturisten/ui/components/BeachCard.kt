@@ -60,18 +60,7 @@ fun beachCard(beach: Beach, navController: NavController) {
                         .padding(16.dp)
                     )
                 //knapp for favoritt, endre senere
-                Button(onClick = {
-                    beach.favorite = !beach.favorite
-                    /*beach.copy(
-                        name = beach.name,
-                        pos = beach.pos,
-                        waterTemp = beach.waterTemp,
-                        favorite = !beach.favorite
-                    )*/
-                    Log.d("BeCa", "${beach.name}.favorite = ${beach.favorite}")
-                }) {
-                    Text(text = "hjerte")
-                }
+                favouriteButton(beach)
                 Text(
                     text = "Badetemperatur: ${beach.waterTemp}°C",
                     textAlign = TextAlign.Center,
