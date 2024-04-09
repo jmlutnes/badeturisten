@@ -12,14 +12,12 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-@RequiresApi(Build.VERSION_CODES.O)
 class BeachRepository {
     //henter fra oslo kommune repository
     val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
-
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
@@ -73,7 +71,6 @@ class BeachRepository {
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
     }
-
     suspend fun updateFavourites(beach: Beach?): List<Beach> {
         val observationsFromStateFlow = getFavouriteObservations()
         var beachlist: List<Beach> = observationsFromStateFlow.value
