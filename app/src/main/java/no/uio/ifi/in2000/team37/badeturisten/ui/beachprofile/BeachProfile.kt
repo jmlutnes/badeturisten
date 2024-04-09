@@ -155,18 +155,27 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                     }
                                     Row() {
                                         Text(
-                                            text = "Bussruter",
+                                            text = "Kollektivruter",
                                             modifier = Modifier
                                                 .padding(10.dp)
                                         )
                                         Column() {
-                                            beach.kollektivRute.forEach() {
+                                            if(beach.kollektivRute.isEmpty()){
                                                 Text(
-                                                    text = "${it.linje}: ${it.navn}",
+                                                    text = "ingen informasjon",
                                                     modifier = Modifier
                                                         .padding(10.dp)
                                                 )
-                                                //Spacer(modifier = Modifier.width(100.dp))
+                                            }
+                                            else{
+                                                beach.kollektivRute.forEach() {
+                                                    Text(
+                                                        text = "${it.linje}: ${it.navn}",
+                                                        modifier = Modifier
+                                                            .padding(10.dp)
+                                                    )
+                                                    //Spacer(modifier = Modifier.width(100.dp))
+                                                }
                                             }
                                         }
                                     }
