@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.favourite.FavouriteRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
@@ -19,10 +20,10 @@ data class FavouritesUIState(
 )
 @RequiresApi(Build.VERSION_CODES.O)
 class FavouritesViewModel: ViewModel() {
+/*
     private val _beachRepository: BeachRepository = BeachRepository()
     private val _osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
-    //har laget egen mutablestateflow og metode for aa observere i beachrepo
     val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavouriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(
@@ -30,14 +31,26 @@ class FavouritesViewModel: ViewModel() {
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = FavouritesUIState()
         )
+*/
 
-
+    /*
+    private val _favouriteRepository: FavouriteRepository = FavouriteRepository()
+    val favouritesState: StateFlow<FavouritesUIState> = _favouriteRepository.getObservations()
+        .map { FavouritesUIState(favourites = it) }
+        .stateIn(
+            viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = FavouritesUIState()
+        )
+    */
 
     init {
         viewModelScope.launch {
             Log.d("FavViMo, ", "viMoSco.lau")
+            /*
             _beachRepository.updateFavourites(null)
             //val osloKommuneBeachInfo: List<Beach> = _osloKommuneRepository.getFavourites()
+            */
         }
     }
 }

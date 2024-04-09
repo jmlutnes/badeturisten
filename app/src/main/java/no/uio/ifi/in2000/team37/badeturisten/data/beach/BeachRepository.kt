@@ -12,12 +12,15 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 class BeachRepository {
     //henter fra oslo kommune repository
     val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
@@ -27,6 +30,8 @@ class BeachRepository {
     private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
     //henter flows
     fun getBeachObservations() = beachObservations.asStateFlow()
+
+    //metoder for aa oppdatere flows
     fun getFavouriteObservations() = favouriteObservations.asStateFlow()
     //oppdaterer flows
     suspend fun loadBeaches() {
@@ -38,6 +43,7 @@ class BeachRepository {
         }
     }
 
+    //komponenter i metoder for aa oppdatere flows
     suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
         return try {
             //gjoer data om til liste med strender
@@ -71,6 +77,8 @@ class BeachRepository {
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
     }
+    /*
+    suspend fun getFavourites(): List<Beach> {
     suspend fun updateFavourites(beach: Beach?): List<Beach> {
         val observationsFromStateFlow = getFavouriteObservations()
         var beachlist: List<Beach> = observationsFromStateFlow.value
@@ -100,5 +108,5 @@ class BeachRepository {
         }
         return beachlist*/
     }
-
+*/
 }

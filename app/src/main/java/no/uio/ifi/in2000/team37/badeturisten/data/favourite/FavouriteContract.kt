@@ -7,8 +7,7 @@ object FavouriteContract {
         companion object {
             const val TABLE_NAME = "favorites"
             const val COLUMN_ID = "id"
-            const val COLUMN_NAME = "name"
-            // Add more columns as needed
+            const val COLUMN_BEACH = "beach"
         }
     }
 }
