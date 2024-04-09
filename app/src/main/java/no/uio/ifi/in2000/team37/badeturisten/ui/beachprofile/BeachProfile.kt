@@ -176,6 +176,7 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                                         "water" -> "Båt"
                                                         "rail" -> "Tog"
                                                         "tram" -> "Trikk"
+                                                        "metro" -> "T-Bane"
                                                         else -> it.transportMode.replaceFirstChar { letter ->
                                                             if (letter.isLowerCase()) letter.titlecase(
                                                                 Locale.getDefault()
