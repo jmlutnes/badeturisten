@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
@@ -51,12 +52,18 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             val beachinfo = beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = osloKommuneRepository.getBeach(beachName)
-            val lon = beachinfo?.pos?.lat?.toDouble()
-            val lat = beachinfo?.pos?.lon?.toDouble()
+            val lon = beachinfo?.pos?.lon?.toDouble()
+            val lat = beachinfo?.pos?.lat?.toDouble()
             println("lon:$lon \nlat:$lat")
-            //Henter ID for alle bussstasjoner som finnes basert paa navn
-            val bussstasjoner = enTurRepositoryGeocoderRepository.hentBussrute(beachName)
-
+            var bussstasjoner: Bussstasjoner? = null
+            if(lon == null || lat == null) {
+                //Henter ID for alle bussstasjoner som finner basert paa navn
+                bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
+            }
+            else{
+                //Henter ID for alle busstasjoner som finner basert paa lokasjon
+                bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
+            }
             // Henter bussruter (linje og navn) basert paa id fra stasjoner
             // Set for ingen duplikater
             val unikeBussruter = mutableSetOf<Bussrute>()
