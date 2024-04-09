@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner
 
-import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.Line
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.Bussrute
 
 class EnTurJourneyPlannerRepository (val dataSource: EnTurJourneyPlannerDataSource) {
@@ -14,7 +12,7 @@ class EnTurJourneyPlannerRepository (val dataSource: EnTurJourneyPlannerDataSour
             val ruteData: jsontokotlinenturjourneyplanner = dataSource.getRute(bussstasjonId)
             ruteData.data.stopPlace.estimatedCalls.forEach { estimatedCall ->
                 val line = estimatedCall.serviceJourney.journeyPattern.line
-                linjer.add(Bussrute(line.publicCode, line.name))
+                linjer.add(Bussrute(line.publicCode, line.name, line.transportMode))
             }
 
             return linjer

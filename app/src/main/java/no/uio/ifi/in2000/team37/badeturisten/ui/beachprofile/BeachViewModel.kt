@@ -22,7 +22,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
-data class Bussrute(val linje: String, val navn: String)
+data class Bussrute(val linje: String, val navn: String, val transportMode: String)
 
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
@@ -56,14 +56,14 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             val lat = beachinfo?.pos?.lat?.toDouble()
             println("lon:$lon \nlat:$lat")
             var bussstasjoner: Bussstasjoner? = null
-            if(lon == null || lat == null) {
+            if((lon == null) || (lat == null)) {
                 //Henter ID for alle bussstasjoner som finner basert paa navn
                 bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
             }
             else{
                 //Henter ID for alle busstasjoner som finner basert paa lokasjon
-                bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
-            }
+            bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)}
+            //}
             // Henter bussruter (linje og navn) basert paa id fra stasjoner
             // Set for ingen duplikater
             val unikeBussruter = mutableSetOf<Bussrute>()

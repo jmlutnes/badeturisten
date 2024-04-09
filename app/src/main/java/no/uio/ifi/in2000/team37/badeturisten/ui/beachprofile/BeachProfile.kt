@@ -32,12 +32,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.capitalize
 
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -169,8 +171,19 @@ fun BeachProfile(beachViewModel: BeachViewModel = viewModel(), navController: Na
                                             }
                                             else{
                                                 beach.kollektivRute.forEach() {
+                                                    val transport = when (it.transportMode) {
+                                                        "bus" -> "Buss"
+                                                        "water" -> "Båt"
+                                                        "rail" -> "Tog"
+                                                        "tram" -> "Trikk"
+                                                        else -> it.transportMode.replaceFirstChar { letter ->
+                                                            if (letter.isLowerCase()) letter.titlecase(
+                                                                Locale.getDefault()
+                                                            ) else letter.toString()
+                                                        }
+                                                    }
                                                     Text(
-                                                        text = "${it.linje}: ${it.navn}",
+                                                        text = "${transport} ${it.linje}: ${it.navn}",
                                                         modifier = Modifier
                                                             .padding(10.dp)
                                                     )
