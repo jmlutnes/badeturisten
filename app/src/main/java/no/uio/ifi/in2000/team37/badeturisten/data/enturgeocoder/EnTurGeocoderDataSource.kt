@@ -28,8 +28,8 @@ class EnTurGeocoderDataSource {
         lat: Double,
         lon: Double
     ): jsontokotlinenturgeocoder {
-        val radius = 1
-        val size = 10
+        val radius = 0.5
+        val size = 5
         val data =
             client.get("https://api.entur.io/geocoder/v1/reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
 
