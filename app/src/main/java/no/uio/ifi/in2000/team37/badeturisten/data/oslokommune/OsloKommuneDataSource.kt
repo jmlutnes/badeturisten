@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.content.ClipData
+import android.provider.DocumentsContract
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -41,10 +42,14 @@ class OsloKommuneDatasource {
         }
     }
 
-
     suspend fun skrapUrl(url: String): BadevannsInfo {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
+
+        return scrapeBeachInfoFromResponse(responseBody)
+    }
+
+    fun scrapeBeachInfoFromResponse(responseBody: String): BadevannsInfo {
         val document = Jsoup.parse(responseBody)
         val badevannskvalitetSection =
             document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo(
