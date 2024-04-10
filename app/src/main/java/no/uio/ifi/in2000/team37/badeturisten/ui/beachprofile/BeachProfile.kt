@@ -3,7 +3,9 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -36,7 +39,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
@@ -70,7 +77,7 @@ fun LottieAnimation() {
 
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun BeachProfile(
     beachViewModel: BeachViewModel = viewModel(),
@@ -108,157 +115,173 @@ fun BeachProfile(
                             .fillMaxSize()
                     ) {
                         Box(
-                            Modifier
+                            modifier = Modifier
                                 .fillMaxSize()
+
                         ) {
+                            beach.badevannsinfo?.bilde?.let { bilde ->
+                                AsyncImage(
+                                    model = bilde,
+                                    contentDescription = "Bilde fra Oslo Kommune",
+                                    contentScale = ContentScale.FillWidth,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .align(Alignment.Center)
+                                )
+                            }
+
+                            LottieAnimation()
+
                             beach.beach?.let {
                                 Text(
-                                    text = "${it.name}",
-                                    fontSize = 20.sp,
+                                    text = it.name,
+                                    fontSize = 30.sp,
                                     fontWeight = FontWeight.Bold,
+                                    style =
+                                    TextStyle(color = Color.White,
+                                        drawStyle = Stroke(width = 15f
+                                        )//join = StrokeJoin.Round)
+                                    ),
                                     modifier = Modifier
-                                        //.align(Alignment.TopCenter)
-                                        .padding(top = 16.dp)
+                                        .align(Alignment.TopCenter)
+                                        .basicMarquee()
+                                        .padding(16.dp),
                                 )
+                                Text(
+                                    text = it.name,
+                                    fontSize = 30.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black,
+                                    modifier = Modifier
+                                        .basicMarquee()
+                                        .align(Alignment.TopCenter)
+                                        .basicMarquee()
+                                        .padding(16.dp),
+
+                                style = TextStyle(color = Color.Black)
+                                    //join = StrokeJoin.Round)
+                                )
+
                             }
-                        }
-                        Box(
-                            Modifier
-                                .fillMaxSize()
-                        ) {
-                            LottieAnimation()
-                        }
-                        Box(
-                            Modifier
-                                .fillMaxSize()
-                        ) {
-                            AsyncImage(
-                                contentDescription = "Bilde fra Oslo Kommune",
-                                model = beach.badevannsinfo?.bilde,
-                                contentScale = ContentScale.FillWidth,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(
-                                        RoundedCornerShape(16.dp)
-                                    )
-                            )
                         }
                     }
                 }
 
-                Spacer(
-                    Modifier
-                        .height(15.dp)
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
-                )
-
-                Card(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
-                    border = BorderStroke(1.5.dp, Color.LightGray)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(color = Color.White)
-                            .fillMaxSize()
-                    ) {
-                        Column {
-                            Row() {
-                                Text(
-                                    text = "Badetemperatur",
-                                    fontWeight = FontWeight.SemiBold,
-                                    modifier = Modifier
-                                        .align(Alignment.Top)
-                                        .padding(10.dp),
-                                )
-                                Spacer(modifier = Modifier.width(100.dp))
-                                beach.beach?.waterTemp?.let {
-                                    Text(
-                                        text = "${it}°C",
-                                        modifier = Modifier
-                                            .padding(10.dp),
-
-                                        )
-                                } ?: Text(
-                                    text = "Ingen informasjon.",
-                                    modifier = Modifier.padding(top = 16.dp)
-                                )
-                            }
-                            Row() {
-                                Text(
-                                    text = "Vannkvalitet",
-                                    fontWeight = FontWeight.SemiBold,
-                                    modifier = Modifier
-                                        .padding(10.dp),
-
-                                    )
-                                Spacer(modifier = Modifier.width(100.dp))
-                                beach.badevannsinfo?.kvalitetInfo?.let {
-                                    Text(
-                                        text = it,
-                                        modifier = Modifier
-                                            .padding(10.dp),
-
-                                        )
-                                } ?: Text(
-                                    text = "Ingen informasjon.",
-                                    modifier = Modifier
-                                        .padding(10.dp),
-
-                                    )
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                Spacer(
-                    Modifier
-                        .height(15.dp)
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
-                )
-
-                Card(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize()
-                        .defaultMinSize(400.dp, 300.dp),
-                    border = BorderStroke(1.5.dp, Color.LightGray)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(color = Color.White)
-                            .fillMaxSize()
-                            .defaultMinSize(400.dp, 300.dp)
-                            .padding(10.dp),
-                        //contentAlignment = Alignment.Center
-                    ) {
-                        Column {
-                            Text(
-                                text = "Fasiliteter",
-                                fontWeight = FontWeight.SemiBold
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            beach.badevannsinfo?.fasiliteterInfo?.let {
-                                Text(text = it)
-                                //Text("stjerner her?")
-                            }
-                                ?: Text(text = "Ingen informasjon.")
-                        }
-                    }
                     Spacer(
-                        modifier = Modifier
+                        Modifier
+                            .height(15.dp)
                             .background(color = MaterialTheme.colorScheme.primaryContainer)
                     )
+
+                    Card(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxSize(),
+                        border = BorderStroke(1.5.dp, Color.LightGray)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .background(color = Color.White)
+                                .fillMaxSize()
+                        ) {
+                            Column {
+                                Row() {
+                                    Text(
+                                        text = "Badetemperatur",
+                                        fontWeight = FontWeight.SemiBold,
+                                        modifier = Modifier
+                                            .align(Alignment.Top)
+                                            .padding(10.dp),
+                                    )
+                                    Spacer(modifier = Modifier.width(100.dp))
+                                    beach.beach?.waterTemp?.let {
+                                        Text(
+                                            text = "${it}°C",
+                                            modifier = Modifier
+                                                .padding(10.dp),
+
+                                            )
+                                    } ?: Text(
+                                        text = "Ingen informasjon.",
+                                        modifier = Modifier.padding(top = 16.dp)
+                                    )
+                                }
+                                Row() {
+                                    Text(
+                                        text = "Vannkvalitet",
+                                        fontWeight = FontWeight.SemiBold,
+                                        modifier = Modifier
+                                            .padding(10.dp),
+
+                                        )
+                                    Spacer(modifier = Modifier.width(100.dp))
+                                    beach.badevannsinfo?.kvalitetInfo?.let {
+                                        Text(
+                                            text = it,
+                                            modifier = Modifier
+                                                .padding(10.dp),
+
+                                            )
+                                    } ?: Text(
+                                        text = "Ingen informasjon.",
+                                        modifier = Modifier
+                                            .padding(10.dp),
+
+                                        )
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                    Spacer(
+                        Modifier
+                            .height(15.dp)
+                            .background(color = MaterialTheme.colorScheme.primaryContainer)
+                    )
+
+                    Card(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxSize()
+                            .defaultMinSize(400.dp, 300.dp),
+                        border = BorderStroke(1.5.dp, Color.LightGray)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .background(color = Color.White)
+                                .fillMaxSize()
+                                .defaultMinSize(400.dp, 300.dp)
+                                .padding(10.dp),
+                            //contentAlignment = Alignment.Center
+                        ) {
+                            Column {
+                                Text(
+                                    text = "Fasiliteter",
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                                beach.badevannsinfo?.fasiliteterInfo?.let {
+                                    Text(text = it)
+                                    //Text("stjerner her?")
+                                }
+                                    ?: Text(text = "Ingen informasjon.")
+                            }
+                        }
+                        Spacer(
+                            modifier = Modifier
+                                .background(color = MaterialTheme.colorScheme.primaryContainer)
+                        )
+                    }
                 }
             }
         }
     }
-}
+
 
 
 
