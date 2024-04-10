@@ -24,11 +24,13 @@ class EnTurGeocoderDataSource {
             gson{}
         }
     }
+    //Henter stasjoner basert paa longitude og latitude. Returnerer stasjoner i omraadet
     suspend fun getDataLoc(
         lat: Double,
         lon: Double
     ): jsontokotlinenturgeocoder {
         val radius = 0.5
+        //Rediger for aa begrense antall responser
         val size = 5
         val data =
             client.get("https://api.entur.io/geocoder/v1/reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
@@ -36,6 +38,7 @@ class EnTurGeocoderDataSource {
         val response = data.body<jsontokotlinenturgeocoder>()
         return response
     }
+    //Henter stasjoner basert paa navn
     suspend fun getDataName(
         navn: String
     ): jsontokotlinenturgeocoder {
