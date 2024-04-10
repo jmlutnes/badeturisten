@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.content.ClipData
-import android.provider.DocumentsContract
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -22,6 +21,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
+import org.json.JSONArray
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
@@ -51,45 +51,29 @@ class OsloKommuneDatasource {
 
     fun scrapeBeachInfoFromResponse(responseBody: String): BadevannsInfo {
         val document = Jsoup.parse(responseBody)
-        val badevannskvalitetSection =
-            document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo(
-                "Informasjon om badevannskvalitet ble ikke funnet.",
-                "",
-                "",
-                ""
-            )
-        val title = document.title()
 
-        val generellInfo =
-            badevannskvalitetSection.select("div.ods-grid__column--12:not(:has(div))").text()
-
+        //Henter forst bathingsite
         val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
-        val forsteKvalitetsH3 =
-            kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
-        val kvalitetsInfo = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
+        //Viser kun det som er synlig (fjerne fargekode)
+        val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
+        //Resultat av vannkvalitet
+        val vannkvalitet = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
 
-        val fasiliteterBuilder = StringBuilder()
-        val fasiliteterSection = document.select("div.io-facts").firstOrNull()
-        fasiliteterSection?.let { section ->
-            val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul")
-            fasiliteterListe.select("li").forEach { li ->
-                val elementer = li.html().split("<br>").map { Jsoup.parse(it).text().trim() }
-                elementer.forEach { tekst ->
-                    if (tekst.contains("•")){
-                        fasiliteterBuilder.append("$tekst\n")
-                    }
-                    else{
-                        fasiliteterBuilder.append("• $tekst\n")
-                    }
-                }
-            }
-        }
-        val fasiliteterInfo = fasiliteterBuilder.toString().trim().ifEmpty {
-            "Ingen informasjon."
-        }
+        //fasiliteter
+        var fasiliteterInfo = document.select("div.io-facts ul li").joinToString(separator = "\n") { "• " + it.text().trim() }
+        if (fasiliteterInfo.equals("")){fasiliteterInfo = "Ingen informasjon"}
 
-        return BadevannsInfo(generellInfo, kvalitetsInfo, title, fasiliteterInfo)
+        //Bilde
+        val imageData = document.select("ods-image-carousel").attr(":images")
+        val srcStart = imageData.indexOf("\"src\":\"") + "\"src\":\"".length
+        val srcEnd = imageData.indexOf("\"", srcStart)
+        val bildeUrl =
+            imageData.substring(srcStart, srcEnd).replace("\\/", "/")
+
+        return BadevannsInfo(vannkvalitet, fasiliteterInfo, bildeUrl)
     }
+
+
 
     suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
         val badevaktUrl = if (badevakt) "&f_facilities_lifeguard=true" else ""

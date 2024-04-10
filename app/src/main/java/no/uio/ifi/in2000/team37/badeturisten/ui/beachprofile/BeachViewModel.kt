@@ -24,7 +24,11 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val beachRepository: BeachRepository = BeachRepository()
 
     private val _beachRepository: BeachRepository = BeachRepository()
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo("", "", "", "")))
+    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo(
+        "",
+        "",
+        ""
+    )))
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
