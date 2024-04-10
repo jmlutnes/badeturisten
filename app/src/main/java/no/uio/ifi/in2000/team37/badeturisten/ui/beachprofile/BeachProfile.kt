@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -33,13 +34,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
@@ -103,19 +107,45 @@ fun BeachProfile(
                             .padding(16.dp)
                             .fillMaxSize()
                     ) {
-                        beach.beach?.let {
-                            Text(
-                                text = " ${it.name} ",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                        ) {
+                            beach.beach?.let {
+                                Text(
+                                    text = "${it.name}",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier
+                                        //.align(Alignment.TopCenter)
+                                        .padding(top = 16.dp)
+                                )
+                            }
+                        }
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                        ) {
+                            LottieAnimation()
+                        }
+                        Box(
+                            Modifier
+                                .fillMaxSize()
+                        ) {
+                            AsyncImage(
+                                contentDescription = "Bilde fra Oslo Kommune",
+                                model = beach.badevannsinfo?.bilde,
+                                contentScale = ContentScale.FillWidth,
                                 modifier = Modifier
-                                    //.align(Alignment.TopCenter)
-                                    .padding(top = 16.dp)
+                                    .fillMaxWidth()
+                                    .clip(
+                                        RoundedCornerShape(16.dp)
+                                    )
                             )
                         }
-                        LottieAnimation()
                     }
                 }
+
                 Spacer(
                     Modifier
                         .height(15.dp)
