@@ -1,12 +1,14 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,6 +28,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,7 +43,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,6 +53,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import no.uio.ifi.in2000.team37.badeturisten.network.NetworkUtils
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 
@@ -143,6 +151,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = viewModel(),
     navController: NavController
 ) {
+    val context = LocalContext.current
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     var beachList = homeViewModel.beachList
     if (beachList.isEmpty()) {
@@ -164,6 +173,15 @@ fun HomeScreen(
         )
         .padding(5.dp)
         .background(Color.White)
+
+    val onBeachClicked: (String) -> Unit = { beachName: String ->
+        if (NetworkUtils.isNetworkAvail(context)) {
+            navController.navigate("beachProfile/$beachName")
+        } else {
+            Toast.makeText(context, "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer.", Toast.LENGTH_LONG).show()
+        }
+    }
+
 
     Scaffold( )
     { padding ->
@@ -310,13 +328,61 @@ fun HomeScreen(
 
                             ) {
                                 items(beachList) { beach ->
-                                    beachCard(beach = beach, navController = navController)
+                                    beachCard(beach = beach, onBeachClicked = onBeachClicked)
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+    }
+}
+@Composable
+fun beachCard(beach: Beach, onBeachClicked: (String) -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onBeachClicked(beach.name) },
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .background(color = Color.White)
+                .width(400.dp)
+                .height(80.dp)
+        ) {
+            Text(
+                text = beach.name,
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+            Text(
+                text = "Badetemperatur: ${beach.waterTemp}°C",
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.Light,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+            /*Image(
+            painter = rememberImagePainter(partyInfo.img),
+            contentDescription = partyInfo.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(120.dp)
+                .clip(CircleShape)
+        )
+
+         */
         }
     }
 }

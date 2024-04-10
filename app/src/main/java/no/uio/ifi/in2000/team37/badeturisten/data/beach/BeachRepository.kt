@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.beach
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -11,6 +12,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperat
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import no.uio.ifi.in2000.team37.badeturisten.network.NetworkUtils
 
 class BeachRepository {
     //henter fra oslo kommune repository
@@ -29,12 +31,16 @@ class BeachRepository {
     fun getBeachObservations() = beachObservations.asStateFlow()
     //oppdaterer flows
     @RequiresApi(Build.VERSION_CODES.O)
-    suspend fun loadBeaches() {
-        val observationsFromDataSource = waterTempGetData()
+    suspend fun loadBeaches(context: Context) {
+        if (NetworkUtils.isNetworkAvail(context)) {
+            val observationsFromDataSource = waterTempGetData()
 
-        //oppdaterer i homeviewmodel i stedet
-        beachObservations.update {
-            makeBeaches(observationsFromDataSource)
+            //oppdaterer i homeviewmodel i stedet
+            beachObservations.update {
+                makeBeaches(observationsFromDataSource)
+            }
+        } else {
+            Log.d("BeachRepository", "Ingen nettverkstilgjengelighet.")
         }
     }
 
