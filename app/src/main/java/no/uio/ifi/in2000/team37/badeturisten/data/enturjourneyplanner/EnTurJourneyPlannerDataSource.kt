@@ -29,6 +29,8 @@ class EnTurJourneyPlannerDataSource {
         }
     }
 
+    //Sender spoerring til EnTurJourneyPlanner or aa faa stopp basert paa id
+    //Hentet fra enTur sin GeoCoder
     @OptIn(InternalAPI::class)
     suspend fun getRute(id: String): jsontokotlinenturjourneyplanner {
         val graphQLQuery = """
