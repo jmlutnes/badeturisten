@@ -26,6 +26,7 @@ import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
 
+@Suppress("IMPLICIT_CAST_TO_ANY")
 class OsloKommuneDatasource {
     val client = HttpClient() {
         defaultRequest {
@@ -60,8 +61,24 @@ class OsloKommuneDatasource {
         val vannkvalitet = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
 
         //fasiliteter
-        var fasiliteterInfo = document.select("div.io-facts ul li").joinToString(separator = "\n") { "• " + it.text().trim() }
-        if (fasiliteterInfo.equals("")){fasiliteterInfo = "Ingen informasjon"}
+        val fasiliteterSection = document.select("div.io-facts").firstOrNull()
+        val fasiliteterBuilder = StringBuilder()
+        //Noe av teksten er formatert med • mellom punkter.
+        //Denne koden gaar gjennom og separerer steder i teksten hvor dette forekommer:
+        fasiliteterSection?.let { section ->
+            val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul li")
+            fasiliteterListe.forEach { li ->
+                val innholdMedBrErstattet = li.html().replace("<br>", "•")
+                val elementer = Jsoup.parse(innholdMedBrErstattet).text().split("•").map { it.trim() }
+                elementer.forEach { tekst ->
+                    val formattedText = tekst.removePrefix("• ").let {
+                        if (it.isNotBlank()) "• $it\n" else ""
+                    }
+                    fasiliteterBuilder.append(formattedText)
+                }
+            }
+        }
+        val fasiliteter = fasiliteterBuilder.toString().trim().ifEmpty { null }
 
         //Bilde
         val imageData = document.select("ods-image-carousel").attr(":images")
@@ -70,10 +87,10 @@ class OsloKommuneDatasource {
         val bildeUrl = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
             imageData.substring(srcStart, srcEnd).replace("\\/", "/")
         } else {
-"https://files.oaiusercontent.com/file-wP7bXTQ3FVUUBHtKXRlVyecH?se=2024-04-10T18%3A59%3A27Z&sp=r&sv=2021-08-06&sr=b&rscc=max-age%3D31536000%2C%20immutable&rscd=attachment%3B%20filename%3D59c6f467-53ab-4604-8372-4c42b0bbdd22.webp&sig=hkz9YAKHx40SOrxG6rMkE3u6zRUNsmXMWwRCfBhfbgc%3D"
+            null
         }
 
-        return BadevannsInfo(vannkvalitet, fasiliteterInfo, bildeUrl)
+        return BadevannsInfo(vannkvalitet, fasiliteter, bildeUrl)
     }
 
 
