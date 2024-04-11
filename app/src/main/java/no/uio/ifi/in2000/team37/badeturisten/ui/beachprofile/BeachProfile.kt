@@ -26,6 +26,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -42,12 +43,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -62,6 +66,7 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 
 import com.airbnb.lottie.compose.LottieAnimation
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachUIState
+import org.intellij.lang.annotations.JdkConstants
 import java.util.Locale
 
 @Composable
@@ -78,29 +83,34 @@ fun LottieAnimation() {
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Kollektiv(beach: BeachUIState) {
 //Kollektivruter
     Card(
         modifier = Modifier
             .padding(16.dp)
-            .fillMaxSize()
-            .defaultMinSize(400.dp, 300.dp),
+            .fillMaxSize(),
         border = BorderStroke(1.5.dp, Color.LightGray)
     ) {
         Box(
             modifier = Modifier
                 .background(color = Color.White)
                 .fillMaxSize()
-                .defaultMinSize(400.dp, 300.dp)
-                .padding(10.dp),
-            //contentAlignment = Alignment.Center
         ) {
-            Column {
-                Text(
-                    text = "Kollektivruter",
-                    fontWeight = FontWeight.SemiBold
-                )
+
+            Text(
+                text = "Kollektivruter",
+                modifier = Modifier
+                    .padding(10.dp),
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Column(
+                Modifier
+                    .fillMaxSize()
+            ) {
+
                 beach.kollektivRute.forEach() {
                     val transport = when (it.transportMode) {
                         "bus" -> "Buss"
@@ -115,11 +125,43 @@ fun Kollektiv(beach: BeachUIState) {
                             ) else letter.toString()
                         }
                     }
-                    Text(
-                        text = "• ${transport} ${it.linje} \n${it.navn}",
-                        modifier = Modifier
+
+                    Column(
+                        Modifier
+                            .fillMaxSize()
                             .padding(8.dp)
-                    )
+                    ) {
+                        Row(
+                            Modifier
+                                .fillMaxSize()
+                        ) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(
+                                text = "${transport} ${it.linje}",
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically),
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                        Column(
+                            Modifier
+                                .fillMaxSize()
+                        ) {
+                            Row(
+                                Modifier
+                                    .fillMaxSize()
+                            ) {
+                                Spacer(modifier = Modifier.weight(1f))
+                                Text(
+                                    text = "${it.navn}",
+                                    modifier = Modifier
+                                        .basicMarquee()
+                                        .align(Alignment.CenterVertically),
+                                    fontStyle = FontStyle.Italic
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -301,11 +343,27 @@ fun BeachProfile(
                                     text = "Fasiliteter",
                                     fontWeight = FontWeight.SemiBold
                                 )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                beach.badevannsinfo?.fasiliteterInfo?.let {
-                                    Text(text = it)
-                                    //Text("stjerner her?")
-                                }?: Text(text = "Ingen informasjon om fasiliteter for ${beach.badevannsinfo?.fasiliteterInfo}")
+                                    beach.badevannsinfo?.fasiliteterInfo?.let {
+                                        Column (
+                                            modifier = Modifier
+                                                .padding(4.dp)
+                                        ){
+                                        Text(text = it,
+                                            style = LocalTextStyle.current.merge(
+                                                TextStyle(
+                                                    lineHeight = 2.0.em,
+                                                    platformStyle = PlatformTextStyle(
+                                                        includeFontPadding = false
+                                                    ),
+                                                    lineHeightStyle = LineHeightStyle(
+                                                        alignment = LineHeightStyle.Alignment.Center,
+                                                        trim = LineHeightStyle.Trim.None
+                                                    )
+                                                )
+                                            ))
+                                        //Text("stjerner her?")
+                                    }
+                                }
                             }
                         }
                     }
