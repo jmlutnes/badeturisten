@@ -6,6 +6,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -135,7 +137,6 @@ fun BeachProfile(
     beachName: String?
 ) {
     val beach = beachViewModel.beachUIState.collectAsState().value
-    //val badeinfo = beachViewModel.UiKommune.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -234,44 +235,44 @@ fun BeachProfile(
                             .fillMaxSize()
                     ) {
                         Column {
-                            if(beach.beach?.waterTemp!=null) {
-                                Row() {
+                            if(beach.beach?.waterTemp != null) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
                                     Text(
                                         text = "Badetemperatur",
                                         fontWeight = FontWeight.SemiBold,
                                         modifier = Modifier
-                                            .align(Alignment.Top)
+                                            .align(Alignment.CenterVertically)
                                             .padding(10.dp),
                                     )
-                                    Spacer(modifier = Modifier.width(100.dp))
-                                    beach.beach?.waterTemp?.let {
-                                        Text(
-                                            text = "${it}°C",
-                                            modifier = Modifier
-                                                .padding(10.dp),
-                                        )
-                                    } ?: Text(
-                                        text = "Ingen informasjon.",
-                                        modifier = Modifier.padding(top = 16.dp)
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    Text(
+                                        text = "${beach.beach?.waterTemp}°C",
+                                        modifier = Modifier
+                                            .padding(10.dp)
+                                            .align(Alignment.CenterVertically)
                                     )
                                 }
                             }
                             if(beach.badevannsinfo?.kvalitetInfo != null){
-                                Row() {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
                                     Text(
                                         text = "Vannkvalitet",
                                         fontWeight = FontWeight.SemiBold,
                                         modifier = Modifier
-                                            .padding(10.dp),
-
+                                            .padding(10.dp)
+                                            .align(Alignment.CenterVertically)
                                         )
-                                    Spacer(modifier = Modifier.width(110.dp))
-
+                                    Spacer(modifier = Modifier.weight(1f))
                                     beach.badevannsinfo?.kvalitetInfo?.let {
                                         Text(
                                             text = it,
                                             modifier = Modifier
-                                                .padding(10.dp),
+                                                .padding(10.dp)
+                                                .align(Alignment.CenterVertically),
                                         )
                                     }
                                 }
