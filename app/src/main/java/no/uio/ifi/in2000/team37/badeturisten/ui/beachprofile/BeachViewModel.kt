@@ -17,6 +17,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDat
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepository
+
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -41,7 +42,9 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     //Oslo Kommune
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
     //Ruter
-    private val enTurRepositoryGeocoderRepository: EnTurGeocoderRepository = EnTurGeocoderRepository(EnTurGeocoderDataSource())
+    private val enTurRepositoryGeocoderRepository: EnTurGeocoderRepository = EnTurGeocoderRepository(
+        EnTurGeocoderDataSource()
+    )
     private val enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository = EnTurJourneyPlannerRepository(
         EnTurJourneyPlannerDataSource()
     )
