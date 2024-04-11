@@ -19,7 +19,9 @@ class EnTurGeocoderDataSource {
         defaultRequest {
             url("")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
+            header("ET-Client-Name", "in2000-study-application")
             }
+
         install(ContentNegotiation) {
             gson{}
         }
