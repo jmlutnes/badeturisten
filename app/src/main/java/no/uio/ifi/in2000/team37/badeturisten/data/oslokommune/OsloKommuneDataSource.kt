@@ -33,12 +33,9 @@ class OsloKommuneDatasource {
             url("")
             headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
         }
-
         install(ContentNegotiation) {
             gson {
-
                 registerTypeAdapter(ClipData.Item::class.java, ItemDeserializer())
-
             }
         }
     }
@@ -100,8 +97,7 @@ class OsloKommuneDatasource {
         val barnevennligUrl = if (barnevennlig) "&f_facilities_child_friendly=true" else ""
         val grillUrl = if (grill) "&f_facilities_grill=true" else ""
         val kioskUrl = if (kiosk) "&f_facilities_kiosk=true" else ""
-        val tilpasningUrl =
-            if (tilpasning) "&f_facilities_kiosk=true" else "" // Merk: Dette ser ut til å være en feil. Burde være en annen URL for tilpasning?
+        val tilpasningUrl = if (tilpasning) "&f_facilities_kiosk=true" else ""
         val toalettUrl = if (toalett) "&f_facilities_toilets=true" else ""
         val badebryggeUrl = if (badebrygge) "&f_facilities_diving_tower=true" else ""
 
@@ -117,18 +113,6 @@ class OsloKommuneDatasource {
 
         return response
     }
-
-        suspend fun getDataFromLoc(
-            longitude: Double?,
-            latitude: Double?
-        ): jsontokotlin_kommune { //lat og lon send med
-
-            val data =
-                client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30&address=%7B%22latitude%22:%22$latitude%22,%22longitude%22:%22$longitude%22,%22street_id%22:%22%22,%22street_name%22:%22%22,%22distance%22:2500%7D")
-
-            val response = data.body<jsontokotlin_kommune>()
-            return response
-        }
 
         suspend fun getData(
             longitude: Double?,
