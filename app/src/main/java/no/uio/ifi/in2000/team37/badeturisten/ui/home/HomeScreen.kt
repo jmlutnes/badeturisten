@@ -1,7 +1,10 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
+
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -49,6 +52,16 @@ import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.window.DialogProperties
+import androidx.wear.compose.material.ExperimentalWearMaterialApi
+import androidx.wear.compose.material.SwipeableState
+import androidx.wear.compose.material.rememberSwipeableState
+import androidx.wear.compose.material.swipeable
+import kotlinx.coroutines.launch
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,
@@ -136,7 +149,8 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
-@OptIn(ExperimentalFoundationApi::class)
+@SuppressLint("UnusedBoxWithConstraintsScope")
+@OptIn(ExperimentalFoundationApi::class, ExperimentalWearMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
@@ -152,6 +166,7 @@ fun HomeScreen(
     val alertState = homeViewModel.metAlertsState.collectAsState().value
 
     var clicked by remember { mutableStateOf(false) }
+
     val imageModifier = Modifier
         .size(100.dp)
         .clip(CircleShape)
@@ -299,14 +314,40 @@ fun HomeScreen(
                                 textAlign = TextAlign.Center
                             )
 
+                            var pullUp by remember { mutableStateOf(false) }
+                            val swipeableState = rememberSwipeableState(0)
+                            var maxHeight by remember { mutableStateOf(0f) }
                             val state = rememberLazyListState()
+                            val coroutineScope = rememberCoroutineScope()
                             LazyColumn(
+                                modifier = Modifier
+                                    .swipeable(
+                                        state = swipeableState,
+                                        anchors = mapOf(0f to 0, (maxHeight * 0.5f) to 1),
+                                        orientation = Orientation.Vertical
+                                    )
+                                    .onGloballyPositioned { coordinates ->
+                                        maxHeight = coordinates.size.height.toFloat()
+                                        if (pullUp) {
+                                            coroutineScope.launch {
+                                                swipeableState.animateTo(
+                                                    targetValue = (maxHeight * 0.5f).toInt()
+                                                    //animationSpec = spring(),
+                                                )
+                                            }
+                                        } else {
+                                            coroutineScope.launch{
+                                                swipeableState.animateTo(
+                                                    targetValue = 0
+                                                    //animationSpec = spring(),
+                                                )
+                                            }
+                                        }
+                                    },
+                                    //.padding(innerPadding)
+                                    //.background(Color.LightGray)
                                 state = state,
-                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
-                                //.padding(innerPadding)
-                                //.background(Color.LightGray)
-
-
+                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
                             ) {
                                 items(beachList) { beach ->
                                     beachCard(beach = beach, navController = navController)
