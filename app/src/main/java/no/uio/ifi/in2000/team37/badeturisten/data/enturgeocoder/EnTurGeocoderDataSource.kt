@@ -17,9 +17,8 @@ data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
 class EnTurGeocoderDataSource {
     private val client = HttpClient {
         defaultRequest {
-            url("")
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-            header("ET-Client-Name", "in2000-study-application")
+            url("https://api.entur.io/geocoder/v1/")
+            header("ET-Client-Name", "in2000study-application")
             }
 
         install(ContentNegotiation) {
@@ -35,7 +34,7 @@ class EnTurGeocoderDataSource {
         //Rediger for aa begrense antall responser
         val size = 5
         val data =
-            client.get("https://api.entur.io/geocoder/v1/reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
+            client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
 
         val response = data.body<jsontokotlinenturgeocoder>()
         return response
@@ -46,7 +45,7 @@ class EnTurGeocoderDataSource {
     ): jsontokotlinenturgeocoder {
 
         val data =
-            client.get("https://api.entur.io/geocoder/v1/autocomplete?text=$navn&layers=venue")
+            client.get("autocomplete?text=$navn&layers=venue")
 
         val response = data.body<jsontokotlinenturgeocoder>()
         return response
