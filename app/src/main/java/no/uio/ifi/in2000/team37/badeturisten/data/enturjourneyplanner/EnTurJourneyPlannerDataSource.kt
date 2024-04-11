@@ -22,7 +22,7 @@ class EnTurJourneyPlannerDataSource {
         defaultRequest {
             url("https://api.entur.io/journey-planner/v3/graphql")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
-            header("IN2000-badeturisten", "study-application")
+            header("ET-Client-Name", "in2000-study-application")
         }
         install(ContentNegotiation) {
             gson {}
