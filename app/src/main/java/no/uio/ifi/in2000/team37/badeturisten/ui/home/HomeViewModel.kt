@@ -4,10 +4,12 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.material3.Text
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.ktor.websocket.Frame
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -67,14 +69,15 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     var beachList: List<Beach> = listOf()
 
     fun reloadBeaches() {
-        if (_networkAvailable.value) {
             viewModelScope.launch {
-                launch {
+                checkNetworkAvailability()
+                if (_networkAvailable.value) {
                     beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
+                } else {
+                    Frame.Text("Ingen nettverk")
                 }
             }
         }
-    }
 
     //henter farevarsler
     private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
@@ -89,11 +92,14 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     init {
         viewModelScope.launch {
             checkNetworkAvailability()
-            _locationForecastRepository.loadForecastNextHour()
-            _beachesRepository.loadBeaches(application)
-            _metAlertsRepository.getWeatherWarnings()
-
-            beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
+            if (_networkAvailable.value) {
+                _locationForecastRepository.loadForecastNextHour()
+                _beachesRepository.loadBeaches(application)
+                _metAlertsRepository.getWeatherWarnings()
+                beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
+            } else {
+                Frame.Text("Ingen nettverk")
+            }
         }
     }
 }
