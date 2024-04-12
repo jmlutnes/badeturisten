@@ -171,7 +171,6 @@ fun HomeScreen(
             Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
-            BoxWithConstraints {
                 Column(modifier = Modifier.fillMaxHeight()) {
                     Spacer(Modifier.height(50.dp)) // 300
                     Column(
@@ -317,6 +316,5 @@ fun HomeScreen(
                     }
                 }
             }
-        }
     }
 }

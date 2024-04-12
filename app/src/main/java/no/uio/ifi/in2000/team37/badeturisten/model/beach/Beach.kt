@@ -4,7 +4,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 data class Beach(
     val name: String,
     val pos: Pos,
-    val waterTemp: Double?,
+    var waterTemp: Double?,
     var favorite: Boolean
     /*
     val badevannInfo: BadevannInfo
