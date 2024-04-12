@@ -1,5 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
+
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
@@ -49,6 +51,8 @@ import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,
@@ -136,6 +140,7 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -152,6 +157,7 @@ fun HomeScreen(
     val alertState = homeViewModel.metAlertsState.collectAsState().value
 
     var clicked by remember { mutableStateOf(false) }
+
     val imageModifier = Modifier
         .size(100.dp)
         .clip(CircleShape)
@@ -203,14 +209,17 @@ fun HomeScreen(
                                 tempText = "${forecastState.temp}°"
                                 precipitationText = "${forecastState.precipitation} mm"
                             }
+
                             Text(
-                                text = tempText,
+                                text = "Oslo" +
+                                        tempText,
                                 fontSize = 30.sp,
                                 modifier = Modifier
                                     .weight(1f)
                                     .wrapContentWidth(Alignment.Start)
                                     .padding(10.dp)
                             )
+
                             Button(
                                 onClick = {
                                     if (!clicked) {
@@ -303,11 +312,7 @@ fun HomeScreen(
                             val state = rememberLazyListState()
                             LazyColumn(
                                 state = state,
-                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
-                                //.padding(innerPadding)
-                                //.background(Color.LightGray)
-
-
+                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
                             ) {
                                 items(beachList) { beach ->
                                     beachCard(beach = beach, navController = navController)
