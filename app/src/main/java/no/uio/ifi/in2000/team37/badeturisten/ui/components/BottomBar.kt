@@ -2,6 +2,7 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
 import android.graphics.Color.parseColor
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,12 +20,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import no.uio.ifi.in2000.team37.badeturisten.network.NetworkUtils.isNetworkAvail
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BottomBar(navController: NavController) {
+    val context = LocalContext.current
     Box {
         BottomAppBar(
             containerColor = Color(parseColor("#a9c7ee")),
@@ -36,19 +40,41 @@ fun BottomBar(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                IconButton(onClick = { navController.navigate("homeScreen") }) {
+                IconButton(onClick = {
+                    if (isNetworkAvail(context)) {
+                        navController.navigate("homeScreen")
+                } else {
+                        Toast.makeText(context, "Nettverk er nødvendig for å søke.", Toast.LENGTH_LONG).show()
+                    }
+                }) {
                     Icon(
                         Icons.Filled.Home,
                         contentDescription = "Home"
                     )
                 }
-                IconButton(onClick = { navController.navigate("favoritesScreen") }) {
+                IconButton(
+                    onClick = {
+                        if (isNetworkAvail(context)) {
+                            navController.navigate("favoritesScreen")
+                        } else {
+                            Toast.makeText(context, "Nettverk er nødvendig for å søke.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                ) {
                     Icon(
                         Icons.Filled.Favorite,
                         contentDescription = "Favorite"
                     )
                 }
-                IconButton(onClick = { navController.navigate("searchScreen") }) {
+                IconButton(
+                    onClick = {
+                        if (isNetworkAvail(context)) {
+                            navController.navigate("searchScreen")
+                        } else {
+                            Toast.makeText(context, "Nettverk er nødvendig for å søke.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                ) {
                     Icon(
                         Icons.Filled.Search,
                         contentDescription = "Search"

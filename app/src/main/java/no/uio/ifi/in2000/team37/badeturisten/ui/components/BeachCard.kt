@@ -1,5 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -28,12 +31,18 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun beachCard(beach: Beach, navController: NavController) {
+fun beachCard(beach: Beach, navController: NavController, isNetworkAvail: () -> Boolean, context: Context) {
     Surface(modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer,
         ) {
         Card(
-            onClick = { navController.navigate("beachProfile/${beach.name}")},
+            onClick = {
+                if (isNetworkAvail()) {
+                    navController.navigate("beachProfile/${beach.name}")
+                } else {
+                    Toast.makeText(context, "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer for ${beach.name}.", Toast.LENGTH_LONG).show()
+                }
+            },
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxWidth(),

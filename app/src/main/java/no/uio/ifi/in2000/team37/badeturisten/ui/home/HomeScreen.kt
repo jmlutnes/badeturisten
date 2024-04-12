@@ -159,6 +159,7 @@ fun HomeScreen(
         beachList = homeViewModel.beachList
     }
     val alertState = homeViewModel.metAlertsState.collectAsState().value
+    val isNetworkAvail = { NetworkUtils.isNetworkAvail(context) }
 
     var clicked by remember { mutableStateOf(false) }
     val imageModifier = Modifier
@@ -173,14 +174,6 @@ fun HomeScreen(
         )
         .padding(5.dp)
         .background(Color.White)
-
-    val onBeachClicked: (String) -> Unit = { beachName: String ->
-        if (NetworkUtils.isNetworkAvail(context)) {
-            navController.navigate("beachProfile/$beachName")
-        } else {
-            Toast.makeText(context, "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer.", Toast.LENGTH_LONG).show()
-        }
-    }
 
 
     Scaffold( )
@@ -328,61 +321,13 @@ fun HomeScreen(
 
                             ) {
                                 items(beachList) { beach ->
-                                    beachCard(beach = beach, onBeachClicked = onBeachClicked)
+                                    beachCard(beach = beach, navController = navController, isNetworkAvail = isNetworkAvail, context = context)
                                 }
                             }
                         }
                     }
                 }
             }
-        }
-    }
-}
-@Composable
-fun beachCard(beach: Beach, onBeachClicked: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clickable { onBeachClicked(beach.name) },
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .background(color = Color.White)
-                .width(400.dp)
-                .height(80.dp)
-        ) {
-            Text(
-                text = beach.name,
-                textAlign = TextAlign.Center,
-                fontSize = 20.sp,
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
-            Text(
-                text = "Badetemperatur: ${beach.waterTemp}°C",
-                textAlign = TextAlign.Center,
-                fontSize = 16.sp,
-                fontFamily = FontFamily.Serif,
-                fontWeight = FontWeight.Light,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            /*Image(
-            painter = rememberImagePainter(partyInfo.img),
-            contentDescription = partyInfo.name,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-        )
-
-         */
         }
     }
 }
