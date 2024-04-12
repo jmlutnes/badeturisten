@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.content.ClipData
-import android.provider.DocumentsContract
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -22,22 +21,21 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
+import org.json.JSONArray
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
 
+@Suppress("IMPLICIT_CAST_TO_ANY")
 class OsloKommuneDatasource {
     val client = HttpClient() {
         defaultRequest {
             url("")
             headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
         }
-
         install(ContentNegotiation) {
             gson {
-
                 registerTypeAdapter(ClipData.Item::class.java, ItemDeserializer())
-
             }
         }
     }
@@ -51,53 +49,55 @@ class OsloKommuneDatasource {
 
     fun scrapeBeachInfoFromResponse(responseBody: String): BadevannsInfo {
         val document = Jsoup.parse(responseBody)
-        val badevannskvalitetSection =
-            document.select("div.io-bathingsite").firstOrNull() ?: return BadevannsInfo(
-                "Informasjon om badevannskvalitet ble ikke funnet.",
-                "",
-                "",
-                ""
-            )
-        val title = document.title()
 
-        val generellInfo =
-            badevannskvalitetSection.select("div.ods-grid__column--12:not(:has(div))").text()
-
+        //Henter forst bathingsite
         val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
-        val forsteKvalitetsH3 =
-            kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
-        val kvalitetsInfo = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
+        //Viser kun det som er synlig (fjerne fargekode)
+        val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
+        //Resultat av vannkvalitet
+        val vannkvalitet = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
 
-        val fasiliteterBuilder = StringBuilder()
+        //fasiliteter
         val fasiliteterSection = document.select("div.io-facts").firstOrNull()
+        val fasiliteterBuilder = StringBuilder()
+        //Noe av teksten er formatert med • mellom punkter.
+        //Denne koden gaar gjennom og separerer steder i teksten hvor dette forekommer:
         fasiliteterSection?.let { section ->
-            val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul")
-            fasiliteterListe.select("li").forEach { li ->
-                val elementer = li.html().split("<br>").map { Jsoup.parse(it).text().trim() }
+            val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul li")
+            fasiliteterListe.forEach { li ->
+                val innholdMedBrErstattet = li.html().replace("<br>", "•")
+                val elementer = Jsoup.parse(innholdMedBrErstattet).text().split("•").map { it.trim() }
                 elementer.forEach { tekst ->
-                    if (tekst.contains("•")){
-                        fasiliteterBuilder.append("$tekst\n")
+                    val formattedText = tekst.removePrefix("• ").let {
+                        if (it.isNotBlank()) "• $it\n" else ""
                     }
-                    else{
-                        fasiliteterBuilder.append("• $tekst\n")
-                    }
+                    fasiliteterBuilder.append(formattedText)
                 }
             }
         }
-        val fasiliteterInfo = fasiliteterBuilder.toString().trim().ifEmpty {
-            "Ingen informasjon."
+        val fasiliteter = fasiliteterBuilder.toString().trim().ifEmpty { null }
+
+        //Bilde
+        val imageData = document.select("ods-image-carousel").attr(":images")
+        val srcStart = imageData.indexOf("\"src\":\"") + "\"src\":\"".length
+        val srcEnd = imageData.indexOf("\"", srcStart)
+        val bildeUrl = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
+            imageData.substring(srcStart, srcEnd).replace("\\/", "/")
+        } else {
+            null
         }
 
-        return BadevannsInfo(generellInfo, kvalitetsInfo, title, fasiliteterInfo)
+        return BadevannsInfo(vannkvalitet, fasiliteter, bildeUrl)
     }
+
+
 
     suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
         val badevaktUrl = if (badevakt) "&f_facilities_lifeguard=true" else ""
         val barnevennligUrl = if (barnevennlig) "&f_facilities_child_friendly=true" else ""
         val grillUrl = if (grill) "&f_facilities_grill=true" else ""
         val kioskUrl = if (kiosk) "&f_facilities_kiosk=true" else ""
-        val tilpasningUrl =
-            if (tilpasning) "&f_facilities_kiosk=true" else "" // Merk: Dette ser ut til å være en feil. Burde være en annen URL for tilpasning?
+        val tilpasningUrl = if (tilpasning) "&f_facilities_kiosk=true" else ""
         val toalettUrl = if (toalett) "&f_facilities_toilets=true" else ""
         val badebryggeUrl = if (badebrygge) "&f_facilities_diving_tower=true" else ""
 
@@ -113,18 +113,6 @@ class OsloKommuneDatasource {
 
         return response
     }
-
-        suspend fun getDataFromLoc(
-            longitude: Double?,
-            latitude: Double?
-        ): jsontokotlin_kommune { //lat og lon send med
-
-            val data =
-                client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30&address=%7B%22latitude%22:%22$latitude%22,%22longitude%22:%22$longitude%22,%22street_id%22:%22%22,%22street_name%22:%22%22,%22distance%22:2500%7D")
-
-            val response = data.body<jsontokotlin_kommune>()
-            return response
-        }
 
         suspend fun getData(
             longitude: Double?,
