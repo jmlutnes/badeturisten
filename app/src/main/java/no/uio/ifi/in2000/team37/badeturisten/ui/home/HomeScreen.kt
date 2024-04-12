@@ -171,7 +171,6 @@ fun HomeScreen(
             Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
-            BoxWithConstraints {
                 Column(modifier = Modifier.fillMaxHeight()) {
                     Spacer(Modifier.height(50.dp)) // 300
                     Column(
@@ -204,7 +203,8 @@ fun HomeScreen(
                                 precipitationText = "${forecastState.precipitation} mm"
                             }
                             Text(
-                                text = tempText,
+                                text = "Oslo\n"+
+                                        tempText,
                                 fontSize = 30.sp,
                                 modifier = Modifier
                                     .weight(1f)
@@ -317,6 +317,6 @@ fun HomeScreen(
                     }
                 }
             }
-        }
+
     }
 }
