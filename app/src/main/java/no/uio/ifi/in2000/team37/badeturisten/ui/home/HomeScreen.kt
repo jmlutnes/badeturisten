@@ -1,5 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
+
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
@@ -49,6 +51,8 @@ import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,
@@ -136,6 +140,7 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -152,6 +157,7 @@ fun HomeScreen(
     val alertState = homeViewModel.metAlertsState.collectAsState().value
 
     var clicked by remember { mutableStateOf(false) }
+
     val imageModifier = Modifier
         .size(100.dp)
         .clip(CircleShape)
@@ -167,156 +173,154 @@ fun HomeScreen(
 
     Scaffold( )
     { padding ->
-        Column(
-            Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-        ) {
-                Column(modifier = Modifier.fillMaxHeight()) {
-                    Spacer(Modifier.height(50.dp)) // 300
-                    Column(
-                        modifier = Modifier,
-                        //.fillMaxSize()
-                        //.padding(padding),
-                        //verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+
+    }
+    Column(
+        Modifier
+            .background(MaterialTheme.colorScheme.primaryContainer)
+    ) {
+        Column(modifier = Modifier.fillMaxHeight()) {
+            Spacer(Modifier.height(50.dp)) // 300
+            Column(
+                modifier = Modifier,
+                //.fillMaxSize()
+                //.padding(padding),
+                //verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (forecastState != null) {
+                    val imageName = forecastState.symbolCode
+                    val imageID = imageMap[imageName]
+                    if (imageID != null) {
+                        val image = painterResource(id = imageID)
+                        Image(
+                            painter = image,
+                            modifier = imageModifier,
+                            alignment = Alignment.Center,
+                            contentDescription = "Værikon",
+                            contentScale = ContentScale.Fit
+                        )
+                    }
+                }
+
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    var tempText = ""
+                    var precipitationText = ""
+                    if (forecastState != null) {
+                        tempText = "${forecastState.temp}°"
+                        precipitationText = "${forecastState.precipitation} mm"
+                    }
+
+                    Text(
+                        text = "Oslo\n"+
+                                tempText,
+                        fontSize = 30.sp,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.Start)
+                            .padding(10.dp)
+                    )
+
+                    Button(
+                        onClick = {
+                            if (!clicked) {
+                                clicked = true
+                            } else {
+                                clicked = false
+                            }
+                        },
+                        modifier = Modifier
+                            //.weight(1f)
+                            //.wrapContentWidth(Alignment.End)
+                            .padding(10.dp),
+                        //alignment = Alignment.Center,
+
+
                     ) {
-                        if (forecastState != null) {
-                            val imageName = forecastState.symbolCode
-                            val imageID = imageMap[imageName]
-                            if (imageID != null) {
-                                val image = painterResource(id = imageID)
-                                Image(
-                                    painter = image,
-                                    modifier = imageModifier,
-                                    alignment = Alignment.Center,
-                                    contentDescription = "Værikon",
-                                    contentScale = ContentScale.Fit
-                                )
+                        Text(
+                            text = "Farevarsel",
+                        )
+                    }
+                    Text(
+                        text = precipitationText,
+                        fontSize = 30.sp,
+                        modifier = Modifier
+                            .weight(1f)
+                            .wrapContentWidth(Alignment.Start)
+                            .padding(10.dp)
+                    )
+                }
+
+                Column(
+                    Modifier
+                        .background(Color.Transparent)
+                ) {
+
+
+                    if (!clicked) {
+                        Card {
+                            Text(
+                                text = "Hyggelig melding. Sola skinner og alle er glade tralalalala",
+                                modifier = Modifier
+                                    .padding(20.dp)
+                            )
+
+                        }
+                    } else {
+                        var aktiveVarsler: Boolean = false
+                        LazyColumn {
+                            items(alertState.alerts) { weatherWarning ->
+                                if (MetAlertCard(weatherWarning = weatherWarning)) {
+                                    aktiveVarsler = true
+                                }
                             }
                         }
-
-                        Row(modifier = Modifier.fillMaxWidth()) {
-                            var tempText = ""
-                            var precipitationText = ""
-                            if (forecastState != null) {
-                                tempText = "${forecastState.temp}°"
-                                precipitationText = "${forecastState.precipitation} mm"
-                            }
-                            Text(
-                                text = "Oslo\n"+
-                                        tempText,
-                                fontSize = 30.sp,
+                        if (!aktiveVarsler) {
+                            Card(
                                 modifier = Modifier
-                                    .weight(1f)
-                                    .wrapContentWidth(Alignment.Start)
-                                    .padding(10.dp)
-                            )
-                            Button(
-                                onClick = {
-                                    if (!clicked) {
-                                        clicked = true
-                                    } else {
-                                        clicked = false
-                                    }
-                                },
-                                modifier = Modifier
-                                    //.weight(1f)
-                                    //.wrapContentWidth(Alignment.End)
-                                    .padding(10.dp),
-                                //alignment = Alignment.Center,
-
-
+                                    .padding(20.dp)
+                                    .fillMaxWidth()
                             ) {
                                 Text(
-                                    text = "Farevarsel",
+                                    text = "Ingen farevarsler",
+                                    modifier = Modifier
+                                        .padding(20.dp)
                                 )
-                            }
-                            Text(
-                                text = precipitationText,
-                                fontSize = 30.sp,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .wrapContentWidth(Alignment.Start)
-                                    .padding(10.dp)
-                            )
-                        }
-
-                        Column(
-                            Modifier
-                                .background(Color.Transparent)
-                        ) {
-
-
-                            if (!clicked) {
-                                Card {
-                                    Text(
-                                        text = "Hyggelig melding. Sola skinner og alle er glade tralalalala",
-                                        modifier = Modifier
-                                            .padding(20.dp)
-                                    )
-
-                                }
-                            } else {
-                                var aktiveVarsler: Boolean = false
-                                LazyColumn {
-                                    items(alertState.alerts) { weatherWarning ->
-                                        if (MetAlertCard(weatherWarning = weatherWarning)) {
-                                            aktiveVarsler = true
-                                        }
-                                    }
-                                }
-                                if (!aktiveVarsler) {
-                                    Card(
-                                        modifier = Modifier
-                                            .padding(20.dp)
-                                            .fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = "Ingen farevarsler",
-                                            modifier = Modifier
-                                                .padding(20.dp)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    Spacer(Modifier.height(70.dp)) // 300
-                    Box {
-                        Modifier
-                            //.padding(innerPadding)
-                            .background(MaterialTheme.colorScheme.primary)
-                        Column(
-                            Modifier
-                            //.padding(innerPadding)
-                        ) {
-                            Text(
-                                text = "Badesteder",
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-
-                            val state = rememberLazyListState()
-                            LazyColumn(
-                                state = state,
-                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
-                                //.padding(innerPadding)
-                                //.background(Color.LightGray)
-
-
-                            ) {
-                                items(beachList) { beach ->
-                                    beachCard(beach = beach, navController = navController)
-                                }
                             }
                         }
                     }
                 }
             }
+            Spacer(Modifier.height(70.dp)) // 300
+            Box {
+                Modifier
+                    //.padding(innerPadding)
+                    .background(MaterialTheme.colorScheme.primary)
+                Column(
+                    Modifier
+                    //.padding(innerPadding)
+                ) {
+                    Text(
+                        text = "Badesteder",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
 
+                    val state = rememberLazyListState()
+                    LazyColumn(
+                        state = state,
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                    ) {
+                        items(beachList) { beach ->
+                            beachCard(beach = beach, navController = navController)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
