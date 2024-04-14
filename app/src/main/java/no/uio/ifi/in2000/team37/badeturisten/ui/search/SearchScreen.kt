@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,8 +44,8 @@ import androidx.compose.ui.unit.sp
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
 
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 
 @Composable
@@ -146,6 +145,7 @@ fun SearchScreen(
     val sokResultater by sokViewModel.sokResultater.collectAsState()
     val state = rememberLazyListState()
     val beachList = homeViewModel.beachList
+    val beachinfo = sokViewModel.beachDetails.collectAsState().value
     var sokeTekst by remember { mutableStateOf("") }
 
     Column {
@@ -161,16 +161,21 @@ fun SearchScreen(
                     .padding(16.dp)
             )
 
-            val filtrerte = beachList.filter { strand ->
-                strand.name.contains(sokeTekst, ignoreCase = true)
+
+            val safeBeachList = beachList.value ?: emptyList()
+
+            val filtrerte = safeBeachList.filter { beach ->
+                beach.name.contains(sokeTekst, ignoreCase = true)
             }
 
             LazyColumn {
                 items(filtrerte) { strand ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            navController.navigate("beachProfile/${strand.name}")
-                        }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate("beachProfile/${strand.name}")
+                            }
                             .padding(16.dp)
                     ) {
                         Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
@@ -210,7 +215,6 @@ fun SearchScreen(
                 Modifier
                     .background(MaterialTheme.colorScheme.primaryContainer)
             ) {
-                BoxWithConstraints {
                     Column(modifier = Modifier.fillMaxHeight()) {
                         Text(
                             text = "Filtrert søk",
@@ -280,7 +284,7 @@ fun SearchScreen(
                                 .fillMaxSize()
                         ) {
                             items(sokResultater.beachList) { beach ->
-                                beachCard(beach = beach, navController = navController)
+                                badeinfoforbeachcard(beach, navController, beachinfo)
                             }
                         }
                     }
@@ -288,7 +292,7 @@ fun SearchScreen(
             }
         }
     }
-}
+
 
 
 

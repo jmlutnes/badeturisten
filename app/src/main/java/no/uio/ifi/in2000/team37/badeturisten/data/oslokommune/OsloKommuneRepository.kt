@@ -6,6 +6,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
@@ -111,11 +112,27 @@ class OsloKommuneRepository () {
         return feat
     }
 
-    fun extractBeachFromHTML(html: String): String? {
+    fun extractBeachFromHTML(html: String): String {
         val regex = Regex("<a[^>]*>([^<]*)</a>")
         val matchResult = regex.find(html)
-        return matchResult?.groups?.get(1)?.value
+        if (matchResult != null) {
+            return matchResult.groups.get(1)?.value ?: ""
+        }
+        return ""
     }
+    suspend fun finnAlleNettside(): MutableMap<String, BadeinfoForHomescreen> {
+        val lokalSokListe = mutableMapOf<String, BadeinfoForHomescreen>()
+        val features = getBadeplasser(59.91, 10.74)
+        features.forEach { feature ->
+            val beachNameNotConverted: String = feature.properties.popupContent.toString()
+            val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
+            val url = extractUrl(beachNameNotConverted)
+            val badeinfo = skrapUrl(url)
+            lokalSokListe[beachNameConverted] = BadeinfoForHomescreen(beachNameConverted, badeinfo)
+        }
+        return lokalSokListe
+    }
+
 
     suspend fun finnNettside(navn: String): BadevannsInfo? {
         val features = getBadeplasser(59.91, 10.74)

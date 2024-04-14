@@ -1,44 +1,60 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun beachCard(beach: Beach, navController: NavController) {
-    Surface(modifier = Modifier.fillMaxSize(),
+fun beachCard(
+    beach: Beach,
+    navController: NavController,
+    beachinfo: BadeinfoForHomescreen?
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer,
-        ) {
+    ) {
         Card(
-            onClick = { navController.navigate("beachProfile/${beach.name}")},
+            onClick = { navController.navigate("beachProfile/${beach.name}") },
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxWidth(),
-                border = BorderStroke(2.dp, Color.LightGray)
-                //.wrapContentWidth(Alignment.CenterHorizontally)
+            border = BorderStroke(2.dp, Color.LightGray)
+            //.wrapContentWidth(Alignment.CenterHorizontally)
 
         ) {
             Column(
@@ -48,37 +64,163 @@ fun beachCard(beach: Beach, navController: NavController) {
                     .width(400.dp)
                     .height(80.dp)
             ) {
-                Text(
-                    text = beach.name,
-                    textAlign = TextAlign.Center,
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
+                Box(Modifier.fillMaxSize()) {
+                    val imageUrl = beachinfo?.badeinfo?.bilde ?: "https://i.ibb.co/7KSxKnD/fis.webp"
+
+                    AsyncImage(
+                        model = imageUrl,
+                        contentDescription = "Bilde fra Oslo Kommune",
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .align(Alignment.Center)
                     )
-                Text(
-                    text = "Badetemperatur: ${beach.waterTemp}°C",
-                    textAlign = TextAlign.Center,
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Light,
+                    Text(
+                        text = beach.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        style =
+                        TextStyle(
+                            color = Color.Black,
+                            drawStyle = Stroke(
+                                width = 15f
+                            )//join = StrokeJoin.Round)
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .basicMarquee()
+                            .padding(16.dp),
+                    )
+                    Text(
+                        text = beach.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        modifier = Modifier
+                            .basicMarquee()
+                            .align(Alignment.TopCenter)
+                            .padding(16.dp),
+
+                        style = TextStyle(color = Color.Black)
+                        //join = StrokeJoin.Round)
+                    )
+                    if (beach.waterTemp != null) {
+                        Text(
+                            text = "Badetemperatur: ${beach.waterTemp}°C",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            style =
+                            TextStyle(
+                                color = Color.Black,
+                                drawStyle = Stroke(
+                                    width = 15f
+                                )//join = StrokeJoin.Round)
+                            ),
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .basicMarquee()
+                                .padding(16.dp),
+                        )
+                        Text(
+                            text = "Badetemperatur: ${beach.waterTemp}°C",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier
+                                .basicMarquee()
+                                .align(Alignment.BottomCenter)
+                                .padding(16.dp),
+
+                            style = TextStyle(color = Color.Black)
+                            //join = StrokeJoin.Round)
+                        )
+
+                        /*Image(
+                    painter = rememberImagePainter(partyInfo.img),
+                    contentDescription = partyInfo.name,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .size(120.dp)
+                        .clip(CircleShape)
                 )
-                /*Image(
-                painter = rememberImagePainter(partyInfo.img),
-                contentDescription = partyInfo.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-            )
 
-             */
-
+                 */
+                    }
+                }
             }
         }
     }
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun badeinfoforbeachcard(
+    beach: Beach,
+    navController: NavController,
+    beachInfoMap: Map<String, BadeinfoForHomescreen?>
+) {
+    beachInfoMap[beach.name]?.let { badeinfo ->
+        beachCard(beach = beach, navController = navController, badeinfo)
+    } ?: run {
+        Card(
+            onClick = { navController.navigate("beachProfile/${beach.name}") },
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth(),
+            border = BorderStroke(2.dp, Color.LightGray)
+            //.wrapContentWidth(Alignment.CenterHorizontally)
+
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .background(color = Color.White)
+                    .width(400.dp)
+                    .height(80.dp)
+            ) {
+                Box(Modifier.fillMaxSize()) {
+                    val imageUrl = "https://i.ibb.co/7KSxKnD/fis.webp"
+
+                    AsyncImage(
+                        model = imageUrl,
+                        contentDescription = "Bilde fra Oslo Kommune",
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .align(Alignment.Center)
+                    )
+                    Text(
+                        text = beach.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        style =
+                        TextStyle(color = Color.Black,
+                            drawStyle = Stroke(width = 15f
+                            )//join = StrokeJoin.Round)
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .basicMarquee()
+                            .padding(16.dp),
+                    )
+                    Text(
+                        text = beach.name,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        modifier = Modifier
+                            .basicMarquee()
+                            .align(Alignment.TopCenter)
+                            .padding(16.dp),
+
+                        style = TextStyle(color = Color.Black)
+                        //join = StrokeJoin.Round)
+                    )
+                }
+            }
+        }
+    }
+}
+
