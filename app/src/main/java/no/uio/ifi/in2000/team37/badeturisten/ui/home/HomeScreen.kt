@@ -142,7 +142,6 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -171,10 +170,6 @@ fun HomeScreen(
         .background(Color.White)
     LaunchedEffect(Unit) {
         homeViewModel.reloadBeaches()
-    }
-    Scaffold()
-    { padding ->
-
     }
     Column(
         Modifier
@@ -325,5 +320,3 @@ fun HomeScreen(
                 }
             }
         }
-    }
-}
