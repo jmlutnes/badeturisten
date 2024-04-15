@@ -4,18 +4,27 @@ import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import javax.inject.Inject
 
 data class SokKommuneBeachList(
     val beachList: List<Beach> = listOf()
 )
-class SokViewModel: ViewModel() {
+
+@HiltViewModel
+class SokViewModel @Inject constructor (
+   private val _osloKommuneRepository: OsloKommuneRepository,
+): ViewModel() {
     var badevakt = mutableStateOf(false)
     var barnevennlig = mutableStateOf(false)
     var grill = mutableStateOf(false)
@@ -23,8 +32,6 @@ class SokViewModel: ViewModel() {
     var tilpasning = mutableStateOf(false)
     var toalett = mutableStateOf(false)
     var badebrygge = mutableStateOf(false)
-
-    private val osloKommuneRepository = OsloKommuneRepository()
 
     private val _sokResultater = MutableStateFlow(SokKommuneBeachList())
     val sokResultater: StateFlow<SokKommuneBeachList> = _sokResultater.asStateFlow()
@@ -53,7 +60,7 @@ class SokViewModel: ViewModel() {
         badebrygge: Boolean
     ) {
         viewModelScope.launch {
-            val oppdaterteStrender = osloKommuneRepository.makeBeachesFasiliteter(
+            val oppdaterteStrender = _osloKommuneRepository.makeBeachesFasiliteter(
                 badevakt,
                 barnevennlig,
                 grill,

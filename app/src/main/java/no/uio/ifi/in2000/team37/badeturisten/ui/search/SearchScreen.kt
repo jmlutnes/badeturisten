@@ -42,6 +42,7 @@ import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -139,8 +140,8 @@ fun FilterButtons(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(
-    sokViewModel: SokViewModel = viewModel(),
-    homeViewModel: HomeViewModel = viewModel(),
+    sokViewModel: SokViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val sokResultater by sokViewModel.sokResultater.collectAsState()
@@ -210,78 +211,76 @@ fun SearchScreen(
                 Modifier
                     .background(MaterialTheme.colorScheme.primaryContainer)
             ) {
-                BoxWithConstraints {
-                    Column(modifier = Modifier.fillMaxHeight()) {
-                        Text(
-                            text = "Filtrert søk",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                        FilterButtons(
-                            badevakt = sokViewModel.badevakt.value,
-                            onBadevaktChange = {
-                                sokViewModel.updateFilterState(
-                                    "Badevakt",
-                                    !sokViewModel.badevakt.value
-                                )
-                            },
-                            barnevennlig = sokViewModel.barnevennlig.value,
-                            onBarnevennligChange = {
-                                sokViewModel.updateFilterState(
-                                    "Barnevennlig",
-                                    !sokViewModel.barnevennlig.value
-                                )
-                            },
-                            grill = sokViewModel.grill.value,
-                            onGrillChange = {
-                                sokViewModel.updateFilterState(
-                                    "Grill",
-                                    !sokViewModel.grill.value
-                                )
-                            },
-                            kiosk = sokViewModel.kiosk.value,
-                            onKioskChange = {
-                                sokViewModel.updateFilterState(
-                                    "Kiosk",
-                                    !sokViewModel.kiosk.value
-                                )
-                            },
-                            tilpasning = sokViewModel.tilpasning.value,
-                            onTilpasningChange = {
-                                sokViewModel.updateFilterState(
-                                    "Tilpasning",
-                                    !sokViewModel.tilpasning.value
-                                )
-                            },
-                            toalett = sokViewModel.toalett.value,
-                            onToalettChange = {
-                                sokViewModel.updateFilterState(
-                                    "Toalett",
-                                    !sokViewModel.toalett.value
-                                )
-                            },
-                            badebrygge = sokViewModel.badebrygge.value,
-                            onBadebryggeChange = {
-                                sokViewModel.updateFilterState(
-                                    "Badebrygge",
-                                    !sokViewModel.badebrygge.value
-                                )
-                            }
-                        )
+                Column(modifier = Modifier.fillMaxHeight()) {
+                    Text(
+                        text = "Filtrert søk",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    FilterButtons(
+                        badevakt = sokViewModel.badevakt.value,
+                        onBadevaktChange = {
+                            sokViewModel.updateFilterState(
+                                "Badevakt",
+                                !sokViewModel.badevakt.value
+                            )
+                        },
+                        barnevennlig = sokViewModel.barnevennlig.value,
+                        onBarnevennligChange = {
+                            sokViewModel.updateFilterState(
+                                "Barnevennlig",
+                                !sokViewModel.barnevennlig.value
+                            )
+                        },
+                        grill = sokViewModel.grill.value,
+                        onGrillChange = {
+                            sokViewModel.updateFilterState(
+                                "Grill",
+                                !sokViewModel.grill.value
+                            )
+                        },
+                        kiosk = sokViewModel.kiosk.value,
+                        onKioskChange = {
+                            sokViewModel.updateFilterState(
+                                "Kiosk",
+                                !sokViewModel.kiosk.value
+                            )
+                        },
+                        tilpasning = sokViewModel.tilpasning.value,
+                        onTilpasningChange = {
+                            sokViewModel.updateFilterState(
+                                "Tilpasning",
+                                !sokViewModel.tilpasning.value
+                            )
+                        },
+                        toalett = sokViewModel.toalett.value,
+                        onToalettChange = {
+                            sokViewModel.updateFilterState(
+                                "Toalett",
+                                !sokViewModel.toalett.value
+                            )
+                        },
+                        badebrygge = sokViewModel.badebrygge.value,
+                        onBadebryggeChange = {
+                            sokViewModel.updateFilterState(
+                                "Badebrygge",
+                                !sokViewModel.badebrygge.value
+                            )
+                        }
+                    )
 
-                        LazyColumn(
-                            state = state,
-                            flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            items(sokResultater.beachList) { beach ->
-                                beachCard(beach = beach, navController = navController)
-                            }
+                    LazyColumn(
+                        state = state,
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        items(sokResultater.beachList) { beach ->
+                            beachCard(beach = beach, navController = navController)
                         }
                     }
                 }

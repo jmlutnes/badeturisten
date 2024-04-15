@@ -30,6 +30,8 @@ import androidx.navigation.navArgument
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
@@ -37,8 +39,9 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("NewApi")
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

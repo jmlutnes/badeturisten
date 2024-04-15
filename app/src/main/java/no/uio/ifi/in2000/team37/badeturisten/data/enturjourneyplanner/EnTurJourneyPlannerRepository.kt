@@ -2,9 +2,13 @@ package no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner
 
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.Bussrute
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
+import javax.inject.Inject
 
-class EnTurJourneyPlannerRepository (val dataSource: EnTurJourneyPlannerDataSource) {
-    suspend fun hentBussruterMedId(bussstasjonId: String): MutableList<Bussrute>? {
+class EnTurJourneyPlannerRepository @Inject constructor (
+    override val dataSource: EnTurJourneyPlannerDataSource
+): EnTurJourneyPlannerRepository{
+    override suspend fun hentBussruterMedId(bussstasjonId: String): MutableList<Bussrute>? {
         val linjer = mutableListOf<Bussrute>() // Lokal instans av listen
 
         try {

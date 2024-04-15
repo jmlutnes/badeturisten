@@ -4,22 +4,22 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.coroutineScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
+import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
+import no.uio.ifi.in2000.team37.badeturisten.model.WeatherWarning
+
+import javax.inject.Inject
 
 data class MetAlertsUIState(
     val alerts: List<WeatherWarning> = listOf()
@@ -30,13 +30,15 @@ data class ForecastUIState(
 )
 
 
-
+@HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeViewModel: ViewModel() {
-
+class HomeViewModel @Inject constructor(
+    private val _locationForecastRepository: LocationForecastRepository,
+    private val _osloKommuneRepository: OsloKommuneRepository,
+    private val _beachesRepository: BeachRepository,
+    private val _metAlertsRepository: MetAlertsRepository
+): ViewModel() {
     //henter vaer melding
-    private val _locationForecastRepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
-
     val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
         .map { ForecastUIState(forecastNextHour = it) }
         .stateIn(
@@ -46,9 +48,6 @@ class HomeViewModel: ViewModel() {
         )
 
     //henter strender
-    private val _osloKommuneRepository = OsloKommuneRepository()
-    private val _beachesRepository = BeachRepository()
-
     var beachList: List<Beach> = listOf()
 
     fun reloadBeaches() {
@@ -60,7 +59,6 @@ class HomeViewModel: ViewModel() {
     }
 
     //henter farevarsler
-    private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
     val metAlertsState: StateFlow<MetAlertsUIState> = _metAlertsRepository.getMetAlertsObservations()
         .map { MetAlertsUIState(alerts = it) }
         .stateIn(

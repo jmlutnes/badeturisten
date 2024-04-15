@@ -53,6 +53,7 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.hilt.navigation.compose.hiltViewModel
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,
@@ -140,12 +141,11 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour

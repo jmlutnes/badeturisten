@@ -5,13 +5,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
-class LocationForecastRepository(val dataSource: LocationForecastDataSource) {
+class LocationForecastRepository(
+    override val dataSource: LocationForecastDataSource
+): LocationForecastRepository{
 
     private val forecastNextHour = MutableStateFlow<ForecastNextHour?>(null)
 
-    suspend fun loadForecastNextHour() {
+    override suspend fun loadForecastNextHour() {
         val result = dataSource.getForecastData()
 
         if (result != null) {
@@ -25,5 +28,5 @@ class LocationForecastRepository(val dataSource: LocationForecastDataSource) {
             }
         }
     }
-    fun observeForecastNextHour(): StateFlow<ForecastNextHour?> = forecastNextHour.asStateFlow()
+    override fun observeForecastNextHour(): StateFlow<ForecastNextHour?> = forecastNextHour.asStateFlow()
 }

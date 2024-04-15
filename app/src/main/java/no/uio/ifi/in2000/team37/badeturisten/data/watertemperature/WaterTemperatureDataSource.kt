@@ -12,7 +12,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class WaterTemperatureDataSource {
+class WaterTemperatureDataSource () {
     private val client = HttpClient() {
         install(ContentNegotiation) {
             gson{}
