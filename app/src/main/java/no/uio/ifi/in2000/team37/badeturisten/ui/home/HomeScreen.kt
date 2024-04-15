@@ -50,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
@@ -223,10 +224,9 @@ val imageMap = mapOf(
 )
 
 @Composable
-fun WarningIcon() {
-    val warningVector = rememberWarning()
+fun WarningIcon(warningvector: ImageVector) {
     Image(
-        imageVector = warningVector,
+        imageVector = warningvector,
         contentDescription = "Warning Icon",
         modifier = Modifier
             .size(100.dp, 100.dp)
@@ -250,6 +250,7 @@ fun HomeScreen(
     var clicked by remember { mutableStateOf(false) }
     val areActiveAlerts = remember { mutableStateOf(false) }
 
+    val warningVector = rememberWarning()
     val imageModifier = Modifier
         .size(140.dp)
         .clip(CircleShape)
@@ -406,7 +407,7 @@ fun HomeScreen(
                                                         .padding(5.dp)
                                                 ) {
                                                 }
-                                                WarningIcon()
+                                                WarningIcon(warningVector)
                                             }
                                         }
                                     }
@@ -421,7 +422,17 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-
+                        Box(){
+                            imageMap["clearsky_day"]?.let { painterResource(it)}?.let {
+                                Image(
+                                    painter = it,
+                                    modifier = imageModifier,
+                                    alignment = Alignment.TopCenter,
+                                    colorFilter = ColorFilter.tint(Color.White),
+                                    contentDescription = "Laster værikon",
+                                    contentScale = ContentScale.Fit,
+                                )
+                            }
                             if (forecastState != null) {
                                 val imageName = forecastState.symbolCode
                                 val imageID = imageMap[imageName]
@@ -434,11 +445,14 @@ fun HomeScreen(
                                         contentDescription = "Værikon",
                                         contentScale = ContentScale.Fit,
                                     )
+
                                 }
+                            }
                             }
                         }
                     }
                 }
+
 
 
                 Column(
