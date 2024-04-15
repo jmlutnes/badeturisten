@@ -68,11 +68,13 @@ fun CustomToggleButton(
         ),
         modifier = modifier
     ) {
-        Text(text, modifier = Modifier,
-        fontSize = 10.sp
+        Text(
+            text, modifier = Modifier,
+            fontSize = 10.sp
         )
     }
 }
+
 @Composable
 fun FilterButtons(
     badevakt: Boolean, onBadevaktChange: () -> Unit,
@@ -155,147 +157,188 @@ fun SearchScreen(
     val isNetworkAvail = { NetworkUtils.isNetworkAvail(context) }
 
     Column {
-        Column(modifier = Modifier
-            .height(150.dp)
-        ) {
-            TextField(
-                value = sokeTekst,
-                onValueChange = { sokeTekst = it },
-                label = { Text("Søk etter strender") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
-
-            val filtrerte = beachList.filter { strand ->
-                strand.name.contains(sokeTekst, ignoreCase = true)
-            }
-
-            LazyColumn {
-                items(filtrerte) { strand ->
-                    Row(
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            if (isNetworkAvail()) {
-                                navController.navigate("beachProfile/${strand.name}")
-                            } else {
-                                Toast.makeText(context, "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer for ${strand.name}.", Toast.LENGTH_LONG).show()
-                            }
-                        }
-                            .padding(16.dp)
-                    ) {
-                        Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
-                        Spacer(Modifier.weight(1f))
-                        strand.waterTemp?.let {
-                            Text(
-                                text = "Vann temp: $it°C",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    }
-                }
-            }
-        }
-        Column {
-            LaunchedEffect(
-                sokViewModel.badevakt.value,
-                sokViewModel.barnevennlig.value,
-                sokViewModel.grill.value,
-                sokViewModel.kiosk.value,
-                sokViewModel.tilpasning.value,
-                sokViewModel.toalett.value,
-                sokViewModel.badebrygge.value
-            ) {
-                sokViewModel.loadBeachesByFilter(
-                    sokViewModel.badevakt.value,
-                    sokViewModel.barnevennlig.value,
-                    sokViewModel.grill.value,
-                    sokViewModel.kiosk.value,
-                    sokViewModel.tilpasning.value,
-                    sokViewModel.toalett.value,
-                    sokViewModel.badebrygge.value
-                )
-            }
-
+        if (isNetworkAvail()) {
             Column(
-                Modifier
-                    .background(MaterialTheme.colorScheme.primaryContainer)
+                modifier = Modifier
+                    .height(150.dp)
             ) {
-                BoxWithConstraints {
-                    Column(modifier = Modifier.fillMaxHeight()) {
-                        Text(
-                            text = "Filtrert søk",
+                TextField(
+                    value = sokeTekst,
+                    onValueChange = { sokeTekst = it },
+                    label = { Text("Søk etter strender") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+
+                val filtrerte = beachList.filter { strand ->
+                    strand.name.contains(sokeTekst, ignoreCase = true)
+                }
+
+                LazyColumn {
+                    items(filtrerte) { strand ->
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                        FilterButtons(
-                            badevakt = sokViewModel.badevakt.value,
-                            onBadevaktChange = {
-                                sokViewModel.updateFilterState(
-                                    "Badevakt",
-                                    !sokViewModel.badevakt.value
-                                )
-                            },
-                            barnevennlig = sokViewModel.barnevennlig.value,
-                            onBarnevennligChange = {
-                                sokViewModel.updateFilterState(
-                                    "Barnevennlig",
-                                    !sokViewModel.barnevennlig.value
-                                )
-                            },
-                            grill = sokViewModel.grill.value,
-                            onGrillChange = {
-                                sokViewModel.updateFilterState(
-                                    "Grill",
-                                    !sokViewModel.grill.value
-                                )
-                            },
-                            kiosk = sokViewModel.kiosk.value,
-                            onKioskChange = {
-                                sokViewModel.updateFilterState(
-                                    "Kiosk",
-                                    !sokViewModel.kiosk.value
-                                )
-                            },
-                            tilpasning = sokViewModel.tilpasning.value,
-                            onTilpasningChange = {
-                                sokViewModel.updateFilterState(
-                                    "Tilpasning",
-                                    !sokViewModel.tilpasning.value
-                                )
-                            },
-                            toalett = sokViewModel.toalett.value,
-                            onToalettChange = {
-                                sokViewModel.updateFilterState(
-                                    "Toalett",
-                                    !sokViewModel.toalett.value
-                                )
-                            },
-                            badebrygge = sokViewModel.badebrygge.value,
-                            onBadebryggeChange = {
-                                sokViewModel.updateFilterState(
-                                    "Badebrygge",
-                                    !sokViewModel.badebrygge.value
-                                )
-                            }
-                        )
-
-                        LazyColumn(
-                            state = state,
-                            flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                            modifier = Modifier
-                                .fillMaxSize()
+                                .clickable {
+                                    if (isNetworkAvail()) {
+                                        navController.navigate("beachProfile/${strand.name}")
+                                    } else {
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer for ${strand.name}.",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                                .padding(16.dp)
                         ) {
-                            items(sokResultater.beachList) { beach ->
-                                beachCard(beach = beach, navController = navController, isNetworkAvail = isNetworkAvail, context = context)
+                            Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
+                            Spacer(Modifier.weight(1f))
+                            strand.waterTemp?.let {
+                                Text(
+                                    text = "Vann temp: $it°C",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     }
                 }
             }
+            Column {
+                if (isNetworkAvail()) {
+                    LaunchedEffect(
+                        sokViewModel.badevakt.value,
+                        sokViewModel.barnevennlig.value,
+                        sokViewModel.grill.value,
+                        sokViewModel.kiosk.value,
+                        sokViewModel.tilpasning.value,
+                        sokViewModel.toalett.value,
+                        sokViewModel.badebrygge.value
+                    ) {
+                        sokViewModel.loadBeachesByFilter(
+                            sokViewModel.badevakt.value,
+                            sokViewModel.barnevennlig.value,
+                            sokViewModel.grill.value,
+                            sokViewModel.kiosk.value,
+                            sokViewModel.tilpasning.value,
+                            sokViewModel.toalett.value,
+                            sokViewModel.badebrygge.value
+                        )
+                    }
+                } else {
+                    Toast
+                        .makeText(
+                            context,
+                            "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer.",
+                            Toast.LENGTH_LONG
+                        )
+                        .show()
+                }
+                Column(
+                    Modifier
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                ) {
+                    if (isNetworkAvail()) {
+                        Column(modifier = Modifier.fillMaxHeight()) {
+                            Text(
+                                text = "Filtrert søk",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                            FilterButtons(
+                                badevakt = sokViewModel.badevakt.value,
+                                onBadevaktChange = {
+                                    sokViewModel.updateFilterState(
+                                        "Badevakt",
+                                        !sokViewModel.badevakt.value
+                                    )
+                                },
+                                barnevennlig = sokViewModel.barnevennlig.value,
+                                onBarnevennligChange = {
+                                    sokViewModel.updateFilterState(
+                                        "Barnevennlig",
+                                        !sokViewModel.barnevennlig.value
+                                    )
+                                },
+                                grill = sokViewModel.grill.value,
+                                onGrillChange = {
+                                    sokViewModel.updateFilterState(
+                                        "Grill",
+                                        !sokViewModel.grill.value
+                                    )
+                                },
+                                kiosk = sokViewModel.kiosk.value,
+                                onKioskChange = {
+                                    sokViewModel.updateFilterState(
+                                        "Kiosk",
+                                        !sokViewModel.kiosk.value
+                                    )
+                                },
+                                tilpasning = sokViewModel.tilpasning.value,
+                                onTilpasningChange = {
+                                    sokViewModel.updateFilterState(
+                                        "Tilpasning",
+                                        !sokViewModel.tilpasning.value
+                                    )
+                                },
+                                toalett = sokViewModel.toalett.value,
+                                onToalettChange = {
+                                    sokViewModel.updateFilterState(
+                                        "Toalett",
+                                        !sokViewModel.toalett.value
+                                    )
+                                },
+                                badebrygge = sokViewModel.badebrygge.value,
+                                onBadebryggeChange = {
+                                    sokViewModel.updateFilterState(
+                                        "Badebrygge",
+                                        !sokViewModel.badebrygge.value
+                                    )
+                                }
+                            )
+
+                            LazyColumn(
+                                state = state,
+                                flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                items(sokResultater.beachList) { beach ->
+                                    beachCard(
+                                        beach = beach,
+                                        navController = navController,
+                                        isNetworkAvail = isNetworkAvail,
+                                        context = context
+                                    )
+                                }
+                            }
+                        }
+                    } else {
+                        Toast
+                            .makeText(
+                                context,
+                                "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer.",
+                                Toast.LENGTH_LONG
+                            )
+                            .show()
+                    }
+                }
+            }
+        } else {
+            Toast
+                .makeText(
+                    context,
+                    "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer.",
+                    Toast.LENGTH_LONG
+                )
+                .show()
         }
     }
 }
