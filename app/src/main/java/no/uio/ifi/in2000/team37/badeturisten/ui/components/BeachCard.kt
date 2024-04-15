@@ -59,7 +59,7 @@ fun beachCard(
                     .fillMaxSize()
             ) {
                 Box(Modifier.fillMaxSize()) {
-                    val imageUrl = beachinfo?.badeinfo?.bilde ?: "https://i.ibb.co/7KSxKnD/fis.webp"
+                    val imageUrl = beachinfo?.badeinfo?.bilde ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
 
                     AsyncImage(
                         model = imageUrl,
@@ -171,7 +171,7 @@ fun badeinfoforbeachcard(
                     .fillMaxSize()
             ) {
                 Box(Modifier.fillMaxSize()) {
-                    val imageUrl = "https://i.ibb.co/7KSxKnD/fis.webp"
+                    val imageUrl = "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
 
                     AsyncImage(
                         model = imageUrl,
