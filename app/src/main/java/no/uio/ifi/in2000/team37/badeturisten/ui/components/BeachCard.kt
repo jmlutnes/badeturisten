@@ -31,14 +31,14 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 fun beachCard(beach: Beach, navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primaryContainer,
-        ) {
+    ) {
         Card(
             onClick = { navController.navigate("beachProfile/${beach.name}")},
             modifier = Modifier
                 .padding(20.dp)
                 .fillMaxWidth(),
-                border = BorderStroke(2.dp, Color.LightGray)
-                //.wrapContentWidth(Alignment.CenterHorizontally)
+            border = BorderStroke(2.dp, Color.LightGray)
+            //.wrapContentWidth(Alignment.CenterHorizontally)
 
         ) {
             Column(
@@ -57,9 +57,7 @@ fun beachCard(beach: Beach, navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                    )
-                //knapp for favoritt, endre senere
-                favouriteButton(beach)
+                )
                 Text(
                     text = "Badetemperatur: ${beach.waterTemp}°C",
                     textAlign = TextAlign.Center,

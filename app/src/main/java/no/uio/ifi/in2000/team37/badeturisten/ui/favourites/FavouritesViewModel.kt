@@ -33,24 +33,19 @@ class FavouritesViewModel: ViewModel() {
         )
 */
 
-    /*
-    private val _favouriteRepository: FavouriteRepository = FavouriteRepository()
-    val favouritesState: StateFlow<FavouritesUIState> = _favouriteRepository.getObservations()
+    private val _beachrepository: BeachRepository = BeachRepository()
+    val favouritesState: StateFlow<FavouritesUIState> = _beachrepository.getFavouriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(
             viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = FavouritesUIState()
         )
-    */
 
     init {
         viewModelScope.launch {
-            Log.d("FavViMo, ", "viMoSco.lau")
-            /*
-            _beachRepository.updateFavourites(null)
+            _beachrepository.updateFavourites(null)
             //val osloKommuneBeachInfo: List<Beach> = _osloKommuneRepository.getFavourites()
-            */
         }
     }
 }

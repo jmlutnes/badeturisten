@@ -12,9 +12,6 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 class OsloKommuneRepository () {
     private val datasource: OsloKommuneDatasource = OsloKommuneDatasource()
     val liste: MutableList<Beach> = mutableListOf<Beach>()
-    //val sokliste: MutableList<Beach> = mutableListOf<Beach>()
-
-    //Henter naermeste badested basert på soek, og gjoer nytt soek med oppdatert lokasjon til badested
     suspend fun getClass(lat: Double?, lon: Double?): jsontokotlin_kommune {
         val item = datasource.getData(lat, lon)
         val feat = item.meta.inputs.items.firstOrNull()?.value
@@ -38,8 +35,6 @@ class OsloKommuneRepository () {
         val lokalSokListe = mutableListOf<Beach>() // Lokal instans av listen
         val verdi = getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
         return try {
-            //Liste som skal ha alle badestedene
-
              val features = verdi.data.geoJson.features
             //Liste med Alle Features
             //Itterer og hent koordinater og navn
@@ -56,10 +51,7 @@ class OsloKommuneRepository () {
                 val location = feature.geometry.coordinates
                 val lon: String = location.get(0).toString()
                 val lat: String = location.get(1).toString()
-                //println(location)
-                //println(beachNameConverted)
                 val posisjon: Pos = Pos(lat, lon)
-                // lager strand objekter og legger til i liste
                 lokalSokListe.add(Beach(beachNameConverted.toString(), posisjon, null))
             }
                 return lokalSokListe
@@ -99,7 +91,6 @@ class OsloKommuneRepository () {
             println("Ingen URL funnet.")
         }
         val skrapOsloKommune = nynettsideUrl?.let { skrapUrl(it) }
-        //println("Skrapt innhold: $skrapOsloKommune")
         return skrapOsloKommune
     }
 
@@ -160,10 +151,7 @@ class OsloKommuneRepository () {
                     val location = feature.geometry.coordinates
                     val lon: String = location.get(0).toString()
                     val lat: String = location.get(1).toString()
-                    //println(location)
-                    //println(beachNameConverted)
                     val posisjon: Pos = Pos(lat, lon)
-                    // lager strand objekter og legger til i liste
                     liste.add(Beach(beachNameConverted.toString(), posisjon, null))
                 }
                 //LAGER DATAKLASSE MED ALLE BEACHES
@@ -177,8 +165,6 @@ class OsloKommuneRepository () {
         }
 
         suspend fun getBeach(beachName: String): Beach? {
-            //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
-            //val observationsFromDataSource = datasource.getData(59.91, 10.74)
             var beachlist: List<Beach> = makeBeaches(59.91, 10.74)
             beachlist = beachlist.filter { beach -> beach.name == beachName }
             return beachlist.firstOrNull()

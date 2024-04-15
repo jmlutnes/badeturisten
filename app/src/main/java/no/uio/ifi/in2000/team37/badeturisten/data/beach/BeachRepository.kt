@@ -25,8 +25,12 @@ class BeachRepository {
 
     //flows
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
+    private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
+    var beachlist: MutableList<Beach> = mutableListOf<Beach>()
     //henter flows
     fun getBeachObservations() = beachObservations.asStateFlow()
+    fun getFavouriteObservations() = favouriteObservations.asStateFlow()
+
     //oppdaterer flows
     suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
@@ -47,7 +51,7 @@ class BeachRepository {
                 val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
                 val position = data.header.extra.pos
 
-                liste.add(Beach(beachName, position, waterTemperature, false))
+                liste.add(Beach(beachName, position, waterTemperature))
             }
 
             return liste
@@ -56,10 +60,6 @@ class BeachRepository {
             Log.e("beach repository", e.message.toString())
             emptyList<Beach>()
         }
-    }
-
-    suspend fun getVannkvalitet(lat: Double?, lon: Double?): BadevannsInfo? {
-        return osloKommuneRepository.getVannkvalitetLoc(lat = lat, lon = lon)
     }
 
     suspend fun getBeach(beachName: String): Beach? {
@@ -71,11 +71,16 @@ class BeachRepository {
         return beachlist.firstOrNull()
     }
 
-    suspend fun getFavourites(): List<Beach> {
-        val observationsFromDataSource = waterTempGetData()
-        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
-        beachlist = beachlist.filter { beach -> beach.favorite }
-        return beachlist
+     fun updateFavourites(beach: Beach?) {
+         if (beach != null) {
+             if (beach in beachlist) {
+                 beachlist.remove(beach)
+             }else {
+                 beachlist.add(beach)
+             }
+         }
+        favouriteObservations.update {
+            beachlist
+        }
     }
-
 }
