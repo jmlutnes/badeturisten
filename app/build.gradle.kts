@@ -55,7 +55,6 @@ android {
 dependencies {
     implementation("com.google.android.datatransport:transport-runtime:3.2.0")
     implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.wear.compose:compose-material:1.3.1")
     val ktor_version = "2.3.8"
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-android:$ktor_version")
