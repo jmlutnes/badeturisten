@@ -50,7 +50,6 @@ fun beachCard(
                 .padding(vertical = 10.dp, horizontal = 55.dp)
                 .fillMaxWidth()
                 .height(150.dp),
-            border = BorderStroke(2.dp, Color.LightGray)
 
         ) {
             Column(
@@ -162,7 +161,6 @@ fun badeinfoforbeachcard(
                 .padding(vertical = 10.dp, horizontal = 55.dp)
                 .fillMaxWidth()
                 .height(150.dp),
-            border = BorderStroke(2.dp, Color.LightGray)
 
         ) {
             Column(

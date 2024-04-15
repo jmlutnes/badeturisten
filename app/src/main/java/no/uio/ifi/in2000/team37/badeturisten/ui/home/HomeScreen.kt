@@ -28,8 +28,10 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -68,6 +70,8 @@ import androidx.wear.compose.material.MaterialTheme.colors
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+
 @Composable
 fun rememberWarning(): ImageVector {
     return remember {
@@ -130,19 +134,7 @@ fun rememberWarning(): ImageVector {
         }.build()
     }
 }
-@Composable
-fun WarningIcon() {
-    val warningVector = rememberWarning()
-    Image(
-        imageVector = warningVector,
-        contentDescription = "Warning Icon",
-        modifier = Modifier
-            .size(100.dp, 100.dp)
-            .background(Color.Transparent),
-        contentScale = ContentScale.Fit
 
-    )
-}
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,
@@ -230,6 +222,19 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
+@Composable
+fun WarningIcon() {
+    val warningVector = rememberWarning()
+    Image(
+        imageVector = warningVector,
+        contentDescription = "Warning Icon",
+        modifier = Modifier
+            .size(100.dp, 100.dp)
+            .background(Color.Transparent),
+        contentScale = ContentScale.Fit
+
+    )
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -243,6 +248,7 @@ fun HomeScreen(
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
     var clicked by remember { mutableStateOf(false) }
+    val areActiveAlerts = remember { mutableStateOf(false) }
 
     val imageModifier = Modifier
         .size(140.dp)
@@ -260,6 +266,12 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         homeViewModel.reloadBeaches()
     }
+
+
+    LaunchedEffect(alertState.alerts) {
+        areActiveAlerts.value = alertState.alerts.any { it.status == "Aktiv" }
+    }
+
     Column(
         Modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
@@ -409,23 +421,26 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        if (forecastState != null) {
-                            val imageName = forecastState.symbolCode
-                            val imageID = imageMap[imageName]
-                            if (imageID != null) {
-                                val image = painterResource(id = imageID)
-                                Image(
-                                    painter = image,
-                                    modifier = imageModifier,
-                                    alignment = Alignment.TopCenter,
-                                    contentDescription = "Værikon",
-                                    contentScale = ContentScale.Fit,
-                                )
+
+                            if (forecastState != null) {
+                                val imageName = forecastState.symbolCode
+                                val imageID = imageMap[imageName]
+                                if (imageID != null) {
+                                    val image = painterResource(id = imageID)
+                                    Image(
+                                        painter = image,
+                                        modifier = imageModifier,
+                                        alignment = Alignment.TopCenter,
+                                        contentDescription = "Værikon",
+                                        contentScale = ContentScale.Fit,
+                                    )
+                                }
                             }
                         }
                     }
-
                 }
+
+
                 Column(
                     Modifier
                         .fillMaxSize()
@@ -435,69 +450,25 @@ fun HomeScreen(
                             .size(310.dp, 120.dp)
                             .align(Alignment.CenterHorizontally)
                     ) {
-                        val varselstate = rememberLazyListState()
-
-                        if (!clicked) {
-                            Card(
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surface,
-                                ),
-
-                                ) {
-                                Text(
-                                    text = "Hyggelig melding. Sola skinner og alle er glade tralalalala",
-                                    modifier = Modifier
-                                        .size(310.dp, 100.dp)
-                                        .padding(20.dp),
-                                    textAlign = TextAlign.Center
-
-                                )
-
-                            }
-                        } else {
-                            var aktiveVarsler: Boolean = false
-                            LazyColumn(
-                                state = varselstate,
-                                flingBehavior = rememberSnapFlingBehavior(lazyListState = varselstate),
-                                modifier = Modifier
-                                    .size(310.dp, 100.dp),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-
-                            ) {
-                                items(alertState.alerts) { weatherWarning ->
-                                    if (MetAlertCard(weatherWarning = weatherWarning)) {
-                                        aktiveVarsler = true
-                                    }
-                                }
-                            }
-                            if (!aktiveVarsler) {
-                                Card(
-                                    colors = CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.surface,
-                                    ),
-                                    modifier = Modifier
-                                        .size(310.dp, 100.dp)
-                                        .fillMaxWidth()
-
-
-                                ) {
-                                    Text(
-                                        text = "Ingen farevarsler",
-                                        modifier = Modifier
-                                            .size(310.dp, 100.dp)
-                                            .padding(20.dp),
-                                        textAlign = TextAlign.Center
-
-                                    )
-                                }
+                            NormalDisplay()
+                        if (!clicked && areActiveAlerts.value) {
+                            AlertDisplay(alertState)
+                        } else if (clicked) {
+                            if (areActiveAlerts.value) {
+                                AlertDisplay(alertState)
+                            } else {
+                                NoAlertDisplay()
                             }
                         }
                     }
+
+
                     //Spacer(Modifier.height(50.dp)) // 300
-                    Column(modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White)){
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.White)
+                    ) {
                         Box {
                             Modifier
                                 //.padding(innerPadding)
@@ -535,4 +506,81 @@ fun HomeScreen(
             }
         }
     }
+
+@Composable
+fun AlertDisplay(alertState: MetAlertsUIState) {
+    LazyColumn(
+        modifier = Modifier
+            .size(310.dp, 100.dp).fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items(alertState.alerts.filter { it.status == "Aktiv" }) { alert ->
+                MetAlertCard(weatherWarning = alert)
+            }
+    }
 }
+@Composable
+fun NoAlertDisplay() {
+    Card(
+        modifier = Modifier
+            .size(310.dp, 100.dp)
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
+            Text(
+                text = "Ingen varsler!",
+                modifier = Modifier
+                    .padding(20.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 13.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun NormalDisplay() {
+    Card(
+        modifier = Modifier
+            .size(310.dp, 100.dp)
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            repeat(100) {
+                Text(
+                    text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${it+1}, det er bare ${100-(it+1)} igjen!",
+                    modifier = Modifier
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center,
+                    fontSize = 13.sp
+                )
+            }
+            Text(
+                text = "Gratulerer! På tide å undersøke noen badesteder, eller hva?",
+                modifier = Modifier
+                    .padding(20.dp),
+                textAlign = TextAlign.Center,
+                fontSize = 13.sp
+            )
+        }
+    }
+}
+
+
