@@ -56,15 +56,6 @@ class HomeViewModel: ViewModel() {
 
     var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
-    /*
-    fun reloadBeaches() {
-        viewModelScope.launch {
-            launch {
-                beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
-            }
-        }
-    }
-    */
     //henter farevarsler
     private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
     val metAlertsState: StateFlow<MetAlertsUIState> = _metAlertsRepository.getMetAlertsObservations()
