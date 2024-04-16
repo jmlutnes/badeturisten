@@ -2,8 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("plugin.serialization") version "1.9.21"
-    //id ("com.google.dagger.hilt.android")// version '2.46.1' apply false
-    //id ("kotlin-kapt")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,7 +55,7 @@ android {
 
 
 dependencies {
-    implementation("com.google.android.datatransport:transport-runtime:3.2.0")
+    implementation("com.google.android.datatransport:transport-runtime:3.3.0")
     implementation("androidx.room:room-ktx:2.6.1")
     val ktor_version = "2.3.8"
     implementation("io.ktor:ktor-client-core:$ktor_version")
@@ -92,13 +92,14 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1-Beta")
 
     // Dagger Hilt
-    implementation ("com.google.dagger:hilt-android:2.46.1")
-    //kapt("com.google.dagger:hilt-android-compiler:2.40.5")
+    implementation ("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
     implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
-    //kapt("androidx.hilt:hilt-compiler:1.2.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
+}
+kapt {
+    correctErrorTypes = true
 }
