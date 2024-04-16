@@ -2,7 +2,7 @@ package no.uio.ifi.in2000.team37.badeturisten.data.entur
 
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurRepository
 
-class EnTurRepository(
+class EnTurRepositoryImp(
     override val dataSource: EnTurDataSource
 ): EnTurRepository {
     override suspend fun hentBussrute(navn: String): String? {

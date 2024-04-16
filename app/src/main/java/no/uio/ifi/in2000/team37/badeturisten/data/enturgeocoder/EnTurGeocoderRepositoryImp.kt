@@ -3,7 +3,7 @@ package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
-class EnTurGeocoderRepository(
+class EnTurGeocoderRepositoryImp(
     override val dataSource: EnTurGeocoderDataSource
 ): EnTurGeocoderRepository {
     //Henter fra lokasjon og lager bussstasjon data class, deretter returnerer busstasjon

@@ -6,12 +6,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 //import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
@@ -35,13 +35,13 @@ object RepositoryModule {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
-    fun provideBeachRepository(waterTemperatureDataSource: WaterTemperatureDataSource): BeachRepository {
-        return BeachRepository(waterTemperatureDataSource)
+    fun provideBeachRepository(waterTemperatureDataSource: WaterTemperatureDataSource): BeachRepositoryImp {
+        return BeachRepositoryImp(waterTemperatureDataSource)
     }
 
     @Provides
-    fun provideOsloKommuneRepository(osloKommuneDatasource: OsloKommuneDatasource): OsloKommuneRepository {
-        return OsloKommuneRepository(osloKommuneDatasource)
+    fun provideOsloKommuneRepository(osloKommuneDatasource: OsloKommuneDatasource): OsloKommuneRepositoryImp {
+        return OsloKommuneRepositoryImp(osloKommuneDatasource)
     }
 
 /*    @Provides
@@ -50,21 +50,21 @@ object RepositoryModule {
     }*/
 
     @Provides
-    fun provideLocationForecastRepository(locationForecastDataSource: LocationForecastDataSource): LocationForecastRepository {
-        return LocationForecastRepository(locationForecastDataSource)
+    fun provideLocationForecastRepository(locationForecastDataSource: LocationForecastDataSource): LocationForecastRepositoryImp {
+        return LocationForecastRepositoryImp(locationForecastDataSource)
     }
 
     @Provides
-    fun provideMetAlertsRepository( metAlertsDataSource: MetAlertsDataSource): MetAlertsRepository {
-        return MetAlertsRepository(metAlertsDataSource)
+    fun provideMetAlertsRepository( metAlertsDataSource: MetAlertsDataSource): MetAlertsRepositoryImp {
+        return MetAlertsRepositoryImp(metAlertsDataSource)
     }
 /*    @Provides
     fun provideEnTurJourneyPlannerRepository(): EnTurJourneyPlannerRepository {
         return EnTurJourneyPlannerRepository()
     }*/
     @Provides
-    fun provideEnTurGeocoderRepository(enTurGeocoderDataSource: EnTurGeocoderDataSource): EnTurGeocoderRepository {
-        return EnTurGeocoderRepository(enTurGeocoderDataSource)
+    fun provideEnTurGeocoderRepository(enTurGeocoderDataSource: EnTurGeocoderDataSource): EnTurGeocoderRepositoryImp {
+        return EnTurGeocoderRepositoryImp(enTurGeocoderDataSource)
     }
 
 }

@@ -11,7 +11,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
-class OsloKommuneRepository @Inject constructor(
+class OsloKommuneRepositoryImp @Inject constructor(
     override val datasource: OsloKommuneDatasource
 ): OsloKommuneRepository {
     val liste: MutableList<Beach> = mutableListOf<Beach>()
@@ -46,9 +46,9 @@ class OsloKommuneRepository @Inject constructor(
             println(features)
             features.forEach { feature ->
                 //Henter navn
-                val beachNameNotConverted: String? = feature.properties.popupContent
+                val beachNameNotConverted: String = feature.properties.popupContent
                 val beachNameConverted: String? =
-                    extractBeachFromHTML(beachNameNotConverted.toString())
+                    extractBeachFromHTML(beachNameNotConverted)
 
                 //Henter location
                 val location = feature.geometry.coordinates
@@ -115,8 +115,8 @@ class OsloKommuneRepository @Inject constructor(
         val features = getBadeplasser(59.91, 10.74)
         println("Navn:$navn")
         features.forEach { feature ->
-            val beachNameNotConverted: String = feature.properties.popupContent.toString()
-            val beachNameConverted: String? = extractBeachFromHTML(beachNameNotConverted.toString())
+            val beachNameNotConverted: String = feature.properties.popupContent
+            val beachNameConverted: String? = extractBeachFromHTML(beachNameNotConverted)
 
             println(beachNameConverted)
             if (beachNameConverted != null) {
@@ -146,9 +146,9 @@ class OsloKommuneRepository @Inject constructor(
             println(features)
             features.forEach { feature ->
                 //Henter navn
-                val beachNameNotConverted: String? = feature.properties.popupContent
+                val beachNameNotConverted: String = feature.properties.popupContent
                 val beachNameConverted: String? =
-                    extractBeachFromHTML(beachNameNotConverted.toString())
+                    extractBeachFromHTML(beachNameNotConverted)
 
                 //Henter location
                 val location = feature.geometry.coordinates

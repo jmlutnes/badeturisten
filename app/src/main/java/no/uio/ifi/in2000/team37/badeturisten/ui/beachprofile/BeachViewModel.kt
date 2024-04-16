@@ -12,11 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -29,9 +28,9 @@ data class Bussrute(val linje: String, val navn: String, val transportMode: Stri
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachesRepository: BeachRepository,
-    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository
+    private val _osloKommuneRepository: OsloKommuneRepositoryImp,
+    private val _beachesRepository: BeachRepositoryImp,
+    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepositoryImp
     //private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
 ): ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
@@ -54,13 +53,13 @@ class BeachViewModel @Inject constructor(
             val lat = beachinfo?.pos?.lat?.toDouble()
             println("lon:$lon \nlat:$lat")
             var bussstasjoner: Bussstasjoner? = null
-            if((lon == null) || (lat == null)) {
+            bussstasjoner = if((lon == null) || (lat == null)) {
                 //Henter ID for alle bussstasjoner som finner basert paa navn
-                bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
-            }
-            else{
+                _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
+            } else{
                 //Henter ID for alle busstasjoner som finner basert paa lokasjon
-                bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)}
+                _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
+            }
             //}
             // Henter bussruter (linje og navn) basert paa id fra stasjoner
             // Set for ingen duplikater

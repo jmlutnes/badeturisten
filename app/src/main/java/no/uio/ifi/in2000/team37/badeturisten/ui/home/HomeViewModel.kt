@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
@@ -33,10 +33,10 @@ data class ForecastUIState(
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel @Inject constructor(
-    private val _locationForecastRepository: LocationForecastRepository,
-    private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachesRepository: BeachRepository,
-    private val _metAlertsRepository: MetAlertsRepository
+    private val _locationForecastRepository: LocationForecastRepositoryImp,
+    private val _osloKommuneRepository: OsloKommuneRepositoryImp,
+    private val _beachesRepository: BeachRepositoryImp,
+    private val _metAlertsRepository: MetAlertsRepositoryImp
 ): ViewModel() {
     //henter vaer melding
     val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()

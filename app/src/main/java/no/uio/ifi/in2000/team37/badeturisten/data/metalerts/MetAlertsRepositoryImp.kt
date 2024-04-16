@@ -12,7 +12,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-class MetAlertsRepository(
+class MetAlertsRepositoryImp(
     override val dataSource: MetAlertsDataSource
 ): MetAlertsRepository{
 
@@ -28,7 +28,7 @@ class MetAlertsRepository(
         //oppdaterer flow
         metAlertsObservations.update {
             featuresArray.mapNotNull { feature ->
-                feature.properties?.let { prop ->
+                feature.properties.let { prop ->
                     if (prop.county.contains("03")) {
                         WeatherWarning(
                             area = prop.area,
@@ -52,19 +52,19 @@ class MetAlertsRepository(
     override fun calculateStatus(eventEndingTime: String?): String {
         eventEndingTime ?: return "Active"
 
-        try {
+        return try {
             val formatter = DateTimeFormatter.ISO_DATE_TIME
             val endTime = LocalDateTime.parse(eventEndingTime, formatter)
             val currentTime = LocalDateTime.now(ZoneId.systemDefault())
 
-            return if (endTime.isAfter(currentTime)) {
+            if (endTime.isAfter(currentTime)) {
                 "Aktiv"
             } else {
                 "Ikke aktiv"
             }
         } catch (e: DateTimeParseException) {
             e.printStackTrace()
-            return "Feil"
+            "Feil"
         }
     }
 }

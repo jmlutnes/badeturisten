@@ -10,10 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
@@ -23,7 +20,7 @@ data class SokKommuneBeachList(
 
 @HiltViewModel
 class SokViewModel @Inject constructor (
-   private val _osloKommuneRepository: OsloKommuneRepository,
+    private val _osloKommuneRepository: OsloKommuneRepositoryImp,
 ): ViewModel() {
     var badevakt = mutableStateOf(false)
     var barnevennlig = mutableStateOf(false)

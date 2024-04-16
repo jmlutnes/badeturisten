@@ -14,7 +14,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
-class BeachRepository @Inject constructor(
+class BeachRepositoryImp @Inject constructor(
     override val waterTempDataSource: WaterTemperatureDataSource
 ): BeachRepository {
 

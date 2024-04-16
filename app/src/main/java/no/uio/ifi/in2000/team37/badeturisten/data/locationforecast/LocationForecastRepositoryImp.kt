@@ -1,6 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.locationforecast
 
-import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -8,7 +7,7 @@ import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
-class LocationForecastRepository(
+class LocationForecastRepositoryImp(
     override val dataSource: LocationForecastDataSource
 ): LocationForecastRepository{
 
