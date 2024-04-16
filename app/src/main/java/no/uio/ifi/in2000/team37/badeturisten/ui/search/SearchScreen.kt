@@ -46,6 +46,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
 
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 
 @Composable
@@ -144,8 +145,9 @@ fun SearchScreen(
 ) {
     val sokResultater by sokViewModel.sokResultater.collectAsState()
     val state = rememberLazyListState()
-    val beachList = homeViewModel.beachList
+    val beachState = homeViewModel.beachState.collectAsState().value
     val beachinfo = sokViewModel.beachDetails.collectAsState().value
+
     var sokeTekst by remember { mutableStateOf("") }
 
     Column {
@@ -161,11 +163,8 @@ fun SearchScreen(
                     .padding(16.dp)
             )
 
-
-            val safeBeachList = beachList.value ?: emptyList()
-
-            val filtrerte = safeBeachList.filter { beach ->
-                beach.name.contains(sokeTekst, ignoreCase = true)
+            val filtrerte = beachState.beaches.filter { strand ->
+                strand.name.contains(sokeTekst, ignoreCase = true)
             }
 
             LazyColumn {

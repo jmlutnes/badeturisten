@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -230,7 +231,6 @@ val imageMap = mapOf(
     "heavysnow" to R.drawable.heavysnow,
 )
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -239,7 +239,8 @@ fun HomeScreen(
     navController: NavController
 ) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
-    val beachList = homeViewModel.beachList.collectAsState()
+    val beachState = homeViewModel.beachState.collectAsState().value
+
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
     var clicked by remember { mutableStateOf(false) }
@@ -257,9 +258,7 @@ fun HomeScreen(
         .padding(5.dp)
         .background(Color.White)
 
-    LaunchedEffect(Unit) {
-        homeViewModel.reloadBeaches()
-    }
+
     Column(
         Modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
