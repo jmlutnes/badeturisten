@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -71,8 +72,6 @@ import androidx.wear.compose.material.MaterialTheme.colors
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
-
 @Composable
 fun rememberWarning(): ImageVector {
     return remember {
@@ -244,7 +243,8 @@ fun HomeScreen(
     navController: NavController
 ) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
-    val beachList = homeViewModel.beachList.collectAsState()
+    val beachState = homeViewModel.beachState.collectAsState().value
+
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
     var clicked by remember { mutableStateOf(false) }
@@ -263,10 +263,6 @@ fun HomeScreen(
         )
         .padding(5.dp)
         .background(Color.White)
-
-    LaunchedEffect(Unit) {
-        homeViewModel.reloadBeaches()
-    }
 
 
     LaunchedEffect(alertState.alerts) {
@@ -509,7 +505,7 @@ fun HomeScreen(
                                     verticalArrangement = Arrangement.Center,
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    items(beachList.value) { beach ->
+                                    items(beachState.beaches) { beach ->
                                         badeinfoforbeachcard(beach, navController, beachinfo)
                                     }
                                 }
