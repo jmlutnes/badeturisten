@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
@@ -58,7 +59,7 @@ class SearchViewModel @Inject constructor (
         }
     }
     private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
-        return osloKommuneRepository.finnAlleNettside()
+        return _osloKommuneRepository.finnAlleNettside()
     }
     fun loadBeachesByFilter(
         badevakt: Boolean,

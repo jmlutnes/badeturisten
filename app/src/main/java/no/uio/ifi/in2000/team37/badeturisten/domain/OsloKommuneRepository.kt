@@ -3,6 +3,7 @@ package no.uio.ifi.in2000.team37.badeturisten.domain
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
@@ -47,4 +48,5 @@ interface OsloKommuneRepository {
         lon: Double, lat: Double
     ): List<Beach>
     suspend fun getBeach(beachName: String): Beach?
+    suspend fun finnAlleNettside(): MutableMap<String, BadeinfoForHomescreen>
 }
