@@ -4,11 +4,12 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
@@ -27,6 +28,10 @@ data class MetAlertsUIState(
 
 data class ForecastUIState(
     val forecastNextHour: ForecastNextHour? = null
+)
+
+data class BeachesUIState (
+    val beaches: List<Beach> = listOf()
 )
 
 
@@ -49,15 +54,7 @@ class HomeViewModel: ViewModel() {
     private val _osloKommuneRepository = OsloKommuneRepository()
     private val _beachesRepository = BeachRepository()
 
-    var beachList: List<Beach> = listOf()
-
-    fun reloadBeaches() {
-        viewModelScope.launch {
-            launch {
-                beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
-            }
-        }
-    }
+    var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
     //henter farevarsler
     private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
@@ -75,7 +72,9 @@ class HomeViewModel: ViewModel() {
             _beachesRepository.loadBeaches()
             _metAlertsRepository.getWeatherWarnings()
 
-            beachList = CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository).invoke()
+            beachState.update {
+                BeachesUIState(CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository)())
+            }
         }
     }
 }

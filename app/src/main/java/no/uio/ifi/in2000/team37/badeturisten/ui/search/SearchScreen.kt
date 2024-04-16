@@ -145,7 +145,7 @@ fun SearchScreen(
 ) {
     val sokResultater by sokViewModel.sokResultater.collectAsState()
     val state = rememberLazyListState()
-    val beachList = homeViewModel.beachList
+    val beachState = homeViewModel.beachState.collectAsState().value
     var sokeTekst by remember { mutableStateOf("") }
 
     Column {
@@ -161,16 +161,18 @@ fun SearchScreen(
                     .padding(16.dp)
             )
 
-            val filtrerte = beachList.filter { strand ->
+            val filtrerte = beachState.beaches.filter { strand ->
                 strand.name.contains(sokeTekst, ignoreCase = true)
             }
 
             LazyColumn {
                 items(filtrerte) { strand ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().clickable {
-                            navController.navigate("beachProfile/${strand.name}")
-                        }
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate("beachProfile/${strand.name}")
+                            }
                             .padding(16.dp)
                     ) {
                         Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
