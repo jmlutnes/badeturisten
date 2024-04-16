@@ -81,10 +81,10 @@ class OsloKommuneDatasource {
         val imageData = document.select("ods-image-carousel").attr(":images")
         val srcStart = imageData.indexOf("\"src\":\"") + "\"src\":\"".length
         val srcEnd = imageData.indexOf("\"", srcStart)
-        val bildeUrl = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
+        val bildeUrl: String = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
             imageData.substring(srcStart, srcEnd).replace("\\/", "/")
         } else {
-            null
+            "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
         }
 
         return BadevannsInfo(vannkvalitet, fasiliteter, bildeUrl)
