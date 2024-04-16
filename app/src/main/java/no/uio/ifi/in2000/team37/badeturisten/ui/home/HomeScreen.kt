@@ -11,7 +11,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +27,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -171,10 +169,6 @@ fun HomeScreen(
         .padding(5.dp)
         .background(Color.White)
 
-    Scaffold( )
-    { padding ->
-
-    }
     Column(
         Modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
@@ -223,11 +217,7 @@ fun HomeScreen(
 
                     Button(
                         onClick = {
-                            if (!clicked) {
-                                clicked = true
-                            } else {
-                                clicked = false
-                            }
+                            clicked = !clicked
                         },
                         modifier = Modifier
                             //.weight(1f)
@@ -267,7 +257,7 @@ fun HomeScreen(
 
                         }
                     } else {
-                        var aktiveVarsler: Boolean = false
+                        var aktiveVarsler = false
                         LazyColumn {
                             items(alertState.alerts) { weatherWarning ->
                                 if (MetAlertCard(weatherWarning = weatherWarning)) {
