@@ -19,7 +19,7 @@ data class SokKommuneBeachList(
 )
 
 @HiltViewModel
-class SokViewModel @Inject constructor (
+class SearchViewModel @Inject constructor (
     private val _osloKommuneRepository: OsloKommuneRepositoryImp,
 ): ViewModel() {
     var badevakt = mutableStateOf(false)

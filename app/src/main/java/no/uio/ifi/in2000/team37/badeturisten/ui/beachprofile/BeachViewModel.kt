@@ -16,6 +16,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -27,11 +28,11 @@ data class Bussrute(val linje: String, val navn: String, val transportMode: Stri
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    savedStateHandle : SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepositoryImp,
     private val _beachesRepository: BeachRepositoryImp,
-    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepositoryImp
-    //private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
+    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepositoryImp,
+    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
 ): ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
     private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo(
