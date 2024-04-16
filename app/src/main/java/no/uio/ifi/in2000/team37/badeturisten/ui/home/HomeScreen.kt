@@ -147,11 +147,8 @@ fun HomeScreen(
     navController: NavController
 ) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
-    var beachList = homeViewModel.beachList
-    if (beachList.isEmpty()) {
-        homeViewModel.reloadBeaches()
-        beachList = homeViewModel.beachList
-    }
+    val beachState = homeViewModel.beachState.collectAsState().value
+
     val alertState = homeViewModel.metAlertsState.collectAsState().value
 
     var clicked by remember { mutableStateOf(false) }
@@ -305,7 +302,7 @@ fun HomeScreen(
                         state = state,
                         flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
                     ) {
-                        items(beachList) { beach ->
+                        items(beachState.beaches) { beach ->
                             beachCard(beach = beach, navController = navController)
                         }
                     }
