@@ -51,6 +51,7 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.hilt.navigation.compose.hiltViewModel
 
 val imageMap = mapOf(
     "clearsky_day" to R.drawable.clearsky_day,

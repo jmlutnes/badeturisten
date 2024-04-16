@@ -16,16 +16,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
-
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepository
-
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
@@ -40,7 +31,7 @@ class BeachViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepositoryImp,
     private val _beachesRepository: BeachRepositoryImp,
     private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepositoryImp,
-    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
+    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepositoryImp
 ): ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
     private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo(
