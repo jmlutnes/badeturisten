@@ -18,6 +18,14 @@ import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRep
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepository
+
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
@@ -83,11 +91,5 @@ class BeachViewModel @Inject constructor(
             }
 
         }
-    }
-
-     fun updateFavourites(beach: Beach?) {
-         if (beach != null) {
-             _beachesRepository.updateFavourites(beach)
-         }
     }
 }
