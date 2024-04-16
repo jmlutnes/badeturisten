@@ -35,12 +35,23 @@ import dagger.hilt.android.HiltAndroidApp
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
+import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
+import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
+import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var homeViewModel: HomeViewModel
+    @Inject lateinit var searchViewModel: SearchViewModel
+    @Inject lateinit var beachViewModel: BeachViewModel
+    @Inject lateinit var favouritesViewModel: FavouritesViewModel
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
