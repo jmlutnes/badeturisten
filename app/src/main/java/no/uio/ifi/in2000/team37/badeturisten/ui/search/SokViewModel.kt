@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.search
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 data class SokKommuneBeachList(
@@ -25,12 +27,21 @@ class SokViewModel: ViewModel() {
     var badebrygge = mutableStateOf(false)
 
     private val osloKommuneRepository = OsloKommuneRepository()
-
+    private val _beachDetails = MutableStateFlow<Map<String, BadeinfoForHomescreen?>>(emptyMap())
+    val beachDetails: StateFlow<Map<String, BadeinfoForHomescreen?>> = _beachDetails.asStateFlow()
     private val _sokResultater = MutableStateFlow(SokKommuneBeachList())
     val sokResultater: StateFlow<SokKommuneBeachList> = _sokResultater.asStateFlow()
 
+
     init {
         viewModelScope.launch {
+            try {
+                val beachDetails = getBeachInfo()
+                _beachDetails.value = beachDetails
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
+                _beachDetails.value = emptyMap()
+            }
             loadBeachesByFilter(
                 badevakt = false,
                 barnevennlig = false,
@@ -42,7 +53,9 @@ class SokViewModel: ViewModel() {
             )
         }
     }
-
+    private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
+        return osloKommuneRepository.finnAlleNettside()
+    }
     fun loadBeachesByFilter(
         badevakt: Boolean,
         barnevennlig: Boolean,

@@ -1,12 +1,14 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -19,6 +21,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
@@ -53,6 +56,8 @@ class HomeViewModel: ViewModel() {
     //henter strender
     private val _osloKommuneRepository = OsloKommuneRepository()
     private val _beachesRepository = BeachRepository()
+    private val _beachDetails = MutableStateFlow<Map<String, BadeinfoForHomescreen?>>(emptyMap())
+    val beachDetails: StateFlow<Map<String, BadeinfoForHomescreen?>> = _beachDetails.asStateFlow()
 
     var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
@@ -71,10 +76,26 @@ class HomeViewModel: ViewModel() {
             _locationForecastRepository.loadForecastNextHour()
             _beachesRepository.loadBeaches()
             _metAlertsRepository.getWeatherWarnings()
+            loadBeachInfo()
 
             beachState.update {
                 BeachesUIState(CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository)())
             }
         }
+    }
+    fun loadBeachInfo() {
+        viewModelScope.launch {
+            try {
+                val beachDetails = getBeachInfo()
+                _beachDetails.value = beachDetails
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
+                _beachDetails.value = emptyMap()
+            }
+        }
+    }
+
+    private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
+        return _osloKommuneRepository.finnAlleNettside()
     }
 }
