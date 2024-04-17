@@ -5,11 +5,10 @@ data class Beach(
     val name: String,
     val pos: Pos,
     var waterTemp: Double?,
-    val favorite: Boolean
+    val favorite: Boolean)
     /*
     val badevannInfo: BadevannInfo
     val airTemp: Double?
     val img: String
     */
 
-)
