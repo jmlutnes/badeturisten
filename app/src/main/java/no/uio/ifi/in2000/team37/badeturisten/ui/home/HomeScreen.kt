@@ -293,7 +293,7 @@ fun HomeScreen(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(Modifier.height(30.dp))
+            Spacer(Modifier.height(50.dp))
             Column(
                 modifier = Modifier
                     .defaultMinSize(400.dp, 200.dp),
@@ -623,68 +623,105 @@ fun NoAlertDisplay() {
 @SuppressLint("RestrictedApi")
 @Composable
 fun NormalDisplay() {
-    Box(
+    Column(
         modifier = Modifier
+            //.background(MaterialTheme.colorScheme.primary)
+            //.padding(35.dp,10.dp)
             .fillMaxWidth()
+            .height(90.dp)
             .wrapContentWidth(Alignment.CenterHorizontally)
+            .wrapContentHeight(Alignment.Bottom)
+
     ) {
-        Card(
+        Box(
             modifier = Modifier
-                .size(305.dp, 100.dp)
-                .padding(bottom = 20.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
+                //.background(MaterialTheme.colorScheme.primary)
+                //.padding(35.dp,10.dp)
+                .size(310.dp, 190.dp)
+                .verticalNegativePadding(15.dp)
+                //.background(MaterialTheme.colorScheme.primary),
         ) {
             Column(
                 modifier = Modifier
+                    //.background(MaterialTheme.colorScheme.primary)
+                    //.padding(35.dp,10.dp)
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(bottom = 5.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+                    .wrapContentHeight(Alignment.Bottom)
+
             ) {
-                repeat(100) {
-                    Text(
-                        text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${it + 1}, det er bare ${100 - (it + 1)} igjen!",
-                        modifier = Modifier
-                            .padding(10.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 12.sp,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.5.em,
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ),
-                                lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Center,
-                                    trim = LineHeightStyle.Trim.None
+
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    items(100) { index ->
+                        Card(
+                            modifier = Modifier
+                                .size(310.dp, 90.dp)
+                                .padding(horizontal = 10.dp, vertical = 10.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface,
+                            ),
+                        ) {
+                            Text(
+                                text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${index + 1}, det er bare ${100 - (index + 1)} igjen!",
+                                modifier = Modifier
+                                    .padding(10.dp),
+                                textAlign = TextAlign.Center,
+                                fontSize = 11.sp,
+                                style = LocalTextStyle.current.merge(
+                                    TextStyle(
+                                        lineHeight = 1.5.em,
+                                        platformStyle = PlatformTextStyle(
+                                            includeFontPadding = false
+                                        ),
+                                        lineHeightStyle = LineHeightStyle(
+                                            alignment = LineHeightStyle.Alignment.Center,
+                                            trim = LineHeightStyle.Trim.None
+                                        )
+                                    )
                                 )
                             )
-                    )
-                    )
-                }
-                Text(
-                    text = "Gratulerer! På tide å undersøke noen badesteder, eller hva?",
-                    modifier = Modifier
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    fontSize = 9.sp,
-                    style = LocalTextStyle.current.merge(
-                        TextStyle(
-                            lineHeight = 1.5.em,
-                            platformStyle = PlatformTextStyle(
-                                includeFontPadding = false
+                        }
+                    }
+                    item {
+                        Card(
+                            modifier = Modifier
+                                .size(305.dp, 100.dp)
+                                .padding(bottom = 20.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface,
                             ),
-                            lineHeightStyle = LineHeightStyle(
-                                alignment = LineHeightStyle.Alignment.Center,
-                                trim = LineHeightStyle.Trim.None
+                        ) {
+                            Text(
+                                text = "Gratulerer! På tide å undersøke noen badesteder, eller hva?",
+                                modifier = Modifier
+                                    .padding(20.dp),
+                                textAlign = TextAlign.Center,
+                                fontSize = 9.sp,
+                                style = LocalTextStyle.current.merge(
+                                    TextStyle(
+                                        lineHeight = 1.5.em,
+                                        platformStyle = PlatformTextStyle(
+                                            includeFontPadding = false
+                                        ),
+                                        lineHeightStyle = LineHeightStyle(
+                                            alignment = LineHeightStyle.Alignment.Center,
+                                            trim = LineHeightStyle.Trim.None
+                                        )
+                                    )
+                                )
                             )
-                        )
-                    )
-                )
+                        }
+                    }
+                }
             }
         }
     }
+
 }
 
 
