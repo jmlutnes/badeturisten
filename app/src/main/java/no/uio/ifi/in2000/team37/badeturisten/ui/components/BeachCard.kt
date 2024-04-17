@@ -36,105 +36,107 @@ fun BeachCard(
     beachinfo: BadeinfoForHomescreen?
 ) {
 
-        Card(
-            onClick = { navController.navigate("beachProfile/${beach.name}") },
-            modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 55.dp)
-                .fillMaxWidth()
-                .height(150.dp),
+    Card(
+        onClick = { navController.navigate("beachProfile/${beach.name}") },
+        modifier = Modifier
+            .padding(vertical = 10.dp, horizontal = 55.dp)
+            .fillMaxWidth()
+            .height(150.dp),
 
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Box(Modifier.fillMaxSize()) {
-                    val imageUrl = beachinfo?.badeinfo?.bilde ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Box(Modifier.fillMaxSize()) {
+                val imageUrl = beachinfo?.badeinfo?.bilde
+                    ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
 
-                    AsyncImage(
-                        model = imageUrl,
-                        contentDescription = "Bilde fra Oslo Kommune",
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(16.dp))
-                            .align(Alignment.Center)
-                    )
-                    Text(
-                        text = beach.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        style =
-                        TextStyle(
-                            color = Color.Black,
-                            drawStyle = Stroke(
-                                width = 15f
-                            )//join = StrokeJoin.Round)
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .basicMarquee()
-                            .padding(16.dp),
-                    )
-                    Text(
-                        text = beach.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier
-                            .basicMarquee()
-                            .align(Alignment.TopCenter)
-                            .padding(16.dp),
-
-                        style = TextStyle(color = Color.Black)
-                    )
-                        val tempText = if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else "Ingen målt temperatur"
-                        Text(
-                            text = tempText,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            style =
-                            TextStyle(
-                                color = Color.Black,
-                                drawStyle = Stroke(
-                                    width = 15f
-                                )//join = StrokeJoin.Round)
-                            ),
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .basicMarquee()
-                                .padding(16.dp),
-                        )
-
-                        Text(
-                            text = tempText,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            modifier = Modifier
-                                .basicMarquee()
-                                .align(Alignment.BottomCenter)
-                                .padding(16.dp),
-
-                            style = TextStyle(color = Color.Black)
-                            //join = StrokeJoin.Round)
-                        )
-
-                        /*Image(
-                    painter = rememberImagePainter(partyInfo.img),
-                    contentDescription = partyInfo.name,
-                    contentScale = ContentScale.Crop,
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = "Bilde fra Oslo Kommune",
+                    contentScale = ContentScale.FillWidth,
                     modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape)
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(16.dp))
+                        .align(Alignment.Center)
+                )
+                Text(
+                    text = beach.name,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    style =
+                    TextStyle(
+                        color = Color.Black,
+                        drawStyle = Stroke(
+                            width = 15f
+                        )//join = StrokeJoin.Round)
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .basicMarquee()
+                        .padding(16.dp),
+                )
+                Text(
+                    text = beach.name,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier
+                        .basicMarquee()
+                        .align(Alignment.TopCenter)
+                        .padding(16.dp),
+
+                    style = TextStyle(color = Color.Black)
+                )
+                val tempText =
+                    if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else "Ingen målt temperatur"
+                Text(
+                    text = tempText,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    style =
+                    TextStyle(
+                        color = Color.Black,
+                        drawStyle = Stroke(
+                            width = 15f
+                        )//join = StrokeJoin.Round)
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .basicMarquee()
+                        .padding(16.dp),
                 )
 
-                 */
-                }
+                Text(
+                    text = tempText,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier
+                        .basicMarquee()
+                        .align(Alignment.BottomCenter)
+                        .padding(16.dp),
+
+                    style = TextStyle(color = Color.Black)
+                    //join = StrokeJoin.Round)
+                )
+
+                /*Image(
+            painter = rememberImagePainter(partyInfo.img),
+            contentDescription = partyInfo.name,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(120.dp)
+                .clip(CircleShape)
+        )
+
+         */
             }
         }
     }
+}
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -154,14 +156,15 @@ fun Badeinfoforbeachcard(
                 .fillMaxWidth()
                 .height(150.dp),
 
-        ) {
+            ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 Box(Modifier.fillMaxSize()) {
-                    val imageUrl = "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
+                    val imageUrl =
+                        "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
 
                     AsyncImage(
                         model = imageUrl,
@@ -177,8 +180,10 @@ fun Badeinfoforbeachcard(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         style =
-                        TextStyle(color = Color.Black,
-                            drawStyle = Stroke(width = 15f
+                        TextStyle(
+                            color = Color.Black,
+                            drawStyle = Stroke(
+                                width = 15f
                             )//join = StrokeJoin.Round)
                         ),
                         modifier = Modifier
