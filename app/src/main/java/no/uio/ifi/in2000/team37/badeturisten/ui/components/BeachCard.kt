@@ -48,7 +48,7 @@ fun BeachCard(
                 .fillMaxSize()
         ) {
             Box(Modifier.fillMaxSize()) {
-                val imageUrl = beachinfo?.badeinfo?.bilde
+                val imageUrl = beachinfo?.badeinfo?.imageUrl
                     ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
 
                 AsyncImage(

@@ -11,7 +11,7 @@ class SkrapUrlTest {
     fun testWaterQualityShouldBeBad() = runTest {
 
         val datasource = OsloKommuneDatasource()
-        val waterQuality = datasource.skrapUrl("https://www.oslo.kommune.no/natur-kultur-og-fritid/tur-og-friluftsliv/badeplasser-og-temperaturer/sorenga-sjobad/").kvalitetInfo
+        val waterQuality = datasource.skrapUrl("https://www.oslo.kommune.no/natur-kultur-og-fritid/tur-og-friluftsliv/badeplasser-og-temperaturer/sorenga-sjobad/").waterQuality
 
         assertEquals(waterQuality, "Dårlig")
     }
