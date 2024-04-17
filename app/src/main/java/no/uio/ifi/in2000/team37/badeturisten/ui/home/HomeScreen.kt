@@ -1,8 +1,10 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,13 +16,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -30,10 +35,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,26 +49,34 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
 @Composable
-fun rememberWarning(): ImageVector {
+fun rememberWarning(areActiveAlerts: Boolean): ImageVector {
     return remember {
         ImageVector.Builder(
             name = "warning",
@@ -71,7 +86,8 @@ fun rememberWarning(): ImageVector {
             viewportHeight = 40.0f
         ).apply {
             path(
-                fill = SolidColor(Color.White),
+
+                fill = if(areActiveAlerts){SolidColor(Color.Red)}else{SolidColor(Color.White)},
                 fillAlpha = 1f,
                 stroke = null,
                 strokeAlpha = 1f,
@@ -234,9 +250,22 @@ fun HomeScreen(
     val beachState = homeViewModel.beachState.collectAsState().value
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
-    var clicked by remember { mutableStateOf(false) }
+    var clicked by remember { mutableStateOf(true) }
     val areActiveAlerts = remember { mutableStateOf(false) }
-    val warningVector = rememberWarning()
+    val warningVectorWhite = rememberWarning(false)
+    val warningVectorRed = rememberWarning(true)
+
+    val gradient = Brush.horizontalGradient(listOf(Color.White, Color.Yellow))
+
+    val side1 = 800
+    val side2 = 800
+
+    val circlegradient = Brush.radialGradient(
+        listOf(Color.White, Color.Yellow),
+        center = Offset(side1 / 4.0f, side2 / 4.0f),
+        radius = side1 / 0.6f,
+        tileMode = TileMode.Clamp
+    )
     val imageModifier = Modifier
         .size(140.dp)
         .clip(CircleShape)
@@ -247,11 +276,13 @@ fun HomeScreen(
             ),
             CircleShape
         )
-        .padding(5.dp)
-        .background(Color.White)
+        .padding(10.dp)
+        .background(
+            circlegradient
+        )
 
     LaunchedEffect(alertState.alerts) {
-        areActiveAlerts.value = alertState.alerts.any { it.status == "Aktiv" }
+            areActiveAlerts.value = alertState.alerts.any { it.status?.equals("Active") == true }
     }
 
     Column(
@@ -262,7 +293,7 @@ fun HomeScreen(
             modifier = Modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(Modifier.height(50.dp))
+            Spacer(Modifier.height(30.dp))
             Column(
                 modifier = Modifier
                     .defaultMinSize(400.dp, 200.dp),
@@ -336,9 +367,7 @@ fun HomeScreen(
                                     modifier = Modifier
                                         .size(100.dp, 100.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally,
-
                                     ) {
-
                                     Column(
                                         modifier = Modifier
                                             .size(100.dp, 30.dp)
@@ -388,7 +417,12 @@ fun HomeScreen(
                                                         .padding(5.dp)
                                                 ) {
                                                 }
-                                                WarningIcon(warningVector)
+                                                if(areActiveAlerts.value){
+                                                    WarningIcon(warningvector = warningVectorRed)
+                                                }
+                                                else {
+                                                    WarningIcon(warningVectorWhite)
+                                                }
                                             }
                                         }
                                     }
@@ -403,8 +437,8 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box(){
-                            imageMap["clearsky_day"]?.let { painterResource(it)}?.let {
+                        Box() {
+                            imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
                                 Image(
                                     painter = it,
                                     modifier = imageModifier,
@@ -427,56 +461,34 @@ fun HomeScreen(
                                         contentScale = ContentScale.Fit,
                                     )
 
-                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+            Column {
+                when {
+                    !clicked -> NormalDisplay()
+                    clicked && areActiveAlerts.value -> AlertDisplay(alertState)
+                    clicked && !areActiveAlerts.value -> NoAlertDisplay()
+                }
 
-                Column(
-                    Modifier
-                        .fillMaxSize()
-                ) {
-                    Box(
-                        Modifier
-                            .size(310.dp, 120.dp)
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                            NormalDisplay()
-                        if (!clicked && areActiveAlerts.value) {
-                            AlertDisplay(alertState)
-                        } else if (clicked) {
-                            if (areActiveAlerts.value) {
-                                AlertDisplay(alertState)
-                            } else {
-                                NoAlertDisplay()
-                            }
-                        }
-                    }
-
-                    //Spacer(Modifier.height(50.dp)) // 300
-                    Column(
+            Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.White)
                     ) {
-                        Box {
-                            Modifier
-                                //.padding(innerPadding)
-                                .wrapContentWidth(Alignment.CenterHorizontally)
-                                .size(320.dp, 200.dp)
                             Column(
                                 Modifier
                                     .wrapContentWidth(Alignment.CenterHorizontally),
-
                                 ) {
                                 Text(
                                     text = "Badesteder",
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(16.dp),
-                                    fontSize = 24.sp,
+                                        .padding(top = 15.dp, bottom = 8.dp),
+                                    fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center
                                 )
@@ -497,79 +509,180 @@ fun HomeScreen(
                 }
             }
         }
-    }
 
+
+@SuppressLint("RestrictedApi")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlertDisplay(alertState: MetAlertsUIState) {
-    LazyColumn(
+
+    Column(
         modifier = Modifier
-            .size(310.dp, 100.dp).fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(alertState.alerts.filter { it.status == "Aktiv" }) { alert ->
-                MetAlertCard(weatherWarning = alert)
-            }
-    }
-}
-@Composable
-fun NoAlertDisplay() {
-    Card(
-        modifier = Modifier
-            .size(310.dp, 100.dp)
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
+            //.background(MaterialTheme.colorScheme.primary)
+            //.padding(35.dp,10.dp)
+            .fillMaxWidth()
+            .height(180.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+            .wrapContentHeight(Alignment.Bottom)
+
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Ingen varsler!",
+                //.background(MaterialTheme.colorScheme.primary)
+                //.padding(35.dp,10.dp)
+                .size(310.dp, 200.dp)
+                .verticalNegativePadding(28.dp)
+                .background(MaterialTheme.colorScheme.primary),
+
+
+            ) {
+            Column(
                 modifier = Modifier
-                    .padding(20.dp),
-                textAlign = TextAlign.Center,
-                fontSize = 13.sp
-            )
+                    //.background(MaterialTheme.colorScheme.primary)
+                    //.padding(35.dp,10.dp)
+                    .fillMaxSize()
+                    .padding(bottom = 40.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+                    .wrapContentHeight(Alignment.Bottom)
+
+            ) {
+                LazyRow(
+                    modifier = Modifier
+                        .size(310.dp, 190.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    items(alertState.alerts) { alert ->
+                        MetAlertCard(weatherWarning = alert)
+                    }
+                }
+            }
         }
     }
 }
 
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun NoAlertDisplay() {
+    Column(
+        modifier = Modifier
+            //.background(MaterialTheme.colorScheme.primary)
+            //.padding(35.dp,10.dp)
+            .fillMaxWidth()
+            .height(80.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+            .wrapContentHeight(Alignment.Bottom)
+
+    ) {
+        Box(
+            modifier = Modifier
+                //.background(MaterialTheme.colorScheme.primary)
+                //.padding(35.dp,10.dp)
+                .size(310.dp, 190.dp)
+                .verticalNegativePadding(28.dp)
+                .background(MaterialTheme.colorScheme.primary),
+            ) {
+            Column(
+                modifier = Modifier
+                    //.background(MaterialTheme.colorScheme.primary)
+                    //.padding(35.dp,10.dp)
+                    .fillMaxSize()
+                    .padding(bottom = 50.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+                    .wrapContentHeight(Alignment.Bottom)
+
+            ) {
+                Card(
+                    modifier = Modifier
+                        .size(200.dp, 60.dp)
+                        .padding(3.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Ingen varsler!",
+                            modifier = Modifier
+                                .padding(10.dp),
+                            textAlign = TextAlign.Center,
+                            fontSize = 13.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@SuppressLint("RestrictedApi")
 @Composable
 fun NormalDisplay() {
-    Card(
+    Box(
         modifier = Modifier
-            .size(310.dp, 100.dp)
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
+            .fillMaxWidth()
+            .wrapContentWidth(Alignment.CenterHorizontally)
     ) {
-        Column(
+        Card(
             modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .size(305.dp, 100.dp)
+                .padding(bottom = 20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
         ) {
-            repeat(100) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                repeat(100) {
+                    Text(
+                        text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${it + 1}, det er bare ${100 - (it + 1)} igjen!",
+                        modifier = Modifier
+                            .padding(10.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 12.sp,
+                        style = LocalTextStyle.current.merge(
+                            TextStyle(
+                                lineHeight = 1.5.em,
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false
+                                ),
+                                lineHeightStyle = LineHeightStyle(
+                                    alignment = LineHeightStyle.Alignment.Center,
+                                    trim = LineHeightStyle.Trim.None
+                                )
+                            )
+                    )
+                    )
+                }
                 Text(
-                    text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${it+1}, det er bare ${100-(it+1)} igjen!",
+                    text = "Gratulerer! På tide å undersøke noen badesteder, eller hva?",
                     modifier = Modifier
                         .padding(20.dp),
                     textAlign = TextAlign.Center,
-                    fontSize = 13.sp
+                    fontSize = 9.sp,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.5.em,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Center,
+                                trim = LineHeightStyle.Trim.None
+                            )
+                        )
+                    )
                 )
             }
-            Text(
-                text = "Gratulerer! På tide å undersøke noen badesteder, eller hva?",
-                modifier = Modifier
-                    .padding(20.dp),
-                textAlign = TextAlign.Center,
-                fontSize = 13.sp
-            )
         }
     }
 }
