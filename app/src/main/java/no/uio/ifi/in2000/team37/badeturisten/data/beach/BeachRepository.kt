@@ -55,7 +55,7 @@ class BeachRepository {
         } catch (e: Exception) {
             Log.d("beach repository", "failed to make beaches")
             Log.e("beach repository", e.message.toString())
-            emptyList<Beach>()
+            emptyList()
         }
     }
 
