@@ -38,14 +38,14 @@ class BeachRepository {
         }
     }
 
-    suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
+    fun makeBeaches(observations: List<Tsery>): List<Beach> {
         return try {
             //gjoer data om til liste med strender
-            val liste: MutableList<Beach> = mutableListOf<Beach>()
-            data.forEach { data ->
+            val liste: MutableList<Beach> = mutableListOf()
+            observations.forEach { data ->
                 val beachName = data.header.extra.name
                 // oppretter strand objekter og legger til i liste
-                val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
+                val waterTemperature = data.observations.last().body.value.toDoubleOrNull() ?: 0.0
                 val position = data.header.extra.pos
 
                 liste.add(Beach(beachName, position, waterTemperature, false))
