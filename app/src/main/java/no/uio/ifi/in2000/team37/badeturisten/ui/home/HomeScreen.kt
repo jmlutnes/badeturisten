@@ -59,7 +59,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
 @Composable
 fun rememberWarning(): ImageVector {
     return remember {
@@ -287,11 +287,9 @@ fun HomeScreen(
                                 .size(310.dp, 100.dp)
 
                         ) {
-                            var tempText = ""
-                            var precipitationText = ""
                             if (forecastState != null) {
-                                tempText = "${forecastState.temp}°"
-                                precipitationText = "${forecastState.precipitation} mm"
+                                val tempText = "${forecastState.temp}°"
+                                val precipitationText = "${forecastState.precipitation} mm"
 
 
                                 Column(
@@ -403,7 +401,7 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box(){
+                        Box{
                             imageMap["clearsky_day"]?.let { painterResource(it)}?.let {
                                 Image(
                                     painter = it,
@@ -488,7 +486,7 @@ fun HomeScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     items(beachState.beaches) { beach ->
-                                        badeinfoforbeachcard(beach, navController, beachinfo)
+                                        Badeinfoforbeachcard(beach, navController, beachinfo)
                                     }
                                 }
                             }

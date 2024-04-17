@@ -14,7 +14,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
     //henter fra oslo kommune repository
-    val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
+    private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
@@ -38,14 +38,14 @@ class BeachRepository {
         }
     }
 
-    suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
+    private fun makeBeaches(observations: List<Tsery>): List<Beach> {
         return try {
             //gjoer data om til liste med strender
-            val liste: MutableList<Beach> = mutableListOf<Beach>()
-            data.forEach { data ->
+            val liste: MutableList<Beach> = mutableListOf()
+            observations.forEach { data ->
                 val beachName = data.header.extra.name
                 // oppretter strand objekter og legger til i liste
-                val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
+                val waterTemperature = data.observations.last().body.value.toDoubleOrNull() ?: 0.0
                 val position = data.header.extra.pos
 
                 liste.add(Beach(beachName, position, waterTemperature, false))
@@ -55,7 +55,7 @@ class BeachRepository {
         } catch (e: Exception) {
             Log.d("beach repository", "failed to make beaches")
             Log.e("beach repository", e.message.toString())
-            emptyList<Beach>()
+            emptyList()
         }
     }
 
