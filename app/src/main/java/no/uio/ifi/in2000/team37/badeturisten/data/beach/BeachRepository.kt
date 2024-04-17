@@ -38,7 +38,7 @@ class BeachRepository {
         }
     }
 
-    fun makeBeaches(observations: List<Tsery>): List<Beach> {
+    private fun makeBeaches(observations: List<Tsery>): List<Beach> {
         return try {
             //gjoer data om til liste med strender
             val liste: MutableList<Beach> = mutableListOf()
