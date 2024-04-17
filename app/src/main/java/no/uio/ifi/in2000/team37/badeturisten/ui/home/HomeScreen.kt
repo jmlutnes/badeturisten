@@ -61,6 +61,7 @@ import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
+
 @Composable
 fun rememberWarning(): ImageVector {
     return remember {
@@ -402,8 +403,8 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box{
-                            imageMap["clearsky_day"]?.let { painterResource(it)}?.let {
+                        Box {
+                            imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
                                 Image(
                                     painter = it,
                                     modifier = imageModifier,
@@ -426,88 +427,84 @@ fun HomeScreen(
                                         contentScale = ContentScale.Fit,
                                     )
 
-                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
 
-                Column(
+            Column(
+                Modifier
+                    .fillMaxSize()
+            ) {
+                Box(
                     Modifier
-                        .fillMaxSize()
+                        .size(310.dp, 120.dp)
+                        .align(Alignment.CenterHorizontally)
                 ) {
-                    Box(
-                        Modifier
-                            .size(310.dp, 120.dp)
-                            .align(Alignment.CenterHorizontally)
-                    ) {
-                            NormalDisplay()
-                        if (!clicked && areActiveAlerts.value) {
+                    NormalDisplay()
+                    if (!clicked && areActiveAlerts.value) {
+                        AlertDisplay(alertState)
+                    } else if (clicked) {
+                        if (areActiveAlerts.value) {
                             AlertDisplay(alertState)
-                        } else if (clicked) {
-                            if (areActiveAlerts.value) {
-                                AlertDisplay(alertState)
-                            } else {
-                                NoAlertDisplay()
-                            }
+                        } else {
+                            NoAlertDisplay()
                         }
                     }
+                }
 
-                    //Spacer(Modifier.height(50.dp)) // 300
-                    Column(
+                //Spacer(Modifier.height(50.dp)) // 300
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White),
+                ) {
+                    Text(
+                        text = "Badesteder",
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.White)
-                    ) {
-                        Box {
-                            Modifier
-                                //.padding(innerPadding)
-                                .wrapContentWidth(Alignment.CenterHorizontally)
-                                .size(320.dp, 200.dp)
-                            Column(
-                                Modifier
-                                    .wrapContentWidth(Alignment.CenterHorizontally),
-
-                                ) {
-                                Text(
-                                    text = "Badesteder",
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    fontSize = 24.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
-                                )
-                                val state = rememberLazyListState()
-                                LazyRow(
-                                    state = state,
-                                    flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                                ) {
-                                    items(beachState.beaches) { beach ->
-                                        Badeinfoforbeachcard(beach, navController, beachinfo)
-                                    }
-                                }
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Column (
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center
+                    ){
+                        val state = rememberLazyListState()
+                        LazyRow(
+                            state = state,
+                            flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                        ) {
+                            items(beachState.beaches) { beach ->
+                                Badeinfoforbeachcard(beach, navController, beachinfo)
                             }
                         }
+                        Spacer(modifier = Modifier.height(50.dp))
                     }
                 }
             }
         }
     }
+}
 
 @Composable
 fun AlertDisplay(alertState: MetAlertsUIState) {
     LazyColumn(
         modifier = Modifier
-            .size(310.dp, 100.dp).fillMaxWidth(),
+            .size(310.dp, 100.dp)
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            items(alertState.alerts.filter { it.status == "Aktiv" }) { alert ->
-                MetAlertCard(weatherWarning = alert)
-            }
+    ) {
+        items(alertState.alerts.filter { it.status == "Aktiv" }) { alert ->
+            MetAlertCard(weatherWarning = alert)
+        }
     }
 }
+
 @Composable
 fun NoAlertDisplay() {
     Card(
@@ -553,7 +550,7 @@ fun NormalDisplay() {
         ) {
             repeat(100) {
                 Text(
-                    text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${it+1}, det er bare ${100-(it+1)} igjen!",
+                    text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${it + 1}, det er bare ${100 - (it + 1)} igjen!",
                     modifier = Modifier
                         .padding(20.dp),
                     textAlign = TextAlign.Center,

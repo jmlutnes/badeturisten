@@ -38,8 +38,8 @@ fun BeachCard(
     Card(
         onClick = { navController.navigate("beachProfile/${beach.name}") },
         modifier = Modifier
-            .padding(vertical = 10.dp, horizontal = 55.dp)
-            .height(110.dp)
+            .padding(vertical = 10.dp, horizontal = 15.dp)
+            .height(250.dp)
             .width(200.dp),
 
         ) {
@@ -55,7 +55,7 @@ fun BeachCard(
                 AsyncImage(
                     model = imageUrl,
                     contentDescription = "Bilde fra Oslo Kommune",
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.FillHeight,
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(16.dp))
@@ -151,9 +151,9 @@ fun Badeinfoforbeachcard(
         Card(
             onClick = { navController.navigate("beachProfile/${beach.name}") },
             modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 55.dp)
-                .fillMaxWidth()
-                .height(150.dp),
+                .padding(vertical = 10.dp, horizontal = 15.dp)
+                .height(250.dp)
+                .width(200.dp),
 
             ) {
             Column(
@@ -168,7 +168,7 @@ fun Badeinfoforbeachcard(
                     AsyncImage(
                         model = imageUrl,
                         contentDescription = "Bilde fra Oslo Kommune",
-                        contentScale = ContentScale.FillWidth,
+                        contentScale = ContentScale.FillHeight,
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(RoundedCornerShape(16.dp))
