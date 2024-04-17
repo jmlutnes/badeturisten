@@ -5,15 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.network.NetworkUtils
 
@@ -29,9 +32,9 @@ class SokViewModel(application: Application) : AndroidViewModel(application) {
     var toalett = mutableStateOf(false)
     var badebrygge = mutableStateOf(false)
 
-
     private val osloKommuneRepository = OsloKommuneRepository()
-
+    private val _beachDetails = MutableStateFlow<Map<String, BadeinfoForHomescreen?>>(emptyMap())
+    val beachDetails: StateFlow<Map<String, BadeinfoForHomescreen?>> = _beachDetails.asStateFlow()
     private val _sokResultater = MutableStateFlow(SokKommuneBeachList())
     val sokResultater: StateFlow<SokKommuneBeachList> = _sokResultater.asStateFlow()
 
@@ -41,8 +44,16 @@ class SokViewModel(application: Application) : AndroidViewModel(application) {
     private fun checkNetworkAvailability() {
         _networkAvailable.value = NetworkUtils.isNetworkAvail(getApplication())
     }
+
     init {
         viewModelScope.launch {
+            try {
+                val beachDetails = getBeachInfo()
+                _beachDetails.value = beachDetails
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
+                _beachDetails.value = emptyMap()
+            }
             loadBeachesByFilter(
                 badevakt = false,
                 barnevennlig = false,
@@ -54,7 +65,9 @@ class SokViewModel(application: Application) : AndroidViewModel(application) {
             )
         }
     }
-
+    private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
+        return osloKommuneRepository.finnAlleNettside()
+    }
     fun loadBeachesByFilter(
         badevakt: Boolean,
         barnevennlig: Boolean,

@@ -19,12 +19,11 @@ class CombineBeachesUseCase (
         combineBeaches(beachesFromMet = beachesFromMet, beachesFromOsloKommune = beachesFromOsloKommune)
     }
 
-    /*
-    * This function removes duplicates by overwriting beache from MET with beaches from Oslo Kommune.
+    /**
+    * This function removes duplicates by overwriting beaches from MET with beaches from Oslo Kommune.
     * In the case of two beaches having the same name, they are combined by taking the temperature
     * from MET, and adding it to the beach from O-K, which has facilities
     */
-
     fun combineBeaches(beachesFromMet: List<Beach>, beachesFromOsloKommune: List<Beach>): List<Beach> {
         val combinedMap = beachesFromMet.associateBy { it.name }.toMutableMap()
 
