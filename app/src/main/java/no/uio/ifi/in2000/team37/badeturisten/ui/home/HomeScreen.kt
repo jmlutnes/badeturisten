@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -479,11 +480,9 @@ fun HomeScreen(
                                     textAlign = TextAlign.Center
                                 )
                                 val state = rememberLazyListState()
-                                LazyColumn(
+                                LazyRow(
                                     state = state,
                                     flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     items(beachState.beaches) { beach ->
                                         Badeinfoforbeachcard(beach, navController, beachinfo)
