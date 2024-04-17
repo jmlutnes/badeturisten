@@ -6,15 +6,11 @@ import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
-    //henter fra oslo kommune repository
-    private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
@@ -54,7 +50,7 @@ class BeachRepository {
     @RequiresApi(Build.VERSION_CODES.O)
     fun getBeach(beachName: String): Beach? = beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-gjø
+
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getFavourites(): List<Beach> {
         val observationsFromDataSource = waterTempGetData()
