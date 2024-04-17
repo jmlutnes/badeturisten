@@ -14,7 +14,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
     //henter fra oslo kommune repository
-    val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
+    private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
 
     //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
