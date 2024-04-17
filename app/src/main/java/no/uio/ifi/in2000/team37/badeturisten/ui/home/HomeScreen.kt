@@ -59,7 +59,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
 @Composable
 fun rememberWarning(): ImageVector {
     return remember {
@@ -488,7 +488,7 @@ fun HomeScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     items(beachState.beaches) { beach ->
-                                        badeinfoforbeachcard(beach, navController, beachinfo)
+                                        Badeinfoforbeachcard(beach, navController, beachinfo)
                                     }
                                 }
                             }
