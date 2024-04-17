@@ -20,8 +20,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
-import org.json.JSONArray
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
@@ -40,14 +39,14 @@ class OsloKommuneDatasource {
         }
     }
 
-    suspend fun skrapUrl(url: String): BadevannsInfo {
+    suspend fun skrapUrl(url: String): OsloKommuneBeachInfo {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
 
         return scrapeBeachInfoFromResponse(responseBody)
     }
 
-    fun scrapeBeachInfoFromResponse(responseBody: String): BadevannsInfo {
+    fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
         val document = Jsoup.parse(responseBody)
 
         //Henter forst bathingsite
@@ -87,7 +86,7 @@ class OsloKommuneDatasource {
             "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
         }
 
-        return BadevannsInfo(vannkvalitet, fasiliteter, bildeUrl)
+        return OsloKommuneBeachInfo(vannkvalitet, fasiliteter, bildeUrl)
     }
 
 

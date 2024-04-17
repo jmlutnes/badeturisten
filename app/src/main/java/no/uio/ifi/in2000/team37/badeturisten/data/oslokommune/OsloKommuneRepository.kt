@@ -7,7 +7,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class OsloKommuneRepository () {
@@ -83,13 +83,13 @@ class OsloKommuneRepository () {
         return matchResult?.groups?.get(1)?.value ?: ""
     }
 
-    suspend fun skrapUrl(input: String): BadevannsInfo {
+    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo {
         val item = datasource.skrapUrl(input)
         return item
     }
 
 
-    suspend fun getVannkvalitetLoc(lat: Double?, lon: Double?): BadevannsInfo? {
+    suspend fun getVannkvalitetLoc(lat: Double?, lon: Double?): OsloKommuneBeachInfo? {
         val nettsideUrl: String? =
             getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
         println("old: $nettsideUrl")
@@ -134,7 +134,7 @@ class OsloKommuneRepository () {
     }
 
 
-    suspend fun finnNettside(navn: String): BadevannsInfo? {
+    suspend fun finnNettside(navn: String): OsloKommuneBeachInfo? {
         val features = getBadeplasser(59.91, 10.74)
         println("Navn:$navn")
         features.forEach { feature ->
