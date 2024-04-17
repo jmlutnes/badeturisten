@@ -287,11 +287,9 @@ fun HomeScreen(
                                 .size(310.dp, 100.dp)
 
                         ) {
-                            var tempText = ""
-                            var precipitationText = ""
                             if (forecastState != null) {
-                                tempText = "${forecastState.temp}°"
-                                precipitationText = "${forecastState.precipitation} mm"
+                                val tempText = "${forecastState.temp}°"
+                                val precipitationText = "${forecastState.precipitation} mm"
 
 
                                 Column(
@@ -403,7 +401,7 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box(){
+                        Box{
                             imageMap["clearsky_day"]?.let { painterResource(it)}?.let {
                                 Image(
                                     painter = it,
