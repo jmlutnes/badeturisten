@@ -1,5 +1,10 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.search
 
+import android.app.Application
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 
@@ -13,11 +18,12 @@ import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import no.uio.ifi.in2000.team37.badeturisten.network.NetworkUtils
 
 data class SokKommuneBeachList(
     val beachList: List<Beach> = listOf()
 )
-class SokViewModel: ViewModel() {
+class SokViewModel(application: Application) : AndroidViewModel(application) {
     var badevakt = mutableStateOf(false)
     var barnevennlig = mutableStateOf(false)
     var grill = mutableStateOf(false)
@@ -32,6 +38,12 @@ class SokViewModel: ViewModel() {
     private val _sokResultater = MutableStateFlow(SokKommuneBeachList())
     val sokResultater: StateFlow<SokKommuneBeachList> = _sokResultater.asStateFlow()
 
+    private val _networkAvailable = MutableStateFlow<Boolean>(false)
+    val networkAvailable: StateFlow<Boolean> = _networkAvailable.asStateFlow()
+
+    private fun checkNetworkAvailability() {
+        _networkAvailable.value = NetworkUtils.isNetworkAvail(getApplication())
+    }
 
     init {
         viewModelScope.launch {
@@ -66,6 +78,7 @@ class SokViewModel: ViewModel() {
         badebrygge: Boolean
     ) {
         viewModelScope.launch {
+            checkNetworkAvailability()
             val oppdaterteStrender = osloKommuneRepository.makeBeachesFasiliteter(
                 badevakt,
                 barnevennlig,
