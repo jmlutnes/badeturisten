@@ -72,6 +72,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
+import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
@@ -250,12 +251,13 @@ fun HomeScreen(
     val beachState = homeViewModel.beachState.collectAsState().value
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
-    var clicked by remember { mutableStateOf(true) }
+    var clicked by remember { mutableStateOf(false) }
     val areActiveAlerts = remember { mutableStateOf(false) }
     val warningVectorWhite = rememberWarning(false)
     val warningVectorRed = rememberWarning(true)
-
-    val gradient = Brush.horizontalGradient(listOf(Color.White, Color.Yellow))
+    val showNormalScreen: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
 
     val side1 = 800
     val side2 = 800
@@ -282,7 +284,9 @@ fun HomeScreen(
         )
 
     LaunchedEffect(alertState.alerts) {
-            areActiveAlerts.value = alertState.alerts.any { it.status?.equals("Active") == true }
+        areActiveAlerts.value = alertState.alerts.any { it.status?.equals("Active") == true }
+    //MetTest:
+       //areActiveAlerts.value = alertState.alerts.any { it.status?.contains("a") == true }
     }
 
     Column(
@@ -412,7 +416,8 @@ fun HomeScreen(
                                                 Button(
                                                     onClick = {
                                                         clicked = !clicked
-                                                    },
+                                                        //showNormalScreen.value = !showNormalScreen.value
+                                                              },
                                                     modifier = Modifier
                                                         .padding(5.dp)
                                                 ) {
@@ -438,6 +443,7 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Box() {
+                            //For å opprettholde struktur selv om siden lastes inn.
                             imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
                                 Image(
                                     painter = it,
@@ -448,6 +454,7 @@ fun HomeScreen(
                                     contentScale = ContentScale.Fit,
                                 )
                             }
+                            //Bilde med vaerikon
                             if (forecastState != null) {
                                 val imageName = forecastState.symbolCode
                                 val imageID = imageMap[imageName]
@@ -467,15 +474,42 @@ fun HomeScreen(
                     }
                 }
             }
+            if(!areActiveAlerts.value && !clicked && !showNoAlertDisplay.value && !showAlertDisplay.value){
+                showNormalScreen.value = true
+            }
+            if(!areActiveAlerts.value && clicked){
+                showNoAlertDisplay.value = true
+            }
+            if(!areActiveAlerts.value && !clicked){
+                showNoAlertDisplay.value = false
+            }
+            if(areActiveAlerts.value && !clicked){
+                showAlertDisplay.value = true
+            }
+            if(areActiveAlerts.value && clicked){
+                showAlertDisplay.value = false
+            }
             Column {
-                when {
-                    !clicked -> NormalDisplay()
-                    clicked && areActiveAlerts.value -> AlertDisplay(alertState)
-                    clicked && !areActiveAlerts.value -> NoAlertDisplay()
+                if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
+                    NormalDisplay()
                 }
+                else if (showAlertDisplay.value) {
+                    AlertDisplay(alertState)
+                }
+                else if (showNoAlertDisplay.value) {
+                    NoAlertDisplay()
+                    LaunchedEffect(Unit) {
+                        delay(3000)
+                        showNoAlertDisplay.value = false
+                        showNormalScreen.value = !showNormalScreen.value
+                        clicked = !clicked
+                    }
+            }
 
-            Column(
-                        modifier = Modifier
+
+
+
+            Column(modifier = Modifier
                             .fillMaxSize()
                             .background(Color.White)
                     ) {
@@ -515,7 +549,6 @@ fun HomeScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlertDisplay(alertState: MetAlertsUIState) {
-
     Column(
         modifier = Modifier
             //.background(MaterialTheme.colorScheme.primary)
@@ -607,11 +640,11 @@ fun NoAlertDisplay() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Ingen varsler!",
+                            text = "Ingen varsler",
                             modifier = Modifier
                                 .padding(10.dp),
                             textAlign = TextAlign.Center,
-                            fontSize = 13.sp
+                            fontSize = 12.sp
                         )
                     }
                 }
