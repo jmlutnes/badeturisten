@@ -676,85 +676,45 @@ fun NormalDisplay() {
         ) {
             Column(
                 modifier = Modifier
-                    //.background(MaterialTheme.colorScheme.primary)
-                    //.padding(35.dp,10.dp)
+
                     .fillMaxSize()
-                    .padding(bottom = 5.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-                    .wrapContentHeight(Alignment.Bottom)
+                    .padding(bottom = 30.dp, top = 10.dp)
+
 
             ) {
-
-                LazyRow(
+                Card(
                     modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalArrangement = Arrangement.Center
+                        .fillMaxSize()
+                        //.padding(horizontal = 10.dp, vertical = 5.dp),
+                    ,
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
                 ) {
-                    items(100) { index ->
-                        Card(
-                            modifier = Modifier
-                                .size(310.dp, 90.dp)
-                                .padding(horizontal = 10.dp, vertical = 10.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                            ),
-                        ) {
-                            Text(
-                                text = "Fiskebolla lengter etter havet. Havet er fiskebollas venn. Dette er det vers nummer ${index + 1}, det er bare ${100 - (index + 1)} igjen!",
-                                modifier = Modifier
-                                    .padding(10.dp),
-                                textAlign = TextAlign.Center,
-                                fontSize = 11.sp,
-                                style = LocalTextStyle.current.merge(
-                                    TextStyle(
-                                        lineHeight = 1.5.em,
-                                        platformStyle = PlatformTextStyle(
-                                            includeFontPadding = false
-                                        ),
-                                        lineHeightStyle = LineHeightStyle(
-                                            alignment = LineHeightStyle.Alignment.Center,
-                                            trim = LineHeightStyle.Trim.None
-                                        )
-                                    )
+                    Text(
+                        text = "Finn badeplassen som er best for deg!",
+                        modifier = Modifier
+                            .padding(20.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 13.sp,
+                        style = LocalTextStyle.current.merge(
+                            TextStyle(
+                                lineHeight = 1.5.em,
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false
+                                ),
+                                lineHeightStyle = LineHeightStyle(
+                                    alignment = LineHeightStyle.Alignment.Center,
+                                    trim = LineHeightStyle.Trim.None
                                 )
                             )
-                        }
-                    }
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .size(305.dp, 100.dp)
-                                .padding(bottom = 20.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                            ),
-                        ) {
-                            Text(
-                                text = "Gratulerer! På tide å undersøke noen badesteder, eller hva?",
-                                modifier = Modifier
-                                    .padding(20.dp),
-                                textAlign = TextAlign.Center,
-                                fontSize = 9.sp,
-                                style = LocalTextStyle.current.merge(
-                                    TextStyle(
-                                        lineHeight = 1.5.em,
-                                        platformStyle = PlatformTextStyle(
-                                            includeFontPadding = false
-                                        ),
-                                        lineHeightStyle = LineHeightStyle(
-                                            alignment = LineHeightStyle.Alignment.Center,
-                                            trim = LineHeightStyle.Trim.None
-                                        )
-                                    )
-                                )
-                            )
-                        }
-                    }
+                        )
+                    )
                 }
             }
         }
     }
-
 }
+
 
 
