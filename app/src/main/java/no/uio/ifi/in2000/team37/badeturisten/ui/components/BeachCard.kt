@@ -1,9 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
-import android.content.Context
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
@@ -20,9 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
@@ -33,7 +26,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.network.NetworkUtils
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,16 +34,8 @@ fun BeachCard(
     navController: NavController,
     beachinfo: BadeinfoForHomescreen?
 ) {
-    val context = LocalContext.current
-    val isNetworkAvail = { NetworkUtils.isNetworkAvail(context) }
     Card(
-        onClick = {
-            if (isNetworkAvail()) {
-                navController.navigate("beachProfile/${beach.name}")
-            } else {
-                Toast.makeText(context, "Ingen nettverkstilgjengelighet. Kan ikke vise detaljer for ${beach.name}.", Toast.LENGTH_LONG).show()
-            }
-        },
+        onClick = { navController.navigate("beachProfile/${beach.name}") },
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 55.dp)
             .fillMaxWidth()

@@ -27,7 +27,7 @@ class CombineBeachesUseCase (
     fun combineBeaches(beachesFromMet: List<Beach>, beachesFromOsloKommune: List<Beach>): List<Beach> {
         val combinedMap = beachesFromMet.associateBy { it.name }.toMutableMap()
 
-        beachesFromOsloKommune.toList().forEach { beach ->
+        beachesFromOsloKommune.forEach { beach ->
             if (combinedMap[beach.name] != null && combinedMap[beach.name]?.waterTemp != null) {
                 beach.waterTemp = combinedMap[beach.name]?.waterTemp
             }

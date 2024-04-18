@@ -1,10 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.net.NetworkCapabilities
 import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
@@ -12,7 +9,6 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.network.NetworkUtils
 
 class OsloKommuneRepository () {
     private val datasource: OsloKommuneDatasource = OsloKommuneDatasource()
