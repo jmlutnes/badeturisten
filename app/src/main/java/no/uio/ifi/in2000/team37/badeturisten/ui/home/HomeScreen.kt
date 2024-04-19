@@ -233,7 +233,6 @@ fun WarningIcon(warningvector: ImageVector) {
             .size(100.dp, 100.dp)
             .background(Color.Transparent),
         contentScale = ContentScale.Fit
-
     )
 }
 
