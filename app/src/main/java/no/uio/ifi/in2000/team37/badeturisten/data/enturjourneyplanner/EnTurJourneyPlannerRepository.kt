@@ -11,17 +11,17 @@ class EnTurJourneyPlannerRepository (val dataSource: EnTurJourneyPlannerDataSour
      */
     suspend fun hentBussruterMedId(bussstasjonId: String): MutableList<Bussrute>? {
         val linjer = mutableListOf<Bussrute>()
-        try {
+        return try {
             // Fetching rputedata based on buss station ID
             val ruteData: jsontokotlinenturjourneyplanner = dataSource.getRute(bussstasjonId)
             ruteData.data.stopPlace.estimatedCalls.forEach { estimatedCall ->
                 val line = estimatedCall.serviceJourney.journeyPattern.line
                 linjer.add(Bussrute(line.publicCode, line.name, line.transportMode))
             }
-            return linjer
+            linjer
         } catch (e: Exception) {
             println("En feil oppstod ved henting av bussruter: ${e.message}")
-            return null
+            null
         }
     }
 }

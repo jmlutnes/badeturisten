@@ -1,9 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
-import android.annotation.SuppressLint
 import android.util.Log
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
@@ -19,18 +17,33 @@ class OsloKommuneRepository () {
      * Send in boolean parameters for which facilities Oslo Kommune website to seach for.
      * Returns all the beaches with at least one of the parameters.
      */
-    suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
-        val item = datasource.getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
-        return item
+    suspend fun getDataForFasilitet(
+        badevakt: Boolean,
+        barnevennlig: Boolean,
+        grill: Boolean,
+        kiosk: Boolean,
+        tilpasning: Boolean,
+        toalett: Boolean,
+        badebrygge: Boolean
+    ): jsontokotlin_kommune {
+        return datasource.getDataForFasilitet(
+            badevakt,
+            barnevennlig,
+            grill,
+            kiosk,
+            tilpasning,
+            toalett,
+            badebrygge
+        )
     }
 
     /**
      *Send in boolean parameters for which facilities Oslo Commune website to search for.
-     *For each of the beaches fetched from Oslo Commune extract the website for specific location, and adds them to local list.
+     *For each of the beaches fetched from Oslo Commune extract the website for specific location,
+     *and adds them to local list.
      *The name is the extracted from the HTML. Location is fetched from the beach.
      *Returns a list with all the beaches with the given facilities.
      */
-    @SuppressLint("SuspiciousIndentation")
     suspend fun makeBeachesFasiliteter(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): List<Beach>  {
         val lokalSokListe = mutableListOf<Beach>()
         val verdi = getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
@@ -74,8 +87,7 @@ class OsloKommuneRepository () {
      * Returns a OsloKommuneBeachInfo object
      */
     suspend fun skrapUrl(input: String): OsloKommuneBeachInfo {
-        val item = datasource.skrapUrl(input)
-        return item
+        return datasource.skrapUrl(input)
     }
 
     /**
@@ -83,8 +95,7 @@ class OsloKommuneRepository () {
      */
     suspend fun getBadeplasser(): List<Feature> {
         val item = datasource.getData()
-        val feat = item.data.geoJson.features
-        return feat
+        return item.data.geoJson.features
     }
 
     /**
@@ -94,7 +105,7 @@ class OsloKommuneRepository () {
         val regex = Regex("<a[^>]*>([^<]*)</a>")
         val matchResult = regex.find(html)
         if (matchResult != null) {
-            return matchResult.groups.get(1)?.value ?: ""
+            return matchResult.groups[1]?.value ?: ""
         }
         return ""
     }
@@ -102,7 +113,8 @@ class OsloKommuneRepository () {
     /**
      * Method to make a map with the name of the beach as key and the bathinginformation as value.
      * Is used to get image on beachCard, and possibility to use information from Oslo Commune on different screens.
-     * Fetches all the bathing sites from Oslo Commune website. Get the name and URL for the site using extractBeachFromHTML method.
+     * Fetches all the bathing sites from Oslo Commune website.
+     * Get the name and URL for the site using extractBeachFromHTML method.
      * Then uses skrapUrl to fetch the OsloKommuneBeachInfo for the specific site.
      */
     suspend fun finnAlleNettside(): MutableMap<String, BadeinfoForHomescreen> {
@@ -129,13 +141,10 @@ class OsloKommuneRepository () {
         val features = getBadeplasser()
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent
-            val beachNameConverted: String? = extractBeachFromHTML(beachNameNotConverted)
-            if (beachNameConverted != null) {
-                if (beachNameConverted.contains(navn)) {
-                    val url = extractUrl(beachNameNotConverted)
-                    val badeinfo = skrapUrl(url)
-                    return badeinfo
-                }
+            val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
+            if (beachNameConverted.contains(navn)) {
+                val url = extractUrl(beachNameNotConverted)
+                return skrapUrl(url)
             }
         }
             Log.e("OsloKommuneRepository", "No beach found")
@@ -152,8 +161,8 @@ class OsloKommuneRepository () {
                 val features = getBadeplasser()
                 println(features)
                 features.forEach { feature ->
-                    val beachNameNotConverted: String? = feature.properties.popupContent
-                    val beachNameConverted: String? =
+                    val beachNameNotConverted: String = feature.properties.popupContent
+                    val beachNameConverted: String =
                         extractBeachFromHTML(beachNameNotConverted.toString())
 
                     val location = feature.geometry.coordinates
@@ -161,7 +170,7 @@ class OsloKommuneRepository () {
                     val lat: String = location.get(1).toString()
 
                     val posisjon: Pos = Pos(lat, lon)
-                    liste.add(Beach(beachNameConverted.toString(), posisjon, null, false))
+                    liste.add(Beach(beachNameConverted, posisjon, null, false))
                 }
                 return liste
 
