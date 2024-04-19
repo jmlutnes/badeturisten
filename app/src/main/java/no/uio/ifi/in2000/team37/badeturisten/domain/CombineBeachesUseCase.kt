@@ -14,7 +14,7 @@ class CombineBeachesUseCase (
 
     suspend operator fun invoke(): List<Beach> = withContext(defaultDispatcher) {
         val beachesFromMet = beachRepository.getBeachObservations().value
-        val beachesFromOsloKommune = osloKommuneRepository.makeBeaches(0.0, 0.0)
+        val beachesFromOsloKommune = osloKommuneRepository.makeBeaches()
 
         combineBeaches(beachesFromMet = beachesFromMet, beachesFromOsloKommune = beachesFromOsloKommune)
     }

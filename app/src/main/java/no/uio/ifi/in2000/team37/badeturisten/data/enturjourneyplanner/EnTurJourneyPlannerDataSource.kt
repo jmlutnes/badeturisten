@@ -29,8 +29,6 @@ class EnTurJourneyPlannerDataSource {
         }
     }
 
-    //Sender spoerring til EnTurJourneyPlanner or aa faa stopp basert paa id
-    //Hentet fra enTur sin GeoCoder
     /**
      * Send in a stopPlace ID to receive the transportation related to the the stop place.
      * Sends a request for the JourneyPlanner API with the ID.

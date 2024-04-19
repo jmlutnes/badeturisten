@@ -41,7 +41,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
     //Oslo Kommune
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
-    //Ruter
+    //EnTur
     private val enTurRepositoryGeocoderRepository: EnTurGeocoderRepository = EnTurGeocoderRepository(
         EnTurGeocoderDataSource()
     )
@@ -61,14 +61,14 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             println("lon:$lon \nlat:$lat")
             var bussstasjoner: Bussstasjoner? = null
             if((lon == null) || (lat == null)) {
-                //Henter ID for alle bussstasjoner som finner basert paa navn
+                //fetch ID for all buss stations based on name
                 bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
             }
             else{
-                //Henter ID for alle busstasjoner som finner basert paa lokasjon
+                //Fetch ID for all buss stasions based on location
             bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)}
             //}
-            // Henter bussruter (linje og navn) basert paa id fra stasjoner
+            // Fetch buss routes (lines and name) based on id from stations
             // Set for ingen duplikater
             val unikeBussruter = mutableSetOf<Bussrute>()
             bussstasjoner?.bussstasjon?.forEach { stasjon ->

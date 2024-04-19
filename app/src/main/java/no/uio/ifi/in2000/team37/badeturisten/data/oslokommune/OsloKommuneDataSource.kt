@@ -25,7 +25,6 @@ import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
 class OsloKommuneDatasource {
     val client = HttpClient() {
         defaultRequest {
@@ -46,7 +45,6 @@ class OsloKommuneDatasource {
     suspend fun skrapUrl(url: String): OsloKommuneBeachInfo {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
-
         return scrapeBeachInfoFromResponse(responseBody)
     }
 
@@ -64,18 +62,17 @@ class OsloKommuneDatasource {
     fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
         val document = Jsoup.parse(responseBody)
 
-        //Henter forst bathingsite
+        //Get waterquality
         val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
-        //Viser kun det som er synlig (fjerne fargekode)
+        //Show only the visible text(remove colorcoding)
         val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
-        //Resultat av vannkvalitet
+        //Result of water quality
         val vannkvalitet = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
-
-        //fasiliteter
+        //Facilities
         val fasiliteterSection = document.select("div.io-facts").firstOrNull()
         val fasiliteterBuilder = StringBuilder()
-        //Noe av teksten er formatert med • mellom punkter.
-        //Denne koden gaar gjennom og separerer steder i teksten hvor dette forekommer:
+        //Some of the text is formatted with '•' inbetween facilities.
+        //This codes iterate and separate areas in the text where that occurs:
         fasiliteterSection?.let { section ->
             val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul li")
             fasiliteterListe.forEach { li ->
@@ -91,7 +88,7 @@ class OsloKommuneDatasource {
         }
         val fasiliteter = fasiliteterBuilder.toString().trim().ifEmpty { null }
 
-        //Bilde
+        //Image
         val imageData = document.select("ods-image-carousel").attr(":images")
         val srcStart = imageData.indexOf("\"src\":\"") + "\"src\":\"".length
         val srcEnd = imageData.indexOf("\"", srcStart)
@@ -100,7 +97,6 @@ class OsloKommuneDatasource {
         } else {
             "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
         }
-
         return OsloKommuneBeachInfo(vannkvalitet, fasiliteter, bildeUrl)
     }
 
@@ -117,17 +113,12 @@ class OsloKommuneDatasource {
         val tilpasningUrl = if (tilpasning) "&f_facilities_kiosk=true" else ""
         val toalettUrl = if (toalett) "&f_facilities_toilets=true" else ""
         val badebryggeUrl = if (badebrygge) "&f_facilities_diving_tower=true" else ""
-
         val url =
             "https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
-
         val urlString = url +
                 badevaktUrl + barnevennligUrl + grillUrl + kioskUrl + tilpasningUrl + toalettUrl + badebryggeUrl
-
         val data = client.get(urlString)
-
         val response = data.body<jsontokotlin_kommune>()
-
         return response
     }
 
@@ -136,20 +127,15 @@ class OsloKommuneDatasource {
      */
         suspend fun getData(
         ): jsontokotlin_kommune {
-
             val data =
                 client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
-
             val response = data.body<jsontokotlin_kommune>()
             return response
         }
 
     }
 
-
-//Dette er metode som fikser problemet med at APIET har to forskjellige verdier med navn "value" hvor en er string og den andre er Value
 val gson = Gson()
-
 /**
  * Help method to seperate data class objects with the same names.
  */
@@ -158,13 +144,13 @@ class ItemDeserializer : JsonDeserializer<Item> {
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Item {
         val jsonObject = json.asJsonObject
 
-        // Ekstraher felles felt
+        // Extract common areas
         val id = jsonObject.get("id").asString
         val name = jsonObject.get("name").asString
         val label = jsonObject.get("label").asString
         val placeholder = jsonObject.get("placeholder").asString
 
-        // Manuell deserialisering
+        // Manual deserialization
         val algolia = if (jsonObject.has("algolia")) {
             gson.fromJson(jsonObject.get("algolia"), Algolia::class.java)
         } else {

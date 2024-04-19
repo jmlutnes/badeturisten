@@ -36,19 +36,18 @@ class OsloKommuneRepository () {
         val verdi = getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
         return try {
              val features = verdi.data.geoJson.features
-            //Itterer og hent koordinater og navn
             features.forEach { feature ->
-                //Henter navn
+                //Name
                 val beachNameNotConverted: String? = feature.properties.popupContent
                 val beachNameConverted: String? =
                     extractBeachFromHTML(beachNameNotConverted.toString())
 
-                //Henter location
+                //Location
                 val location = feature.geometry.coordinates
                 val lon: String = location.get(0).toString()
                 val lat: String = location.get(1).toString()
                 val posisjon: Pos = Pos(lat, lon)
-                // lager strand objekter og legger til i liste
+
                 lokalSokListe.add(Beach(beachNameConverted.toString(), posisjon, null, false))
             }
                 return lokalSokListe
@@ -58,14 +57,6 @@ class OsloKommuneRepository () {
                 Log.e("Oslo Kommune repos", e.message.toString())
                 emptyList<Beach>()
         }
-    }
-
-    /**
-     * Get Oslo Commune places nearby given latitude and longitude
-     */
-    suspend fun getRight(lat: Double, lon: Double): jsontokotlin_kommune {
-        val item = datasource.getData()
-        return item
     }
 
     /**
@@ -141,7 +132,6 @@ class OsloKommuneRepository () {
             val beachNameConverted: String? = extractBeachFromHTML(beachNameNotConverted)
             if (beachNameConverted != null) {
                 if (beachNameConverted.contains(navn)) {
-                    //Fant stranden
                     val url = extractUrl(beachNameNotConverted)
                     val badeinfo = skrapUrl(url)
                     return badeinfo
@@ -160,26 +150,19 @@ class OsloKommuneRepository () {
         suspend fun makeBeaches(): List<Beach> {
             return try {
                 val features = getBadeplasser()
-                //Itterer og hent koordinater og navn
-                //geometry -> type -> Coordinates = Koordinater
-                //properties -> popupContent -> bakers på streng før </a></h2
                 println(features)
                 features.forEach { feature ->
-                    //Henter navn
                     val beachNameNotConverted: String? = feature.properties.popupContent
                     val beachNameConverted: String? =
                         extractBeachFromHTML(beachNameNotConverted.toString())
 
-                    //Henter location
                     val location = feature.geometry.coordinates
                     val lon: String = location.get(0).toString()
                     val lat: String = location.get(1).toString()
 
                     val posisjon: Pos = Pos(lat, lon)
-                    // lager strand objekter og legger til i liste
                     liste.add(Beach(beachNameConverted.toString(), posisjon, null, false))
                 }
-                //LAGER DATAKLASSE MED ALLE BEACHES
                 return liste
 
             } catch (e: Exception) {
@@ -194,8 +177,6 @@ class OsloKommuneRepository () {
      * Returns the first beach with the given name.
      */
         suspend fun getBeach(beachName: String): Beach? {
-            //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
-
             var beachlist: List<Beach> = makeBeaches()
             beachlist = beachlist.filter { beach -> beach.name == beachName }
             return beachlist.firstOrNull()
