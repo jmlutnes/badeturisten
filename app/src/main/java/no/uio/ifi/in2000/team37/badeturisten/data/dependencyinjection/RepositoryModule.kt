@@ -29,45 +29,34 @@ import dagger.hilt.android.components.ApplicationComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
-    /*@Binds
-    @Singleton
-    abstract fun bindMyRepository(
-        myRepositoryImpl: MyRepositoryImpl
-    ): MyRepository*/
 
     //men binds brukes paa abstrakte
     @RequiresApi(Build.VERSION_CODES.O)
-    //@Provides
-    @Binds
+    @Provides
     fun provideBeachRepository(waterTemperatureDataSource: WaterTemperatureDataSource): BeachRepositoryImp {
         return BeachRepositoryImp(waterTemperatureDataSource)
     }
 
-    //@Provides
-    @Binds
+    @Provides
     fun provideOsloKommuneRepository(osloKommuneDatasource: OsloKommuneDatasource): OsloKommuneRepositoryImp {
         return OsloKommuneRepositoryImp(osloKommuneDatasource)
     }
 
-    //@Provides
-    @Binds
+    @Provides
     fun provideLocationForecastRepository(locationForecastDataSource: LocationForecastDataSource): LocationForecastRepositoryImp {
         return LocationForecastRepositoryImp(locationForecastDataSource)
     }
 
-    //@Provides
-    @Binds
+    @Provides
     fun provideMetAlertsRepository( metAlertsDataSource: MetAlertsDataSource): MetAlertsRepositoryImp {
         return MetAlertsRepositoryImp(metAlertsDataSource)
     }
-    //@Provides
-    @Binds
+    @Provides
     fun provideEnTurJourneyPlannerRepository(enTurJourneyPlannerDataSource: EnTurJourneyPlannerDataSource): EnTurJourneyPlannerRepositoryImp {
         return EnTurJourneyPlannerRepositoryImp(enTurJourneyPlannerDataSource)
     }
 
-    //@Provides
-    @Binds
+    @Provides
     fun provideEnTurGeocoderRepository(enTurGeocoderDataSource: EnTurGeocoderDataSource): EnTurGeocoderRepositoryImp {
         return EnTurGeocoderRepositoryImp(enTurGeocoderDataSource)
     }
