@@ -11,24 +11,17 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class BeachRepository {
-
-    //water temp
     private val waterTempDataSource: WaterTemperatureDataSource = WaterTemperatureDataSource()
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
 
-    //flows
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
-    //henter flows
     fun getBeachObservations() = beachObservations.asStateFlow()
-    //oppdaterer flows
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
-
-        //oppdaterer i homeviewmodel i stedet
         beachObservations.update {
             makeBeaches(observationsFromDataSource)
         }
@@ -47,10 +40,15 @@ class BeachRepository {
         }
     }
 
+//Denne maa naa ha egen observation og beachlist siden hver beach
+// ikke har observasjonene fra HomeScreen(?)
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getBeach(beachName: String): Beach? = beachObservations.value.firstOrNull { beach -> beach.name == beachName }
-
-
+    suspend fun getBeach(beachName: String): Beach? {
+        val observationsFromDataSource = waterTempGetData()
+        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
+        beachlist = beachlist.filter { beach -> beach.name == beachName }
+        return beachlist.firstOrNull()
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getFavourites(): List<Beach> {
         val observationsFromDataSource = waterTempGetData()
@@ -58,5 +56,4 @@ class BeachRepository {
         beachlist = beachlist.filter { beach -> beach.favorite }
         return beachlist
     }
-
 }

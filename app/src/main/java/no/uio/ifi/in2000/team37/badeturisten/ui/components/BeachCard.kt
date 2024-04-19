@@ -204,7 +204,7 @@ fun Badeinfoforbeachcard(
                     )
 
                     val tempText =
-                        if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else "Ingen målt temperatur"
+                        if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
                     Text(
                         text = tempText,
                         fontSize = 16.sp,
