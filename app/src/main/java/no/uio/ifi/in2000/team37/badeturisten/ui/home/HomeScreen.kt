@@ -66,6 +66,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -671,7 +672,7 @@ fun NormalDisplay() {
                 //.background(MaterialTheme.colorScheme.primary)
                 //.padding(35.dp,10.dp)
                 .size(310.dp, 190.dp)
-                .verticalNegativePadding(15.dp)
+                .verticalNegativePadding(30.dp)
                 //.background(MaterialTheme.colorScheme.primary),
         ) {
             Column(
@@ -682,31 +683,23 @@ fun NormalDisplay() {
 
 
             ) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        //.padding(horizontal = 10.dp, vertical = 5.dp),
-                    ,
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    ),
-                ) {
                     Text(
-                        text = "Finn badeplassen som er best for deg!",
+                        text = "Her har vi samlet Oslos beste badeperler for deg!",
                         modifier = Modifier
                             .padding(20.dp),
                         textAlign = TextAlign.Center,
-                        fontSize = 13.sp,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.primary,
                         style = LocalTextStyle.current.merge(
                             TextStyle(
-                                lineHeight = 1.5.em,
+                                lineHeight = 1.1.em,
                                 platformStyle = PlatformTextStyle(
                                     includeFontPadding = false
                                 ),
                                 lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Center,
+                                    alignment = LineHeightStyle.Alignment.Proportional,
                                     trim = LineHeightStyle.Trim.None
-                                )
+                                ),
                             )
                         )
                     )
@@ -714,7 +707,6 @@ fun NormalDisplay() {
             }
         }
     }
-}
 
 
 
