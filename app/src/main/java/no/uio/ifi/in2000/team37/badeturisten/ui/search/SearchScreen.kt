@@ -44,9 +44,8 @@ import androidx.compose.ui.unit.sp
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
 
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 
 @Composable
@@ -283,7 +282,7 @@ fun SearchScreen(
                                 .fillMaxSize()
                         ) {
                             items(sokResultater.beachList) { beach ->
-                                badeinfoforbeachcard(beach, navController, beachinfo)
+                                Badeinfoforbeachcard(beach, navController, beachinfo)
                             }
                         }
                     }

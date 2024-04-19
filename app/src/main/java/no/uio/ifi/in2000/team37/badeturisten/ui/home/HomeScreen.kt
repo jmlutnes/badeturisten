@@ -76,7 +76,7 @@ import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.badeinfoforbeachcard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
 @Composable
 fun rememberWarning(areActiveAlerts: Boolean): ImageVector {
     return remember {
@@ -88,7 +88,6 @@ fun rememberWarning(areActiveAlerts: Boolean): ImageVector {
             viewportHeight = 40.0f
         ).apply {
             path(
-
                 fill = if(areActiveAlerts){SolidColor(Color.Red)}else{SolidColor(Color.White)},
                 fillAlpha = 1f,
                 stroke = null,
@@ -323,11 +322,9 @@ fun HomeScreen(
                                 .size(310.dp, 100.dp)
 
                         ) {
-                            var tempText = ""
-                            var precipitationText = ""
                             if (forecastState != null) {
-                                tempText = "${forecastState.temp}°"
-                                precipitationText = "${forecastState.precipitation} mm"
+                                val tempText = "${forecastState.temp}°"
+                                val precipitationText = "${forecastState.precipitation} mm"
 
 
                                 Column(
@@ -417,7 +414,6 @@ fun HomeScreen(
                                                 Button(
                                                     onClick = {
                                                         clicked = !clicked
-                                                        //showNormalScreen.value = !showNormalScreen.value
                                                               },
                                                     modifier = Modifier
                                                         .padding(5.dp)
@@ -443,7 +439,7 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box() {
+                        Box {
                             //For å opprettholde struktur selv om siden lastes inn.
                             imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
                                 Image(
@@ -535,7 +531,7 @@ fun HomeScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     items(beachState.beaches) { beach ->
-                                        badeinfoforbeachcard(beach, navController, beachinfo)
+                                        Badeinfoforbeachcard(beach, navController, beachinfo)
                                     }
                                 }
                             }
@@ -544,6 +540,7 @@ fun HomeScreen(
                 }
             }
         }
+    }
 
 
 @SuppressLint("RestrictedApi")
