@@ -25,7 +25,11 @@ class EnTurGeocoderDataSource {
             gson{}
         }
     }
-    //Henter stasjoner basert paa longitude og latitude. Returnerer stasjoner i omraadet
+
+    /**
+     * Fetch the nearby buss stations based on input latitude and longitude.
+     * The radius and the amount of results can be changes.
+     */
     suspend fun getDataLoc(
         lat: Double,
         lon: Double
@@ -39,7 +43,10 @@ class EnTurGeocoderDataSource {
         val response = data.body<jsontokotlinenturgeocoder>()
         return response
     }
-    //Henter stasjoner basert paa navn
+
+    /**
+    *Fetch buss stations based on input name
+     */
     suspend fun getDataName(
         navn: String
     ): jsontokotlinenturgeocoder {

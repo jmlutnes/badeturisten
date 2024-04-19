@@ -39,6 +39,10 @@ class OsloKommuneDatasource {
         }
     }
 
+    /**
+     * Send in URL. Using Jsoup to scrape the website on Oslo Commune.
+     * Returns a OsloKommuneBeachInfo object.
+     */
     suspend fun skrapUrl(url: String): OsloKommuneBeachInfo {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()
@@ -46,6 +50,17 @@ class OsloKommuneDatasource {
         return scrapeBeachInfoFromResponse(responseBody)
     }
 
+    /**
+     * Send in responseBody as string, and returns OsloKommuneBeachInfo.
+     * Using Jsoup to scrape the given responseBody.
+     * Fetches Water quality, facilities, and imageURL.
+     * First the water quality is selected in the 'div.io-bathingsite area'. Then to extract only the visible information (not color description and other information)
+     * Then Facilities is selected from 'div.io-facts'. Then separates the the different facilities with '•' s separator.
+     * Then it is iterated through to also separate in '•' inside the text (for example the different opening times) to have them also appear on different lines.
+     * Lastly the image carousel is selected ('ods-image-carousel') and then fetches the first URL in the carousel.
+     * If there is no image URL, a default image URL is used.
+     * Returns OsloKommuneBeachInfo object
+     */
     fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
         val document = Jsoup.parse(responseBody)
 
@@ -90,7 +105,10 @@ class OsloKommuneDatasource {
     }
 
 
-
+    /**
+     * Send in the facilities (boolean) to be searched for on the Oslo Commune website.
+     * Adds the different parameters to the URL for to the API GET-call. Returns all the results.
+     */
     suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
         val badevaktUrl = if (badevakt) "&f_facilities_lifeguard=true" else ""
         val barnevennligUrl = if (barnevennlig) "&f_facilities_child_friendly=true" else ""
@@ -113,10 +131,11 @@ class OsloKommuneDatasource {
         return response
     }
 
+    /**
+     * Fetch all the bathing sites in the Oslo Commune API.
+     */
         suspend fun getData(
-            longitude: Double?,
-            latitude: Double?
-        ): jsontokotlin_kommune { //lat og lon send med
+        ): jsontokotlin_kommune {
 
             val data =
                 client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
@@ -131,6 +150,9 @@ class OsloKommuneDatasource {
 //Dette er metode som fikser problemet med at APIET har to forskjellige verdier med navn "value" hvor en er string og den andre er Value
 val gson = Gson()
 
+/**
+ * Help method to seperate data class objects with the same names.
+ */
 @Suppress("IMPLICIT_CAST_TO_ANY")
 class ItemDeserializer : JsonDeserializer<Item> {
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Item {
