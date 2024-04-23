@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.WeatherWarning
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter

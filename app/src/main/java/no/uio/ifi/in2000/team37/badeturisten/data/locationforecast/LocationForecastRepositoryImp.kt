@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 import javax.inject.Inject
 
 class LocationForecastRepositoryImp @Inject constructor(

@@ -7,11 +7,6 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 
 interface OsloKommuneRepository {
-    //val datasource: OsloKommuneDatasource
-    // definer metodene som trengs
-    suspend fun getClass(
-        lat: Double?, lon: Double?
-    ): jsontokotlin_kommune
     suspend fun getDataForFasilitet(
         badevakt: Boolean,
         barnevennlig: Boolean,
@@ -30,22 +25,12 @@ interface OsloKommuneRepository {
         toalett: Boolean,
         badebrygge: Boolean
     ): List<Beach>
-    suspend fun getRight(
-        lat: Double, lon: Double
-    ): jsontokotlin_kommune
     fun extractUrl(inputString: String): String
-    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo
-    suspend fun getVannkvalitetLoc(
-        lat: Double?, lon: Double?
-    ): OsloKommuneBeachInfo?
-    suspend fun getBadeplasser(
-        lat: Double?, lon: Double?
-    ): List<Feature>
+    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo?
     fun extractBeachFromHTML(html: String): String?
     suspend fun finnNettside(navn: String): OsloKommuneBeachInfo?
-    suspend fun makeBeaches(
-        lon: Double, lat: Double
-    ): List<Beach>
+    suspend fun makeBeaches(): List<Beach>
     suspend fun getBeach(beachName: String): Beach?
     suspend fun finnAlleNettside(): MutableMap<String, BadeinfoForHomescreen>
+    suspend fun getBadeplasser(): List<Feature>
 }

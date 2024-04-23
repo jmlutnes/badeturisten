@@ -1,7 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
 import kotlinx.coroutines.flow.StateFlow
-import no.uio.ifi.in2000.team37.badeturisten.model.WeatherWarning
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 
 interface MetAlertsRepository {
     fun getMetAlertsObservations(): StateFlow<List<WeatherWarning>>

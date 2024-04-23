@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.model
+package no.uio.ifi.in2000.team37.badeturisten.data.metalerts
 
 data class WeatherWarning(
     val area: String,

@@ -1,9 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
-import android.annotation.SuppressLint
 import android.util.Log
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
@@ -22,7 +20,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
      * Send in boolean parameters for which facilities Oslo Kommune website to seach for.
      * Returns all the beaches with at least one of the parameters.
      */
-    suspend fun getDataForFasilitet(
+    override suspend fun getDataForFasilitet(
         badevakt: Boolean,
         barnevennlig: Boolean,
         grill: Boolean,
@@ -49,7 +47,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
      *The name is the extracted from the HTML. Location is fetched from the beach.
      *Returns a list with all the beaches with the given facilities.
      */
-    suspend fun makeBeachesFasiliteter(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): List<Beach>  {
+    override suspend fun makeBeachesFasiliteter(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): List<Beach>  {
         val lokalSokListe = mutableListOf<Beach>()
         val verdi = getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
         return try {
@@ -66,7 +64,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
                 val lat: String = location.get(1).toString()
                 val posisjon: Pos = Pos(lat, lon)
 
-                lokalSokListe.add(Beach(beachNameConverted.toString(), posisjon, null, false))
+                lokalSokListe.add(Beach(beachNameConverted.toString(), posisjon, null))
             }
             return lokalSokListe
         }
@@ -81,7 +79,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
      * Send in a HTML-string, and the URL in the string will be extracted using Regex
      * returns the URL as String
      */
-    fun extractUrl(inputString: String): String {
+    override fun extractUrl(inputString: String): String {
         val streng = """href="(.*?)"""".toRegex()
         val matchResult = streng.find(inputString)
         return matchResult?.groups?.get(1)?.value ?: ""
@@ -91,14 +89,14 @@ class OsloKommuneRepositoryImp @Inject constructor(
      * Send in URL, and Oslo Commune will be scraped for facilities, waterquality and image URL.
      * Returns a OsloKommuneBeachInfo object
      */
-    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo? {
+    override suspend fun skrapUrl(input: String): OsloKommuneBeachInfo? {
         return datasource.skrapUrl(input)
     }
 
     /**
      * Get all the places on the Oslo Commune website.
      */
-    suspend fun getBadeplasser(): List<Feature> {
+    override suspend fun getBadeplasser(): List<Feature> {
         val item = datasource.getData()
         return item.data.geoJson.features
     }
@@ -106,7 +104,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
     /**
      * Send in HTML-String, and by using regex the name of the beach is returned
      */
-    fun extractBeachFromHTML(html: String): String {
+    override fun extractBeachFromHTML(html: String): String {
         val regex = Regex("<a[^>]*>([^<]*)</a>")
         val matchResult = regex.find(html)
         if (matchResult != null) {
@@ -122,7 +120,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
      * Get the name and URL for the site using extractBeachFromHTML method.
      * Then uses skrapUrl to fetch the OsloKommuneBeachInfo for the specific site.
      */
-    suspend fun finnAlleNettside(): MutableMap<String, BadeinfoForHomescreen> {
+    override suspend fun finnAlleNettside(): MutableMap<String, BadeinfoForHomescreen> {
         val lokalSokListe = mutableMapOf<String, BadeinfoForHomescreen>()
         val features = getBadeplasser()
         features.forEach { feature ->
@@ -142,7 +140,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
      * Checks if the input site name exists in the Oslo Commune API.
      * The URL for that site is the scraped and returns OsloCommuneBeachInfo.
      */
-    suspend fun finnNettside(navn: String): OsloKommuneBeachInfo? {
+    override suspend fun finnNettside(navn: String): OsloKommuneBeachInfo? {
         val features = getBadeplasser()
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent
@@ -161,7 +159,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
      * Fetching beach name from HTML and position.
      * Returns a list with all the Beaches (bathing sites) on the Oslo Commune API.
      */
-        suspend fun makeBeaches(): List<Beach> {
+    override suspend fun makeBeaches(): List<Beach> {
             return try {
                 val features = getBadeplasser()
                 println(features)
@@ -175,7 +173,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
                     val lat: String = location.get(1).toString()
 
                     val posisjon: Pos = Pos(lat, lon)
-                    liste.add(Beach(beachNameConverted, posisjon, null, false))
+                    liste.add(Beach(beachNameConverted, posisjon, null))
                 }
                 return liste
 
@@ -190,7 +188,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
      * Send in a bathing site name for Oslo Commune. Goes through all the sites and looks for the given name.
      * Returns the first beach with the given name.
      */
-        suspend fun getBeach(beachName: String): Beach? {
+    override suspend fun getBeach(beachName: String): Beach? {
             var beachlist: List<Beach> = makeBeaches()
             beachlist = beachlist.filter { beach -> beach.name == beachName }
             return beachlist.firstOrNull()

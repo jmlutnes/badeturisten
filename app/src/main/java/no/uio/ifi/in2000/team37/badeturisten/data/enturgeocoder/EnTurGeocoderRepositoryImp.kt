@@ -29,7 +29,7 @@ class EnTurGeocoderRepositoryImp(
      * Send in site name to fetch all the stop places in the nearby area.
      */
     override suspend fun hentBussruteName(navn: String): Bussstasjoner? {
-        val stoppesteder = dataSource.getDataName(navn)
+        val stoppesteder = datasource.getDataName(navn)
         val bussstasjoner = stoppesteder.features.map { feature ->
                 Bussstasjon(
                     id = feature.properties.id,

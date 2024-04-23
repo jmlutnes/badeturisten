@@ -19,10 +19,10 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.WeatherWarning
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.ForecastNextHour
 
 import javax.inject.Inject
 
