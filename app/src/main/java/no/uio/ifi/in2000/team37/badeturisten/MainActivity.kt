@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -63,6 +64,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LifecycleEventObserver
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
@@ -70,53 +73,60 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
+@Suppress("DEPRECATION")
 class MainActivity : ComponentActivity() {
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            var locationPermissionsGranted by remember { mutableStateOf(areLocationPermissionsAlreadyGranted()) }
-            var shouldShowPermissionRationale by remember {
-                mutableStateOf(
-                    shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
-                )
-            }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        setContent {
+            val snackbarHostState = remember { SnackbarHostState() }
+            val scope = rememberCoroutineScope()
+
+            var locationPermissionsGranted by remember { mutableStateOf(checkLocationPermission()) }
+            var shouldShowPermissionRationale by remember {
+                mutableStateOf(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION))
+            }
             var shouldDirectUserToApplicationSettings by remember {
                 mutableStateOf(false)
             }
-
             var currentPermissionsStatus by remember {
-                mutableStateOf(decideCurrentPermissionStatus(locationPermissionsGranted, shouldShowPermissionRationale))
+                mutableStateOf(
+                    decideCurrentPermissionStatus(
+                        locationPermissionsGranted,
+                        shouldShowPermissionRationale
+                    )
+                )
             }
 
-            val locationPermissions = arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
+            val locationPermissionsLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestMultiplePermissions()
+            ) { permissions ->
+                locationPermissionsGranted =
+                    permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
 
-            val locationPermissionLauncher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.RequestMultiplePermissions(),
-                onResult = { permissions ->
-                    locationPermissionsGranted = permissions.values.reduce { acc, isPermissionGranted ->
-                        acc && isPermissionGranted
-                    }
-
-                    if (!locationPermissionsGranted) {
-                        shouldShowPermissionRationale =
-                            shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)
-                    }
-                    shouldDirectUserToApplicationSettings = !shouldShowPermissionRationale && !locationPermissionsGranted
-                    currentPermissionsStatus = decideCurrentPermissionStatus(locationPermissionsGranted, shouldShowPermissionRationale)
-                })
+                if (!locationPermissionsGranted) {
+                    shouldShowPermissionRationale =
+                        shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+                shouldDirectUserToApplicationSettings =
+                    !shouldShowPermissionRationale && !locationPermissionsGranted
+                currentPermissionsStatus = decideCurrentPermissionStatus(
+                    locationPermissionsGranted,
+                    shouldShowPermissionRationale
+                )
+            }
 
             val lifecycleOwner = LocalLifecycleOwner.current
-            DisposableEffect(key1 = lifecycleOwner, effect = {
+            DisposableEffect(key1 = lifecycleOwner) {
                 val observer = LifecycleEventObserver { _, event ->
-                    if (event == Lifecycle.Event.ON_START &&
-                        !locationPermissionsGranted &&
-                        !shouldShowPermissionRationale) {
-                        locationPermissionLauncher.launch(locationPermissions)
+                    if (event == Lifecycle.Event.ON_START && !locationPermissionsGranted && !shouldShowPermissionRationale) {
+                        locationPermissionsLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION))
                     }
                 }
                 lifecycleOwner.lifecycle.addObserver(observer)
@@ -124,31 +134,26 @@ class MainActivity : ComponentActivity() {
                     lifecycleOwner.lifecycle.removeObserver(observer)
                 }
             }
-            )
 
-            val scope = rememberCoroutineScope()
-            val snackbarHostState = remember { SnackbarHostState() }
             BadeturistenTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Scaffold(snackbarHost = {
-                        SnackbarHost(hostState = snackbarHostState)
-                    }) { contentPadding ->
-                        Column(modifier = Modifier.fillMaxSize(),
+                    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { contentPadding ->
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally){
-                            Text(modifier = Modifier
-                                .padding(contentPadding)
-                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(contentPadding).fillMaxWidth(),
                                 text = "Location Permissions",
-                                textAlign = TextAlign.Center)
+                                textAlign = TextAlign.Center
+                            )
                             Spacer(modifier = Modifier.padding(20.dp))
-                            Text(modifier = Modifier
-                                .padding(contentPadding)
-                                .fillMaxWidth(),
+                            Text(
+                                modifier = Modifier.padding(contentPadding).fillMaxWidth(),
                                 text = "Current Permission Status: $currentPermissionsStatus",
                                 textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Bold
@@ -158,7 +163,7 @@ class MainActivity : ComponentActivity() {
                             LaunchedEffect(Unit) {
                                 scope.launch {
                                     val userAction = snackbarHostState.showSnackbar(
-                                        message ="Please authorize location permissions",
+                                        message = "Please authorize location permissions",
                                         actionLabel = "Approve",
                                         duration = SnackbarDuration.Indefinite,
                                         withDismissAction = true
@@ -166,8 +171,9 @@ class MainActivity : ComponentActivity() {
                                     when (userAction) {
                                         SnackbarResult.ActionPerformed -> {
                                             shouldShowPermissionRationale = false
-                                            locationPermissionLauncher.launch(locationPermissions)
+                                            locationPermissionsLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION))
                                         }
+
                                         SnackbarResult.Dismissed -> {
                                             shouldShowPermissionRationale = false
                                         }
@@ -184,27 +190,54 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
+    private fun getLastLocation() {
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
+            return
+        }
 
-private fun Context.areLocationPermissionsAlreadyGranted(): Boolean {
-    return ContextCompat.checkSelfPermission(
-        this,
-        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-}
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    println("Location: ${location.latitude}, ${location.longitude}")
+                } else {
+                    println("No location available.")
+                }
+            }
+    }
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 101 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            getLastLocation()
+        } else {
+            println("Permission was denied")
+        }
+    }
+    private fun checkLocationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
-private fun Activity.openApplicationSettings() {
-    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null)).also {
-        startActivity(it)
+    private fun Activity.openApplicationSettings() {
+        Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", packageName, null)
+        ).also {
+            startActivity(it)
+        }
+    }
+
+    private fun decideCurrentPermissionStatus(granted: Boolean, rationale: Boolean): String {
+        return when {
+            granted -> "Granted"
+            rationale -> "Rejected"
+            else -> "Denied"
+        }
     }
 }
-
-private fun decideCurrentPermissionStatus(locationPermissionsGranted: Boolean,
-                                          shouldShowPermissionRationale: Boolean): String {
-    return if (locationPermissionsGranted) "Granted"
-    else if (shouldShowPermissionRationale) "Rejected"
-    else "Denied"
-}
-
 data class BottomNavigationItem(
     val label : String = "",
     val icon : ImageVector = Icons.Filled.Home,
@@ -242,18 +275,14 @@ fun BottomNavigationBar() {
         bottomBar = {
             NavigationBar {
                 BottomNavigationItem().bottomNavigationItems().forEachIndexed { _, navigationItem ->
-                    NavigationBarItem(
-                        selected = navigationItem.route == currentDestination?.route,
-                        label = {
+                    NavigationBarItem(selected = navigationItem.route == currentDestination?.route, label = {
                             Text(navigationItem.label)
-                        },
-                        icon = {
+                        }, icon = {
                             Icon(
                                 navigationItem.icon,
                                 contentDescription = navigationItem.label
                             )
-                        },
-                        onClick = {
+                        }, onClick = {
                             navController.navigate(navigationItem.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
@@ -261,8 +290,7 @@ fun BottomNavigationBar() {
                                 launchSingleTop = true
                                 restoreState = true
                             }
-                        }
-                    )
+                        })
                 }
             }
         }

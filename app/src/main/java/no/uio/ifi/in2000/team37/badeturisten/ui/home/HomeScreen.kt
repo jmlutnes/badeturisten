@@ -58,6 +58,7 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -70,6 +71,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
@@ -236,12 +239,13 @@ fun WarningIcon(warningvector: ImageVector) {
     )
 }
 
+@SuppressLint("MissingPermission")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(),
-    navController: NavController
+    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(LocalContext.current)),
+    navController: NavController,
 ) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachState = homeViewModel.beachState.collectAsState().value
@@ -254,6 +258,8 @@ fun HomeScreen(
     val showNormalScreen: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
+
+    val location = homeViewModel.location.collectAsState().value
 
     val side1 = 450
     val side2 = 240
@@ -471,9 +477,10 @@ fun HomeScreen(
             if(areActiveAlerts.value && clicked){
                 showAlertDisplay.value = false
             }
+            val lokasjonen: String = "Lat: ${location?.latitude} Lon: ${location?.longitude}"
             Column {
                 if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
-                    NormalDisplay()
+                    NormalDisplay(lokasjonen)
                 }
                 else if (showAlertDisplay.value) {
                     AlertDisplay(alertState)
@@ -583,7 +590,6 @@ fun NoAlertDisplay() {
                     .padding(bottom = 50.dp)
                     .wrapContentWidth(Alignment.CenterHorizontally)
                     .wrapContentHeight(Alignment.Bottom)
-
             ) {
                 Card(
                     modifier = Modifier
@@ -612,10 +618,9 @@ fun NoAlertDisplay() {
         }
     }
 }
-
 @SuppressLint("RestrictedApi")
 @Composable
-fun NormalDisplay() {
+fun NormalDisplay(locationText: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -635,7 +640,7 @@ fun NormalDisplay() {
                     .padding(bottom = 30.dp, top = 10.dp)
             ) {
                     Text(
-                        text = "Her har vi samlet Oslos beste badeperler for deg!",
+                        text = "${locationText}",
                         modifier = Modifier
                             .padding(20.dp),
                         textAlign = TextAlign.Center,

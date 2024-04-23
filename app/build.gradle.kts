@@ -53,9 +53,14 @@ android {
 
 
 dependencies {
+    //Location
+    implementation ("com.google.android.gms:play-services-location:21.2.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+
     implementation("com.google.android.datatransport:transport-runtime:3.3.0")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.wear.compose:compose-material:1.3.1")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
     val ktor_version = "2.3.10"
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-android:$ktor_version")
