@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepositoryImp
@@ -25,7 +26,7 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 object ViewModelModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides

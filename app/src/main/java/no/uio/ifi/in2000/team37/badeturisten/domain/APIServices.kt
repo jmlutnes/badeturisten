@@ -1,7 +1,9 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
+/*
 import org.jsoup.helper.HttpConnection
 import retrofit2.http.GET
+*/
 
 /*
 interface ApiServiceWaterTempterature {
