@@ -229,15 +229,18 @@ fun WarningIcon(warningvector: ImageVector) {
 @Composable
 fun HomeScreen(
     navController: NavController,
-    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
+    val homeViewModel: HomeViewModel = hiltViewModel()
+
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachState = homeViewModel.beachState.collectAsState().value
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
+
     var clicked by remember { mutableStateOf(false) }
     val areActiveAlerts = remember { mutableStateOf(false) }
     val warningVector = rememberWarning()
+
     val imageModifier = Modifier
         .size(140.dp)
         .clip(CircleShape)

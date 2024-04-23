@@ -28,7 +28,32 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 fun BottomNavigationBar(navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    Scaffold(
+    NavigationBar {
+        BottomNavigationItem().bottomNavigationItems().forEachIndexed { _, navigationItem ->
+            NavigationBarItem(
+                selected = navigationItem.route == currentDestination?.route,
+                label = {
+                    Text(navigationItem.label)
+                },
+                icon = {
+                    Icon(
+                        navigationItem.icon,
+                        contentDescription = navigationItem.label
+                    )
+                },
+                onClick = {
+                    navController.navigate(navigationItem.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+    }
+    /*Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar {
@@ -58,29 +83,29 @@ fun BottomNavigationBar(navController: NavHostController) {
             }
         }
     ) { paddingValues ->
-    NavHost(
-        navController = navController,
-        startDestination = Screens.Home.route,
-        modifier = Modifier.padding(paddingValues = paddingValues)
-    ) {
-        composable(
-            route = "beachProfile/{beachName}",
-            arguments = listOf(navArgument("beachName") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val beachName = backStackEntry.arguments?.getString("beachName")
-            BeachProfile(navController = navController, beachName = beachName)
-        }
+        NavHost(
+            navController = navController,
+            startDestination = Screens.Home.route,
+            modifier = Modifier.padding(paddingValues = paddingValues)
+        ) {
+            composable(
+                route = "beachProfile/{beachName}",
+                arguments = listOf(navArgument("beachName") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val beachName = backStackEntry.arguments?.getString("beachName")
+                BeachProfile(navController = navController, beachName = beachName)
+            }
 
-        composable(route = "homeScreen") {
-            HomeScreen(navController = navController)
-        }
+            composable(route = "homeScreen") {
+                HomeScreen(navController = navController)
+            }
 
-        composable(route = "favoritesScreen") {
-            FavouritesScreen(navController = navController)
+            composable(route = "favoritesScreen") {
+                FavouritesScreen(navController = navController)
+            }
+            composable(route = "searchScreen") {
+                SearchScreen(navController = navController)
+            }
         }
-        composable(route = "searchScreen") {
-            SearchScreen(navController = navController)
-        }
-    }
-    }
+    }*/
 }

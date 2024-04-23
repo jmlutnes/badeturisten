@@ -29,7 +29,7 @@ data class Bussrute(val linje: String, val navn: String, val transportMode: Stri
 class BeachViewModel @Inject constructor(
     savedStateHandle : SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachesRepository: BeachRepository,
+    private val _beachRepository: BeachRepository,
     private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
     private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
 ): ViewModel() {
@@ -47,7 +47,7 @@ class BeachViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
         viewModelScope.launch(Dispatchers.IO) {
-            val beachinfo = _beachesRepository.getBeach(beachName)
+            val beachinfo = _beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = _osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lon?.toDouble()
             val lat = beachinfo?.pos?.lat?.toDouble()

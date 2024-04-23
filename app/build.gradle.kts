@@ -60,18 +60,22 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.wear.compose:compose-material:1.3.1")
+
     val ktor_version = "2.3.10"
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-android:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-gson:$ktor_version")
+
     implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.9.0")
+
     val compose_version = "1.6.6"
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.ui:ui-graphics:$compose_version")
     implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
+
     val material_version = "1.2.1"
     implementation("androidx.compose.material3:material3:$material_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
@@ -94,13 +98,14 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1-Beta")
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    val hilt_version = "2.51.1"
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    // Retrofit
+    /*// Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")*/
 }
 kapt {
     correctErrorTypes = true

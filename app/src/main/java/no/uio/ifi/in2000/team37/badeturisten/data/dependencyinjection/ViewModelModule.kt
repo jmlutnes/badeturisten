@@ -46,11 +46,13 @@ object ViewModelModule {
         return FavouritesViewModel(beachRepository)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideSearchViewModel(
-        osloKommuneRepository: OsloKommuneRepository
+        osloKommuneRepository: OsloKommuneRepository,
+        beachRepository: BeachRepository
     ): SearchViewModel {
-        return SearchViewModel(osloKommuneRepository)
+        return SearchViewModel(osloKommuneRepository, beachRepository)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

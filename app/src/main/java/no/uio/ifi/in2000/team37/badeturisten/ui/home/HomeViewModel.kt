@@ -44,7 +44,7 @@ data class BeachesUIState (
 class HomeViewModel @Inject constructor(
     private val _locationForecastRepository: LocationForecastRepository,
     private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachesRepository: BeachRepository,
+    private val _beachRepository: BeachRepository,
     private val _metAlertsRepository: MetAlertsRepository
 ): ViewModel() {
     //henter vaer melding
@@ -74,12 +74,12 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _locationForecastRepository.loadForecastNextHour()
-            _beachesRepository.loadBeaches()
+            _beachRepository.loadBeaches()
             _metAlertsRepository.getWeatherWarnings()
             loadBeachInfo()
 
             beachState.update {
-                BeachesUIState(CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository)())
+                BeachesUIState(CombineBeachesUseCase(_beachRepository, _osloKommuneRepository)())
             }
         }
     }

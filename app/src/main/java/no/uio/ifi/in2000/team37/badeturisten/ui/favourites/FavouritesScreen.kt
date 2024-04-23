@@ -19,8 +19,9 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 @Composable
 fun FavouritesScreen(
     navController: NavController,
-    favouritesViewModel: FavouritesViewModel = hiltViewModel()
 ) {
+    val favouritesViewModel: FavouritesViewModel = hiltViewModel()
+
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
 
     val state = rememberLazyListState()

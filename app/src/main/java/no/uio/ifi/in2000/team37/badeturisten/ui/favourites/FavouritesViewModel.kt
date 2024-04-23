@@ -21,9 +21,9 @@ data class FavouritesUIState(
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class FavouritesViewModel @Inject constructor(
-    private val _beachesRepository: BeachRepository
+    private val _beachRepository: BeachRepository
 ): ViewModel() {
-    val favouritesState: StateFlow<FavouritesUIState> = _beachesRepository.getFavouriteObservations()
+    val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavouriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(
             viewModelScope,
@@ -33,7 +33,7 @@ class FavouritesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _beachesRepository.updateFavourites(null)
+            _beachRepository.updateFavourites(null)
             //val osloKommuneBeachInfo: List<Beach> = _osloKommuneRepository.getFavourites()
         }
     }

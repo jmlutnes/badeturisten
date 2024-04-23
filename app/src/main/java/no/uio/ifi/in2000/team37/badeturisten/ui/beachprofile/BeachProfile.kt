@@ -172,9 +172,10 @@ fun Kollektiv(beach: BeachUIState) {
 @Composable
 fun BeachProfile(
     navController: NavController,
-    beachViewModel: BeachViewModel = hiltViewModel(),
     beachName: String?
 ) {
+    val beachViewModel: BeachViewModel = hiltViewModel()
+
     val beach = beachViewModel.beachUIState.collectAsState().value
 
     Scaffold(

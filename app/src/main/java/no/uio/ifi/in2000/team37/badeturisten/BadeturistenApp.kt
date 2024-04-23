@@ -5,4 +5,4 @@ import android.content.Intent
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BadeturistenApp : Application()
+class BadeturistenApp : Application() {}
