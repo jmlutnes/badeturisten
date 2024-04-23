@@ -1,65 +1,66 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
-import android.annotation.SuppressLint
 import android.util.Log
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class OsloKommuneRepository () {
     private val datasource: OsloKommuneDatasource = OsloKommuneDatasource()
     val liste: MutableList<Beach> = mutableListOf<Beach>()
-    //val sokliste: MutableList<Beach> = mutableListOf<Beach>()
 
-    //Henter naermeste badested basert på soek, og gjoer nytt soek med oppdatert lokasjon til badested
-    suspend fun getClass(lat: Double?, lon: Double?): jsontokotlin_kommune {
-        val item = datasource.getData(lat, lon)
-        val feat = item.meta.inputs.items.firstOrNull()?.value
-        //println("Gammel lokasjon: $item")
-        if (feat is Value) {
-            val lon = feat.longitude
-            val lat = feat.latitude
-            val item = getRight(lat, lon)
-            println("Ny lokasjon:$item")
-            return item
-        }
-        return item
+
+    /**
+     * Send in boolean parameters for which facilities Oslo Kommune website to seach for.
+     * Returns all the beaches with at least one of the parameters.
+     */
+    suspend fun getDataForFasilitet(
+        badevakt: Boolean,
+        barnevennlig: Boolean,
+        grill: Boolean,
+        kiosk: Boolean,
+        tilpasning: Boolean,
+        toalett: Boolean,
+        badebrygge: Boolean
+    ): jsontokotlin_kommune {
+        return datasource.getDataForFasilitet(
+            badevakt,
+            barnevennlig,
+            grill,
+            kiosk,
+            tilpasning,
+            toalett,
+            badebrygge
+        )
     }
 
-    suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
-        val item = datasource.getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
-        return item
-    }
-    @SuppressLint("SuspiciousIndentation")
+    /**
+     *Send in boolean parameters for which facilities Oslo Commune website to search for.
+     *For each of the beaches fetched from Oslo Commune extract the website for specific location,
+     *and adds them to local list.
+     *The name is the extracted from the HTML. Location is fetched from the beach.
+     *Returns a list with all the beaches with the given facilities.
+     */
     suspend fun makeBeachesFasiliteter(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): List<Beach>  {
-        val lokalSokListe = mutableListOf<Beach>() // Lokal instans av listen
+        val lokalSokListe = mutableListOf<Beach>()
         val verdi = getDataForFasilitet(badevakt, barnevennlig, grill, kiosk, tilpasning, toalett, badebrygge)
         return try {
-            //Liste som skal ha alle badestedene
-
              val features = verdi.data.geoJson.features
-            //Liste med Alle Features
-            //Itterer og hent koordinater og navn
-            //geometry -> type -> Coordinates = Koordinater
-            //properties -> popupContent -> bakers på streng før </a></h2
-            println(features)
             features.forEach { feature ->
-                //Henter navn
+                //Name
                 val beachNameNotConverted: String? = feature.properties.popupContent
                 val beachNameConverted: String? =
                     extractBeachFromHTML(beachNameNotConverted.toString())
 
-                //Henter location
+                //Location
                 val location = feature.geometry.coordinates
                 val lon: String = location.get(0).toString()
                 val lat: String = location.get(1).toString()
-                //println(location)
-                //println(beachNameConverted)
                 val posisjon: Pos = Pos(lat, lon)
-                // lager strand objekter og legger til i liste
+
                 lokalSokListe.add(Beach(beachNameConverted.toString(), posisjon, null, false))
             }
                 return lokalSokListe
@@ -71,102 +72,106 @@ class OsloKommuneRepository () {
         }
     }
 
-    suspend fun getRight(lat: Double, lon: Double): jsontokotlin_kommune {
-        val item = datasource.getData(lat, lon)
-        return item
-    }
-
+    /**
+     * Send in a HTML-string, and the URL in the string will be extracted using Regex
+     * returns the URL as String
+     */
     fun extractUrl(inputString: String): String {
         val streng = """href="(.*?)"""".toRegex()
         val matchResult = streng.find(inputString)
         return matchResult?.groups?.get(1)?.value ?: ""
     }
 
-    suspend fun skrapUrl(input: String): BadevannsInfo {
-        val item = datasource.skrapUrl(input)
-        return item
+    /**
+     * Send in URL, and Oslo Commune will be scraped for facilities, waterquality and image URL.
+     * Returns a OsloKommuneBeachInfo object
+     */
+    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo? {
+        return datasource.skrapUrl(input)
     }
 
-
-    suspend fun getVannkvalitetLoc(lat: Double?, lon: Double?): BadevannsInfo? {
-        val nettsideUrl: String? =
-            getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
-        println("old: $nettsideUrl")
-        val nynettsideUrl = nettsideUrl?.let { extractUrl(it) }
-        if (nynettsideUrl != null) {
-            println("Ekstrahert URL: $nynettsideUrl")
-        } else {
-            println("Ingen URL funnet.")
-        }
-        val skrapOsloKommune = nynettsideUrl?.let { skrapUrl(it) }
-        //println("Skrapt innhold: $skrapOsloKommune")
-        return skrapOsloKommune
+    /**
+     * Get all the places on the Oslo Commune website.
+     */
+    suspend fun getBadeplasser(): List<Feature> {
+        val item = datasource.getData()
+        return item.data.geoJson.features
     }
 
-
-    //NYE METODER
-    suspend fun getBadeplasser(lat: Double?, lon: Double?): List<Feature> {
-        val item = datasource.getData(lon, lat)
-        val feat = item.data.geoJson.features
-        return feat
-    }
-
-    fun extractBeachFromHTML(html: String): String? {
+    /**
+     * Send in HTML-String, and by using regex the name of the beach is returned
+     */
+    fun extractBeachFromHTML(html: String): String {
         val regex = Regex("<a[^>]*>([^<]*)</a>")
         val matchResult = regex.find(html)
-        return matchResult?.groups?.get(1)?.value
+        if (matchResult != null) {
+            return matchResult.groups[1]?.value ?: ""
+        }
+        return ""
     }
 
-    suspend fun finnNettside(navn: String): BadevannsInfo? {
-        val features = getBadeplasser(59.91, 10.74)
-        println("Navn:$navn")
+    /**
+     * Method to make a map with the name of the beach as key and the bathinginformation as value.
+     * Is used to get image on beachCard, and possibility to use information from Oslo Commune on different screens.
+     * Fetches all the bathing sites from Oslo Commune website.
+     * Get the name and URL for the site using extractBeachFromHTML method.
+     * Then uses skrapUrl to fetch the OsloKommuneBeachInfo for the specific site.
+     */
+    suspend fun finnAlleNettside(): MutableMap<String, BadeinfoForHomescreen> {
+        val lokalSokListe = mutableMapOf<String, BadeinfoForHomescreen>()
+        val features = getBadeplasser()
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent.toString()
-            val beachNameConverted: String? = extractBeachFromHTML(beachNameNotConverted.toString())
+            val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
+            val url = extractUrl(beachNameNotConverted)
+            val badeinfo = skrapUrl(url)
+            lokalSokListe[beachNameConverted] = BadeinfoForHomescreen(beachNameConverted, badeinfo)
+        }
+        return lokalSokListe
+    }
 
-            println(beachNameConverted)
-            if (beachNameConverted != null) {
-                if (beachNameConverted.contains(navn)) {
-                    //Fant stranden
-                    val url = extractUrl(beachNameNotConverted)
-                    val badeinfo = skrapUrl(url)
-                    return badeinfo
-                }
+    /**
+     * Send in name of a bathing site which is available on the Oslo Commune website.
+     * Fetches all the sites on Oslo Commune website.
+     * Goes through all the sites and converts the name and URL from Oslo Commune API.
+     * Checks if the input site name exists in the Oslo Commune API.
+     * The URL for that site is the scraped and returns OsloCommuneBeachInfo.
+     */
+    suspend fun finnNettside(navn: String): OsloKommuneBeachInfo? {
+        val features = getBadeplasser()
+        features.forEach { feature ->
+            val beachNameNotConverted: String = feature.properties.popupContent
+            val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
+            if (beachNameConverted.contains(navn)) {
+                val url = extractUrl(beachNameNotConverted)
+                return skrapUrl(url)
             }
         }
-            println("ingen badeinfo funnet")
+            Log.e("OsloKommuneRepository", "No beach found")
             return null
     }
 
-        //METODE SOM HENTER ALLE BADESTEDER PÅ OSLO KOMMUNE (MED LOCATION) I LISTE
-        suspend fun makeBeaches(lon: Double, lat: Double): List<Beach> {
+    /**
+     * Create all the beaches existing in the Oslo Commune API.
+     * Fetching beach name from HTML and position.
+     * Returns a list with all the Beaches (bathing sites) on the Oslo Commune API.
+     */
+        suspend fun makeBeaches(): List<Beach> {
             return try {
-                //Liste som skal ha alle badestedene
-
-                //Liste med Alle Features
-                val features = getBadeplasser(lon, lat)
-
-                //Itterer og hent koordinater og navn
-                //geometry -> type -> Coordinates = Koordinater
-                //properties -> popupContent -> bakers på streng før </a></h2
+                val features = getBadeplasser()
                 println(features)
                 features.forEach { feature ->
-                    //Henter navn
-                    val beachNameNotConverted: String? = feature.properties.popupContent
-                    val beachNameConverted: String? =
+                    val beachNameNotConverted: String = feature.properties.popupContent
+                    val beachNameConverted: String =
                         extractBeachFromHTML(beachNameNotConverted.toString())
 
-                    //Henter location
                     val location = feature.geometry.coordinates
                     val lon: String = location.get(0).toString()
                     val lat: String = location.get(1).toString()
-                    //println(location)
-                    //println(beachNameConverted)
+
                     val posisjon: Pos = Pos(lat, lon)
-                    // lager strand objekter og legger til i liste
-                    liste.add(Beach(beachNameConverted.toString(), posisjon, null, false))
+                    liste.add(Beach(beachNameConverted, posisjon, null, false))
                 }
-                //LAGER DATAKLASSE MED ALLE BEACHES
                 return liste
 
             } catch (e: Exception) {
@@ -176,10 +181,12 @@ class OsloKommuneRepository () {
             }
         }
 
+    /**
+     * Send in a bathing site name for Oslo Commune. Goes through all the sites and looks for the given name.
+     * Returns the first beach with the given name.
+     */
         suspend fun getBeach(beachName: String): Beach? {
-            //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
-            //val observationsFromDataSource = datasource.getData(59.91, 10.74)
-            var beachlist: List<Beach> = makeBeaches(59.91, 10.74)
+            var beachlist: List<Beach> = makeBeaches()
             beachlist = beachlist.filter { beach -> beach.name == beachName }
             return beachlist.firstOrNull()
         }
