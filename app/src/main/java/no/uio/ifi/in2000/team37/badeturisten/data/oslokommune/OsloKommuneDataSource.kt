@@ -71,42 +71,42 @@ class OsloKommuneDatasource {
         val document = Jsoup.parse(responseBody)
 
         //Get waterquality
-        val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
+        val qualitySection = document.select("div.io-bathingsite").firstOrNull()
         //Show only the visible text(remove colorcoding)
-        val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
+        val firstQualityH3 = qualitySection?.select("div.ods-collapsible-content h3")?.firstOrNull()
         //Result of water quality
-        val vannkvalitet = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
+        val waterQuality = firstQualityH3?.ownText()?.trim() ?: "Ingen informasjon."
 
         //Facilities
-        val fasiliteterSection = document.select("div.io-facts").firstOrNull()
-        val fasiliteterBuilder = StringBuilder()
+        val facilitiesSection = document.select("div.io-facts").firstOrNull()
+        val facilitiesBuilder = StringBuilder()
         //Some of the text is formatted with '•' inbetween facilities.
         //This codes iterate and separate areas in the text where that occurs:
-        fasiliteterSection?.let { section ->
-            val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul li")
-            fasiliteterListe.forEach { li ->
-                val innholdMedBrErstattet = li.html().replace("<br>", "•")
-                val elementer = Jsoup.parse(innholdMedBrErstattet).text().split("•").map { it.trim() }
-                elementer.forEach { tekst ->
+        facilitiesSection?.let { section ->
+            val facilityList = section.select("h2:contains(Fasiliteter) + div ul li")
+            facilityList.forEach { li ->
+                val contentWithBrReplaced = li.html().replace("<br>", "•")
+                val elements = Jsoup.parse(contentWithBrReplaced).text().split("•").map { it.trim() }
+                elements.forEach { tekst ->
                     val formattedText = tekst.removePrefix("• ").let {
                         if (it.isNotBlank()) "• $it\n" else ""
                     }
-                    fasiliteterBuilder.append(formattedText)
+                    facilitiesBuilder.append(formattedText)
                 }
             }
         }
-        val fasiliteter = fasiliteterBuilder.toString().trim().ifEmpty { null }
+        val facilities = facilitiesBuilder.toString().trim().ifEmpty { null }
 
         //Image
         val imageData = document.select("ods-image-carousel").attr(":images")
         val srcStart = imageData.indexOf("\"src\":\"") + "\"src\":\"".length
         val srcEnd = imageData.indexOf("\"", srcStart)
-        val bildeUrl: String = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
+        val imageUrl: String = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
             imageData.substring(srcStart, srcEnd).replace("\\/", "/")
         } else {
             "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
         }
-        return OsloKommuneBeachInfo(vannkvalitet, fasiliteter, bildeUrl)
+        return OsloKommuneBeachInfo(waterQuality, facilities, imageUrl)
     }
 
 
