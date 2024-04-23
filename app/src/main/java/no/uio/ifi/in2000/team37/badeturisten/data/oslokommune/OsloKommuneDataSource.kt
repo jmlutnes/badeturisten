@@ -115,21 +115,21 @@ class OsloKommuneDatasource {
      * Adds the different parameters to the URL for to the API GET-call. Returns all the results.
      */
     suspend fun getDataForFasilitet(
-        badevakt: Boolean,
-        barnevennlig: Boolean,
+        lifeguard: Boolean,
+        childFriendly: Boolean,
         grill: Boolean,
         kiosk: Boolean,
-        tilpasning: Boolean,
-        toalett: Boolean,
-        badebrygge: Boolean
+        accessible: Boolean,
+        toilets: Boolean,
+        divingTower: Boolean
     ): jsontokotlin_kommune {
-        val badevaktUrl = if (badevakt) "&f_facilities_lifeguard=true" else ""
-        val barnevennligUrl = if (barnevennlig) "&f_facilities_child_friendly=true" else ""
+        val badevaktUrl = if (lifeguard) "&f_facilities_lifeguard=true" else ""
+        val barnevennligUrl = if (childFriendly) "&f_facilities_child_friendly=true" else ""
         val grillUrl = if (grill) "&f_facilities_grill=true" else ""
         val kioskUrl = if (kiosk) "&f_facilities_kiosk=true" else ""
-        val tilpasningUrl = if (tilpasning) "&f_facilities_kiosk=true" else ""
-        val toalettUrl = if (toalett) "&f_facilities_toilets=true" else ""
-        val badebryggeUrl = if (badebrygge) "&f_facilities_diving_tower=true" else ""
+        val tilpasningUrl = if (accessible) "&f_facilities_accessible=true" else ""
+        val toalettUrl = if (toilets) "&f_facilities_toilets=true" else ""
+        val badebryggeUrl = if (divingTower) "&f_facilities_diving_tower=true" else ""
         val url =
             "https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
         val urlString = url +
