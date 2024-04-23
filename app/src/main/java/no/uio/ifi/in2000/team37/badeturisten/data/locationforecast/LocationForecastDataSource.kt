@@ -3,9 +3,10 @@ package no.uio.ifi.in2000.team37.badeturisten.data.locationforecast
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.LocationForecastHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.jsontokotlin.LocationForecastData
 
-class LocationForecastDataSource(private val client: HttpClient) {
+class LocationForecastDataSource(@LocationForecastHttpClient private val client: HttpClient) {
     suspend fun getForecastData(): LocationForecastData? {
         // Henter værdata med koordinater for Oslo sentrum
         val response =

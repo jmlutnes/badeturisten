@@ -56,15 +56,16 @@ object ViewModelModule {
         return SearchViewModel(osloKommuneRepository, beachRepository)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    /*@RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideBeachViewModel(
-        savedStateHandle : SavedStateHandle,
+        savedStateHandle: SavedStateHandle,
         osloKommuneRepository: OsloKommuneRepository,
         beachesRepository: BeachRepository,
         enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
         enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
     ): BeachViewModel {
-        return BeachViewModel(savedStateHandle, osloKommuneRepository, beachesRepository, enTurRepositoryGeocoderRepository, enTurRepositoryJourneyPlanner)
-    }
+        return BeachViewModel(savedStateHandle, osloKommuneRepository, beachesRepository,
+            enTurRepositoryGeocoderRepository, enTurRepositoryJourneyPlanner)
+    }*/
 }

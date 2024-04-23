@@ -49,8 +49,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //BottomNavigationBar()
-                    AppContent(/*homeViewModel, searchViewModel, beachViewModel, favouritesViewModel*/)
+                    AppContent()
                 }
             }
         }
@@ -61,12 +60,7 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppContent(/*
-    homeViewModel: HomeViewModel,
-    searchViewModel: SearchViewModel,
-    beachViewModel: BeachViewModel,
-    favouritesViewModel: FavouritesViewModel
-*/) {
+fun AppContent() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }

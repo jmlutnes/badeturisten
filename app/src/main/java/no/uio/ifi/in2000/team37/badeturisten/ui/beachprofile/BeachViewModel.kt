@@ -27,7 +27,7 @@ data class Bussrute(val linje: String, val navn: String, val transportMode: Stri
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel @Inject constructor(
-    savedStateHandle : SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
     private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,

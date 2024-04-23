@@ -9,9 +9,10 @@ import io.ktor.http.contentType
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.EnTurHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 
-class EnTurJourneyPlannerDataSource(private val client: HttpClient) {
+class EnTurJourneyPlannerDataSource(@EnTurHttpClient private val client: HttpClient) {
     /**
      * Send in a stopPlace ID to receive the transportation related to the the stop place.
      * Sends a request for the JourneyPlanner API with the ID.

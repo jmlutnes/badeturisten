@@ -18,21 +18,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
-import javax.inject.Singleton
-
-/*@Module
-@InstallIn(SingletonComponent::class)
-object NetworkModule {
-    @Provides
-    fun provideHttpClient(): HttpClient {
-        return HttpClient()
-    }
-
-    @Provides
-    fun provideHttpClient(): HttpClient {
-        return HttpClient(customConfig())
-    }
-}*/
+import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.*
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -73,6 +59,7 @@ object NetworkModule {
     */
     // HttpClient for En Tur API
     @Provides
+    @EnTurHttpClient
     fun provideEnTurHttpClient(): HttpClient {
         return HttpClient {
             defaultRequest {
@@ -84,7 +71,7 @@ object NetworkModule {
     }
     // HttpClient for Water Temperature API
     @Provides
-    @Singleton
+    @WaterTemperatureHttpClient
     fun provideWaterTemperatureHttpClient(): HttpClient {
         return HttpClient {
             defaultRequest {
@@ -95,7 +82,7 @@ object NetworkModule {
     }
     // HttpClient for Location Forecast API
     @Provides
-    @Singleton
+    @LocationForecastHttpClient
     fun provideLocationForecastHttpClient(): HttpClient {
         return HttpClient {
             defaultRequest {
@@ -107,7 +94,7 @@ object NetworkModule {
     }
     // HttpClient for Met Alerts API
     @Provides
-    @Singleton
+    @MetAlertsHttpClient
     fun provideMetAlertsHttpClient(): HttpClient {
         return HttpClient {
             defaultRequest {
@@ -119,7 +106,7 @@ object NetworkModule {
     }
     // HttpClient for Oslo Kommune API
     @Provides
-    @Singleton
+    @OsloKommuneHttpClient
     fun provideOsloKommuneHttpClient(): HttpClient {
         return HttpClient {
             defaultRequest {
@@ -164,125 +151,4 @@ object NetworkModule {
     fun provideOsloKommuneDataSource(client: HttpClient): OsloKommuneDatasource {
         return OsloKommuneDatasource(client)
     }
-
-    /*
-    RETROFIT
-        @Provides
-        @Singleton
-        fun provideRetrofitForApiWaterTempterature(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://api-one.example.com/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        @Provides
-        fun provideApiServiceWaterTempterature(retrofit: Retrofit): ApiServiceWaterTempterature {
-            return retrofit.newBuilder()
-                .baseUrl("https://api-one.example.com/")
-                .build()
-                .create(ApiServiceWaterTempterature::class.java)
-        }
-
-        @Provides
-        @Singleton
-        fun provideRetrofitForApiOsloKommune(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://api-two.example.com/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        @Provides
-        fun provideApiServiceOsloKommune(retrofit: Retrofit): ApiServiceOsloKommune {
-            return retrofit.newBuilder()
-                .baseUrl("https://api-two.example.com/")
-                .build()
-                .create(ApiServiceOsloKommune::class.java)
-        }
-
-        @Provides
-        @Singleton
-        fun provideRetrofitForApiMetAlerts(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://api-two.example.com/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        @Provides
-        fun provideApiServiceMetAlerts(retrofit: Retrofit): ApiServiceMetAlerts {
-            return retrofit.newBuilder()
-                .baseUrl("https://api-two.example.com/")
-                .build()
-                .create(ApiServiceMetAlerts::class.java)
-        }
-
-        @Provides
-        @Singleton
-        fun provideRetrofitForApiLocationForecast(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://api-two.example.com/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        @Provides
-        fun provideApiServiceLocationForecast(retrofit: Retrofit): ApiServiceLocationForecast {
-            return retrofit.newBuilder()
-                .baseUrl("https://api-two.example.com/")
-                .build()
-                .create(ApiServiceLocationForecast::class.java)
-        }
-
-        @Provides
-        @Singleton
-        fun provideRetrofitForApiEnTurJourneyPlanner(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://api-two.example.com/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        @Provides
-        fun provideApiServiceEnTurJourneyPlanner(retrofit: Retrofit): ApiServiceEnTurJourneyPlanner {
-            return retrofit.newBuilder()
-                .baseUrl("https://api-two.example.com/")
-                .build()
-                .create(ApiServiceEnTurJourneyPlanner::class.java)
-        }
-
-        @Provides
-        @Singleton
-        fun provideRetrofitForApiEnTurGeocoder(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://api-two.example.com/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        @Provides
-        fun provideApiServiceEnTurGeocoder(retrofit: Retrofit): ApiServiceEnTurGeocoder {
-            return retrofit.newBuilder()
-                .baseUrl("https://api-two.example.com/")
-                .build()
-                .create(ApiServiceEnTurGeocoder::class.java)
-        }
-
-        @Provides
-        @Singleton
-        fun provideRetrofitForApiEnTur(okHttpClient: OkHttpClient): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://api-two.example.com/")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        @Provides
-        fun provideApiServiceEnTur(retrofit: Retrofit): ApiServiceEnTur {
-            return retrofit.newBuilder()
-                .baseUrl("https://api-two.example.com/")
-                .build()
-                .create(ApiServiceEnTur::class.java)
-        }*/
 }

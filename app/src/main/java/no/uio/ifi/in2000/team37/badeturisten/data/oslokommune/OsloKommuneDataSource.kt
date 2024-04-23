@@ -9,6 +9,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.OsloKommuneHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
@@ -19,7 +20,7 @@ import java.lang.reflect.Type
 
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
-class OsloKommuneDatasource(private val client: HttpClient) {
+class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClient) {
     /**
      * Send in URL. Using Jsoup to scrape the website on Oslo Commune.
      * Returns a OsloKommuneBeachInfo object.

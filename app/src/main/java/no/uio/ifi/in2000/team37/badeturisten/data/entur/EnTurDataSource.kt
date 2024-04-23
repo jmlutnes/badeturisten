@@ -3,10 +3,11 @@ package no.uio.ifi.in2000.team37.badeturisten.data.entur
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.EnTurHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.entur.jsontokotlinenturgeocoder.JsonToKotlinEnTurGeoCoder
 
 
-class EnTurDataSource(private val client: HttpClient) {
+class EnTurDataSource(@EnTurHttpClient private val client: HttpClient) {
     suspend fun getData(
         navn: String
     ): JsonToKotlinEnTurGeoCoder { //lat og lon send med
