@@ -7,7 +7,7 @@ import org.junit.Assert.*
 
 class SkrapUrlTest {
 
-    val datasource = OsloKommuneDatasource()
+    private val datasource = OsloKommuneDatasource()
 
     @Test
     fun testWaterQualityShouldBeBad() = runTest {
@@ -19,8 +19,8 @@ class SkrapUrlTest {
 
     @Test
     fun testShouldReturnNull() = runTest{
-        val response = datasource.skrapUrl("wronglink");
+        val response = datasource.skrapUrl("wronglink")
 
-        assertEquals(response, null);
+        assertEquals(response, null)
     }
 }
