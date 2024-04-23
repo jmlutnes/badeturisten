@@ -6,7 +6,10 @@ import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 class EnTurGeocoderRepositoryImp(
     private val datasource: EnTurGeocoderDataSource
 ): EnTurGeocoderRepository {
-    //Henter fra lokasjon og lager bussstasjon data class, deretter returnerer busstasjon
+    /**
+     * Send in latitude and longitude to fetch all the stop places in the nearby area.
+     * To change the radius for search, change the radius in EnTurGeocoderDataSource
+     */
     override suspend fun hentBussruteLoc(lat: Double, lon: Double): Bussstasjoner? {
         val nearestStopPlace = datasource.getDataLoc(lat, lon)
         val bussstasjoner = nearestStopPlace.features.map { feature ->
@@ -22,9 +25,11 @@ class EnTurGeocoderRepositoryImp(
         return if (bussstasjoner.isNotEmpty()) Bussstasjoner(bussstasjoner) else null
     }
 
-    //Basert paa navn og ikke lokasjon
+    /**
+     * Send in site name to fetch all the stop places in the nearby area.
+     */
     override suspend fun hentBussruteName(navn: String): Bussstasjoner? {
-        val stoppesteder = datasource.getDataName(navn)
+        val stoppesteder = dataSource.getDataName(navn)
         val bussstasjoner = stoppesteder.features.map { feature ->
                 Bussstasjon(
                     id = feature.properties.id,

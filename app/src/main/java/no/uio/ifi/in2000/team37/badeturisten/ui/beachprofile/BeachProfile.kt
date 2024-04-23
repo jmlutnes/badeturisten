@@ -222,7 +222,7 @@ fun BeachProfile(
                             beach.beach?.let {
                                 Text(
                                     text = it.name,
-                                    fontSize = 30.sp,
+                                    fontSize = 25.sp,
                                     fontWeight = FontWeight.Bold,
                                     style =
                                     TextStyle(color = Color.Black,
@@ -236,7 +236,7 @@ fun BeachProfile(
                                 )
                                 Text(
                                     text = it.name,
-                                    fontSize = 30.sp,
+                                    fontSize = 25.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
                                     modifier = Modifier

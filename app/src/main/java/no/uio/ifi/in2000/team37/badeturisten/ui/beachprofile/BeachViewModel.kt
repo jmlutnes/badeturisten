@@ -53,15 +53,15 @@ class BeachViewModel @Inject constructor(
             val lat = beachinfo?.pos?.lat?.toDouble()
             println("lon:$lon \nlat:$lat")
             var bussstasjoner: Bussstasjoner? = null
-            bussstasjoner = if((lon == null) || (lat == null)) {
-                //Henter ID for alle bussstasjoner som finner basert paa navn
-                _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
-            } else{
-                //Henter ID for alle busstasjoner som finner basert paa lokasjon
-                _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
+            if((lon == null) || (lat == null)) {
+                //fetch ID for all buss stations based on name
+                bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
             }
+            else{
+                //Fetch ID for all buss stasions based on location
+            bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)}
             //}
-            // Henter bussruter (linje og navn) basert paa id fra stasjoner
+            // Fetch buss routes (lines and name) based on id from stations
             // Set for ingen duplikater
             val unikeBussruter = mutableSetOf<Bussrute>()
             bussstasjoner?.bussstasjon?.forEach { stasjon ->

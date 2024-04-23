@@ -40,7 +40,6 @@ fun BeachCard(
             .padding(vertical = 10.dp, horizontal = 55.dp)
             .fillMaxWidth()
             .height(150.dp),
-
         ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -50,7 +49,6 @@ fun BeachCard(
             Box(Modifier.fillMaxSize()) {
                 val imageUrl = beachinfo?.badeinfo?.imageUrl
                     ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
-
                 AsyncImage(
                     model = imageUrl,
                     contentDescription = "Bilde fra Oslo Kommune",
@@ -85,7 +83,6 @@ fun BeachCard(
                         .basicMarquee()
                         .align(Alignment.TopCenter)
                         .padding(16.dp),
-
                     style = TextStyle(color = Color.Black)
                 )
                 val tempText =
@@ -99,14 +96,13 @@ fun BeachCard(
                         color = Color.Black,
                         drawStyle = Stroke(
                             width = 15f
-                        )//join = StrokeJoin.Round)
+                        )
                     ),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .basicMarquee()
                         .padding(16.dp),
                 )
-
                 Text(
                     text = tempText,
                     fontSize = 16.sp,
@@ -118,24 +114,11 @@ fun BeachCard(
                         .padding(16.dp),
 
                     style = TextStyle(color = Color.Black)
-                    //join = StrokeJoin.Round)
                 )
-
-                /*Image(
-            painter = rememberImagePainter(partyInfo.img),
-            contentDescription = partyInfo.name,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(120.dp)
-                .clip(CircleShape)
-        )
-
-         */
             }
         }
     }
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -153,7 +136,6 @@ fun Badeinfoforbeachcard(
                 .padding(vertical = 10.dp, horizontal = 55.dp)
                 .fillMaxWidth()
                 .height(150.dp),
-
             ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -163,7 +145,6 @@ fun Badeinfoforbeachcard(
                 Box(Modifier.fillMaxSize()) {
                     val imageUrl =
                         "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
-
                     AsyncImage(
                         model = imageUrl,
                         contentDescription = "Bilde fra Oslo Kommune",
@@ -182,7 +163,7 @@ fun Badeinfoforbeachcard(
                             color = Color.Black,
                             drawStyle = Stroke(
                                 width = 15f
-                            )//join = StrokeJoin.Round)
+                            )
                         ),
                         modifier = Modifier
                             .align(Alignment.TopCenter)
@@ -198,13 +179,10 @@ fun Badeinfoforbeachcard(
                             .basicMarquee()
                             .align(Alignment.TopCenter)
                             .padding(16.dp),
-
                         style = TextStyle(color = Color.Black)
-                        //join = StrokeJoin.Round)
                     )
-
                     val tempText =
-                        if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else "Ingen målt temperatur"
+                        if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
                     Text(
                         text = tempText,
                         fontSize = 16.sp,
@@ -214,14 +192,13 @@ fun Badeinfoforbeachcard(
                             color = Color.Black,
                             drawStyle = Stroke(
                                 width = 15f
-                            )//join = StrokeJoin.Round)
+                            )
                         ),
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .basicMarquee()
                             .padding(16.dp),
                     )
-
                     Text(
                         text = tempText,
                         fontSize = 16.sp,
@@ -231,9 +208,7 @@ fun Badeinfoforbeachcard(
                             .basicMarquee()
                             .align(Alignment.BottomCenter)
                             .padding(16.dp),
-
                         style = TextStyle(color = Color.Black)
-                        //join = StrokeJoin.Round)
                     )
                 }
             }
