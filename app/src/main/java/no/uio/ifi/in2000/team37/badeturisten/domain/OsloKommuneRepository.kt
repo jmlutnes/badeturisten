@@ -1,11 +1,10 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 
 interface OsloKommuneRepository {
     //val datasource: OsloKommuneDatasource
@@ -35,15 +34,15 @@ interface OsloKommuneRepository {
         lat: Double, lon: Double
     ): jsontokotlin_kommune
     fun extractUrl(inputString: String): String
-    suspend fun skrapUrl(input: String): BadevannsInfo
+    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo
     suspend fun getVannkvalitetLoc(
         lat: Double?, lon: Double?
-    ): BadevannsInfo?
+    ): OsloKommuneBeachInfo?
     suspend fun getBadeplasser(
         lat: Double?, lon: Double?
     ): List<Feature>
     fun extractBeachFromHTML(html: String): String?
-    suspend fun finnNettside(navn: String): BadevannsInfo?
+    suspend fun finnNettside(navn: String): OsloKommuneBeachInfo?
     suspend fun makeBeaches(
         lon: Double, lat: Double
     ): List<Beach>

@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -31,7 +31,7 @@ fun FavouritesScreen(
     ) {
         items(favouritesState.favourites) { beach ->
             //Log.d("FavoScreen, cards", "$beach")
-            beachCard(beach = beach, navController = navController, null)
+            BeachCard(beach = beach, navController = navController, null)
         }
     }
 }
