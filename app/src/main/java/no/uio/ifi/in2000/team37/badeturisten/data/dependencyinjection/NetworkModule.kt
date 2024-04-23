@@ -119,36 +119,36 @@ object NetworkModule {
 
     // Each data source provider method
     @Provides
-    fun provideEnTurDataSource(client: HttpClient): EnTurDataSource {
+    fun provideEnTurDataSource(@EnTurHttpClient client: HttpClient): EnTurDataSource {
         return EnTurDataSource(client)
     }
 
     @Provides
-    fun provideEnTurGeocoderDataSource(client: HttpClient): EnTurGeocoderDataSource {
+    fun provideEnTurGeocoderDataSource(@EnTurHttpClient client: HttpClient): EnTurGeocoderDataSource {
         return EnTurGeocoderDataSource(client)
     }
 
     @Provides
-    fun provideEnTurJourneyPlannerDataSource(client: HttpClient): EnTurJourneyPlannerDataSource {
+    fun provideEnTurJourneyPlannerDataSource(@EnTurHttpClient client: HttpClient): EnTurJourneyPlannerDataSource {
         return EnTurJourneyPlannerDataSource(client)
     }
 
     @Provides
-    fun provideWaterTemperatureDataSource(client: HttpClient): WaterTemperatureDataSource {
+    fun provideWaterTemperatureDataSource(@WaterTemperatureHttpClient client: HttpClient): WaterTemperatureDataSource {
         return WaterTemperatureDataSource(client)
     }
 
     @Provides
-    fun provideLocationForecastDataSource(client: HttpClient): LocationForecastDataSource {
+    fun provideLocationForecastDataSource(@LocationForecastHttpClient client: HttpClient): LocationForecastDataSource {
         return LocationForecastDataSource(client)
     }
 
     @Provides
-    fun provideMetAlertsDataSource(client: HttpClient): MetAlertsDataSource {
+    fun provideMetAlertsDataSource(@MetAlertsHttpClient client: HttpClient): MetAlertsDataSource {
         return MetAlertsDataSource(client)
     }
     @Provides
-    fun provideOsloKommuneDataSource(client: HttpClient): OsloKommuneDatasource {
+    fun provideOsloKommuneDataSource(@OsloKommuneHttpClient client: HttpClient): OsloKommuneDatasource {
         return OsloKommuneDatasource(client)
     }
 }
