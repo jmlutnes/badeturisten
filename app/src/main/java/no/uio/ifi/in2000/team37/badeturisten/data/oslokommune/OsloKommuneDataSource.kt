@@ -15,12 +15,9 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
-
-
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.WaterTemperatureAPIResponse
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
@@ -70,7 +67,7 @@ class OsloKommuneDatasource {
      * If there is no image URL, a default image URL is used.
      * Returns OsloKommuneBeachInfo object
      */
-    fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
+    private fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
         val document = Jsoup.parse(responseBody)
 
         //Get waterquality
