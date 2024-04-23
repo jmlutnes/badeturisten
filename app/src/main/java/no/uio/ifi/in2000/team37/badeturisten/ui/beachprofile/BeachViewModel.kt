@@ -17,8 +17,8 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import javax.inject.Inject
 
 data class BeachUIState(val beach: Beach? = null, val badevannsinfo: OsloKommuneBeachInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
@@ -34,7 +34,7 @@ class BeachViewModel @Inject constructor(
     private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
 ): ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo(
+    private val _beachUIState = MutableStateFlow(BeachUIState(null, OsloKommuneBeachInfo(
         null,
         null,
         null

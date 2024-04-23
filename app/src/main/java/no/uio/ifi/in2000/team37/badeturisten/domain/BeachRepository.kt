@@ -7,11 +7,10 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 interface BeachRepository {
     //val waterTempDataSource: WaterTemperatureDataSource
-
     fun getBeachObservations(): StateFlow<List<Beach>>
     fun getFavouriteObservations(): StateFlow<List<Beach>>
     suspend fun loadBeaches()
-    suspend fun makeBeaches(data: List<Tsery>): List<Beach>
+    fun makeBeaches(observations: List<Tsery>): List<Beach>
     suspend fun getBeach(beachName: String): Beach?
     fun updateFavourites(beach: Beach?)
 }

@@ -2,7 +2,6 @@ package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.annotation.SuppressLint
 import android.util.Log
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
@@ -87,13 +86,13 @@ class OsloKommuneRepositoryImp @Inject constructor(
         return matchResult?.groups?.get(1)?.value ?: ""
     }
 
-    override suspend fun skrapUrl(input: String): BadevannsInfo {
+    override suspend fun skrapUrl(input: String): OsloKommuneBeachInfo {
         val item = datasource.skrapUrl(input)
         return item
     }
 
 
-    override suspend fun getVannkvalitetLoc(lat: Double?, lon: Double?): BadevannsInfo? {
+    override suspend fun getVannkvalitetLoc(lat: Double?, lon: Double?): OsloKommuneBeachInfo? {
         val nettsideUrl: String? =
             getClass(lat, lon).data.geoJson.features.firstOrNull()?.properties?.popupContent
         println("old: $nettsideUrl")

@@ -2,16 +2,10 @@ package no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.call.receive
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import io.ktor.serialization.gson.gson
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
