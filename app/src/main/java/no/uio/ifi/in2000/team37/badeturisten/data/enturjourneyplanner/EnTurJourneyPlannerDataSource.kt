@@ -12,19 +12,6 @@ import kotlinx.serialization.json.put
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 
 class EnTurJourneyPlannerDataSource(private val client: HttpClient) {
-/*
-    private val client = HttpClient {
-        defaultRequest {
-            url("https://api.entur.io/journey-planner/v3/graphql")
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-            header("ET-Client-Name", "in2000study-application")
-        }
-        install(ContentNegotiation) {
-            gson {}
-        }
-    }
-*/
-
     /**
      * Send in a stopPlace ID to receive the transportation related to the the stop place.
      * Sends a request for the JourneyPlanner API with the ID.
