@@ -8,7 +8,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 interface OsloKommuneRepository {
-    val datasource: OsloKommuneDatasource
+    //val datasource: OsloKommuneDatasource
     // definer metodene som trengs
     suspend fun getClass(
         lat: Double?, lon: Double?

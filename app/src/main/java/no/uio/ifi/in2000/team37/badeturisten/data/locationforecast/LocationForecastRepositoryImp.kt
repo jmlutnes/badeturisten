@@ -6,15 +6,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
+import javax.inject.Inject
 
-class LocationForecastRepositoryImp(
-    override val dataSource: LocationForecastDataSource
+class LocationForecastRepositoryImp @Inject constructor(
+    private val datasource: LocationForecastDataSource
 ): LocationForecastRepository{
 
     private val forecastNextHour = MutableStateFlow<ForecastNextHour?>(null)
 
     override suspend fun loadForecastNextHour() {
-        val result = dataSource.getForecastData()
+        val result = datasource.getForecastData()
 
         if (result != null) {
             val temp = result.properties.timeseries[0].data.instant.details.airTemperature

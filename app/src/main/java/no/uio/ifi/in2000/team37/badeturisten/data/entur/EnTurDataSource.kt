@@ -13,16 +13,7 @@ import io.ktor.util.appendIfNameAbsent
 import no.uio.ifi.in2000.team37.badeturisten.data.entur.jsontokotlinenturgeocoder.JsonToKotlinEnTurGeoCoder
 
 
-class EnTurDataSource {
-    private val client = HttpClient {
-        defaultRequest {
-            url("")
-            header(HttpHeaders.ContentType, ContentType.Application.Json)        }
-        install(ContentNegotiation) {
-            gson{}
-        }
-    }
-
+class EnTurDataSource(private val client: HttpClient) {
     suspend fun getData(
         navn: String
     ): JsonToKotlinEnTurGeoCoder { //lat og lon send med

@@ -6,7 +6,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperat
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 interface BeachRepository {
-    val waterTempDataSource: WaterTemperatureDataSource
+    //val waterTempDataSource: WaterTemperatureDataSource
 
     fun getBeachObservations(): StateFlow<List<Beach>>
     fun getFavouriteObservations(): StateFlow<List<Beach>>

@@ -5,7 +5,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 
 interface LocationForecastRepository {
-    val dataSource: LocationForecastDataSource
+    //val dataSource: LocationForecastDataSource
     suspend fun loadForecastNextHour()
     fun observeForecastNextHour(): StateFlow<ForecastNextHour?>
 }

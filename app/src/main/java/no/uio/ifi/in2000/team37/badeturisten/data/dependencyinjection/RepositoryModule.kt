@@ -2,7 +2,6 @@ package no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,13 +18,14 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperat
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
+import javax.inject.Singleton
 
-/*
-import dagger.hilt.android.components.ApplicationComponent
-
-@Module
-@InstallIn(ApplicationComponent::class)
-*/
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
@@ -33,32 +33,33 @@ object RepositoryModule {
     //men binds brukes paa abstrakte
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
-    fun provideBeachRepository(waterTemperatureDataSource: WaterTemperatureDataSource): BeachRepositoryImp {
-        return BeachRepositoryImp(waterTemperatureDataSource)
+    fun provideBeachRepository(dataSource: WaterTemperatureDataSource): BeachRepository {
+        return BeachRepositoryImp(dataSource)
     }
 
     @Provides
-    fun provideOsloKommuneRepository(osloKommuneDatasource: OsloKommuneDatasource): OsloKommuneRepositoryImp {
-        return OsloKommuneRepositoryImp(osloKommuneDatasource)
+    fun provideOsloKommuneRepository(dataSource: OsloKommuneDatasource): OsloKommuneRepository {
+        return OsloKommuneRepositoryImp(dataSource)
     }
 
     @Provides
-    fun provideLocationForecastRepository(locationForecastDataSource: LocationForecastDataSource): LocationForecastRepositoryImp {
-        return LocationForecastRepositoryImp(locationForecastDataSource)
+    @Singleton
+    fun provideLocationForecastRepository(dataSource: LocationForecastDataSource): LocationForecastRepository {
+        return LocationForecastRepositoryImp(dataSource)
     }
 
     @Provides
-    fun provideMetAlertsRepository( metAlertsDataSource: MetAlertsDataSource): MetAlertsRepositoryImp {
-        return MetAlertsRepositoryImp(metAlertsDataSource)
+    fun provideMetAlertsRepository(dataSource: MetAlertsDataSource): MetAlertsRepository {
+        return MetAlertsRepositoryImp(dataSource)
     }
     @Provides
-    fun provideEnTurJourneyPlannerRepository(enTurJourneyPlannerDataSource: EnTurJourneyPlannerDataSource): EnTurJourneyPlannerRepositoryImp {
+    fun provideEnTurJourneyPlannerRepository(enTurJourneyPlannerDataSource: EnTurJourneyPlannerDataSource): EnTurJourneyPlannerRepository {
         return EnTurJourneyPlannerRepositoryImp(enTurJourneyPlannerDataSource)
     }
 
     @Provides
-    fun provideEnTurGeocoderRepository(enTurGeocoderDataSource: EnTurGeocoderDataSource): EnTurGeocoderRepositoryImp {
-        return EnTurGeocoderRepositoryImp(enTurGeocoderDataSource)
+    fun provideEnTurGeocoderRepository(dataSource: EnTurGeocoderDataSource): EnTurGeocoderRepository {
+        return EnTurGeocoderRepositoryImp(dataSource)
     }
 
 }

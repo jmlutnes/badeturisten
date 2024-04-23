@@ -2,6 +2,7 @@ package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import android.annotation.SuppressLint
 import android.util.Log
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
@@ -13,7 +14,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
 class OsloKommuneRepositoryImp @Inject constructor(
-    override val datasource: OsloKommuneDatasource
+    private val datasource: OsloKommuneDatasource
 ): OsloKommuneRepository {
     val liste: MutableList<Beach> = mutableListOf<Beach>()
     //val sokliste: MutableList<Beach> = mutableListOf<Beach>()

@@ -5,10 +5,4 @@ import android.content.Intent
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class BadeturistenApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-    }
-}
+class BadeturistenApp : Application()

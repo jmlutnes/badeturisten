@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.WeatherWarning
 import java.time.LocalDateTime
@@ -13,7 +14,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 class MetAlertsRepositoryImp(
-    override val dataSource: MetAlertsDataSource
+    private val datasource: MetAlertsDataSource
 ): MetAlertsRepository{
 
     //lager en flow av MetAlerts
@@ -22,7 +23,7 @@ class MetAlertsRepositoryImp(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getWeatherWarnings() {
-        val result = dataSource.getData()
+        val result = datasource.getData()
         val featuresArray = result.features
 
         //oppdaterer flow

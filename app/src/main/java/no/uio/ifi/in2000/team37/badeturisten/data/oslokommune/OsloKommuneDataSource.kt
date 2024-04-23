@@ -27,19 +27,7 @@ import java.lang.reflect.Type
 
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
-class OsloKommuneDatasource {
-    val client = HttpClient() {
-        defaultRequest {
-            url("")
-            headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
-        }
-        install(ContentNegotiation) {
-            gson {
-                registerTypeAdapter(ClipData.Item::class.java, ItemDeserializer())
-            }
-        }
-    }
-
+class OsloKommuneDatasource(private val client: HttpClient) {
     suspend fun skrapUrl(url: String): BadevannsInfo {
         val response: HttpResponse = client.get(url)
         val responseBody = response.bodyAsText()

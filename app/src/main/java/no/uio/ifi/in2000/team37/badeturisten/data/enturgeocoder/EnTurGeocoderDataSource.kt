@@ -14,17 +14,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
 data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
 
-class EnTurGeocoderDataSource {
-    private val client = HttpClient {
-        defaultRequest {
-            url("https://api.entur.io/geocoder/v1/")
-            header("ET-Client-Name", "in2000study-application")
-            }
-
-        install(ContentNegotiation) {
-            gson{}
-        }
-    }
+class EnTurGeocoderDataSource(private val client: HttpClient) {
     //Henter stasjoner basert paa longitude og latitude. Returnerer stasjoner i omraadet
     suspend fun getDataLoc(
         lat: Double,

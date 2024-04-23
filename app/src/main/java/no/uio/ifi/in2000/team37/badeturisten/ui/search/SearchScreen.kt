@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -139,8 +140,8 @@ fun FilterButtons(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(
-    sokViewModel: SokViewModel = viewModel(),
-    homeViewModel: HomeViewModel = viewModel(),
+    sokViewModel: SearchViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val sokResultater by sokViewModel.sokResultater.collectAsState()

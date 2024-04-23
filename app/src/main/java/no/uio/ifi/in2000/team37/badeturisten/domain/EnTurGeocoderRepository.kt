@@ -5,7 +5,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDat
 import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
 interface EnTurGeocoderRepository {
-    val dataSource: EnTurGeocoderDataSource
+    //val dataSource: EnTurGeocoderDataSource
     suspend fun hentBussruteLoc(lat: Double, lon: Double): Bussstasjoner?
     suspend fun hentBussruteName(navn: String): Bussstasjoner?
 }

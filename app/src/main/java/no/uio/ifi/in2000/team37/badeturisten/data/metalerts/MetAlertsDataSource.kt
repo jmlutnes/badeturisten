@@ -9,19 +9,7 @@ import io.ktor.serialization.gson.gson
 import io.ktor.util.appendIfNameAbsent
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.jsontokotlinmetalerts.MetAlerts
 
-class MetAlertsDataSource {
-
-    val client = HttpClient() {
-        defaultRequest {
-            url("https://gw-uio.intark.uh-it.no/in2000/")
-            headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
-        }
-        install(ContentNegotiation) {
-            gson {
-            }
-        }
-    }
-
+class MetAlertsDataSource(private val client: HttpClient) {
     suspend fun getData(): MetAlerts { //lat og lon send med
         val data = client.get("weatherapi/metalerts/2.0/all.json")
 //val data = client.get("/weatherapi/locationforecast/2.0/compact?lat=$lat&lon=$lon").bodyAsText()
