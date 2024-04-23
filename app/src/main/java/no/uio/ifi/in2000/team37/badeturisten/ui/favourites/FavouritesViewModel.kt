@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
@@ -21,8 +21,8 @@ data class FavouritesUIState(
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class FavouritesViewModel @Inject constructor(
-    private val _beachesRepository: BeachRepositoryImp,
-    ): ViewModel() {
+    private val _beachesRepository: BeachRepository
+): ViewModel() {
     val favouritesState: StateFlow<FavouritesUIState> = _beachesRepository.getFavouriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(

@@ -10,8 +10,8 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 @RequiresApi(Build.VERSION_CODES.O)
 class CombineBeachesUseCase (
-    private val beachRepository : BeachRepositoryImp,
-    private val osloKommuneRepository : OsloKommuneRepositoryImp
+    private val beachRepository : BeachRepository,
+    private val osloKommuneRepository : OsloKommuneRepository
 ){
     private val defaultDispatcher = Dispatchers.Default
 

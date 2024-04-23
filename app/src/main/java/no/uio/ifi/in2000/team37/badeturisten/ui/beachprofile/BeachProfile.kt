@@ -289,7 +289,7 @@ fun BeachProfile(
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
-                                        text = "${beach.beach?.waterTemp}°C",
+                                        text = "${beach.beach.waterTemp}°C",
                                         modifier = Modifier
                                             .padding(10.dp)
                                             .align(Alignment.CenterVertically)
@@ -308,7 +308,7 @@ fun BeachProfile(
                                             .align(Alignment.CenterVertically)
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
-                                    beach.badevannsinfo?.kvalitetInfo?.let {
+                                    beach.badevannsinfo.kvalitetInfo.let {
                                         Text(
                                             text = it,
                                             modifier = Modifier
@@ -342,7 +342,7 @@ fun BeachProfile(
                                     text = "Fasiliteter",
                                     fontWeight = FontWeight.SemiBold
                                 )
-                                beach.badevannsinfo?.fasiliteterInfo?.let {
+                                beach.badevannsinfo.fasiliteterInfo.let {
                                     Column (
                                         modifier = Modifier
                                             .padding(4.dp)

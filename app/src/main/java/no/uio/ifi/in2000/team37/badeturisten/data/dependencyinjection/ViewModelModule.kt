@@ -13,6 +13,12 @@ import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourn
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
@@ -24,10 +30,10 @@ object ViewModelModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideHomeViewModel(
-        locationForecastRepository: LocationForecastRepositoryImp,
-        osloKommuneRepository: OsloKommuneRepositoryImp,
-        beachRepository: BeachRepositoryImp,
-        metAlertsRepository: MetAlertsRepositoryImp,
+        locationForecastRepository: LocationForecastRepository,
+        osloKommuneRepository: OsloKommuneRepository,
+        beachRepository: BeachRepository,
+        metAlertsRepository: MetAlertsRepository,
     ): HomeViewModel {
         return HomeViewModel(locationForecastRepository, osloKommuneRepository, beachRepository, metAlertsRepository)
     }
@@ -35,14 +41,14 @@ object ViewModelModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideFavouritesViewModel(
-        beachRepository: BeachRepositoryImp
+        beachRepository: BeachRepository
     ): FavouritesViewModel {
         return FavouritesViewModel(beachRepository)
     }
 
     @Provides
-    fun provideHomeViewModel(
-        osloKommuneRepository: OsloKommuneRepositoryImp
+    fun provideSearchViewModel(
+        osloKommuneRepository: OsloKommuneRepository
     ): SearchViewModel {
         return SearchViewModel(osloKommuneRepository)
     }
@@ -51,10 +57,10 @@ object ViewModelModule {
     @Provides
     fun provideBeachViewModel(
         savedStateHandle : SavedStateHandle,
-        osloKommuneRepository: OsloKommuneRepositoryImp,
-        beachesRepository: BeachRepositoryImp,
-        enTurRepositoryGeocoderRepository: EnTurGeocoderRepositoryImp,
-        enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepositoryImp
+        osloKommuneRepository: OsloKommuneRepository,
+        beachesRepository: BeachRepository,
+        enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
+        enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
     ): BeachViewModel {
         return BeachViewModel(savedStateHandle, osloKommuneRepository, beachesRepository, enTurRepositoryGeocoderRepository, enTurRepositoryJourneyPlanner)
     }

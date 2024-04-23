@@ -7,6 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurDataSource
+import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
@@ -21,6 +23,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasou
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
@@ -29,8 +32,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
-
-    //men binds brukes paa abstrakte
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideBeachRepository(dataSource: WaterTemperatureDataSource): BeachRepository {
@@ -62,4 +63,8 @@ object RepositoryModule {
         return EnTurGeocoderRepositoryImp(dataSource)
     }
 
+    @Provides
+    fun provideEnTurRepository(dataSource: EnTurDataSource): EnTurRepository {
+        return EnTurRepositoryImp(dataSource)
+    }
 }

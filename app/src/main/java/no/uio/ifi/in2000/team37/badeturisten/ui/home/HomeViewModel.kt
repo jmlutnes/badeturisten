@@ -14,11 +14,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -42,10 +42,10 @@ data class BeachesUIState (
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel @Inject constructor(
-    private val _locationForecastRepository: LocationForecastRepositoryImp,
-    private val _osloKommuneRepository: OsloKommuneRepositoryImp,
-    private val _beachesRepository: BeachRepositoryImp,
-    private val _metAlertsRepository: MetAlertsRepositoryImp
+    private val _locationForecastRepository: LocationForecastRepository,
+    private val _osloKommuneRepository: OsloKommuneRepository,
+    private val _beachesRepository: BeachRepository,
+    private val _metAlertsRepository: MetAlertsRepository
 ): ViewModel() {
     //henter vaer melding
     val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-    fun loadBeachInfo() {
+    private fun loadBeachInfo() {
         viewModelScope.launch {
             try {
                 val beachDetails = getBeachInfo()

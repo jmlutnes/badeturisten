@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachRepositoryImp @Inject constructor(
-    override val waterTempDataSource: WaterTemperatureDataSource
+    private val waterTempDataSource: WaterTemperatureDataSource
 ): BeachRepository {
 
     //trengs en init?

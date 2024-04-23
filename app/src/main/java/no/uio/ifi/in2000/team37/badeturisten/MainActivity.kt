@@ -46,11 +46,12 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    /*
     @Inject lateinit var homeViewModel: HomeViewModel
     @Inject lateinit var searchViewModel: SearchViewModel
     @Inject lateinit var beachViewModel: BeachViewModel
     @Inject lateinit var favouritesViewModel: FavouritesViewModel
-
+    */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

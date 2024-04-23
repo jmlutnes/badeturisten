@@ -9,9 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
@@ -22,7 +21,7 @@ data class SokKommuneBeachList(
 
 @HiltViewModel
 class SearchViewModel @Inject constructor (
-    private val _osloKommuneRepository: OsloKommuneRepositoryImp,
+    private val _osloKommuneRepository: OsloKommuneRepository,
 ): ViewModel() {
     var badevakt = mutableStateOf(false)
     var barnevennlig = mutableStateOf(false)

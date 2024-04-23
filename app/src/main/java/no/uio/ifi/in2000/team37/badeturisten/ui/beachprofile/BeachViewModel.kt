@@ -12,11 +12,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
@@ -28,10 +28,10 @@ data class Bussrute(val linje: String, val navn: String, val transportMode: Stri
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel @Inject constructor(
     savedStateHandle : SavedStateHandle,
-    private val _osloKommuneRepository: OsloKommuneRepositoryImp,
-    private val _beachesRepository: BeachRepositoryImp,
-    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepositoryImp,
-    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepositoryImp
+    private val _osloKommuneRepository: OsloKommuneRepository,
+    private val _beachesRepository: BeachRepository,
+    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
+    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
 ): ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
     private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo(
