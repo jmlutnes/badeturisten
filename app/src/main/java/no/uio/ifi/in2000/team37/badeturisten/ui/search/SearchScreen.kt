@@ -140,9 +140,9 @@ fun FilterButtons(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(
+    navController: NavController,
     sokViewModel: SearchViewModel = hiltViewModel(),
-    homeViewModel: HomeViewModel = hiltViewModel(),
-    navController: NavController
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val sokResultater by sokViewModel.sokResultater.collectAsState()
     val state = rememberLazyListState()

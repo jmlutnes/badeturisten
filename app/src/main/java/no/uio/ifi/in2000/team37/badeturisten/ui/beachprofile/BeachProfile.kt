@@ -168,13 +168,11 @@ fun Kollektiv(beach: BeachUIState) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun BeachProfile(
-    beachViewModel: BeachViewModel = hiltViewModel(),
     navController: NavController,
+    beachViewModel: BeachViewModel = hiltViewModel(),
     beachName: String?
 ) {
     val beach = beachViewModel.beachUIState.collectAsState().value

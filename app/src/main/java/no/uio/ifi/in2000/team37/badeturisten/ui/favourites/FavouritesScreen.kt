@@ -18,8 +18,8 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.beachCard
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FavouritesScreen(
-    favouritesViewModel: FavouritesViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    favouritesViewModel: FavouritesViewModel = hiltViewModel()
 ) {
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
 
