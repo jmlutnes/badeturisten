@@ -78,8 +78,8 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
             initialValue = MetAlertsUIState()
         )
     //Bruker lokasjon
-    private val _beachLocation = MutableStateFlow<Map<Beach, Double?>>(emptyMap())
-    val beachLocation: StateFlow<Map<Beach, Double?>> = _beachLocation.asStateFlow()
+    private val _beachLocation = MutableStateFlow<Map<Beach, Int?>>(emptyMap())
+    val beachLocation: StateFlow<Map<Beach, Int?>> = _beachLocation.asStateFlow()
     private val locationRepository = LocationRepository(context)
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location.asStateFlow()
@@ -93,6 +93,7 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
             beachState.update {
                 BeachesUIState(CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository)())
             }
+            sortDistances()
         }
     }
     private fun fetchLocationData() {
@@ -120,7 +121,7 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
     }
 
     private fun sortDistances(){
-        val locationMap = emptyMap<Beach, Double>().toMutableMap()
+        val locationMap = emptyMap<Beach, Int>().toMutableMap()
         beachState.value.beaches.forEach{ beach ->
                 locationMap[beach] = location.value?.let { locationDistance(beach.pos, it) }!!
 
@@ -129,6 +130,7 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
             try {
                 val beachLocation = locationMap
                 _beachLocation.value = beachLocation
+                println(beachLocation)
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
                 _beachLocation.value = emptyMap()
@@ -137,7 +139,7 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
 
     }
 }
-fun locationDistance(loc1: Pos, loc2: Location): Double {
+fun locationDistance(loc1: Pos, loc2: Location): Int {
     val earthRadius = 6371e3
     val lat1 = Math.toRadians(loc1.lat.toDouble())
     val lon1 = Math.toRadians(loc1.lon.toDouble())
@@ -150,7 +152,9 @@ fun locationDistance(loc1: Pos, loc2: Location): Double {
             sin(dLon / 2).pow(2)
 
     val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    return earthRadius * c
+    val avstand = earthRadius * c
+    val avrundet = avstand.roundToInt()//i meter
+    return avrundet
 }
 
 //Kan implementeres med dependency injection fremfor factory, saa kan endres ved implementasjon
