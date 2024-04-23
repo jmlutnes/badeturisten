@@ -24,7 +24,7 @@ import java.lang.reflect.Type
 
 
 class OsloKommuneDatasource {
-    val client = HttpClient() {
+    private val client = HttpClient {
         defaultRequest {
             url("")
             headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
