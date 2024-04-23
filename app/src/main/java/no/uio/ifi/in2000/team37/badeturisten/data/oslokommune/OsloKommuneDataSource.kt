@@ -20,6 +20,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.WaterTemperatureAPIResponse
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
@@ -42,10 +43,18 @@ class OsloKommuneDatasource {
      * Send in URL. Using Jsoup to scrape the website on Oslo Commune.
      * Returns a OsloKommuneBeachInfo object.
      */
-    suspend fun skrapUrl(url: String): OsloKommuneBeachInfo {
-        val response: HttpResponse = client.get(url)
-        val responseBody = response.bodyAsText()
-        return scrapeBeachInfoFromResponse(responseBody)
+    suspend fun skrapUrl(url: String): OsloKommuneBeachInfo? {
+        try {
+            val response: HttpResponse = client.get(url)
+            return if (response.status.value in 200 .. 299) {
+                val responseBody = response.bodyAsText()
+                return scrapeBeachInfoFromResponse(responseBody)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            return null
+        }
     }
 
     /**

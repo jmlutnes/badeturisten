@@ -7,12 +7,20 @@ import org.junit.Assert.*
 
 class SkrapUrlTest {
 
+    val datasource = OsloKommuneDatasource()
+
     @Test
     fun testWaterQualityShouldBeBad() = runTest {
 
-        val datasource = OsloKommuneDatasource()
-        val waterQuality = datasource.skrapUrl("https://www.oslo.kommune.no/natur-kultur-og-fritid/tur-og-friluftsliv/badeplasser-og-temperaturer/sorenga-sjobad/").waterQuality
+        val waterQuality = datasource.skrapUrl("https://www.oslo.kommune.no/natur-kultur-og-fritid/tur-og-friluftsliv/badeplasser-og-temperaturer/sorenga-sjobad/")?.waterQuality
 
         assertEquals(waterQuality, "Dårlig")
+    }
+
+    @Test
+    fun testShouldReturnNull() = runTest{
+        val response = datasource.skrapUrl("wronglink");
+
+        assertEquals(response, null);
     }
 }

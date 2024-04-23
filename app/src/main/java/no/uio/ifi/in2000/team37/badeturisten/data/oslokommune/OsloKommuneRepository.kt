@@ -86,7 +86,7 @@ class OsloKommuneRepository () {
      * Send in URL, and Oslo Commune will be scraped for facilities, waterquality and image URL.
      * Returns a OsloKommuneBeachInfo object
      */
-    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo {
+    suspend fun skrapUrl(input: String): OsloKommuneBeachInfo? {
         return datasource.skrapUrl(input)
     }
 
