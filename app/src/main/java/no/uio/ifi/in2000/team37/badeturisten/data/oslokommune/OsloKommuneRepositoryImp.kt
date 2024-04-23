@@ -9,7 +9,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
@@ -138,7 +138,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
     }
 
 
-    override suspend fun finnNettside(navn: String): BadevannsInfo? {
+    override suspend fun finnNettside(navn: String): OsloKommuneBeachInfo? {
         val features = getBadeplasser(59.91, 10.74)
         println("Navn:$navn")
         features.forEach { feature ->

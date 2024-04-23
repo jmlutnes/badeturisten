@@ -1,120 +1,127 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
-import android.content.ClipData
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import io.ktor.serialization.gson.gson
-import io.ktor.util.appendIfNameAbsent
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
 
 
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
-import org.json.JSONArray
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
 
 @Suppress("IMPLICIT_CAST_TO_ANY")
 class OsloKommuneDatasource(private val client: HttpClient) {
-    suspend fun skrapUrl(url: String): BadevannsInfo {
-        val response: HttpResponse = client.get(url)
-        val responseBody = response.bodyAsText()
-
-        return scrapeBeachInfoFromResponse(responseBody)
-    }
-
-    fun scrapeBeachInfoFromResponse(responseBody: String): BadevannsInfo {
-        val document = Jsoup.parse(responseBody)
-
-        //Henter forst bathingsite
-        val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
-        //Viser kun det som er synlig (fjerne fargekode)
-        val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
-        //Resultat av vannkvalitet
-        val vannkvalitet = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
-
-        //fasiliteter
-        val fasiliteterSection = document.select("div.io-facts").firstOrNull()
-        val fasiliteterBuilder = StringBuilder()
-        //Noe av teksten er formatert med • mellom punkter.
-        //Denne koden gaar gjennom og separerer steder i teksten hvor dette forekommer:
-        fasiliteterSection?.let { section ->
-            val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul li")
-            fasiliteterListe.forEach { li ->
-                val innholdMedBrErstattet = li.html().replace("<br>", "•")
-                val elementer = Jsoup.parse(innholdMedBrErstattet).text().split("•").map { it.trim() }
-                elementer.forEach { tekst ->
-                    val formattedText = tekst.removePrefix("• ").let {
-                        if (it.isNotBlank()) "• $it\n" else ""
-                    }
-                    fasiliteterBuilder.append(formattedText)
-                }
+/*
+    val client = HttpClient() {
+        defaultRequest {
+            url("")
+            headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
+        }
+        install(ContentNegotiation) {
+            gson {
+                registerTypeAdapter(ClipData.Item::class.java, ItemDeserializer())
             }
         }
-        val fasiliteter = fasiliteterBuilder.toString().trim().ifEmpty { null }
+    }
+*/
+suspend fun skrapUrl(url: String): OsloKommuneBeachInfo {
+    val response: HttpResponse = client.get(url)
+    val responseBody = response.bodyAsText()
 
-        //Bilde
-        val imageData = document.select("ods-image-carousel").attr(":images")
-        val srcStart = imageData.indexOf("\"src\":\"") + "\"src\":\"".length
-        val srcEnd = imageData.indexOf("\"", srcStart)
-        val bildeUrl: String = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
-            imageData.substring(srcStart, srcEnd).replace("\\/", "/")
-        } else {
-            "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
+    return scrapeBeachInfoFromResponse(responseBody)
+}
+
+fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
+    val document = Jsoup.parse(responseBody)
+
+    //Henter forst bathingsite
+    val kvalitetsSeksjon = document.select("div.io-bathingsite").firstOrNull()
+    //Viser kun det som er synlig (fjerne fargekode)
+    val forsteKvalitetsH3 = kvalitetsSeksjon?.select("div.ods-collapsible-content h3")?.firstOrNull()
+    //Resultat av vannkvalitet
+    val vannkvalitet = forsteKvalitetsH3?.ownText()?.trim() ?: "Ingen informasjon."
+
+    //fasiliteter
+    val fasiliteterSection = document.select("div.io-facts").firstOrNull()
+    val fasiliteterBuilder = StringBuilder()
+    //Noe av teksten er formatert med • mellom punkter.
+    //Denne koden gaar gjennom og separerer steder i teksten hvor dette forekommer:
+    fasiliteterSection?.let { section ->
+        val fasiliteterListe = section.select("h2:contains(Fasiliteter) + div ul li")
+        fasiliteterListe.forEach { li ->
+            val innholdMedBrErstattet = li.html().replace("<br>", "•")
+            val elementer = Jsoup.parse(innholdMedBrErstattet).text().split("•").map { it.trim() }
+            elementer.forEach { tekst ->
+                val formattedText = tekst.removePrefix("• ").let {
+                    if (it.isNotBlank()) "• $it\n" else ""
+                }
+                fasiliteterBuilder.append(formattedText)
+            }
         }
+    }
+    val fasiliteter = fasiliteterBuilder.toString().trim().ifEmpty { null }
 
-        return BadevannsInfo(vannkvalitet, fasiliteter, bildeUrl)
+    //Bilde
+    val imageData = document.select("ods-image-carousel").attr(":images")
+    val srcStart = imageData.indexOf("\"src\":\"") + "\"src\":\"".length
+    val srcEnd = imageData.indexOf("\"", srcStart)
+    val bildeUrl: String = if (srcStart > -1 && srcEnd > -1 && srcStart < srcEnd) {
+        imageData.substring(srcStart, srcEnd).replace("\\/", "/")
+    } else {
+        "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
     }
 
+    return OsloKommuneBeachInfo(vannkvalitet, fasiliteter, bildeUrl)
+}
 
 
-    suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
-        val badevaktUrl = if (badevakt) "&f_facilities_lifeguard=true" else ""
-        val barnevennligUrl = if (barnevennlig) "&f_facilities_child_friendly=true" else ""
-        val grillUrl = if (grill) "&f_facilities_grill=true" else ""
-        val kioskUrl = if (kiosk) "&f_facilities_kiosk=true" else ""
-        val tilpasningUrl = if (tilpasning) "&f_facilities_kiosk=true" else ""
-        val toalettUrl = if (toalett) "&f_facilities_toilets=true" else ""
-        val badebryggeUrl = if (badebrygge) "&f_facilities_diving_tower=true" else ""
 
-        val url =
-            "https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
+suspend fun getDataForFasilitet(badevakt: Boolean, barnevennlig: Boolean, grill: Boolean, kiosk: Boolean, tilpasning: Boolean, toalett: Boolean, badebrygge: Boolean ): jsontokotlin_kommune {
+    val badevaktUrl = if (badevakt) "&f_facilities_lifeguard=true" else ""
+    val barnevennligUrl = if (barnevennlig) "&f_facilities_child_friendly=true" else ""
+    val grillUrl = if (grill) "&f_facilities_grill=true" else ""
+    val kioskUrl = if (kiosk) "&f_facilities_kiosk=true" else ""
+    val tilpasningUrl = if (tilpasning) "&f_facilities_kiosk=true" else ""
+    val toalettUrl = if (toalett) "&f_facilities_toilets=true" else ""
+    val badebryggeUrl = if (badebrygge) "&f_facilities_diving_tower=true" else ""
 
-        val urlString = url +
-                badevaktUrl + barnevennligUrl + grillUrl + kioskUrl + tilpasningUrl + toalettUrl + badebryggeUrl
+    val url =
+        "https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
 
-        val data = client.get(urlString)
+    val urlString = url +
+            badevaktUrl + barnevennligUrl + grillUrl + kioskUrl + tilpasningUrl + toalettUrl + badebryggeUrl
 
-        val response = data.body<jsontokotlin_kommune>()
+    val data = client.get(urlString)
 
-        return response
-    }
+    val response = data.body<jsontokotlin_kommune>()
 
-        suspend fun getData(
-            longitude: Double?,
-            latitude: Double?
-        ): jsontokotlin_kommune { //lat og lon send med
+    return response
+}
 
-            val data =
-                client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
+suspend fun getData(
+    longitude: Double?,
+    latitude: Double?
+): jsontokotlin_kommune { //lat og lon send med
 
-            val response = data.body<jsontokotlin_kommune>()
-            return response
-        }
+    val data =
+        client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
 
-    }
+    val response = data.body<jsontokotlin_kommune>()
+    return response
+}
+
+}
 
 
 //Dette er metode som fikser problemet med at APIET har to forskjellige verdier med navn "value" hvor en er string og den andre er Value

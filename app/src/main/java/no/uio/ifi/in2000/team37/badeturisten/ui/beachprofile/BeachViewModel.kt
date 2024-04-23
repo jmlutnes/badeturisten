@@ -21,7 +21,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
-data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
+data class BeachUIState(val beach: Beach? = null, val badevannsinfo: OsloKommuneBeachInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
 data class Bussrute(val linje: String, val navn: String, val transportMode: String)
 
 @HiltViewModel
@@ -66,13 +66,13 @@ class BeachViewModel @Inject constructor(
             val unikeBussruter = mutableSetOf<Bussrute>()
             bussstasjoner?.bussstasjon?.forEach { stasjon ->
                 stasjon.id?.let { id ->
-                    /*_enTurRepositoryJourneyPlanner.hentBussruterMedId(id)?.let { bussruter ->
+                    _enTurRepositoryJourneyPlanner.hentBussruterMedId(id)?.let { bussruter ->
                         unikeBussruter.addAll(bussruter)
-                    }*/
+                    }
                 }
             }
             val alleBussruter: MutableList<Bussrute> = unikeBussruter.toMutableList()
-            val vannkvalitet: BadevannsInfo? = _osloKommuneRepository.finnNettside(beachName)
+            val vannkvalitet: OsloKommuneBeachInfo? = _osloKommuneRepository.finnNettside(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet, alleBussruter)

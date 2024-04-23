@@ -18,9 +18,6 @@ class BeachRepositoryImp @Inject constructor(
     private val waterTempDataSource: WaterTemperatureDataSource
 ): BeachRepository {
 
-    //trengs en init?
-    /*init{}*/
-
     suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
@@ -43,27 +40,22 @@ class BeachRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun makeBeaches(data: List<Tsery>): List<Beach> {
+    override fun makeBeaches(observations: List<Tsery>): List<Beach> {
         return try {
-            //gjoer data om til liste med strender
-            val liste: MutableList<Beach> = mutableListOf<Beach>()
-            data.forEach { data ->
-                val beachName = data.header.extra.name
-                // oppretter strand objekter og legger til i liste
-                val waterTemperature = data.observations.first().body.value.toDoubleOrNull() ?: 0.0
-                val position = data.header.extra.pos
-
-                liste.add(Beach(beachName, position, waterTemperature))
+            observations.map { tsery ->
+                Beach(tsery.header.extra.name,
+                    tsery.header.extra.pos,tsery.observations.last().body.value.toDoubleOrNull())
             }
-
-            return liste
         } catch (e: Exception) {
-            Log.d("beach repository", "failed to make beaches")
-            Log.e("beach repository", e.message.toString())
-            emptyList<Beach>()
+            Log.e("BeachRepository", e.message.toString())
+            listOf()
         }
     }
 
+
+    override suspend fun getBeach(beachName: String): Beach? = beachObservations.value.firstOrNull { beach -> beach.name == beachName }
+
+    /*
     override suspend fun getBeach(beachName: String): Beach? {
         //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
         //val observationsFromDataSource = datasource.getData(59.91, 10.74)
@@ -72,6 +64,7 @@ class BeachRepositoryImp @Inject constructor(
         beachlist = beachlist.filter { beach -> beach.name == beachName }
         return beachlist.firstOrNull()
     }
+     */
 
     override fun updateFavourites(beach: Beach?) {
         if (beach != null) {
@@ -85,4 +78,5 @@ class BeachRepositoryImp @Inject constructor(
             beachlist
         }
     }
+
 }
