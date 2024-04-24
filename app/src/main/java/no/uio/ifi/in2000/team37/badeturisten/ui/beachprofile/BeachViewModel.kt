@@ -79,7 +79,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
                 }
             }
             val alleBussruter: MutableList<Bussrute> = unikeBussruter.toMutableList()
-            val vannkvalitet: OsloKommuneBeachInfo? = osloKommuneRepository.finnNettside(beachName)
+            val vannkvalitet: OsloKommuneBeachInfo? = osloKommuneRepository.findWebPage(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet, alleBussruter)

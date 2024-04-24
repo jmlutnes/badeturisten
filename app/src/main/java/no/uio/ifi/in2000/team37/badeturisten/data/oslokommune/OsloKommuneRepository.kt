@@ -137,17 +137,17 @@ class OsloKommuneRepository () {
      * Checks if the input site name exists in the Oslo Commune API.
      * The URL for that site is the scraped and returns OsloCommuneBeachInfo.
      */
-    suspend fun finnNettside(navn: String): OsloKommuneBeachInfo? {
+    suspend fun findWebPage(name: String): OsloKommuneBeachInfo? {
         val features = getBadeplasser()
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent
             val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
-            if (beachNameConverted.contains(navn)) {
+            if (beachNameConverted.contains(name)) {
                 val url = extractUrl(beachNameNotConverted)
                 return skrapUrl(url)
             }
         }
-            Log.e("OsloKommuneRepository", "No beach found")
+            // Log.e("OsloKommuneRepository", "No beach found")
             return null
     }
 
