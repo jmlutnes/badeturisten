@@ -144,7 +144,7 @@ fun SearchScreen(
 ) {
     val sokResultater by sokViewModel.sokResultater.collectAsState()
     val state = rememberLazyListState()
-    val beachState = homeViewModel.beachState.collectAsState().value
+    val beaches = homeViewModel.beachLocation.collectAsState().value
     val beachinfo = sokViewModel.beachDetails.collectAsState().value
 
     var sokeTekst by remember { mutableStateOf("") }
@@ -162,8 +162,8 @@ fun SearchScreen(
                     .padding(16.dp)
             )
 
-            val filtrerte = beachState.beaches.filter { strand ->
-                strand.name.contains(sokeTekst, ignoreCase = true)
+            val filtrerte = beaches.filter { strand ->
+                strand.first.name.contains(sokeTekst, ignoreCase = true)
             }
 
             LazyColumn {
@@ -172,13 +172,13 @@ fun SearchScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                navController.navigate("beachProfile/${strand.name}")
+                                navController.navigate("beachProfile/${strand.first.name}")
                             }
                             .padding(16.dp)
                     ) {
-                        Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
+                        Text(text = strand.first.name, style = MaterialTheme.typography.bodyMedium)
                         Spacer(Modifier.weight(1f))
-                        strand.waterTemp?.let {
+                        strand.first.waterTemp?.let {
                             Text(
                                 text = "Vann temp: $it°C",
                                 style = MaterialTheme.typography.bodyMedium
@@ -282,7 +282,7 @@ fun SearchScreen(
                                 .fillMaxSize()
                         ) {
                             items(sokResultater.beachList) { beach ->
-                                Badeinfoforbeachcard(beach, navController, beachinfo)
+                                Badeinfoforbeachcard(beach, 0, navController, beachinfo)
                             }
                         }
                     }

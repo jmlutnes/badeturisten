@@ -249,6 +249,7 @@ fun HomeScreen(
 ) {
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachState = homeViewModel.beachState.collectAsState().value
+    val beachLocation = homeViewModel.beachLocation.collectAsState().value
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
     var clicked by remember { mutableStateOf(false) }
@@ -522,8 +523,12 @@ fun HomeScreen(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        items(beachState.beaches) { beach ->
-                            Badeinfoforbeachcard(beach, navController, beachinfo)
+                        //Sorter paa avstand
+                        items(beachLocation) { beach ->
+                            beach.second?.let {
+                                Badeinfoforbeachcard(beach.first,
+                                    it, navController, beachinfo)
+                            }
                         }
                     }
                 }

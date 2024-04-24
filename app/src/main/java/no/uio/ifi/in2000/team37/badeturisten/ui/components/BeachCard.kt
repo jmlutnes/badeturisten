@@ -31,6 +31,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 @Composable
 fun BeachCard(
     beach: Beach,
+    avstand: Int,
     navController: NavController,
     beachinfo: BadeinfoForHomescreen?
 ) {
@@ -85,8 +86,37 @@ fun BeachCard(
                         .padding(16.dp),
                     style = TextStyle(color = Color.Black)
                 )
+                if(avstand!=0) {
+                    Text(
+                        text = "${avstand} meter unna",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        style =
+                        TextStyle(
+                            color = Color.Black,
+                            drawStyle = Stroke(
+                                width = 15f
+                            )
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .basicMarquee()
+                            .padding(16.dp),
+                    )
+                    Text(
+                        text = "${avstand} meter unna",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        modifier = Modifier
+                            .basicMarquee()
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                        style = TextStyle(color = Color.Black)
+                    )
+                }
                 val tempText =
-                    if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else "Ingen målt temperatur"
+                    if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
                 Text(
                     text = tempText,
                     fontSize = 16.sp,
@@ -112,7 +142,6 @@ fun BeachCard(
                         .basicMarquee()
                         .align(Alignment.BottomCenter)
                         .padding(16.dp),
-
                     style = TextStyle(color = Color.Black)
                 )
             }
@@ -120,15 +149,19 @@ fun BeachCard(
     }
 }
 
+
+
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Badeinfoforbeachcard(
     beach: Beach,
+    avstand: Int,
     navController: NavController,
     beachInfoMap: Map<String, BadeinfoForHomescreen?>
 ) {
     beachInfoMap[beach.name]?.let { badeinfo ->
-        BeachCard(beach = beach, navController = navController, badeinfo)
+        BeachCard(beach = beach, avstand = avstand, navController = navController, badeinfo)
     } ?: run {
         Card(
             onClick = { navController.navigate("beachProfile/${beach.name}") },
@@ -181,6 +214,35 @@ fun Badeinfoforbeachcard(
                             .padding(16.dp),
                         style = TextStyle(color = Color.Black)
                     )
+                    if(avstand!=0) {
+                        Text(
+                            text = "${avstand} meter unna",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            style =
+                            TextStyle(
+                                color = Color.Black,
+                                drawStyle = Stroke(
+                                    width = 15f
+                                )
+                            ),
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .basicMarquee()
+                                .padding(16.dp),
+                        )
+                        Text(
+                            text = "${avstand} meter unna",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier
+                                .basicMarquee()
+                                .align(Alignment.Center)
+                                .padding(16.dp),
+                            style = TextStyle(color = Color.Black)
+                        )
+                    }
                     val tempText =
                         if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
                     Text(
