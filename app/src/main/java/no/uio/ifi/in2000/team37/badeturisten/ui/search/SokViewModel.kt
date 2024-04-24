@@ -54,7 +54,7 @@ class SokViewModel: ViewModel() {
         }
     }
     private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
-        return osloKommuneRepository.finnAlleNettside()
+        return osloKommuneRepository.findAllWebPages()
     }
     fun loadBeachesByFilter(
         badevakt: Boolean,
@@ -66,7 +66,7 @@ class SokViewModel: ViewModel() {
         badebrygge: Boolean
     ) {
         viewModelScope.launch {
-            val oppdaterteStrender = osloKommuneRepository.makeBeachesFasiliteter(
+            val oppdaterteStrender = osloKommuneRepository.makeBeachesFacilities(
                 badevakt,
                 barnevennlig,
                 grill,

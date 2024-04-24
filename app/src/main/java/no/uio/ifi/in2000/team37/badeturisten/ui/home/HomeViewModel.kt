@@ -96,6 +96,6 @@ class HomeViewModel: ViewModel() {
     }
 
     private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
-        return _osloKommuneRepository.finnAlleNettside()
+        return _osloKommuneRepository.findAllWebPages()
     }
 }
