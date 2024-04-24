@@ -4,7 +4,7 @@ import android.util.Log
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
@@ -68,7 +68,7 @@ class OsloKommuneRepository {
             catch (e: Exception) {
                 Log.d("Oslo Kommune repository", "failed to make beaches")
                 Log.e("Oslo Kommune repos", e.message.toString())
-                emptyList<Beach>()
+                emptyList()
         }
     }
 
@@ -117,15 +117,15 @@ class OsloKommuneRepository {
      * Get the name and URL for the site using extractBeachFromHTML method.
      * Then uses skrapUrl to fetch the OsloKommuneBeachInfo for the specific site.
      */
-    suspend fun findAllWebPages(): MutableMap<String, BadeinfoForHomescreen> {
-        val localSearchList = mutableMapOf<String, BadeinfoForHomescreen>()
+    suspend fun findAllWebPages(): MutableMap<String, BeachInfoForHomescreen> {
+        val localSearchList = mutableMapOf<String, BeachInfoForHomescreen>()
         val features = getBeaches()
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent
             val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
             val url = extractUrl(beachNameNotConverted)
             val beachInfo = scrapeUrl(url)
-            localSearchList[beachNameConverted] = BadeinfoForHomescreen(beachNameConverted, beachInfo)
+            localSearchList[beachNameConverted] = BeachInfoForHomescreen(beachNameConverted, beachInfo)
         }
         return localSearchList
     }
@@ -177,7 +177,7 @@ class OsloKommuneRepository {
             } catch (e: Exception) {
                 Log.d("Oslo Kommune repository", "failed to make beaches")
                 Log.e("Oslo Kommune repos", e.message.toString())
-                emptyList<Beach>()
+                emptyList()
             }
         }
 
