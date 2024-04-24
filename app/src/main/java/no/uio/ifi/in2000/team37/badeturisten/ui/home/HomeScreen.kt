@@ -259,7 +259,7 @@ fun HomeScreen(
     val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-    val location = homeViewModel.location.collectAsState().value
+    val location = homeViewModel.location.collectAsState()
 
     val side1 = 450
     val side2 = 240
@@ -477,7 +477,11 @@ fun HomeScreen(
             if(areActiveAlerts.value && clicked){
                 showAlertDisplay.value = false
             }
-            val lokasjonen: String = "Lat: ${location?.latitude} Lon: ${location?.longitude}"
+            var lokasjonen = "Lat: ${location.value?.latitude} Lon: ${location.value?.longitude}"
+
+            LaunchedEffect(location){
+                lokasjonen = "Lat: ${location.value?.latitude} Lon: ${location.value?.longitude}"
+            }
             Column {
                 if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
                     NormalDisplay(lokasjonen)

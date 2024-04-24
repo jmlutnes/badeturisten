@@ -46,19 +46,22 @@ data class BeachesUIState (
 
 
 
+@Suppress("UNREACHABLE_CODE")
 @RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewModel() {
 
     //henter vaer melding
-    private val _locationForecastRepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
+    private val _locationForecastRepository: LocationForecastRepository =
+        LocationForecastRepository(dataSource = LocationForecastDataSource())
 
-    val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
-        .map { ForecastUIState(forecastNextHour = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ForecastUIState()
-        )
+    val forecastState: StateFlow<ForecastUIState> =
+        _locationForecastRepository.observeForecastNextHour()
+            .map { ForecastUIState(forecastNextHour = it) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = ForecastUIState()
+            )
 
     //henter strender
     private val _osloKommuneRepository = OsloKommuneRepository()
@@ -70,19 +73,23 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
 
     //henter farevarsler
     private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
-    val metAlertsState: StateFlow<MetAlertsUIState> = _metAlertsRepository.getMetAlertsObservations()
-        .map { MetAlertsUIState(alerts = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MetAlertsUIState()
-        )
+    val metAlertsState: StateFlow<MetAlertsUIState> =
+        _metAlertsRepository.getMetAlertsObservations()
+            .map { MetAlertsUIState(alerts = it) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = MetAlertsUIState()
+            )
+
     //Bruker lokasjon
-    private val _beachLocation = MutableStateFlow<Map<Beach, Int?>>(emptyMap())
-    val beachLocation: StateFlow<Map<Beach, Int?>> = _beachLocation.asStateFlow()
+    private val _beachLocation = MutableStateFlow<List<Pair<Beach, Int?>>>(emptyList())
+    val beachLocation: StateFlow<List<Pair<Beach, Int?>>> = _beachLocation.asStateFlow()
+
     private val locationRepository = LocationRepository(context)
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location.asStateFlow()
+
     init {
         viewModelScope.launch {
             _locationForecastRepository.loadForecastNextHour()
@@ -96,14 +103,31 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
             sortDistances()
         }
     }
+
     private fun fetchLocationData() {
         viewModelScope.launch {
             locationRepository.fetchLastLocation()
+            var needCurrent: Boolean = false
+
+
             locationRepository.locationData.collect { newLocation ->
-                _location.value = newLocation
+                if (newLocation?.latitude == null) {
+                    locationRepository.fetchCurrentLocation()
+                    needCurrent = true
+                } else {
+                    _location.value = newLocation
+                }
+            }
+            if (needCurrent) {
+                locationRepository.locationData.collect { newLocation ->
+                    if (newLocation?.latitude != null) {
+                        _location.value = newLocation
+                    }
+                }
             }
         }
     }
+
     fun loadBeachInfo() {
         viewModelScope.launch {
             try {
@@ -120,41 +144,45 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
         return _osloKommuneRepository.finnAlleNettside()
     }
 
-    private fun sortDistances(){
+    private fun sortDistances() {
         val locationMap = emptyMap<Beach, Int>().toMutableMap()
-        beachState.value.beaches.forEach{ beach ->
-                locationMap[beach] = location.value?.let { locationDistance(beach.pos, it) }!!
-
+        beachState.value.beaches.forEach { beach ->
+            locationMap[beach] = locationDistance(beach.pos, _location.value)
         }
+        val sortedBeachesByDistance = sortBeachesByValue(locationMap)
         viewModelScope.launch {
             try {
-                val beachLocation = locationMap
-                _beachLocation.value = beachLocation
+                _beachLocation.value = sortedBeachesByDistance
                 println(beachLocation)
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
-                _beachLocation.value = emptyMap()
+                _beachLocation.value = emptyList()
             }
         }
-
+        println(sortedBeachesByDistance)
     }
-}
-fun locationDistance(loc1: Pos, loc2: Location): Int {
-    val earthRadius = 6371e3
-    val lat1 = Math.toRadians(loc1.lat.toDouble())
-    val lon1 = Math.toRadians(loc1.lon.toDouble())
-    val lat2 = Math.toRadians(loc2.latitude)
-    val lon2 = Math.toRadians(loc2.longitude)
-    val dLat = lat2 - lat1
-    val dLon = lon2 - lon1
-    val a = sin(dLat / 2).pow(2) +
-            cos(lat1) * cos(lat2) *
-            sin(dLon / 2).pow(2)
 
-    val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-    val avstand = earthRadius * c
-    val avrundet = avstand.roundToInt()//i meter
-    return avrundet
+
+    fun locationDistance(loc1: Pos, loc2: Location?): Int {
+        val earthRadius = 6371e3
+        val lat1 = Math.toRadians(loc1.lat.toDouble())
+        val lon1 = Math.toRadians(loc1.lon.toDouble())
+        val lat2 = Math.toRadians(loc2?.latitude ?: 999.0)
+        val lon2 = Math.toRadians(loc2?.longitude ?: 999.0)
+        val dLat = lat2 - lat1
+        val dLon = lon2 - lon1
+        val a = sin(dLat / 2).pow(2) +
+                cos(lat1) * cos(lat2) *
+                sin(dLon / 2).pow(2)
+
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        val avstand = earthRadius * c
+        return avstand.roundToInt()
+    }
+
+    fun sortBeachesByValue(beaches: Map<Beach, Int?>): List<Pair<Beach, Int?>> {
+        return beaches.toList().sortedBy { it.second }
+    }
 }
 
 //Kan implementeres med dependency injection fremfor factory, saa kan endres ved implementasjon
