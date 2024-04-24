@@ -260,8 +260,6 @@ fun HomeScreen(
     val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-    val location = homeViewModel.location.collectAsState()
-
     val side1 = 450
     val side2 = 240
 
@@ -478,14 +476,9 @@ fun HomeScreen(
             if(areActiveAlerts.value && clicked){
                 showAlertDisplay.value = false
             }
-            var lokasjonen = "Lat: ${location.value?.latitude} Lon: ${location.value?.longitude}"
-
-            LaunchedEffect(location){
-                lokasjonen = "Lat: ${location.value?.latitude} Lon: ${location.value?.longitude}"
-            }
             Column {
                 if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
-                    NormalDisplay(lokasjonen)
+                    NormalDisplay()
                 }
                 else if (showAlertDisplay.value) {
                     AlertDisplay(alertState)
@@ -629,7 +622,7 @@ fun NoAlertDisplay() {
 }
 @SuppressLint("RestrictedApi")
 @Composable
-fun NormalDisplay(locationText: String) {
+fun NormalDisplay() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -649,7 +642,7 @@ fun NormalDisplay(locationText: String) {
                     .padding(bottom = 30.dp, top = 10.dp)
             ) {
                     Text(
-                        text = "${locationText}",
+                        text = "Her har vi samlet Oslos beste badeperler for deg!",
                         modifier = Modifier
                             .padding(20.dp),
                         textAlign = TextAlign.Center,
