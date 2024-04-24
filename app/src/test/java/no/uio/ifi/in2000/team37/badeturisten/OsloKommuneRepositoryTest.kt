@@ -9,7 +9,7 @@ class OsloKommuneRepositoryTest {
     private val repo = OsloKommuneRepository()
 
     @Test
-    fun testFindWebsiteShouldReturnBeach() = runTest {
+    fun testFindWebsiteShouldReturnBeachInfo() = runTest {
         val beachName = "Sørenga"
 
         val result = repo.findWebPage(beachName)
@@ -24,6 +24,24 @@ class OsloKommuneRepositoryTest {
         val result = repo.findWebPage(beachName)
 
         assertNull("Expected null, was $result", result)
+    }
+
+    @Test
+    fun testGetBeachShouldReturnBeach() = runTest {
+        val beachName = "Årvolldammen"
+
+        val result = repo.getBeach(beachName)
+
+        assertNotNull(result)
+    }
+
+    @Test
+    fun testGetBeachShouldReturnNull() = runTest {
+        val beachName = "ThisIsAFakeBeach"
+
+        val result = repo.getBeach(beachName)
+
+        assertNull(result)
     }
 
 }
