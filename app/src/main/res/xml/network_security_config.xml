@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <!-- Allows cleartext traffic to all domains -->
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">api.entur.io</domain>
+        <domain includeSubdomains="true">havvarsel-frost.met.no</domain>
+        <domain includeSubdomains="true">gw-uio.intark.uh-it.no</domain>
+        <domain includeSubdomains="true">www.oslo.kommune.no</domain>
+        <!-- Add any domains where you need to allow HTTP traffic -->
+    </domain-config>
+</network-security-config>

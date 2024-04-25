@@ -8,6 +8,14 @@ annotation class EnTurHttpClient
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class EnTurHttpGeocoderHttpClient
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class EnTurJourneyPlannerHttpClient
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class LocationForecastHttpClient
 
 @Qualifier

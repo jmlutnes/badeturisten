@@ -23,48 +23,37 @@ import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.*
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    /*
-        // General HttpClient configuration
-        @Provides
-        @Singleton
-        fun provideGeneralHttpClient(): HttpClient {
-            return HttpClient {
-                install(JsonFeature) {
-                    serializer = GsonSerializer()
-                }
-                install(Logging) {
-                    logger = Logger.DEFAULT
-                    level = LogLevel.INFO
-                }
-                defaultRequest {
-                    header(HttpHeaders.ContentType, ContentType.Application.Json)
-                }
-            }
-        }
-     */
-
-    /*
-        //EnTurGeocoderDataSource
-        defaultRequest {
-        url("https://api.entur.io/geocoder/v1/")
-        header("ET-Client-Name", "in2000study-application")
-        }
-        //EnTurJourneyPlannerDataSource
-        defaultRequest {
-        url("https://api.entur.io/journey-planner/v3/graphql")
-        header(HttpHeaders.ContentType, ContentType.Application.Json)
-        header("ET-Client-Name", "in2000study-application")
-        }
-    */
     // HttpClient for En Tur API
     @Provides
     @EnTurHttpClient
     fun provideEnTurHttpClient(): HttpClient {
         return HttpClient {
             defaultRequest {
-                url("https://api.entur.io/")
+                url("")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
+            }
+            install(ContentNegotiation) { gson { } }
+        }
+    }
+    @Provides
+    @EnTurHttpGeocoderHttpClient
+    fun provideEnTurGeocoderHttpClient(): HttpClient {
+        return HttpClient {
+            defaultRequest {
+                url("https://api.entur.io/geocoder/v1/")
+                header("ET-Client-Name", "in2000study-application")
+            }
+            install(ContentNegotiation) { gson { } }
+        }
+    }
+    @Provides
+    @EnTurJourneyPlannerHttpClient
+    fun provideEnTurJourneyPlannerHttpClient(): HttpClient {
+        return HttpClient {
+            defaultRequest {
+                url("https://api.entur.io/journey-planner/v3/graphql")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header("ET-Client-Name", "in2000study-application")
             }
             install(ContentNegotiation) { gson { } }
         }
