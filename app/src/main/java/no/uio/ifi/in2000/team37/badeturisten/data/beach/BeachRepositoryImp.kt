@@ -26,9 +26,11 @@ class BeachRepositoryImp @Inject constructor(
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
     private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
     var beachlist: MutableList<Beach> = mutableListOf<Beach>()
+
     //henter flows
     override fun getBeachObservations(): StateFlow<List<Beach>> = beachObservations.asStateFlow()
-    override fun getFavouriteObservations():StateFlow<List<Beach>> = favouriteObservations.asStateFlow()
+    override fun getFavouriteObservations(): StateFlow<List<Beach>> =
+        favouriteObservations.asStateFlow()
 
     //oppdaterer flows
     override suspend fun loadBeaches() {
@@ -43,8 +45,10 @@ class BeachRepositoryImp @Inject constructor(
     override fun makeBeaches(observations: List<Tsery>): List<Beach> {
         return try {
             observations.map { tsery ->
-                Beach(tsery.header.extra.name,
-                    tsery.header.extra.pos,tsery.observations.last().body.value.toDoubleOrNull())
+                Beach(
+                    tsery.header.extra.name,
+                    tsery.header.extra.pos, tsery.observations.last().body.value.toDoubleOrNull()
+                )
             }
         } catch (e: Exception) {
             Log.e("BeachRepository", e.message.toString())
@@ -53,30 +57,20 @@ class BeachRepositoryImp @Inject constructor(
     }
 
 
-    override suspend fun getBeach(beachName: String): Beach? = beachObservations.value.firstOrNull { beach -> beach.name == beachName }
-
-    /*
-    override suspend fun getBeach(beachName: String): Beach? {
-        //METODE FOR AA HENTE EN STRAND BASERT PAA LOC ELLER NAVN?
-        //val observationsFromDataSource = datasource.getData(59.91, 10.74)
-        val observationsFromDataSource = waterTempGetData()
-        var beachlist: List<Beach> = makeBeaches(observationsFromDataSource)
-        beachlist = beachlist.filter { beach -> beach.name == beachName }
-        return beachlist.firstOrNull()
-    }
-     */
+    override suspend fun getBeach(beachName: String): Beach? =
+        beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
     override fun updateFavourites(beach: Beach?) {
         if (beach != null) {
             if (beach in beachlist) {
                 beachlist.remove(beach)
-             }else {
-                 beachlist.add(beach)
-             }
-         }
+            } else {
+                beachlist.add(beach)
+            }
+        }
+        Log.d("beachrepo updFav", "$beachlist")
         favouriteObservations.update {
             beachlist
         }
     }
-
 }
