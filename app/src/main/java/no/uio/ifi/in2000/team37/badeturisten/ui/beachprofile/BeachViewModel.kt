@@ -67,9 +67,7 @@ class BeachViewModel @Inject constructor(
                 //Fetch ID for all buss stasions based on location
                 bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
             }
-            //}
-            // Fetch buss routes (lines and name) based on id from stations
-            // Set for ingen duplikater
+
             val unikeBussruter = mutableSetOf<Bussrute>()
             bussstasjoner?.bussstasjon?.forEach { stasjon ->
                 stasjon.id?.let { id ->
@@ -100,7 +98,6 @@ class BeachViewModel @Inject constructor(
     }
 
     fun updateFavourites(beach: Beach) {
-        Log.d("beachViewMo updFav", "$beach")
         _beachRepository.updateFavourites(beach)
     }
 }

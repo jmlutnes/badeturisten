@@ -60,7 +60,7 @@ class BeachRepositoryImp @Inject constructor(
     override suspend fun getBeach(beachName: String): Beach? =
         beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-    override fun updateFavourites(beach: Beach?) {
+    override fun updateFavourites(beach: Beach?): List<Beach> {
         if (beach != null) {
             if (beach in beachlist) {
                 beachlist.remove(beach)
@@ -69,8 +69,9 @@ class BeachRepositoryImp @Inject constructor(
             }
         }
         Log.d("beachrepo updFav", "$beachlist")
-        favouriteObservations.update {
+        return beachlist
+        /*favouriteObservations.update {
             beachlist
-        }
+        }*/
     }
 }

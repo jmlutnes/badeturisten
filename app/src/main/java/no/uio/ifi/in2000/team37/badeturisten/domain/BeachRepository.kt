@@ -10,5 +10,5 @@ interface BeachRepository {
     suspend fun loadBeaches()
     fun makeBeaches(observations: List<Tsery>): List<Beach>
     suspend fun getBeach(beachName: String): Beach?
-    fun updateFavourites(beach: Beach?)
+    fun updateFavourites(beach: Beach?): List<Beach>
 }
