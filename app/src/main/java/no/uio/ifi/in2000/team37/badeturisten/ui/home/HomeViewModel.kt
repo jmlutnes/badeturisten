@@ -1,6 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
-import LocationRepository
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
@@ -8,9 +7,9 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,25 +19,18 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.ForecastNextHour
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 
 import javax.inject.Inject
-import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 import kotlin.math.*
 
 data class MetAlertsUIState(
@@ -55,8 +47,9 @@ data class BeachesUIState (
 
 
 @HiltViewModel
-@RequiresApi(Build.VERSION_CODES.O)
 class HomeViewModel @Inject constructor(
+    @SuppressLint("StaticFieldLeak") @ApplicationContext private val context: Context,
+    private val _locationRepository: LocationRepository,
     private val _locationForecastRepository: LocationForecastRepository,
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
@@ -90,7 +83,6 @@ class HomeViewModel @Inject constructor(
     private val _beachLocation = MutableStateFlow<List<Pair<Beach, Int?>>>(emptyList())
     val beachLocation: StateFlow<List<Pair<Beach, Int?>>> = _beachLocation.asStateFlow()
 
-    private val locationRepository = LocationRepository(context)
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location.asStateFlow()
 
@@ -110,27 +102,18 @@ class HomeViewModel @Inject constructor(
 
     private fun fetchLocationData() {
         viewModelScope.launch {
-            locationRepository.fetchLastLocation()
-            var needCurrent: Boolean = false
+            _locationRepository.fetchLastLocation()  // Trigger an initial fetch
 
-
-            locationRepository.locationData.collect { newLocation ->
-                if (newLocation?.latitude == null) {
-                    locationRepository.fetchCurrentLocation()
-                    needCurrent = true
+            _locationRepository.locationData.collect { newLocation ->
+                if (newLocation == null) {
+                    _locationRepository.fetchCurrentLocation()  // Directly fetch current location if last is null
                 } else {
                     _location.value = newLocation
                 }
             }
-            if (needCurrent) {
-                locationRepository.locationData.collect { newLocation ->
-                    if (newLocation?.latitude != null) {
-                        _location.value = newLocation
-                    }
-                }
-            }
         }
     }
+
 
     private fun loadBeachInfo() {
         viewModelScope.launch {
@@ -190,14 +173,4 @@ class HomeViewModel @Inject constructor(
 }
 
 //Kan implementeres med dependency injection fremfor factory, saa kan endres ved implementasjon
-class HomeViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(context) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
 

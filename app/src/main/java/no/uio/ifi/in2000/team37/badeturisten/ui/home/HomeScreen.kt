@@ -245,7 +245,6 @@ fun WarningIcon(warningvector: ImageVector) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(factory = HomeViewModelFactory(LocalContext.current)),
     navController: NavController
 ) {
     val homeViewModel: HomeViewModel = hiltViewModel()

@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -37,10 +38,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -142,11 +145,12 @@ fun SearchScreen(
 ) {
     val searchViewModel: SearchViewModel = hiltViewModel()
 
-    val searchResult by searchViewModel.sokResultater.collectAsState()
-    val state = rememberLazyListState()
-    val beaches = homeViewModel.beachLocation.collectAsState().value
-    val beachinfo = sokViewModel.beachDetails.collectAsState().value
 
+    val searchResult by searchViewModel.sokResultater.collectAsState()
+    val beachState = searchViewModel.beachState.collectAsState().value
+    val beachinfo = searchViewModel.beachDetails.collectAsState().value
+
+    val state = rememberLazyListState()
     var searchText by remember { mutableStateOf("") }
 
     Column {
@@ -173,13 +177,13 @@ fun SearchScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                navController.navigate("beachProfile/${strand.first.name}")
+                                navController.navigate("beachProfile/${strand.name}")
                             }
                             .padding(16.dp)
                     ) {
-                        Text(text = strand.first.name, style = MaterialTheme.typography.bodyMedium)
+                        Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
                         Spacer(Modifier.weight(1f))
-                        strand.first.waterTemp?.let {
+                        strand.waterTemp?.let {
                             Text(
                                 text = "Vann temp: $it°C",
                                 style = MaterialTheme.typography.bodyMedium
@@ -283,7 +287,7 @@ fun SearchScreen(
                                 .fillMaxSize()
                         ) {
                             items(searchResult.beachList) { beach ->
-                                Badeinfoforbeachcard(beach, navController, beachinfo)
+                                Badeinfoforbeachcard(beach, 0, navController, beachinfo)
                             }
                         }
                     }
