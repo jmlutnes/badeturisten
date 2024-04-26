@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -32,7 +32,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 fun BeachCard(
     beach: Beach,
     navController: NavController,
-    beachinfo: BadeinfoForHomescreen?
+    beachinfo: BeachInfoForHomescreen?
 ) {
     Card(
         onClick = { navController.navigate("beachProfile/${beach.name}") },
@@ -47,7 +47,7 @@ fun BeachCard(
                 .fillMaxSize()
         ) {
             Box(Modifier.fillMaxSize()) {
-                val imageUrl = beachinfo?.badeinfo?.imageUrl
+                val imageUrl = beachinfo?.info?.imageUrl
                     ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
                 AsyncImage(
                     model = imageUrl,
@@ -125,7 +125,7 @@ fun BeachCard(
 fun Badeinfoforbeachcard(
     beach: Beach,
     navController: NavController,
-    beachInfoMap: Map<String, BadeinfoForHomescreen?>
+    beachInfoMap: Map<String, BeachInfoForHomescreen?>
 ) {
     beachInfoMap[beach.name]?.let { badeinfo ->
         BeachCard(beach = beach, navController = navController, badeinfo)
