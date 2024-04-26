@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -99,8 +100,7 @@ class BeachViewModel @Inject constructor(
     }
 
     fun updateFavourites(beach: Beach) {
+        Log.d("beachViewMo updFav", "$beach")
         _beachRepository.updateFavourites(beach)
     }
 }
-
- 
