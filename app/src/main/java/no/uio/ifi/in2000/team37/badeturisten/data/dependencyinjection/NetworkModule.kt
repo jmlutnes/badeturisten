@@ -35,6 +35,7 @@ object NetworkModule {
             install(ContentNegotiation) { gson { } }
         }
     }
+
     @Provides
     @EnTurHttpGeocoderHttpClient
     fun provideEnTurGeocoderHttpClient(): HttpClient {
@@ -46,6 +47,7 @@ object NetworkModule {
             install(ContentNegotiation) { gson { } }
         }
     }
+
     @Provides
     @EnTurJourneyPlannerHttpClient
     fun provideEnTurJourneyPlannerHttpClient(): HttpClient {
@@ -58,6 +60,7 @@ object NetworkModule {
             install(ContentNegotiation) { gson { } }
         }
     }
+
     // HttpClient for Water Temperature API
     @Provides
     @WaterTemperatureHttpClient
@@ -69,6 +72,7 @@ object NetworkModule {
             install(ContentNegotiation) { gson {} }
         }
     }
+
     // HttpClient for Location Forecast API
     @Provides
     @LocationForecastHttpClient
@@ -81,6 +85,7 @@ object NetworkModule {
             install(ContentNegotiation) { gson {} }
         }
     }
+
     // HttpClient for Met Alerts API
     @Provides
     @MetAlertsHttpClient
@@ -93,6 +98,7 @@ object NetworkModule {
             install(ContentNegotiation) { gson {} }
         }
     }
+
     // HttpClient for Oslo Kommune API
     @Provides
     @OsloKommuneHttpClient
@@ -108,17 +114,17 @@ object NetworkModule {
 
     // Each data source provider method
     @Provides
-    fun provideEnTurDataSource(@EnTurHttpClient client: HttpClient): EnTurDataSource {
+    fun provideEnTurDataSource(@EnTurHttpGeocoderHttpClient client: HttpClient): EnTurDataSource {
         return EnTurDataSource(client)
     }
 
     @Provides
-    fun provideEnTurGeocoderDataSource(@EnTurHttpClient client: HttpClient): EnTurGeocoderDataSource {
+    fun provideEnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient client: HttpClient): EnTurGeocoderDataSource {
         return EnTurGeocoderDataSource(client)
     }
 
     @Provides
-    fun provideEnTurJourneyPlannerDataSource(@EnTurHttpClient client: HttpClient): EnTurJourneyPlannerDataSource {
+    fun provideEnTurJourneyPlannerDataSource(@EnTurJourneyPlannerHttpClient client: HttpClient): EnTurJourneyPlannerDataSource {
         return EnTurJourneyPlannerDataSource(client)
     }
 
@@ -136,6 +142,7 @@ object NetworkModule {
     fun provideMetAlertsDataSource(@MetAlertsHttpClient client: HttpClient): MetAlertsDataSource {
         return MetAlertsDataSource(client)
     }
+
     @Provides
     fun provideOsloKommuneDataSource(@OsloKommuneHttpClient client: HttpClient): OsloKommuneDatasource {
         return OsloKommuneDatasource(client)
