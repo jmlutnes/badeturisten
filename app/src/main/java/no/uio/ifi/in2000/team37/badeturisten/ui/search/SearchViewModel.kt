@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.BeachesUIState
 import javax.inject.Inject
@@ -39,8 +39,8 @@ class SearchViewModel @Inject constructor (
     var toalett = mutableStateOf(false)
     var badebrygge = mutableStateOf(false)
 
-    private val _beachDetails = MutableStateFlow<Map<String, BadeinfoForHomescreen?>>(emptyMap())
-    val beachDetails: StateFlow<Map<String, BadeinfoForHomescreen?>> = _beachDetails.asStateFlow()
+    private val _beachDetails = MutableStateFlow<Map<String, BeachInfoForHomescreen?>>(emptyMap())
+    val beachDetails: StateFlow<Map<String, BeachInfoForHomescreen?>> = _beachDetails.asStateFlow()
     private val _sokResultater = MutableStateFlow(SokKommuneBeachList())
     val sokResultater: StateFlow<SokKommuneBeachList> = _sokResultater.asStateFlow()
 
@@ -82,7 +82,7 @@ class SearchViewModel @Inject constructor (
         badebrygge: Boolean
     ) {
         viewModelScope.launch {
-            val oppdaterteStrender = _osloKommuneRepository.makeBeachesFasiliteter(
+            val oppdaterteStrender = _osloKommuneRepository.makeBeachesFacilities(
                 badevakt,
                 barnevennlig,
                 grill,

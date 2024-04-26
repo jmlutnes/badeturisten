@@ -77,7 +77,7 @@ class BeachViewModel @Inject constructor(
                 }
             }
             val alleBussruter: MutableList<Bussrute> = unikeBussruter.toMutableList()
-            val vannkvalitet: OsloKommuneBeachInfo? = _osloKommuneRepository.finnNettside(beachName)
+            val vannkvalitet: OsloKommuneBeachInfo? = _osloKommuneRepository.findWebPage(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
                     currentUIState.copy(
