@@ -267,7 +267,7 @@ fun HomeScreen(
     val side2 = 240
 
     val circlegradient = Brush.radialGradient(
-        listOf( MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.primary),
+        listOf(MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.primary),
         center = Offset(side1 / 3.5f, side2 / 2.0f),
         radius = side1 / 1.54f,
         tileMode = TileMode.Clamp
@@ -288,8 +288,8 @@ fun HomeScreen(
         )
     LaunchedEffect(alertState.alerts) {
         areActiveAlerts.value = alertState.alerts.any { it.status?.equals("Active") == true }
-    //MetTest:
-       //areActiveAlerts.value = alertState.alerts.any { it.status?.contains("a") == true }
+        //MetTest:
+        //areActiveAlerts.value = alertState.alerts.any { it.status?.contains("a") == true }
     }
     Column(
         Modifier
@@ -304,7 +304,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .defaultMinSize(400.dp, 200.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
+            ) {
                 Box(
                     modifier = Modifier
                         .size(400.dp, 200.dp)
@@ -338,13 +338,11 @@ fun HomeScreen(
                                                 .padding(horizontal = 10.dp, vertical = 5.dp)
                                                 .align(Alignment.TopStart),
                                             color = MaterialTheme.colorScheme.inverseOnSurface,
-
                                             )
                                         Text(
                                             text = tempText.dropLast(3) + "°C",
                                             fontSize = 34.sp,
                                             modifier = Modifier
-                                                //.weight(1f)
                                                 .align(Alignment.BottomEnd)
                                                 .padding(8.dp),
                                             color = MaterialTheme.colorScheme.inverseOnSurface,
@@ -365,7 +363,7 @@ fun HomeScreen(
                                     modifier = Modifier
                                         .size(100.dp, 100.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally,
-                                    ) {
+                                ) {
                                     Column(
                                         modifier = Modifier
                                             .size(100.dp, 30.dp)
@@ -408,15 +406,14 @@ fun HomeScreen(
                                                 Button(
                                                     onClick = {
                                                         clicked = !clicked
-                                                              },
+                                                    },
                                                     modifier = Modifier
                                                         .padding(5.dp)
                                                 ) {
                                                 }
-                                                if(areActiveAlerts.value){
+                                                if (areActiveAlerts.value) {
                                                     WarningIcon(warningvector = warningVectorRed)
-                                                }
-                                                else {
+                                                } else {
                                                     WarningIcon(warningVectorWhite)
                                                 }
                                             }
@@ -464,29 +461,27 @@ fun HomeScreen(
                     }
                 }
             }
-            if(!areActiveAlerts.value && !clicked && !showNoAlertDisplay.value && !showAlertDisplay.value){
+            if (!areActiveAlerts.value && !clicked && !showNoAlertDisplay.value && !showAlertDisplay.value) {
                 showNormalScreen.value = true
             }
-            if(!areActiveAlerts.value && clicked){
+            if (!areActiveAlerts.value && clicked) {
                 showNoAlertDisplay.value = true
             }
-            if(!areActiveAlerts.value && !clicked){
+            if (!areActiveAlerts.value && !clicked) {
                 showNoAlertDisplay.value = false
             }
-            if(areActiveAlerts.value && !clicked){
+            if (areActiveAlerts.value && !clicked) {
                 showAlertDisplay.value = true
             }
-            if(areActiveAlerts.value && clicked){
+            if (areActiveAlerts.value && clicked) {
                 showAlertDisplay.value = false
             }
             Column {
                 if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
                     NormalDisplay()
-                }
-                else if (showAlertDisplay.value) {
+                } else if (showAlertDisplay.value) {
                     AlertDisplay(alertState)
-                }
-                else if (showNoAlertDisplay.value) {
+                } else if (showNoAlertDisplay.value) {
                     NoAlertDisplay()
                     LaunchedEffect(Unit) {
                         delay(3000)
@@ -494,45 +489,48 @@ fun HomeScreen(
                         showNormalScreen.value = !showNormalScreen.value
                         clicked = !clicked
                     }
-            }
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-            ) {
+                }
                 Column(
-                    Modifier
-                        .wrapContentWidth(Alignment.CenterHorizontally),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    Column(
+                        Modifier
+                            .wrapContentWidth(Alignment.CenterHorizontally),
                     ) {
-                    Text(
-                        text = "Badesteder nær deg",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 15.dp, bottom = 8.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-                    val state = rememberLazyListState()
-                    LazyColumn(
-                        state = state,
-                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        //Sorter paa avstand
-                        items(beachLocation) { beach ->
-                            beach.second?.let {
-                                Badeinfoforbeachcard(beach.first,
-                                    it, navController, beachinfo)
+                        Text(
+                            text = "Badesteder nær deg",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 15.dp, bottom = 8.dp),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                        val state = rememberLazyListState()
+                        LazyColumn(
+                            state = state,
+                            flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                                //Sorter paa avstand
+                                items(beachLocation) { beach ->
+                                    beach.second?.let {
+                                        Badeinfoforbeachcard(
+                                            beach.first,
+                                            it, navController, beachinfo
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            }
         }
     }
-}
 
 @SuppressLint("RestrictedApi")
 @Composable
@@ -554,7 +552,6 @@ fun AlertDisplay(alertState: MetAlertsUIState) {
                     .fillMaxSize()
                     .padding(bottom = 40.dp)
                     .wrapContentHeight(Alignment.CenterVertically)
-
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -580,7 +577,6 @@ fun NoAlertDisplay() {
             .height(80.dp)
             .wrapContentWidth(Alignment.CenterHorizontally)
             .wrapContentHeight(Alignment.Bottom)
-
     ) {
         Box(
             modifier = Modifier

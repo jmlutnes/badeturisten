@@ -46,6 +46,7 @@ data class BeachesUIState (
 )
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     @SuppressLint("StaticFieldLeak") @ApplicationContext private val context: Context,
@@ -114,7 +115,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
     private fun loadBeachInfo() {
         viewModelScope.launch {
             try {
@@ -133,8 +133,15 @@ class HomeViewModel @Inject constructor(
 
     private fun sortDistances() {
         val locationMap = emptyMap<Beach, Int>().toMutableMap()
+        var teller = 0
         beachState.value.beaches.forEach { beach ->
-            locationMap[beach] = locationDistance(beach.pos, _location.value)
+            if(_location.value?.latitude != null) {
+                locationMap[beach] = locationDistance(beach.pos, _location.value)
+            }
+            else{
+                locationMap[beach] = teller
+                teller--
+            }
         }
         val sortedBeachesByDistance = sortBeachesByValue(locationMap)
         viewModelScope.launch {
@@ -149,8 +156,7 @@ class HomeViewModel @Inject constructor(
         println(sortedBeachesByDistance)
     }
 
-
-    fun locationDistance(loc1: Pos, loc2: Location?): Int {
+    private fun locationDistance(loc1: Pos, loc2: Location?): Int {
         val earthRadius = 6371e3
         val lat1 = Math.toRadians(loc1.lat.toDouble())
         val lon1 = Math.toRadians(loc1.lon.toDouble())
@@ -161,16 +167,13 @@ class HomeViewModel @Inject constructor(
         val a = sin(dLat / 2).pow(2) +
                 cos(lat1) * cos(lat2) *
                 sin(dLon / 2).pow(2)
-
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         val avstand = earthRadius * c
         return avstand.roundToInt()
     }
 
-    fun sortBeachesByValue(beaches: Map<Beach, Int?>): List<Pair<Beach, Int?>> {
+    private fun sortBeachesByValue(beaches: Map<Beach, Int?>): List<Pair<Beach, Int?>> {
         return beaches.toList().sortedBy { it.second }
     }
 }
-
-//Kan implementeres med dependency injection fremfor factory, saa kan endres ved implementasjon
 

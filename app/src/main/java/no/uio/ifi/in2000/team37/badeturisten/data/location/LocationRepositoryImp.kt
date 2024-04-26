@@ -20,33 +20,27 @@ class LocationRepositoryImp @Inject constructor(
     private val _locationData = MutableStateFlow<Location?>(null)
     override val locationData: StateFlow<Location?> get() = _locationData.asStateFlow()
 
-
     override fun fetchLastLocation() {
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             _locationData.value = null
             return
         }
-
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             _locationData.value = location
         }.addOnFailureListener {
             _locationData.value = null
         }
     }
+
     override fun fetchCurrentLocation() {
         if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             _locationData.value = null
             return
         }
-
         val cancellationTokenSource = CancellationTokenSource()
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
             .addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    _locationData.value = location
-                } else {
-                    _locationData.value = null
-                }
+                _locationData.value = location
             }
             .addOnFailureListener {
                 _locationData.value = null

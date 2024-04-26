@@ -68,7 +68,7 @@ fun BeachCard(
                         color = Color.Black,
                         drawStyle = Stroke(
                             width = 15f
-                        )//join = StrokeJoin.Round)
+                        )
                     ),
                     modifier = Modifier
                         .align(Alignment.TopCenter)
@@ -86,7 +86,7 @@ fun BeachCard(
                         .padding(16.dp),
                     style = TextStyle(color = Color.Black)
                 )
-                if(avstand!=0) {
+                if(avstand>=0) {
                     Text(
                         text = "${avstand} meter unna",
                         fontSize = 16.sp,
@@ -148,9 +148,6 @@ fun BeachCard(
         }
     }
 }
-
-
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -214,7 +211,7 @@ fun Badeinfoforbeachcard(
                             .padding(16.dp),
                         style = TextStyle(color = Color.Black)
                     )
-                    if(avstand!=0) {
+                    if(avstand>=0) {
                         Text(
                             text = "${avstand} meter unna",
                             fontSize = 16.sp,
