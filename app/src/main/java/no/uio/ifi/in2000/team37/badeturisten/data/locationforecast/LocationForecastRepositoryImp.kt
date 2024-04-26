@@ -1,18 +1,20 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.locationforecast
 
-import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import javax.inject.Inject
 
-class LocationForecastRepository(val dataSource: LocationForecastDataSource) {
+class LocationForecastRepositoryImp @Inject constructor(
+    private val datasource: LocationForecastDataSource
+): LocationForecastRepository{
 
     private val forecastNextHour = MutableStateFlow<ForecastNextHour?>(null)
 
-    suspend fun loadForecastNextHour() {
-        val result = dataSource.getForecastData()
+    override suspend fun loadForecastNextHour() {
+        val result = datasource.getForecastData()
 
         if (result != null) {
             val temp = result.properties.timeseries[0].data.instant.details.airTemperature
@@ -25,5 +27,5 @@ class LocationForecastRepository(val dataSource: LocationForecastDataSource) {
             }
         }
     }
-    fun observeForecastNextHour(): StateFlow<ForecastNextHour?> = forecastNextHour.asStateFlow()
+    override fun observeForecastNextHour(): StateFlow<ForecastNextHour?> = forecastNextHour.asStateFlow()
 }

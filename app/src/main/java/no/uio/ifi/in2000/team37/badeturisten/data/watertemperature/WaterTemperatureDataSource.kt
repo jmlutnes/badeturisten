@@ -4,21 +4,14 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
-import io.ktor.serialization.gson.gson
+import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.WaterTemperatureHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.WaterTemperatureAPIResponse
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class WaterTemperatureDataSource {
-    private val client = HttpClient() {
-        install(ContentNegotiation) {
-            gson{}
-        }
-    }
-
+class WaterTemperatureDataSource(@WaterTemperatureHttpClient private val client: HttpClient) {
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getData(latitude: Double, longitude: Double, maxDistance: Int, maxResultCount: Int): List<Tsery> {
         /*

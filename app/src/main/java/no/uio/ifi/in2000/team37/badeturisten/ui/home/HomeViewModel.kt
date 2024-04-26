@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,17 +14,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.ForecastNextHour
+
+import javax.inject.Inject
 
 data class MetAlertsUIState(
     val alerts: List<WeatherWarning> = listOf()
@@ -38,13 +39,15 @@ data class BeachesUIState (
 )
 
 
-
+@HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeViewModel: ViewModel() {
-
+class HomeViewModel @Inject constructor(
+    private val _locationForecastRepository: LocationForecastRepository,
+    private val _osloKommuneRepository: OsloKommuneRepository,
+    private val _beachRepository: BeachRepository,
+    private val _metAlertsRepository: MetAlertsRepository
+): ViewModel() {
     //henter vaer melding
-    private val _locationForecastRepository : LocationForecastRepository = LocationForecastRepository(dataSource = LocationForecastDataSource())
-
     val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
         .map { ForecastUIState(forecastNextHour = it) }
         .stateIn(
@@ -54,15 +57,12 @@ class HomeViewModel: ViewModel() {
         )
 
     //henter strender
-    private val _osloKommuneRepository = OsloKommuneRepository()
-    private val _beachesRepository = BeachRepository()
     private val _beachDetails = MutableStateFlow<Map<String, BeachInfoForHomescreen?>>(emptyMap())
     val beachDetails: StateFlow<Map<String, BeachInfoForHomescreen?>> = _beachDetails.asStateFlow()
 
     var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
     //henter farevarsler
-    private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
     val metAlertsState: StateFlow<MetAlertsUIState> = _metAlertsRepository.getMetAlertsObservations()
         .map { MetAlertsUIState(alerts = it) }
         .stateIn(
@@ -74,16 +74,16 @@ class HomeViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             _locationForecastRepository.loadForecastNextHour()
-            _beachesRepository.loadBeaches()
+            _beachRepository.loadBeaches()
             _metAlertsRepository.getWeatherWarnings()
             loadBeachInfo()
 
             beachState.update {
-                BeachesUIState(CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository)())
+                BeachesUIState(CombineBeachesUseCase(_beachRepository, _osloKommuneRepository)())
             }
         }
     }
-    fun loadBeachInfo() {
+    private fun loadBeachInfo() {
         viewModelScope.launch {
             try {
                 val beachDetails = getBeachInfo()

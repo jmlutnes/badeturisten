@@ -67,6 +67,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
@@ -240,13 +241,15 @@ fun WarningIcon(warningvector: ImageVector) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = viewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
+    val homeViewModel: HomeViewModel = hiltViewModel()
+
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachState = homeViewModel.beachState.collectAsState().value
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
+
     var clicked by remember { mutableStateOf(false) }
     val areActiveAlerts = remember { mutableStateOf(false) }
     val warningVectorWhite = rememberWarning(false)

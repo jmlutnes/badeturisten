@@ -1,7 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -14,12 +14,12 @@ class CombineBeachesTest {
     fun testCombineBeachesShouldReturnBeachFromListB() {
         // Arrange
         val beachListA = listOf(
-            Beach("Sørenga", Pos("1.1", "1.1"), 5.5, false)
+            Beach("Sørenga", Pos("1.1", "1.1"), 5.5)
         )
         val beachlistB = listOf(
-            Beach("Sørenga", Pos("1.1", "1.1"), null, false)
+            Beach("Sørenga", Pos("1.1", "1.1"), null)
         )
-        val useCase = CombineBeachesUseCase(BeachRepository(), OsloKommuneRepository())
+        val useCase = CombineBeachesUseCase(BeachRepositoryImp(), OsloKommuneRepositoryImp())
 
         // Act
         val combinedBeaches = useCase.combineBeaches(beachListA, beachlistB)
@@ -32,15 +32,15 @@ class CombineBeachesTest {
     fun testCombineBeachesShouldReturnAllBeaches() {
         // Arrange
         val beachListA = listOf(
-            Beach("Sørenga", Pos("1.1", "1.1"), 5.5, false),
-            Beach("Øya", Pos("1.1", "1.1"), 5.5, false),
-            Beach("Stranda", Pos("1.1", "1.1"), 5.5, false),
+            Beach("Sørenga", Pos("1.1", "1.1"), 5.5),
+            Beach("Øya", Pos("1.1", "1.1"), 5.5),
+            Beach("Stranda", Pos("1.1", "1.1"), 5.5),
         )
         val beachlistB = listOf(
-            Beach("Stupet", Pos("1.1", "1.1"), null, false),
-            Beach("Badeplassen", Pos("1.1", "1.1"), null, false)
+            Beach("Stupet", Pos("1.1", "1.1"), null),
+            Beach("Badeplassen", Pos("1.1", "1.1"), null)
         )
-        val useCase = CombineBeachesUseCase(BeachRepository(), OsloKommuneRepository())
+        val useCase = CombineBeachesUseCase(BeachRepositoryImp(), OsloKommuneRepositoryImp())
 
         // Act
         val combinedBeaches = useCase.combineBeaches(beachListA, beachlistB)
@@ -54,7 +54,7 @@ class CombineBeachesTest {
         // Arrange
         val beachListA = listOf<Beach>()
         val beachlistB = listOf<Beach>()
-        val useCase = CombineBeachesUseCase(BeachRepository(), OsloKommuneRepository())
+        val useCase = CombineBeachesUseCase(BeachRepositoryImp(), OsloKommuneRepositoryImp())
 
         // Act
         val combinedBeaches = useCase.combineBeaches(beachListA, beachlistB)

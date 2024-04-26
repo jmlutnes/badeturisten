@@ -1,14 +1,17 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder
 
+import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
-class EnTurGeocoderRepository(val dataSource: EnTurGeocoderDataSource) {
+class EnTurGeocoderRepositoryImp(
+    private val datasource: EnTurGeocoderDataSource
+): EnTurGeocoderRepository {
     /**
      * Send in latitude and longitude to fetch all the stop places in the nearby area.
      * To change the radius for search, change the radius in EnTurGeocoderDataSource
      */
-    suspend fun hentBussruteLoc(lat: Double, lon: Double): Bussstasjoner? {
-        val nearestStopPlace = dataSource.getDataLoc(lat, lon)
+    override suspend fun hentBussruteLoc(lat: Double, lon: Double): Bussstasjoner? {
+        val nearestStopPlace = datasource.getDataLoc(lat, lon)
         val bussstasjoner = nearestStopPlace.features.map { feature ->
                 Bussstasjon(
                     id = feature.properties.id,
@@ -25,8 +28,8 @@ class EnTurGeocoderRepository(val dataSource: EnTurGeocoderDataSource) {
     /**
      * Send in site name to fetch all the stop places in the nearby area.
      */
-    suspend fun hentBussruteName(navn: String): Bussstasjoner? {
-        val stoppesteder = dataSource.getDataName(navn)
+    override suspend fun hentBussruteName(navn: String): Bussstasjoner? {
+        val stoppesteder = datasource.getDataName(navn)
         val bussstasjoner = stoppesteder.features.map { feature ->
                 Bussstasjon(
                     id = feature.properties.id,

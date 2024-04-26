@@ -1,19 +1,15 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
-import android.content.ClipData
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import io.ktor.serialization.gson.gson
-import io.ktor.util.appendIfNameAbsent
+import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.OsloKommuneHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
@@ -23,19 +19,8 @@ import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
 
-class OsloKommuneDatasource {
-    private val client = HttpClient {
-        defaultRequest {
-            url("")
-            headers.appendIfNameAbsent("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
-        }
-        install(ContentNegotiation) {
-            gson {
-                registerTypeAdapter(ClipData.Item::class.java, ItemDeserializer())
-            }
-        }
-    }
-
+@Suppress("IMPLICIT_CAST_TO_ANY")
+class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClient) {
     /**
      * Send in URL. Using Jsoup to scrape the website on Oslo Commune.
      * Returns a OsloKommuneBeachInfo object.

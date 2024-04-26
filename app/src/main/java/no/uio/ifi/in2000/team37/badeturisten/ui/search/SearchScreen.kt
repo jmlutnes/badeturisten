@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -140,24 +141,24 @@ fun FilterButtons(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(
-    sokViewModel: SokViewModel = viewModel(),
-    homeViewModel: HomeViewModel = viewModel(),
     navController: NavController
 ) {
-    val sokResultater by sokViewModel.sokResultater.collectAsState()
-    val state = rememberLazyListState()
-    val beachState = homeViewModel.beachState.collectAsState().value
-    val beachinfo = sokViewModel.beachDetails.collectAsState().value
+    val searchViewModel: SearchViewModel = hiltViewModel()
 
-    var sokeTekst by remember { mutableStateOf("") }
+    val searchResult by searchViewModel.sokResultater.collectAsState()
+    val beachState = searchViewModel.beachState.collectAsState().value
+    val beachinfo = searchViewModel.beachDetails.collectAsState().value
+
+    val state = rememberLazyListState()
+    var searchText by remember { mutableStateOf("") }
 
     Column {
         Column(modifier = Modifier
             .height(150.dp)
         ) {
             TextField(
-                value = sokeTekst,
-                onValueChange = { sokeTekst = it },
+                value = searchText,
+                onValueChange = { searchText = it },
                 label = { Text("Søk etter strender") },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 modifier = Modifier
@@ -166,7 +167,7 @@ fun SearchScreen(
             )
 
             val filtrerte = beachState.beaches.filter { strand ->
-                strand.name.contains(sokeTekst, ignoreCase = true)
+                strand.name.contains(searchText, ignoreCase = true)
             }
 
             LazyColumn {
@@ -193,22 +194,22 @@ fun SearchScreen(
         }
         Column {
             LaunchedEffect(
-                sokViewModel.badevakt.value,
-                sokViewModel.barnevennlig.value,
-                sokViewModel.grill.value,
-                sokViewModel.kiosk.value,
-                sokViewModel.tilpasning.value,
-                sokViewModel.toalett.value,
-                sokViewModel.badebrygge.value
+                searchViewModel.badevakt.value,
+                searchViewModel.barnevennlig.value,
+                searchViewModel.grill.value,
+                searchViewModel.kiosk.value,
+                searchViewModel.tilpasning.value,
+                searchViewModel.toalett.value,
+                searchViewModel.badebrygge.value
             ) {
-                sokViewModel.loadBeachesByFilter(
-                    sokViewModel.badevakt.value,
-                    sokViewModel.barnevennlig.value,
-                    sokViewModel.grill.value,
-                    sokViewModel.kiosk.value,
-                    sokViewModel.tilpasning.value,
-                    sokViewModel.toalett.value,
-                    sokViewModel.badebrygge.value
+                searchViewModel.loadBeachesByFilter(
+                    searchViewModel.badevakt.value,
+                    searchViewModel.barnevennlig.value,
+                    searchViewModel.grill.value,
+                    searchViewModel.kiosk.value,
+                    searchViewModel.tilpasning.value,
+                    searchViewModel.toalett.value,
+                    searchViewModel.badebrygge.value
                 )
             }
 
@@ -227,53 +228,53 @@ fun SearchScreen(
                             textAlign = TextAlign.Center
                         )
                         FilterButtons(
-                            badevakt = sokViewModel.badevakt.value,
+                            badevakt = searchViewModel.badevakt.value,
                             onBadevaktChange = {
-                                sokViewModel.updateFilterState(
+                                searchViewModel.updateFilterState(
                                     "Badevakt",
-                                    !sokViewModel.badevakt.value
+                                    !searchViewModel.badevakt.value
                                 )
                             },
-                            barnevennlig = sokViewModel.barnevennlig.value,
+                            barnevennlig = searchViewModel.barnevennlig.value,
                             onBarnevennligChange = {
-                                sokViewModel.updateFilterState(
+                                searchViewModel.updateFilterState(
                                     "Barnevennlig",
-                                    !sokViewModel.barnevennlig.value
+                                    !searchViewModel.barnevennlig.value
                                 )
                             },
-                            grill = sokViewModel.grill.value,
+                            grill = searchViewModel.grill.value,
                             onGrillChange = {
-                                sokViewModel.updateFilterState(
+                                searchViewModel.updateFilterState(
                                     "Grill",
-                                    !sokViewModel.grill.value
+                                    !searchViewModel.grill.value
                                 )
                             },
-                            kiosk = sokViewModel.kiosk.value,
+                            kiosk = searchViewModel.kiosk.value,
                             onKioskChange = {
-                                sokViewModel.updateFilterState(
+                                searchViewModel.updateFilterState(
                                     "Kiosk",
-                                    !sokViewModel.kiosk.value
+                                    !searchViewModel.kiosk.value
                                 )
                             },
-                            tilpasning = sokViewModel.tilpasning.value,
+                            tilpasning = searchViewModel.tilpasning.value,
                             onTilpasningChange = {
-                                sokViewModel.updateFilterState(
+                                searchViewModel.updateFilterState(
                                     "Tilpasning",
-                                    !sokViewModel.tilpasning.value
+                                    !searchViewModel.tilpasning.value
                                 )
                             },
-                            toalett = sokViewModel.toalett.value,
+                            toalett = searchViewModel.toalett.value,
                             onToalettChange = {
-                                sokViewModel.updateFilterState(
+                                searchViewModel.updateFilterState(
                                     "Toalett",
-                                    !sokViewModel.toalett.value
+                                    !searchViewModel.toalett.value
                                 )
                             },
-                            badebrygge = sokViewModel.badebrygge.value,
+                            badebrygge = searchViewModel.badebrygge.value,
                             onBadebryggeChange = {
-                                sokViewModel.updateFilterState(
+                                searchViewModel.updateFilterState(
                                     "Badebrygge",
-                                    !sokViewModel.badebrygge.value
+                                    !searchViewModel.badebrygge.value
                                 )
                             }
                         )
@@ -284,7 +285,7 @@ fun SearchScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            items(sokResultater.beachList) { beach ->
+                            items(searchResult.beachList) { beach ->
                                 Badeinfoforbeachcard(beach, navController, beachinfo)
                             }
                         }
