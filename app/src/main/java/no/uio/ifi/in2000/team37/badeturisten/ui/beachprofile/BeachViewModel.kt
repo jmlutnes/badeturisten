@@ -19,10 +19,10 @@ import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourn
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepository
 
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadevannsInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-data class BeachUIState(val beach: Beach? = null, val badevannsinfo: BadevannsInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
+data class BeachUIState(val beach: Beach? = null, val badevannsinfo: OsloKommuneBeachInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
 data class Bussrute(val linje: String, val navn: String, val transportMode: String)
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -31,7 +31,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     private val beachRepository: BeachRepository = BeachRepository()
 
     private val _beachRepository: BeachRepository = BeachRepository()
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, BadevannsInfo(
+    private val _beachUIState = MutableStateFlow(BeachUIState(null, OsloKommuneBeachInfo(
         null,
         null,
         null
@@ -41,7 +41,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
     //Oslo Kommune
     private val osloKommuneRepository: OsloKommuneRepository = OsloKommuneRepository()
-    //Ruter
+    //EnTur
     private val enTurRepositoryGeocoderRepository: EnTurGeocoderRepository = EnTurGeocoderRepository(
         EnTurGeocoderDataSource()
     )
@@ -61,14 +61,14 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
             println("lon:$lon \nlat:$lat")
             var bussstasjoner: Bussstasjoner? = null
             if((lon == null) || (lat == null)) {
-                //Henter ID for alle bussstasjoner som finner basert paa navn
+                //fetch ID for all buss stations based on name
                 bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
             }
             else{
-                //Henter ID for alle busstasjoner som finner basert paa lokasjon
+                //Fetch ID for all buss stasions based on location
             bussstasjoner = enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)}
             //}
-            // Henter bussruter (linje og navn) basert paa id fra stasjoner
+            // Fetch buss routes (lines and name) based on id from stations
             // Set for ingen duplikater
             val unikeBussruter = mutableSetOf<Bussrute>()
             bussstasjoner?.bussstasjon?.forEach { stasjon ->
@@ -79,7 +79,7 @@ class BeachViewModel(savedStateHandle : SavedStateHandle): ViewModel() {
                 }
             }
             val alleBussruter: MutableList<Bussrute> = unikeBussruter.toMutableList()
-            val vannkvalitet: BadevannsInfo? = osloKommuneRepository.finnNettside(beachName)
+            val vannkvalitet: OsloKommuneBeachInfo? = osloKommuneRepository.findWebPage(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
                     currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet, alleBussruter)
