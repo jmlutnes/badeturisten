@@ -4,10 +4,12 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -20,10 +22,12 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -36,9 +40,9 @@ fun BeachCard(
     Card(
         onClick = { navController.navigate("beachProfile/${beach.name}") },
         modifier = Modifier
-            .padding(vertical = 10.dp, horizontal = 55.dp)
-            .fillMaxWidth()
-            .height(150.dp),
+            .padding(vertical = 10.dp, horizontal = 10.dp)
+            .fillMaxHeight()
+            .width(160.dp),
         ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,7 +63,7 @@ fun BeachCard(
                 )
                 Text(
                     text = beach.name,
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     style =
                     TextStyle(
@@ -70,22 +74,24 @@ fun BeachCard(
                     ),
                     modifier = Modifier
                         .align(Alignment.TopCenter)
-                        .basicMarquee()
+                        //.basicMarquee()
                         .padding(16.dp),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = beach.name,
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
-                        .basicMarquee()
+                        //.basicMarquee()
                         .align(Alignment.TopCenter)
                         .padding(16.dp),
-                    style = TextStyle(color = Color.Black)
+                    style = TextStyle(color = Color.Black),
+                    textAlign = TextAlign.Center
                 )
                 val tempText =
-                    if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else "Ingen målt temperatur"
+                    if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
                 Text(
                     text = tempText,
                     fontSize = 16.sp,
@@ -99,8 +105,9 @@ fun BeachCard(
                     ),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .basicMarquee()
+                        //.basicMarquee()
                         .padding(16.dp),
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     text = tempText,
@@ -108,10 +115,10 @@ fun BeachCard(
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
-                        .basicMarquee()
+                        //.basicMarquee()
                         .align(Alignment.BottomCenter)
                         .padding(16.dp),
-
+                    textAlign = TextAlign.Center,
                     style = TextStyle(color = Color.Black)
                 )
             }
@@ -133,9 +140,9 @@ fun Badeinfoforbeachcard(
         Card(
             onClick = { navController.navigate("beachProfile/${beach.name}") },
             modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 55.dp)
-                .fillMaxWidth()
-                .height(150.dp),
+                .padding(vertical = 10.dp, horizontal = 10.dp)
+                .fillMaxHeight()
+                .width(160.dp),
             ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -158,6 +165,7 @@ fun Badeinfoforbeachcard(
                         text = beach.name,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                         style =
                         TextStyle(
                             color = Color.Black,
@@ -167,7 +175,7 @@ fun Badeinfoforbeachcard(
                         ),
                         modifier = Modifier
                             .align(Alignment.TopCenter)
-                            .basicMarquee()
+                            //.basicMarquee()
                             .padding(16.dp),
                     )
                     Text(
@@ -175,18 +183,20 @@ fun Badeinfoforbeachcard(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
+                        textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .basicMarquee()
+                            //.basicMarquee()
                             .align(Alignment.TopCenter)
                             .padding(16.dp),
                         style = TextStyle(color = Color.Black)
                     )
                     val tempText =
-                        if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
+                        if (beach.waterTemp != null) "Badetemperatur:\n ${beach.waterTemp}°C" else ""
                     Text(
                         text = tempText,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                         style =
                         TextStyle(
                             color = Color.Black,
@@ -196,7 +206,7 @@ fun Badeinfoforbeachcard(
                         ),
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            .basicMarquee()
+                            //.basicMarquee()
                             .padding(16.dp),
                     )
                     Text(
@@ -205,10 +215,11 @@ fun Badeinfoforbeachcard(
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         modifier = Modifier
-                            .basicMarquee()
+                            //.basicMarquee()
                             .align(Alignment.BottomCenter)
                             .padding(16.dp),
-                        style = TextStyle(color = Color.Black)
+                        style = TextStyle(color = Color.Black),
+                        textAlign = TextAlign.Center
                     )
                 }
             }

@@ -508,11 +508,9 @@ fun HomeScreen(
                         textAlign = TextAlign.Center
                     )
                     val state = rememberLazyListState()
-                    LazyColumn(
+                    LazyRow(
                         state = state,
-                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
                     ) {
                         items(beachState.beaches) { beach ->
                             Badeinfoforbeachcard(beach, navController, beachinfo)
@@ -562,6 +560,7 @@ fun AlertDisplay(alertState: MetAlertsUIState) {
         }
     }
 }
+@SuppressLint("RestrictedApi")
 @Composable
 fun NoAlertDisplay() {
     Column(
