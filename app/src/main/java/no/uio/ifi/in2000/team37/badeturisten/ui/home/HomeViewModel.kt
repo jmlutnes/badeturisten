@@ -95,7 +95,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
-        return _osloKommuneRepository.finnAlleNettside()
+    private suspend fun getBeachInfo(): Map<String, BeachInfoForHomescreen?> {
+        return _osloKommuneRepository.findAllWebPages()
     }
 }

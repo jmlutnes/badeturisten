@@ -2,6 +2,7 @@ package no.uio.ifi.in2000.team37.badeturisten
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -33,12 +34,6 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-/*
-    private val homeViewModel: HomeViewModel by viewModels()
-    private val searchViewModel: SearchViewModel by viewModels()
-    private val beachViewModel: BeachViewModel by viewModels()
-    private val favouritesViewModel: FavouritesViewModel by viewModels()
-*/
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
