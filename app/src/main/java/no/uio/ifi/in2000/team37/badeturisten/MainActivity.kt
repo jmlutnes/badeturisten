@@ -11,10 +11,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,25 +24,23 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import dagger.hilt.android.AndroidEntryPoint
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomNavigationBar
+import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
+import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -69,12 +69,14 @@ import com.google.android.gms.location.LocationServices
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
-import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
+@AndroidEntryPoint
 @Suppress("DEPRECATION")
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -136,56 +138,12 @@ class MainActivity : ComponentActivity() {
             }
 
             BadeturistenTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { contentPadding ->
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(contentPadding).fillMaxWidth(),
-                                text = "Location Permissions",
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.padding(20.dp))
-                            Text(
-                                modifier = Modifier.padding(contentPadding).fillMaxWidth(),
-                                text = "Current Permission Status: $currentPermissionsStatus",
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        if (shouldShowPermissionRationale) {
-                            LaunchedEffect(Unit) {
-                                scope.launch {
-                                    val userAction = snackbarHostState.showSnackbar(
-                                        message = "Please authorize location permissions",
-                                        actionLabel = "Approve",
-                                        duration = SnackbarDuration.Indefinite,
-                                        withDismissAction = true
-                                    )
-                                    when (userAction) {
-                                        SnackbarResult.ActionPerformed -> {
-                                            shouldShowPermissionRationale = false
-                                            locationPermissionsLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION))
-                                        }
-
-                                        SnackbarResult.Dismissed -> {
-                                            shouldShowPermissionRationale = false
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (shouldDirectUserToApplicationSettings) {
-                            openApplicationSettings()
-                        }
-                    }
-                    BottomNavigationBar()
+                    AppContent()
                 }
             }
         }
@@ -195,6 +153,7 @@ class MainActivity : ComponentActivity() {
             requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
             return
         }
+
 
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
@@ -266,11 +225,11 @@ data class BottomNavigationItem(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomNavigationBar() {
+fun AppContent() {
     val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
     Scaffold(
+        bottomBar = { BottomNavigationBar(navController) }
+    ) {paddingValues ->
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             NavigationBar {

@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
@@ -27,8 +29,15 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BadeinfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.ForecastNextHour
+
+import javax.inject.Inject
 import no.uio.ifi.in2000.team37.badeturisten.model.locationforecast.ForecastNextHour
 import kotlin.math.*
 
@@ -45,42 +54,37 @@ data class BeachesUIState (
 )
 
 
-
-@Suppress("UNREACHABLE_CODE")
+@HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewModel() {
-
+class HomeViewModel @Inject constructor(
+    private val _locationForecastRepository: LocationForecastRepository,
+    private val _osloKommuneRepository: OsloKommuneRepository,
+    private val _beachRepository: BeachRepository,
+    private val _metAlertsRepository: MetAlertsRepository
+): ViewModel() {
     //henter vaer melding
-    private val _locationForecastRepository: LocationForecastRepository =
-        LocationForecastRepository(dataSource = LocationForecastDataSource())
-
-    val forecastState: StateFlow<ForecastUIState> =
-        _locationForecastRepository.observeForecastNextHour()
-            .map { ForecastUIState(forecastNextHour = it) }
-            .stateIn(
-                viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = ForecastUIState()
-            )
+    val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
+        .map { ForecastUIState(forecastNextHour = it) }
+        .stateIn(
+            viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ForecastUIState()
+        )
 
     //henter strender
-    private val _osloKommuneRepository = OsloKommuneRepository()
-    private val _beachesRepository = BeachRepository()
-    private val _beachDetails = MutableStateFlow<Map<String, BadeinfoForHomescreen?>>(emptyMap())
-    val beachDetails: StateFlow<Map<String, BadeinfoForHomescreen?>> = _beachDetails.asStateFlow()
+    private val _beachDetails = MutableStateFlow<Map<String, BeachInfoForHomescreen?>>(emptyMap())
+    val beachDetails: StateFlow<Map<String, BeachInfoForHomescreen?>> = _beachDetails.asStateFlow()
 
     var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
     //henter farevarsler
-    private val _metAlertsRepository = MetAlertsRepository(MetAlertsDataSource())
-    val metAlertsState: StateFlow<MetAlertsUIState> =
-        _metAlertsRepository.getMetAlertsObservations()
-            .map { MetAlertsUIState(alerts = it) }
-            .stateIn(
-                viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = MetAlertsUIState()
-            )
+    val metAlertsState: StateFlow<MetAlertsUIState> = _metAlertsRepository.getMetAlertsObservations()
+        .map { MetAlertsUIState(alerts = it) }
+        .stateIn(
+            viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = MetAlertsUIState()
+        )
 
     //Bruker lokasjon
     private val _beachLocation = MutableStateFlow<List<Pair<Beach, Int?>>>(emptyList())
@@ -93,12 +97,12 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
     init {
         viewModelScope.launch {
             _locationForecastRepository.loadForecastNextHour()
-            _beachesRepository.loadBeaches()
+            _beachRepository.loadBeaches()
             _metAlertsRepository.getWeatherWarnings()
             loadBeachInfo()
             fetchLocationData()
             beachState.update {
-                BeachesUIState(CombineBeachesUseCase(_beachesRepository, _osloKommuneRepository)())
+                BeachesUIState(CombineBeachesUseCase(_beachRepository, _osloKommuneRepository)())
             }
             sortDistances()
         }
@@ -128,7 +132,7 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
         }
     }
 
-    fun loadBeachInfo() {
+    private fun loadBeachInfo() {
         viewModelScope.launch {
             try {
                 val beachDetails = getBeachInfo()
@@ -140,8 +144,8 @@ class HomeViewModel(@SuppressLint("StaticFieldLeak") context: Context): ViewMode
         }
     }
 
-    private suspend fun getBeachInfo(): Map<String, BadeinfoForHomescreen?> {
-        return _osloKommuneRepository.finnAlleNettside()
+    private suspend fun getBeachInfo(): Map<String, BeachInfoForHomescreen?> {
+        return _osloKommuneRepository.findAllWebPages()
     }
 
     private fun sortDistances() {

@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.model.locationforecast
+package no.uio.ifi.in2000.team37.badeturisten.data.locationforecast
 
 data class ForecastNextHour(
     val temp: Double,

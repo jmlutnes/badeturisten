@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -162,15 +164,14 @@ fun Kollektiv(beach: BeachUIState) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun BeachProfile(
-    beachViewModel: BeachViewModel = viewModel(),
     navController: NavController,
     beachName: String?
 ) {
+    val beachViewModel: BeachViewModel = hiltViewModel()
+
     val beach = beachViewModel.beachUIState.collectAsState().value
 
     Scaffold(
@@ -258,6 +259,9 @@ fun BeachProfile(
                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
 
+                IconButton(onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
+                    Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart")
+                }
                 Card(
                     modifier = Modifier
                         .padding(16.dp)
@@ -300,7 +304,7 @@ fun BeachProfile(
                                         modifier = Modifier
                                             .padding(10.dp)
                                             .align(Alignment.CenterVertically)
-                                        )
+                                    )
                                     Spacer(modifier = Modifier.weight(1f))
                                     beach.badevannsinfo?.waterQuality?.let {
                                         Text(
@@ -336,11 +340,11 @@ fun BeachProfile(
                                     text = "Fasiliteter",
                                     fontWeight = FontWeight.SemiBold
                                 )
-                                    beach.badevannsinfo?.facilitiesInfo?.let {
-                                        Column (
-                                            modifier = Modifier
-                                                .padding(4.dp)
-                                        ){
+                                beach.badevannsinfo?.facilitiesInfo?.let {
+                                    Column (
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                    ){
                                         Text(text = it,
                                             style = LocalTextStyle.current.merge(
                                                 TextStyle(
@@ -375,4 +379,4 @@ fun BeachProfile(
         }
     }
 }
-
+        
