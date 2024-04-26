@@ -42,12 +42,16 @@ fun BottomNavigationBar(navController: NavHostController) {
                     )
                 },
                 onClick = {
-                    navController.navigate(navigationItem.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                    if (navController.currentDestination?.route.equals("beachProfile/{beachName}")) {
+                        navController.popBackStack()
+                    } else {
+                        navController.navigate(navigationItem.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 }
             )
