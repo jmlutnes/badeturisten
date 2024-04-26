@@ -17,6 +17,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridCells.Adaptive
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -169,7 +173,7 @@ fun SearchScreen(
                 strand.name.contains(sokeTekst, ignoreCase = true)
             }
 
-            LazyColumn {
+            LazyHorizontalGrid(rows = Adaptive) {
                 items(filtrerte) { strand ->
                     Row(
                         modifier = Modifier
