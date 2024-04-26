@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -258,6 +259,9 @@ fun BeachProfile(
                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
 
+                IconButton(onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
+                    Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart")
+                }
                 Card(
                     modifier = Modifier
                         .padding(16.dp)
@@ -283,7 +287,7 @@ fun BeachProfile(
                                     )
                                     Spacer(modifier = Modifier.weight(1f))
                                     Text(
-                                        text = "${beach.beach.waterTemp}°C",
+                                        text = "${beach.beach?.waterTemp}°C",
                                         modifier = Modifier
                                             .padding(10.dp)
                                             .align(Alignment.CenterVertically)
@@ -336,11 +340,11 @@ fun BeachProfile(
                                     text = "Fasiliteter",
                                     fontWeight = FontWeight.SemiBold
                                 )
-                                    beach.badevannsinfo?.facilitiesInfo?.let {
-                                        Column (
-                                            modifier = Modifier
-                                                .padding(4.dp)
-                                        ){
+                                beach.badevannsinfo?.facilitiesInfo?.let {
+                                    Column (
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                    ){
                                         Text(text = it,
                                             style = LocalTextStyle.current.merge(
                                                 TextStyle(
@@ -375,3 +379,4 @@ fun BeachProfile(
         }
     }
 }
+        

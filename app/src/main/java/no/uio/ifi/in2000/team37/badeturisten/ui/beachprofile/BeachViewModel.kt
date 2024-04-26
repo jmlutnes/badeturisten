@@ -34,15 +34,21 @@ class BeachViewModel @Inject constructor(
     private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
 ): ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
-    private val _beachUIState = MutableStateFlow(BeachUIState(null, OsloKommuneBeachInfo(
-        null,
-        null,
-        null
-    ),
-        kollektivRute = mutableListOf<Bussrute>()
-    ))
+    private val _beachUIState = MutableStateFlow(
+        BeachUIState(
+            null, OsloKommuneBeachInfo(
+                null,
+                null,
+                null
+            ),
+            kollektivRute = mutableListOf<Bussrute>()
+        )
+    )
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
-    init { loadBeachInfo() }
+
+    init {
+        loadBeachInfo()
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
@@ -53,13 +59,13 @@ class BeachViewModel @Inject constructor(
             val lat = beachinfo?.pos?.lat?.toDouble()
             println("lon:$lon \nlat:$lat")
             var bussstasjoner: Bussstasjoner? = null
-            if((lon == null) || (lat == null)) {
+            if ((lon == null) || (lat == null)) {
                 //fetch ID for all buss stations based on name
                 bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
-            }
-            else{
+            } else {
                 //Fetch ID for all buss stasions based on location
-            bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)}
+                bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
+            }
             //}
             // Fetch buss routes (lines and name) based on id from stations
             // Set for ingen duplikater
@@ -75,12 +81,26 @@ class BeachViewModel @Inject constructor(
             val vannkvalitet: OsloKommuneBeachInfo? = _osloKommuneRepository.finnNettside(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
-                    currentUIState.copy(beach = beachinfo, badevannsinfo = vannkvalitet, alleBussruter)
+                    currentUIState.copy(
+                        beach = beachinfo,
+                        badevannsinfo = vannkvalitet,
+                        alleBussruter
+                    )
                 } else {
-                    currentUIState.copy(beach = osloKommuneBeachInfo, badevannsinfo = vannkvalitet, alleBussruter)
+                    currentUIState.copy(
+                        beach = osloKommuneBeachInfo,
+                        badevannsinfo = vannkvalitet,
+                        alleBussruter
+                    )
                 }
             }
 
         }
     }
+
+    fun updateFavourites(beach: Beach) {
+        _beachRepository.updateFavourites(beach)
+    }
 }
+
+ 
