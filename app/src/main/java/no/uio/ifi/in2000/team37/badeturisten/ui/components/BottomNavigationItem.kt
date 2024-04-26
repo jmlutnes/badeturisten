@@ -14,17 +14,17 @@ data class BottomNavigationItem(
     fun bottomNavigationItems() : List<BottomNavigationItem> {
         return listOf(
             BottomNavigationItem(
-                label = "Home",
+                label = "Hjem",
                 icon = Icons.Filled.Home,
                 route = Screens.Home.route
             ),
             BottomNavigationItem(
-                label = "Favourite",
+                label = "Favoritter",
                 icon = Icons.Filled.Favorite,
                 route = Screens.Favorite.route
             ),
             BottomNavigationItem(
-                label = "Search",
+                label = "Søk",
                 icon = Icons.Filled.Search,
                 route = Screens.Search.route
             ),

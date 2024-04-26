@@ -70,6 +70,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomNavigationBar
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
@@ -142,52 +143,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { contentPadding ->
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(contentPadding).fillMaxWidth(),
-                                text = "Location Permissions",
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.padding(20.dp))
-                            Text(
-                                modifier = Modifier.padding(contentPadding).fillMaxWidth(),
-                                text = "Current Permission Status: $currentPermissionsStatus",
-                                textAlign = TextAlign.Center,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        if (shouldShowPermissionRationale) {
-                            LaunchedEffect(Unit) {
-                                scope.launch {
-                                    val userAction = snackbarHostState.showSnackbar(
-                                        message = "Please authorize location permissions",
-                                        actionLabel = "Approve",
-                                        duration = SnackbarDuration.Indefinite,
-                                        withDismissAction = true
-                                    )
-                                    when (userAction) {
-                                        SnackbarResult.ActionPerformed -> {
-                                            shouldShowPermissionRationale = false
-                                            locationPermissionsLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION))
-                                        }
+                    AppContent()
 
-                                        SnackbarResult.Dismissed -> {
-                                            shouldShowPermissionRationale = false
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (shouldDirectUserToApplicationSettings) {
-                            openApplicationSettings()
-                        }
-                    }
-                    BottomNavigationBar()
                 }
             }
         }
@@ -240,62 +197,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-data class BottomNavigationItem(
-    val label : String = "",
-    val icon : ImageVector = Icons.Filled.Home,
-    val route : String = ""
-) {
-    fun bottomNavigationItems() : List<BottomNavigationItem> {
-        return listOf(
-            BottomNavigationItem(
-                label = "Home",
-                icon = Icons.Filled.Home,
-                route = Screens.Home.route
-            ),
-            BottomNavigationItem(
-                label = "Favourite",
-                icon = Icons.Filled.Favorite,
-                route = Screens.Favorite.route
-            ),
-            BottomNavigationItem(
-                label = "Search",
-                icon = Icons.Filled.Search,
-                route = Screens.Search.route
-            ),
-        )
-    }
-}
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun BottomNavigationBar() {
+fun AppContent() {
     val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            NavigationBar {
-                BottomNavigationItem().bottomNavigationItems().forEachIndexed { _, navigationItem ->
-                    NavigationBarItem(selected = navigationItem.route == currentDestination?.route, label = {
-                        Text(navigationItem.label)
-                    }, icon = {
-                        Icon(
-                            navigationItem.icon,
-                            contentDescription = navigationItem.label
-                        )
-                    }, onClick = {
-                        navController.navigate(navigationItem.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    })
-                }
-            }
-        }
-    ) { paddingValues ->
+        bottomBar = { BottomNavigationBar(navController) }
+    ) {paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screens.Home.route,

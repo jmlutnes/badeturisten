@@ -504,7 +504,7 @@ fun HomeScreen(
                         .wrapContentWidth(Alignment.CenterHorizontally),
                     ) {
                     Text(
-                        text = "Badesteder",
+                        text = "Badesteder nær deg",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 15.dp, bottom = 8.dp),
@@ -540,28 +540,27 @@ fun AlertDisplay(alertState: MetAlertsUIState) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
+            .wrapContentHeight(Alignment.CenterVertically)
             .wrapContentWidth(Alignment.CenterHorizontally)
-            .wrapContentHeight(Alignment.Bottom)
     ) {
         Box(
             modifier = Modifier
-                .size(310.dp, 200.dp)
+                .size(310.dp, 120.dp)
                 .verticalNegativePadding(28.dp)
-                .background(MaterialTheme.colorScheme.primary),
+                .background(MaterialTheme.colorScheme.primary)
             ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(bottom = 40.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-                    .wrapContentHeight(Alignment.Bottom)
+                    .wrapContentHeight(Alignment.CenterVertically)
 
             ) {
-                LazyRow(
+                LazyColumn(
                     modifier = Modifier
-                        .size(310.dp, 190.dp),
-                    horizontalArrangement = Arrangement.Center
+                        .size(310.dp, 120.dp)
+                        .wrapContentWidth(Alignment.CenterHorizontally)
+                        .wrapContentHeight(Alignment.CenterVertically),
                 ) {
                     items(alertState.alerts) { alert ->
                         MetAlertCard(weatherWarning = alert)
