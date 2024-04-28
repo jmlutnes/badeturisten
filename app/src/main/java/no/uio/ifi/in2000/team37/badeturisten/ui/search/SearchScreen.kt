@@ -299,20 +299,26 @@ fun SearchScreen(
                         modifier = Modifier
                             .fillMaxSize(),
                     ) {
-                        when {
-                            filtrerte.equals("") && searchResult.beachList.isNotEmpty() -> {
-                                items(searchResult.beachList) { beach ->
-                                    localLoading.value = false
-                                    Badeinfoforbeachcard(beach, -1, navController, beachinfo)
+                        val currentList = if (filtrerte.equals("")) {
+                            searchResult.beachList
+                        } else {
+                            searchResult.beachList.intersect(filtrerte.toSet()).toList()
+                        }
+                        if (currentList.isEmpty() && !(isLoading || localLoading.value)) {
+                            item {
+                                Box(modifier = Modifier.fillMaxSize()) {
+
+                                    Text(
+                                        "Ingen resultater", modifier = Modifier
+                                            .padding(16.dp)
+                                            .align(Alignment.Center)
+                                    )
                                 }
                             }
-                            else -> {
-                                items(
-                                    searchResult.beachList.intersect(filtrerte.toSet()).toList()
-                                ) { beach ->
-                                    localLoading.value = false
-                                    Badeinfoforbeachcard(beach, -1, navController, beachinfo)
-                                }
+                        } else {
+                            items(currentList) { beach ->
+                                localLoading.value = false
+                                Badeinfoforbeachcard(beach, -1, navController, beachinfo)
                             }
                         }
                     }
@@ -321,4 +327,5 @@ fun SearchScreen(
         }
     }
 }
+
 
