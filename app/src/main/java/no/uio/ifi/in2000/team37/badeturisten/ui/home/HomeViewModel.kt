@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -87,6 +88,10 @@ class HomeViewModel @Inject constructor(
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location.asStateFlow()
 
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     init {
         viewModelScope.launch {
             _locationForecastRepository.loadForecastNextHour()
@@ -101,18 +106,34 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun fetchLocationData() {
+    private suspend fun fetchLocationData() {
         viewModelScope.launch {
-            _locationRepository.fetchLastLocation()  // Trigger an initial fetch
+            _locationRepository.fetchLastLocation()
 
             _locationRepository.locationData.collect { newLocation ->
                 if (newLocation == null) {
-                    _locationRepository.fetchCurrentLocation()  // Directly fetch current location if last is null
+                    _locationRepository.fetchCurrentLocation()
                 } else {
                     _location.value = newLocation
                 }
             }
         }
+    }
+    private fun _refreshBeachLocation(){
+        viewModelScope.launch {
+            Log.d("HomeViewModel", "Oppdaterer beach locations")
+            _isLoading.value = true
+            _beachLocation.value = emptyList()
+            delay(100)
+            fetchLocationData()
+            delay(100)
+            sortDistances()
+            _isLoading.value = false
+            Log.d("HomeViewModel", "Oppdaterer beach locations")
+        }
+    }
+    fun refreshBeachLocations(){
+        _refreshBeachLocation()
     }
 
     private fun loadBeachInfo() {

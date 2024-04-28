@@ -23,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,6 +32,7 @@ import androidx.compose.material3.TextFieldDefaults
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -81,11 +83,10 @@ fun FilterButtons(
     toalett: Boolean, onToalettChange: () -> Unit,
     badebrygge: Boolean, onBadebryggeChange: () -> Unit
 ) {
-    val scrollState = rememberScrollState()
     Box {
         Row(
             modifier = Modifier
-                .horizontalScroll(scrollState)
+                .horizontalScroll(rememberScrollState())
                 .padding(8.dp)
         ) {
             CustomToggleButton(
@@ -153,11 +154,14 @@ fun SearchScreen(
     val beachinfo = searchViewModel.beachDetails.collectAsState().value
     val state = rememberLazyListState()
     var searchText by remember { mutableStateOf("") }
+    val isLoading by searchViewModel.isLoading.collectAsState()
+    var localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
             .fillMaxSize(),
-    ) {
+    )
+    {
         LaunchedEffect(
             searchViewModel.badevakt.value,
             searchViewModel.barnevennlig.value,
@@ -183,14 +187,12 @@ fun SearchScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier
-                    //.clip(shape = RoundedCornerShape(20.dp))
                 ) {
                     Column(
                         modifier = Modifier
@@ -221,7 +223,6 @@ fun SearchScreen(
                                 containerColor = MaterialTheme.colorScheme.background,
                             )
                         )
-
                         FilterButtons(
                             badevakt = searchViewModel.badevakt.value,
                             onBadevaktChange = {
@@ -288,25 +289,36 @@ fun SearchScreen(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            //val commonBeaches = searchResult.beachList.intersect(filtrerte.toSet()).toList()
-            LazyColumn(
-                state = state,
-                flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                if (filtrerte.equals("")) {
-                    items(searchResult.beachList) { beach ->
-                        Badeinfoforbeachcard(beach, 0, navController, beachinfo)
-                    }
-                } else {
-                    items(
-                        searchResult.beachList.intersect(filtrerte.toSet()).toList()
-                    ) { beach ->
-                        Badeinfoforbeachcard(beach, 0, navController, beachinfo)
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (localLoading.value) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+                if (isLoading) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+                else {
+                    LazyColumn(
+                        state = state,
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                        modifier = Modifier
+                            .fillMaxSize(),
+                    ) {
+                        when {
+                            filtrerte.equals("") && searchResult.beachList.isNotEmpty() -> {
+                                items(searchResult.beachList) { beach ->
+                                    localLoading.value = false
+                                    Badeinfoforbeachcard(beach, -1, navController, beachinfo)
+                                }
+                            }
+                            else -> {
+                                items(
+                                    searchResult.beachList.intersect(filtrerte.toSet()).toList()
+                                ) { beach ->
+                                    localLoading.value = false
+                                    Badeinfoforbeachcard(beach, -1, navController, beachinfo)
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
+
