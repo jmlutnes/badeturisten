@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -287,8 +288,8 @@ fun HomeScreen(
             circlegradient
         )
     LaunchedEffect(alertState.alerts) {
-        areActiveAlerts.value = alertState.alerts.any { it.status?.equals("Active") == true }
-        //MetTest:
+        areActiveAlerts.value = alertState.alerts.any { it.status == "Aktiv" }
+    //MetTest:
         //areActiveAlerts.value = alertState.alerts.any { it.status?.contains("a") == true }
     }
     Column(
@@ -559,10 +560,11 @@ fun AlertDisplay(alertState: MetAlertsUIState) {
                         .wrapContentWidth(Alignment.CenterHorizontally)
                         .wrapContentHeight(Alignment.CenterVertically),
                 ) {
-                    items(alertState.alerts) { alert ->
+                    items(alertState.alerts.filter { it.status?.contains("a") == true }) { alert ->
                         MetAlertCard(weatherWarning = alert)
-                    }
                 }
+                }
+
             }
         }
     }
@@ -587,23 +589,24 @@ fun NoAlertDisplay() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 50.dp)
+                    .padding(bottom = 50.dp, top = 10.dp)
                     .wrapContentWidth(Alignment.CenterHorizontally)
                     .wrapContentHeight(Alignment.Bottom)
             ) {
                 Card(
                     modifier = Modifier
-                        .size(200.dp, 60.dp)
-                        .padding(3.dp),
+                        .width(290.dp)
+                        .padding(10.dp, 4.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surface,
-                    ),
+                    )
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState()),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
                         Text(
                             text = "Ingen varsler",

@@ -108,11 +108,8 @@ fun MetAlertCard(weatherWarning: WeatherWarning): Boolean {
                 //Text("Status: " + weatherWarning.status)
                 //Text("Web: " + weatherWarning.web)
             }
-            //}
-
         }
-       return true
-
+       return false
   }
     return false
 }
