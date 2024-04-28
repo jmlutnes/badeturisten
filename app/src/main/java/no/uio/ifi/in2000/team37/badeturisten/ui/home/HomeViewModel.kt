@@ -108,11 +108,11 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun fetchLocationData() {
         viewModelScope.launch {
-            _locationRepository.fetchLastLocation()
+            _locationRepository.fetchCurrentLocation()
 
             _locationRepository.locationData.collect { newLocation ->
                 if (newLocation == null) {
-                    _locationRepository.fetchCurrentLocation()
+                    _locationRepository.fetchLastLocation()
                 } else {
                     _location.value = newLocation
                 }
