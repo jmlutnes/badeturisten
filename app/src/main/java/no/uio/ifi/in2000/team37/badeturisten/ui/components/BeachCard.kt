@@ -86,7 +86,7 @@ fun BeachCard(
                         .padding(16.dp),
                     style = TextStyle(color = Color.Black)
                 )
-                if(avstand>=0) {
+                if(avstand>1) {
                     Text(
                         text = "${avstand} meter unna",
                         fontSize = 16.sp,
@@ -211,7 +211,7 @@ fun Badeinfoforbeachcard(
                             .padding(16.dp),
                         style = TextStyle(color = Color.Black)
                     )
-                    if(avstand>=0) {
+                    if(avstand>1) {
                         Text(
                             text = "${avstand} meter unna",
                             fontSize = 16.sp,

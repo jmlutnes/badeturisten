@@ -133,7 +133,7 @@ class HomeViewModel @Inject constructor(
 
     private fun sortDistances() {
         val locationMap = emptyMap<Beach, Int>().toMutableMap()
-        var teller = 0
+        var teller = -1
         beachState.value.beaches.forEach { beach ->
             if(_location.value?.latitude != null) {
                 locationMap[beach] = locationDistance(beach.pos, _location.value)
