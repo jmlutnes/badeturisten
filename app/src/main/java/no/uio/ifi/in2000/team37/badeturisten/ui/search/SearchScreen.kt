@@ -27,6 +27,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 
@@ -42,6 +43,9 @@ import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -50,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
 
 @Composable
@@ -59,18 +64,25 @@ fun CustomToggleButton(
     text: String,
     modifier: Modifier = Modifier
 ) {
-    Button(
+    TextButton(
         onClick = { onCheckedChange() },
         colors = ButtonDefaults.buttonColors(
-            if (checked) MaterialTheme.colorScheme.onPrimaryContainer  else Color.Gray ,
+            if (checked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.secondaryContainer,
             contentColor = Color.White
         ),
         modifier = modifier
     ) {
-        Text(text, modifier = Modifier,
-        fontSize = 10.sp,
-            color = MaterialTheme.colorScheme.inverseOnSurface,
+        Text(text,
+            modifier = Modifier,
+            style = TextStyle(
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 10.sp,
+                color =
+                if (checked) Color.White else MaterialTheme.colorScheme.onPrimaryContainer,
+
+
             )
+        )
     }
 }
 @Composable
