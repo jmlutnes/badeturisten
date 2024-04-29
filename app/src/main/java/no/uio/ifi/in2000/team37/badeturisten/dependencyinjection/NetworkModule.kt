@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection
+package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.*
+import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.*
 
 @Module
 @InstallIn(SingletonComponent::class)

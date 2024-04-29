@@ -68,10 +68,8 @@ class BeachRepositoryImp @Inject constructor(
                 beachlist.add(beach)
             }
         }
-        Log.d("beachrepo updFav", "$beachlist")
+        favouriteObservations.value = beachlist  // Make sure this line is executing
+        Log.d("BeachRepository", "Favorites updated: $beachlist")
         return beachlist
-        /*favouriteObservations.update {
-            beachlist
-        }*/
     }
 }

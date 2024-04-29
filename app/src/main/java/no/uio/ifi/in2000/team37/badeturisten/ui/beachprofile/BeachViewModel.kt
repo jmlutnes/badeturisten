@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel
+package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
 import android.util.Log
@@ -97,6 +97,9 @@ class BeachViewModel @Inject constructor(
         }
     }
 
+    init {
+        Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
+    }
     fun updateFavourites(beach: Beach) {
         _beachRepository.updateFavourites(beach)
     }
