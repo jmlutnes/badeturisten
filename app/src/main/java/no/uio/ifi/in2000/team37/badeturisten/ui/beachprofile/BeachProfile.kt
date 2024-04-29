@@ -58,10 +58,10 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import no.uio.ifi.in2000.team37.badeturisten.R
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachViewModel
 
 import com.airbnb.lottie.compose.LottieAnimation
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachUIState
+import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachUIState
 import java.util.Locale
 
 @Composable

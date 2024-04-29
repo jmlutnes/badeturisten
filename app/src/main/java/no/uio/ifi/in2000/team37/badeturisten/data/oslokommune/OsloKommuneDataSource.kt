@@ -9,7 +9,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.OsloKommuneHttpClient
+import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.OsloKommuneHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value

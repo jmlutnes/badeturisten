@@ -9,7 +9,7 @@ import io.ktor.http.contentType
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection.EnTurJourneyPlannerHttpClient
+import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurJourneyPlannerHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 
 class EnTurJourneyPlannerDataSource(@EnTurJourneyPlannerHttpClient private val client: HttpClient) {
