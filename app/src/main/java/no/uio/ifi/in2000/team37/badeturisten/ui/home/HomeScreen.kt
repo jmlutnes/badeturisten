@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,9 +31,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -58,6 +66,7 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -71,6 +80,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
@@ -237,16 +248,18 @@ fun WarningIcon(warningvector: ImageVector) {
     )
 }
 
+@SuppressLint("MissingPermission")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    navController: NavController,
+    navController: NavController
 ) {
     val homeViewModel: HomeViewModel = hiltViewModel()
 
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachState = homeViewModel.beachState.collectAsState().value
+    val beachLocation by homeViewModel.beachLocation.collectAsState()
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
 
@@ -257,12 +270,13 @@ fun HomeScreen(
     val showNormalScreen: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val isLoading by homeViewModel.isLoading.collectAsState()
 
     val side1 = 450
     val side2 = 240
 
     val circlegradient = Brush.radialGradient(
-        listOf( MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.primary),
+        listOf(MaterialTheme.colorScheme.secondaryContainer, MaterialTheme.colorScheme.primary),
         center = Offset(side1 / 3.5f, side2 / 2.0f),
         radius = side1 / 1.54f,
         tileMode = TileMode.Clamp
@@ -282,10 +296,11 @@ fun HomeScreen(
             circlegradient
         )
     LaunchedEffect(alertState.alerts) {
-        areActiveAlerts.value = alertState.alerts.any { it.status?.equals("Active") == true }
-    //MetTest:
-       //areActiveAlerts.value = alertState.alerts.any { it.status?.contains("a") == true }
+        areActiveAlerts.value = alertState.alerts.any { it.status == "Aktiv" }
+        //MetTest:
+        //areActiveAlerts.value = alertState.alerts.any { it.status?.contains("a") == true }
     }
+
     Column(
         Modifier
             .background(MaterialTheme.colorScheme.primaryContainer)
@@ -299,7 +314,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .defaultMinSize(400.dp, 200.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
+            ) {
                 Box(
                     modifier = Modifier
                         .size(400.dp, 200.dp)
@@ -333,13 +348,11 @@ fun HomeScreen(
                                                 .padding(horizontal = 10.dp, vertical = 5.dp)
                                                 .align(Alignment.TopStart),
                                             color = MaterialTheme.colorScheme.inverseOnSurface,
-
-                                            )
+                                        )
                                         Text(
                                             text = tempText.dropLast(3) + "°C",
                                             fontSize = 34.sp,
                                             modifier = Modifier
-                                                //.weight(1f)
                                                 .align(Alignment.BottomEnd)
                                                 .padding(8.dp),
                                             color = MaterialTheme.colorScheme.inverseOnSurface,
@@ -360,7 +373,7 @@ fun HomeScreen(
                                     modifier = Modifier
                                         .size(100.dp, 100.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally,
-                                    ) {
+                                ) {
                                     Column(
                                         modifier = Modifier
                                             .size(100.dp, 30.dp)
@@ -403,15 +416,14 @@ fun HomeScreen(
                                                 Button(
                                                     onClick = {
                                                         clicked = !clicked
-                                                              },
+                                                    },
                                                     modifier = Modifier
                                                         .padding(5.dp)
                                                 ) {
                                                 }
-                                                if(areActiveAlerts.value){
+                                                if (areActiveAlerts.value) {
                                                     WarningIcon(warningvector = warningVectorRed)
-                                                }
-                                                else {
+                                                } else {
                                                     WarningIcon(warningVectorWhite)
                                                 }
                                             }
@@ -459,29 +471,27 @@ fun HomeScreen(
                     }
                 }
             }
-            if(!areActiveAlerts.value && !clicked && !showNoAlertDisplay.value && !showAlertDisplay.value){
+            if (!areActiveAlerts.value && !clicked && !showNoAlertDisplay.value && !showAlertDisplay.value) {
                 showNormalScreen.value = true
             }
-            if(!areActiveAlerts.value && clicked){
+            if (!areActiveAlerts.value && clicked) {
                 showNoAlertDisplay.value = true
             }
-            if(!areActiveAlerts.value && !clicked){
+            if (!areActiveAlerts.value && !clicked) {
                 showNoAlertDisplay.value = false
             }
-            if(areActiveAlerts.value && !clicked){
+            if (areActiveAlerts.value && !clicked) {
                 showAlertDisplay.value = true
             }
-            if(areActiveAlerts.value && clicked){
+            if (areActiveAlerts.value && clicked) {
                 showAlertDisplay.value = false
             }
             Column {
                 if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
                     NormalDisplay()
-                }
-                else if (showAlertDisplay.value) {
+                } else if (showAlertDisplay.value) {
                     AlertDisplay(alertState)
-                }
-                else if (showNoAlertDisplay.value) {
+                } else if (showNoAlertDisplay.value) {
                     NoAlertDisplay()
                     LaunchedEffect(Unit) {
                         delay(3000)
@@ -489,154 +499,181 @@ fun HomeScreen(
                         showNormalScreen.value = !showNormalScreen.value
                         clicked = !clicked
                     }
-            }
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-            ) {
+                }
                 Column(
-                    Modifier
-                        .wrapContentWidth(Alignment.CenterHorizontally),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    Column(
+                        Modifier
+                            .wrapContentWidth(Alignment.CenterHorizontally),
                     ) {
-                    Text(
-                        text = "Badesteder",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 15.dp, bottom = 8.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
-                    )
-                    val state = rememberLazyListState()
-                    LazyColumn(
-                        state = state,
-                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        items(beachState.beaches) { beach ->
-                            Badeinfoforbeachcard(beach, navController, beachinfo)
+                        Box() {
+                            Text(
+                                text = "Badesteder nær deg",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 15.dp, bottom = 8.dp)
+                                    .align(Alignment.Center),
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            )
+                            IconButton(
+                                onClick = {
+                                    homeViewModel.refreshBeachLocations()
+                                },
+                                modifier = Modifier.padding(horizontal = 10.dp)
+                                    .align(Alignment.TopEnd),
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Refresh,
+                                    contentDescription = "Oppdater",
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                        Box(modifier = Modifier
+                            .fillMaxSize()) {
+                            if (isLoading) {
+                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            } else {
+                                val state = rememberLazyListState()
+                                LazyColumn(
+                                    state = state,
+                                    flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    items(beachLocation) { beach ->
+                                        beach.second?.let {
+                                            Badeinfoforbeachcard(
+                                                beach.first,
+                                                it, navController, beachinfo
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-            }
         }
     }
 }
 
-@SuppressLint("RestrictedApi")
-@Composable
-fun AlertDisplay(alertState: MetAlertsUIState) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp)
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .wrapContentHeight(Alignment.Bottom)
-    ) {
-        Box(
+    @SuppressLint("RestrictedApi")
+    @Composable
+    fun AlertDisplay(alertState: MetAlertsUIState) {
+        Column(
             modifier = Modifier
-                .size(310.dp, 200.dp)
-                .verticalNegativePadding(28.dp)
-                .background(MaterialTheme.colorScheme.primary),
-            ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 40.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-                    .wrapContentHeight(Alignment.Bottom)
-
-            ) {
-                LazyRow(
-                    modifier = Modifier
-                        .size(310.dp, 190.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    items(alertState.alerts) { alert ->
-                        MetAlertCard(weatherWarning = alert)
-                    }
-                }
-            }
-        }
-    }
-}
-
-@SuppressLint("RestrictedApi")
-@Composable
-fun NoAlertDisplay() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp)
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .wrapContentHeight(Alignment.Bottom)
-
-    ) {
-        Box(
-            modifier = Modifier
-                .size(310.dp, 190.dp)
-                .verticalNegativePadding(28.dp)
-                .background(MaterialTheme.colorScheme.primary),
-            ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 50.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-                    .wrapContentHeight(Alignment.Bottom)
-
-            ) {
-                Card(
-                    modifier = Modifier
-                        .size(200.dp, 60.dp)
-                        .padding(3.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    ),
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = "Ingen varsler",
-                            modifier = Modifier
-                                .padding(10.dp),
-                            textAlign = TextAlign.Center,
-                            fontSize = 12.sp
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@SuppressLint("RestrictedApi")
-@Composable
-fun NormalDisplay() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(90.dp)
-            .wrapContentWidth(Alignment.CenterHorizontally)
-            .wrapContentHeight(Alignment.Bottom)
-
-    ) {
-        Box(
-            modifier = Modifier
-                .size(310.dp, 190.dp)
-                .verticalNegativePadding(30.dp)
+                .fillMaxWidth()
+                .wrapContentHeight(Alignment.CenterVertically)
+                .wrapContentWidth(Alignment.CenterHorizontally)
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 30.dp, top = 10.dp)
+                    .size(310.dp, 120.dp)
+                    .verticalNegativePadding(28.dp)
+                    .background(MaterialTheme.colorScheme.primary)
             ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 40.dp)
+                        .wrapContentHeight(Alignment.CenterVertically)
+                ) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .size(310.dp, 120.dp)
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                            .wrapContentHeight(Alignment.CenterVertically),
+                    ) {
+                        items(alertState.alerts.filter { it.status?.contains("a") == true }) { alert ->
+                            MetAlertCard(weatherWarning = alert)
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Composable
+    fun NoAlertDisplay() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .wrapContentHeight(Alignment.Bottom)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(310.dp, 190.dp)
+                    .verticalNegativePadding(28.dp)
+                    .background(MaterialTheme.colorScheme.primary),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 50.dp, top = 10.dp)
+                        .wrapContentWidth(Alignment.CenterHorizontally)
+                        .wrapContentHeight(Alignment.Bottom)
+                ) {
+                    Card(
+                        modifier = Modifier
+                            .width(290.dp)
+                            .padding(10.dp, 4.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "Ingen varsler",
+                                modifier = Modifier
+                                    .padding(10.dp),
+                                textAlign = TextAlign.Center,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    @Composable
+    fun NormalDisplay() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(90.dp)
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .wrapContentHeight(Alignment.Bottom)
+
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(310.dp, 190.dp)
+                    .verticalNegativePadding(30.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 30.dp, top = 10.dp)
+                ) {
                     Text(
                         text = "Her har vi samlet Oslos beste badeperler for deg!",
                         modifier = Modifier

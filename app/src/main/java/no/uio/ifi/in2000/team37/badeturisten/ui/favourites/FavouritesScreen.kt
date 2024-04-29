@@ -30,7 +30,7 @@ fun FavouritesScreen(
         flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
     ) {
         items(favouritesState.favourites) { beach ->
-            BeachCard(beach = beach, navController = navController, null)
+            BeachCard(beach = beach, 0,  navController = navController, null)
         }
     }
 }

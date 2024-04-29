@@ -1,10 +1,13 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection
 
+import LocationRepositoryImp
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurDataSource
@@ -25,6 +28,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import javax.inject.Singleton
@@ -48,6 +52,13 @@ object RepositoryModule {
     fun provideLocationForecastRepository(dataSource: LocationForecastDataSource): LocationForecastRepository {
         return LocationForecastRepositoryImp(dataSource)
     }
+
+    @Singleton
+    @Provides
+    fun provideLocationRepository(context: Context): LocationRepository {
+        return LocationRepositoryImp(context)
+    }
+
 
     @Provides
     fun provideMetAlertsRepository(dataSource: MetAlertsDataSource): MetAlertsRepository {
