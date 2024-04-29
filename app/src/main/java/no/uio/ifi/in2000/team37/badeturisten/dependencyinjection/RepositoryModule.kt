@@ -28,6 +28,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import javax.inject.Singleton
