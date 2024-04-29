@@ -2,26 +2,14 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.navArgument
 import androidx.compose.material3.*
 import androidx.navigation.NavHostController
-import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
-import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
-import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
-import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
