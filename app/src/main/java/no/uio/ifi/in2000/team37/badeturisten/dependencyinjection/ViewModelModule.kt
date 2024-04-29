@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection
+package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -23,7 +23,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachViewModel
 
 @Module
 @InstallIn(SingletonComponent::class)

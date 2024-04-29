@@ -25,7 +25,7 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
-import no.uio.ifi.in2000.team37.badeturisten.ui.viewmodel.BeachViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens

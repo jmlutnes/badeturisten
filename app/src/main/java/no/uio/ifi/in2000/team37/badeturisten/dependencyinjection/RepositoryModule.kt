@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.data.dependencyinjection
+package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
 import android.os.Build
 import androidx.annotation.RequiresApi
