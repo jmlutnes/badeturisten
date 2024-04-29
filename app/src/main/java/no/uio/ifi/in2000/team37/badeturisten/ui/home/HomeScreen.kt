@@ -524,7 +524,7 @@ fun HomeScreen(
                                 onClick = {
                                     homeViewModel.refreshBeachLocations()
                                 },
-                                modifier = Modifier.padding(horizontal = 10.dp)
+                                modifier = Modifier.padding(horizontal = 10.dp).size(48.dp)
                                     .align(Alignment.TopEnd),
                             ) {
                                 Icon(
