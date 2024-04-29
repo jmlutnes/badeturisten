@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner
 
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.Bussrute
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import javax.inject.Inject
