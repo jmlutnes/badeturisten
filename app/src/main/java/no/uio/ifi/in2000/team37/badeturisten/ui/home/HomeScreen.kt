@@ -251,7 +251,6 @@ fun HomeScreen(
     val homeViewModel: HomeViewModel = hiltViewModel()
 
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
-    val beachState = homeViewModel.beachState.collectAsState().value
     val beachLocation by homeViewModel.beachLocation.collectAsState()
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
