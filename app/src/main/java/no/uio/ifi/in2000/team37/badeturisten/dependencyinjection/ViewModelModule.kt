@@ -2,28 +2,17 @@ package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.SavedStateHandle
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
-import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
-import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachViewModel
 
 @Module
 @InstallIn(SingletonComponent::class)

@@ -2,10 +2,8 @@ package no.uio.ifi.in2000.team37.badeturisten
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,11 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomNavigationBar
-import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
-import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
