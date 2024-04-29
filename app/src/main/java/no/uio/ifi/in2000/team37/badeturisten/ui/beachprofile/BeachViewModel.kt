@@ -97,6 +97,9 @@ class BeachViewModel @Inject constructor(
         }
     }
 
+    init {
+        Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
+    }
     fun updateFavourites(beach: Beach) {
         _beachRepository.updateFavourites(beach)
     }

@@ -34,11 +34,13 @@ import javax.inject.Singleton
 object RepositoryModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
+    @Singleton
     fun provideBeachRepository(dataSource: WaterTemperatureDataSource): BeachRepository {
         return BeachRepositoryImp(dataSource)
     }
 
     @Provides
+    @Singleton
     fun provideOsloKommuneRepository(dataSource: OsloKommuneDatasource): OsloKommuneRepository {
         return OsloKommuneRepositoryImp(dataSource)
     }
@@ -50,20 +52,24 @@ object RepositoryModule {
     }
 
     @Provides
+    @Singleton
     fun provideMetAlertsRepository(dataSource: MetAlertsDataSource): MetAlertsRepository {
         return MetAlertsRepositoryImp(dataSource)
     }
     @Provides
+    @Singleton
     fun provideEnTurJourneyPlannerRepository(enTurJourneyPlannerDataSource: EnTurJourneyPlannerDataSource): EnTurJourneyPlannerRepository {
         return EnTurJourneyPlannerRepositoryImp(enTurJourneyPlannerDataSource)
     }
 
     @Provides
+    @Singleton
     fun provideEnTurGeocoderRepository(dataSource: EnTurGeocoderDataSource): EnTurGeocoderRepository {
         return EnTurGeocoderRepositoryImp(dataSource)
     }
 
     @Provides
+    @Singleton
     fun provideEnTurRepository(dataSource: EnTurDataSource): EnTurRepository {
         return EnTurRepositoryImp(dataSource)
     }
