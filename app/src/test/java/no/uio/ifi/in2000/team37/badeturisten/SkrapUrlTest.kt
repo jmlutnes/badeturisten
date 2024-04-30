@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.test.runTest
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import org.junit.Test
@@ -7,7 +8,7 @@ import org.junit.Assert.*
 
 class SkrapUrlTest {
 
-    private val datasource = OsloKommuneDatasource()
+    private val datasource = OsloKommuneDatasource(HttpClient())
 
     @Test
     fun testWaterQualityShouldBeBad() = runTest {

@@ -1,16 +1,18 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import okhttp3.internal.wait
 import org.junit.Test
 import org.junit.Assert.*
+
 class BeachRepositoryTest {
 
-    private val beachRepository = BeachRepository()
-
+    private val beachRepository = BeachRepositoryImp(WaterTemperatureDataSource(HttpClient()))
     init {
         runTest {
             beachRepository.loadBeaches()
@@ -37,7 +39,6 @@ class BeachRepositoryTest {
 
     @Test
     fun testGetBeachShouldReturnNull() = runTest {
-        val beachRepository = BeachRepository()
         val beachName = "Tullenavn"
 
         val beach = beachRepository.getBeach(beachName)
