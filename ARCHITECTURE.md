@@ -1,17 +1,23 @@
-I appen fordeler vi koden inn i data, dependency injection, domain, Model og UI pakker.
-Data pakke:
-Denne pakken omfatter datalaget til applikasjonen vår. Den håndterer datakilder(data source) og depoter(repositories). Vi har satt opp pakken slik at den er delt etter hvilket API den skal hente informajson fra. I hver underliggende pakke ligger det en datakile(datasource) og en depote(repository) implementasjon som håndterer informasjonen som den får fra den tilhørende datakilden(datasource).'
-
-Dependency injection pakke:
-Denne pakken håndterer avhengighetsinjeksjon(Dependency injection) ved bruk av Dagger Hilt. Modulklassene gir avhengigheter som brukes gjennom hele applikasjonen.
-AppModule.kt: Gir generelle avhengigheter på et applikasjonsnivå.
-NetworkModule.kt: håndterer avhengigheter med nettverkes tilkobling og datakilde(datasource) oppretting.
-Qualifiers.kt:
-ViewModelModule.kt:
-RepositoryModule.kt: håndterer avhengigheter med depoter og sørger for at det finnes kun en instans av en depot.
-
-Domain pakke:
-
-Model pakke:
-
-UI pakke:
+Introduksjon:
+Badeturisten er et nettverksbasert mobilapp der primær målet er å vise badetemperatur på badesteder rundtom i Oslo-området. Appen lar bruekre se værmelding for oslo, samt informasjon for badesteder som er registrert i oslo kommune og favorittere ønskelige strender. Dette dokumentet skal definere arkitekturen i appen, interaksjon og teknologi som er brukt i utviklingen av appen.
+Overordnet Arkitektur:
++------------------+   +------------------+   +------------------+   +------------------+   +-----------------+
+|                  |   |                  |   |                  |   |                  |   |                 |
+|  Brukerens       +--->  Skjermer        +--->  ViewModel       +--->  Repositories    +--->  Datasources    |
+|  Interaksjon     |   |                  |   |                  |   |                  |   |  (API)          |
+|                  |   |                  |   |                  |   |                  |   |                 |
++------------------+   +------------------+   +------------------+   +------------------+   +-----------------+
+Komponentbeskrivelse:
+1. Brukerens Interaksjon
+Beskrivelse: Brukeren interagerer med applikasjonens brukergrensesnitt gjennom en mobilapp. Dette inkluderer å klikke, scrolle, og andre former for input.
+2. Skjermer med ViewModels
+Beskrivelse: Skjermbaserte komponenter (screens) som kommuniserer direkte med ViewModels, og som fungerer som abstraksjonslag mellom UI og  presentasjonslogikken.
+3. ViewModel
+Beskrivelse: ViewModel-komponenter håndterer tilstandsstyringen for applikasjonen. De henter nødvendig data fra Repositories og oppdaterer UI-komponentene med tilsvarende informasjon.
+4. Repositories
+Beskrivelse: Repositories abstraherer tilgangen til datakilder, og tillater ViewModel å hente data uten å måtte kjenne til detaljene om datakildene. De sikrer en ren separasjon og kapsling av datahåndtering.
+5. Datasources (API)
+Beskrivelse: Datasources representerer de eksterne APIene som faktisk henter og lagrer data. Dette kan omfatte kommunikasjon med server-baserte APIer, databaser, filsystemer, etc.
+Dataflyt:
+Sikkerhetsvurderinger:
+Fremtidige Forbedringer:
