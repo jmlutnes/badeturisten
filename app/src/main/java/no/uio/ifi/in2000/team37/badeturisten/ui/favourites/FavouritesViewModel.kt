@@ -28,8 +28,7 @@ class FavouritesViewModel @Inject constructor(
     private val _beachRepository: BeachRepository
 ): ViewModel() {
 
-    val favouritesState: MutableStateFlow<FavouritesUIState> = MutableStateFlow(FavouritesUIState())
-    /*
+    //val favouritesState: MutableStateFlow<FavouritesUIState> = MutableStateFlow(FavouritesUIState())
     val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavouriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(
@@ -37,12 +36,13 @@ class FavouritesViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = FavouritesUIState()
         )
-        */
 
+    /*
     init {
         viewModelScope.launch {
             Log.d("favVieMo updFav", "${favouritesState.value}")
             favouritesState.update { FavouritesUIState(_beachRepository.updateFavourites(null)) }
         }
     }
+    */
 }
