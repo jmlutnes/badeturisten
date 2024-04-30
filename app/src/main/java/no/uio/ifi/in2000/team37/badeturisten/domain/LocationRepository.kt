@@ -7,7 +7,13 @@ import kotlinx.coroutines.flow.StateFlow
 interface LocationRepository {
     val locationData: StateFlow<Location?>
 
+    /**
+     * Fetches last recorded location
+     */
     fun fetchLastLocation()
 
+    /**
+     * Fetches current location
+     */
     fun fetchCurrentLocation()
 }
