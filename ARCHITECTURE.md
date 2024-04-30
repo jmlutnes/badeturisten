@@ -1,12 +1,5 @@
 Introduksjon:
 Badeturisten er et nettverksbasert mobilapp der primær målet er å vise badetemperatur på badesteder rundtom i Oslo-området. Appen lar bruekre se værmelding for oslo, samt informasjon for badesteder som er registrert i oslo kommune og favorittere ønskelige strender. Dette dokumentet skal definere arkitekturen i appen, interaksjon og teknologi som er brukt i utviklingen av appen.
-Overordnet Arkitektur:
-+------------------+   +------------------+   +------------------+   +------------------+   +-----------------+
-|                  |   |                  |   |                  |   |                  |   |                 |
-|  Brukerens       +--->  Skjermer        +--->  ViewModel       +--->  Repositories    +--->  Datasources    |
-|  Interaksjon     |   |                  |   |                  |   |                  |   |  (API)          |
-|                  |   |                  |   |                  |   |                  |   |                 |
-+------------------+   +------------------+   +------------------+   +------------------+   +-----------------+
 Komponentbeskrivelse:
 1. Brukerens Interaksjon
 Beskrivelse: Brukeren interagerer med applikasjonens brukergrensesnitt gjennom en mobilapp. Dette inkluderer å klikke, scrolle, og andre former for input.
