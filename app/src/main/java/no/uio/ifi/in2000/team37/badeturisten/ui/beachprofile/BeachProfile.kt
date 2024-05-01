@@ -215,8 +215,9 @@ fun BeachProfile(
                                     .clip(RoundedCornerShape(16.dp))
                                     .align(Alignment.Center)
                             )
-
-                            LottieAnimation()
+                            if(imageUrl == "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"){
+                                LottieAnimation()
+                            }
 
                             beach.beach?.let {
                                 Text(
