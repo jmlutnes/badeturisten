@@ -23,6 +23,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -84,12 +86,12 @@ fun Kollektiv(beach: BeachUIState) {
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize(),
-        border = BorderStroke(1.5.dp, Color.LightGray)
+        elevation = CardDefaults.elevatedCardElevation(8.dp)
     ) {
         Box(
             modifier = Modifier
-                .background(color = Color.White)
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
         ) {
 
             Text(
@@ -186,14 +188,16 @@ fun BeachProfile(
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues)
+                .background(MaterialTheme.colorScheme.secondaryContainer),
         ) {
             item {
                 Surface(
                     modifier = Modifier
                         .fillMaxHeight(),
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                ) {
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    ) {
                     Column(
                         Modifier
                             .padding(16.dp)
@@ -227,7 +231,7 @@ fun BeachProfile(
                                     style =
                                     TextStyle(color = Color.Black,
                                         drawStyle = Stroke(width = 15f
-                                        )//join = StrokeJoin.Round)
+                                        )
                                     ),
                                     modifier = Modifier
                                         .align(Alignment.TopCenter)
@@ -243,13 +247,13 @@ fun BeachProfile(
                                         .basicMarquee()
                                         .align(Alignment.TopCenter)
                                         .padding(16.dp),
-
                                     style = TextStyle(color = Color.Black)
-                                    //join = StrokeJoin.Round)
                                 )
 
                             }
-                            IconButton(modifier = Modifier.align(Alignment.BottomEnd).padding(17.dp),
+                            IconButton(modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(17.dp),
                                 onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
                                 Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart", tint = Color.White, modifier = Modifier
                                     .size(50.dp))
@@ -260,19 +264,17 @@ fun BeachProfile(
                 Spacer(
                     Modifier
                         .height(10.dp)
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
-
                     Card(
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxSize(),
-                        border = BorderStroke(1.5.dp, Color.LightGray)
+                        elevation = CardDefaults.elevatedCardElevation(8.dp)
                     ) {
                         Box(
                             modifier = Modifier
-                                .background(color = Color.White)
                                 .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.background)
                         ) {
                             Column {
                                 if (beach.beach?.waterTemp != null) {
@@ -327,15 +329,14 @@ fun BeachProfile(
                             .padding(16.dp)
                             .fillMaxSize()
                             .defaultMinSize(400.dp, 300.dp),
-                        border = BorderStroke(1.5.dp, Color.LightGray)
+                        elevation = CardDefaults.elevatedCardElevation(8.dp)
                     ) {
                         Box(
                             modifier = Modifier
-                                .background(color = Color.White)
+                                .background(MaterialTheme.colorScheme.background)
                                 .fillMaxSize()
                                 .defaultMinSize(400.dp, 300.dp)
-                                .padding(10.dp),
-                            //contentAlignment = Alignment.Center
+                                .padding(10.dp)
                         ) {
                             Column {
                                 Text(
@@ -366,12 +367,7 @@ fun BeachProfile(
                             }
                         }
                     }
-                    Spacer(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.primaryContainer)
-                    )
                 }
-
                 if (beach.kollektivRute.isEmpty()) {
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
