@@ -318,10 +318,12 @@ fun HomeScreen(
                         .size(400.dp, 200.dp)
                 ) {
                     Card(
+                        elevation = CardDefaults.elevatedCardElevation(8.dp),
                         modifier = Modifier
                             .clip(shape = RoundedCornerShape(10.dp))
                             .align(Alignment.BottomCenter)
-                            .padding(20.dp)
+                            .padding(20.dp),
+
                     ) {
                         Row(
                             modifier = Modifier
