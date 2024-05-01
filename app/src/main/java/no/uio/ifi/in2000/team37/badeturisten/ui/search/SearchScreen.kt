@@ -218,14 +218,14 @@ fun SearchScreen(
             ) {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.primary)
                             .padding(horizontal = 60.dp),
-
-                        ) {
-                        Spacer(Modifier.height(50.dp))
+                    ) {
+                        Spacer(Modifier.height(30.dp))
                         Text(
                             text = "Søk etter badesteder",
                             modifier = Modifier
@@ -248,6 +248,12 @@ fun SearchScreen(
                                 containerColor = MaterialTheme.colorScheme.background,
                             )
                         )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primary)
+                            .padding(horizontal = 10.dp)
+                    ) {
                         FilterButtons(
                             badevakt = searchViewModel.badevakt.value,
                             onBadevaktChange = {
@@ -326,7 +332,7 @@ fun SearchScreen(
                 }
                 else {
                     LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                        columns = GridCells.Adaptive(180.dp),
                         state = state,
                         modifier = Modifier
                             .fillMaxSize(),

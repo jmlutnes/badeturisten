@@ -83,8 +83,8 @@ fun FavouritesScreen(
                             state = state,
                             modifier = Modifier
                                 .fillMaxSize(),
-                            columns = GridCells.Adaptive(170.dp),
-                            horizontalArrangement = Arrangement.Absolute.Center,
+                            columns = GridCells.Adaptive(180.dp),
+                            //horizontalArrangement = Arrangement.Absolute.Center,
                             verticalArrangement = Arrangement.Top)
                         {
                             items(favouritesState.favourites) { beach ->
