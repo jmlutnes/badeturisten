@@ -1,20 +1,38 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.favourites
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 
-@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FavouritesScreen(
@@ -24,13 +42,55 @@ fun FavouritesScreen(
 
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
 
-    val state = rememberLazyListState()
-    LazyColumn(
-        state = state,
-        flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
+    val state = rememberLazyGridState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
     ) {
-        items(favouritesState.favourites) { beach ->
-            BeachCard(beach = beach, 0,  navController = navController, null)
+        Column(
+            Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary)
+            ) {
+                Spacer(Modifier.height(50.dp))
+                Text(
+                    text = "Favoritter",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    )
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+
+                ){
+                    Box(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        LazyHorizontalGrid(
+                            state = state,
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            rows = GridCells.Adaptive(180.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalArrangement = Arrangement.Top,)
+                        {
+                            items(favouritesState.favourites) { beach ->
+                                BeachCard(beach = beach, 0, navController = navController, null)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
