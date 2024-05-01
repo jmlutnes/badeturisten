@@ -1,21 +1,36 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.favourites
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomBar
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FavouritesScreen(navController: NavController) {
-    Scaffold ( ) { padding  ->
-        Text(
-            text = "dette er favoritt screen",
-        modifier = Modifier.padding(padding))
+fun FavouritesScreen(
+    navController: NavController,
+) {
+    val favouritesViewModel: FavouritesViewModel = hiltViewModel()
+
+    val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
+
+    val state = rememberLazyListState()
+    LazyColumn(
+        state = state,
+        flingBehavior = rememberSnapFlingBehavior(lazyListState = state)
+    ) {
+        items(favouritesState.favourites) { beach ->
+            BeachCard(beach = beach, 0,  navController = navController, null)
+        }
     }
 }

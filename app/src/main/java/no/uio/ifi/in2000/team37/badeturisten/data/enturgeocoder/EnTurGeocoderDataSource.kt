@@ -2,27 +2,14 @@ package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.serialization.gson.gson
+import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurHttpGeocoderHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.jsontokotlinenturgeocoder.jsontokotlinenturgeocoder
 import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
 data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
 
-class EnTurGeocoderDataSource {
-    private val client = HttpClient {
-        defaultRequest {
-            url("https://api.entur.io/geocoder/v1/")
-            header("ET-Client-Name", "in2000study-application")
-            }
-        install(ContentNegotiation) {
-            gson{}
-        }
-    }
-
+class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: HttpClient) {
     /**
      * Fetch the nearby buss stations based on input latitude and longitude.
      * The radius and the amount of results can be changes.

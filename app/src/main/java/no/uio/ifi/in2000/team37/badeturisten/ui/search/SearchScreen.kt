@@ -4,55 +4,58 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridCells.Adaptive
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
-
-import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 
 @Composable
 fun CustomToggleButton(
@@ -61,17 +64,24 @@ fun CustomToggleButton(
     text: String,
     modifier: Modifier = Modifier
 ) {
-
-    Button(
+    TextButton(
         onClick = { onCheckedChange() },
         colors = ButtonDefaults.buttonColors(
-            if (checked) Color.Gray else Color.LightGray,
+            if (checked) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.secondaryContainer,
             contentColor = Color.White
         ),
         modifier = modifier
     ) {
-        Text(text, modifier = Modifier,
-        fontSize = 10.sp
+        Text(text,
+            modifier = Modifier,
+            style = TextStyle(
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 10.sp,
+                color =
+                if (checked) Color.White else MaterialTheme.colorScheme.onPrimaryContainer,
+
+
+            )
         )
     }
 }
@@ -85,211 +95,242 @@ fun FilterButtons(
     toalett: Boolean, onToalettChange: () -> Unit,
     badebrygge: Boolean, onBadebryggeChange: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .horizontalScroll(rememberScrollState())
-            .padding(8.dp)
-    ) {
-        CustomToggleButton(
-            checked = badevakt,
-            onCheckedChange = onBadevaktChange,
-            text = "Badevakt"
-        )
-        Spacer(Modifier.width(8.dp))
+    Box {
+        Row(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState())
+                .padding(8.dp)
+        ) {
+            CustomToggleButton(
+                checked = badevakt,
+                onCheckedChange = onBadevaktChange,
+                text = "Badevakt"
+            )
+            Spacer(Modifier.width(8.dp))
 
-        CustomToggleButton(
-            checked = barnevennlig,
-            onCheckedChange = onBarnevennligChange,
-            text = "Barnevennlig"
-        )
-        Spacer(Modifier.width(8.dp))
+            CustomToggleButton(
+                checked = barnevennlig,
+                onCheckedChange = onBarnevennligChange,
+                text = "Barnevennlig"
+            )
+            Spacer(Modifier.width(8.dp))
 
-        CustomToggleButton(
-            checked = grill,
-            onCheckedChange = onGrillChange,
-            text = "Grill"
-        )
-        Spacer(Modifier.width(8.dp))
+            CustomToggleButton(
+                checked = grill,
+                onCheckedChange = onGrillChange,
+                text = "Grill"
+            )
+            Spacer(Modifier.width(8.dp))
 
-        CustomToggleButton(
-            checked = kiosk,
-            onCheckedChange = onKioskChange,
-            text = "Kiosk"
-        )
-        Spacer(Modifier.width(8.dp))
+            CustomToggleButton(
+                checked = kiosk,
+                onCheckedChange = onKioskChange,
+                text = "Kiosk"
+            )
+            Spacer(Modifier.width(8.dp))
 
-        CustomToggleButton(
-            checked = tilpasning,
-            onCheckedChange = onTilpasningChange,
-            text = "Tilpasset bevegelseshemmede"
-        )
-        Spacer(Modifier.width(8.dp))
+            CustomToggleButton(
+                checked = tilpasning,
+                onCheckedChange = onTilpasningChange,
+                text = "Tilpasset bevegelseshemmede"
+            )
+            Spacer(Modifier.width(8.dp))
 
-        CustomToggleButton(
-            checked = toalett,
-            onCheckedChange = onToalettChange,
-            text = "Toalett"
-        )
-        Spacer(Modifier.width(8.dp))
+            CustomToggleButton(
+                checked = toalett,
+                onCheckedChange = onToalettChange,
+                text = "Toalett"
+            )
+            Spacer(Modifier.width(8.dp))
 
-        CustomToggleButton(
-            checked = badebrygge,
-            onCheckedChange = onBadebryggeChange,
-            text = "Badebrygge"
-        )
+            CustomToggleButton(
+                checked = badebrygge,
+                onCheckedChange = onBadebryggeChange,
+                text = "Badebrygge"
+            )
+        }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class
+)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(
-    sokViewModel: SokViewModel = viewModel(),
-    homeViewModel: HomeViewModel = viewModel(),
     navController: NavController
 ) {
-    val sokResultater by sokViewModel.sokResultater.collectAsState()
+    val searchViewModel: SearchViewModel = hiltViewModel()
+    val searchResult by searchViewModel.sokResultater.collectAsState()
+    val beachState = searchViewModel.beachState.collectAsState().value
+    val beachinfo = searchViewModel.beachDetails.collectAsState().value
     val state = rememberLazyListState()
-    val beachState = homeViewModel.beachState.collectAsState().value
-    val beachinfo = sokViewModel.beachDetails.collectAsState().value
+    var searchText by remember { mutableStateOf("") }
+    val isLoading by searchViewModel.isLoading.collectAsState()
+    var localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
 
-    var sokeTekst by remember { mutableStateOf("") }
-
-    Column {
-        Column(modifier = Modifier
-            .height(150.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+    )
+    {
+        LaunchedEffect(
+            searchViewModel.badevakt.value,
+            searchViewModel.barnevennlig.value,
+            searchViewModel.grill.value,
+            searchViewModel.kiosk.value,
+            searchViewModel.tilpasning.value,
+            searchViewModel.toalett.value,
+            searchViewModel.badebrygge.value
         ) {
-            TextField(
-                value = sokeTekst,
-                onValueChange = { sokeTekst = it },
-                label = { Text("Søk etter strender") },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            searchViewModel.loadBeachesByFilter(
+                searchViewModel.badevakt.value,
+                searchViewModel.barnevennlig.value,
+                searchViewModel.grill.value,
+                searchViewModel.kiosk.value,
+                searchViewModel.tilpasning.value,
+                searchViewModel.toalett.value,
+                searchViewModel.badebrygge.value
+            )
+        }
+        Column(
+            Modifier
+                .background(MaterialTheme.colorScheme.background),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
-            )
-
-            val filtrerte = beachState.beaches.filter { strand ->
-                strand.name.contains(sokeTekst, ignoreCase = true)
-            }
-
-            LazyHorizontalGrid(rows = Adaptive) {
-                items(filtrerte) { strand ->
-                    Row(
+            ) {
+                Column(
+                    modifier = Modifier
+                ) {
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                navController.navigate("beachProfile/${strand.name}")
-                            }
-                            .padding(16.dp)
-                    ) {
-                        Text(text = strand.name, style = MaterialTheme.typography.bodyMedium)
-                        Spacer(Modifier.weight(1f))
-                        strand.waterTemp?.let {
-                            Text(
-                                text = "Vann temp: $it°C",
-                                style = MaterialTheme.typography.bodyMedium
+                            .background(MaterialTheme.colorScheme.primary)
+                            .padding(horizontal = 60.dp),
+
+                        ) {
+                        Spacer(Modifier.height(50.dp))
+                        Text(
+                            text = "Søk etter badesteder",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.inverseOnSurface,
+                        )
+                        TextField(
+                            value = searchText,
+                            onValueChange = { searchText = it },
+                            label = { Text("Søk etter badesteder") },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
+                            colors = TextFieldDefaults.textFieldColors(
+                                containerColor = MaterialTheme.colorScheme.background,
                             )
-                        }
+                        )
+                        FilterButtons(
+                            badevakt = searchViewModel.badevakt.value,
+                            onBadevaktChange = {
+                                searchViewModel.updateFilterState(
+                                    "Badevakt",
+                                    !searchViewModel.badevakt.value
+                                )
+                            },
+                            barnevennlig = searchViewModel.barnevennlig.value,
+                            onBarnevennligChange = {
+                                searchViewModel.updateFilterState(
+                                    "Barnevennlig",
+                                    !searchViewModel.barnevennlig.value
+                                )
+                            },
+                            grill = searchViewModel.grill.value,
+                            onGrillChange = {
+                                searchViewModel.updateFilterState(
+                                    "Grill",
+                                    !searchViewModel.grill.value
+                                )
+                            },
+                            kiosk = searchViewModel.kiosk.value,
+                            onKioskChange = {
+                                searchViewModel.updateFilterState(
+                                    "Kiosk",
+                                    !searchViewModel.kiosk.value
+                                )
+                            },
+                            tilpasning = searchViewModel.tilpasning.value,
+                            onTilpasningChange = {
+                                searchViewModel.updateFilterState(
+                                    "Tilpasning",
+                                    !searchViewModel.tilpasning.value
+                                )
+                            },
+                            toalett = searchViewModel.toalett.value,
+                            onToalettChange = {
+                                searchViewModel.updateFilterState(
+                                    "Toalett",
+                                    !searchViewModel.toalett.value
+                                )
+                            },
+                            badebrygge = searchViewModel.badebrygge.value,
+                            onBadebryggeChange = {
+                                searchViewModel.updateFilterState(
+                                    "Badebrygge",
+                                    !searchViewModel.badebrygge.value
+                                )
+                            }
+                        )
                     }
                 }
             }
-        }
-        Column {
-            LaunchedEffect(
-                sokViewModel.badevakt.value,
-                sokViewModel.barnevennlig.value,
-                sokViewModel.grill.value,
-                sokViewModel.kiosk.value,
-                sokViewModel.tilpasning.value,
-                sokViewModel.toalett.value,
-                sokViewModel.badebrygge.value
-            ) {
-                sokViewModel.loadBeachesByFilter(
-                    sokViewModel.badevakt.value,
-                    sokViewModel.barnevennlig.value,
-                    sokViewModel.grill.value,
-                    sokViewModel.kiosk.value,
-                    sokViewModel.tilpasning.value,
-                    sokViewModel.toalett.value,
-                    sokViewModel.badebrygge.value
-                )
+            val filtrerte = beachState.beaches.filter { strand ->
+                strand.name.contains(searchText, ignoreCase = true)
             }
+            Text(
+                text = "Søkeresultater",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 15.dp, bottom = 8.dp),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (localLoading.value) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+                if (isLoading) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+                else {
+                    LazyColumn(
+                        state = state,
+                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                        modifier = Modifier
+                            .fillMaxSize(),
+                    ) {
+                        val currentList = if (filtrerte.equals("")) {
+                            searchResult.beachList
+                        } else {
+                            searchResult.beachList.intersect(filtrerte.toSet()).toList()
+                        }
+                        if (currentList.isEmpty() && !(isLoading || localLoading.value)) {
+                            item {
+                                Box(modifier = Modifier.fillMaxSize()) {
 
-            Column(
-                Modifier
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-            ) {
-                    Column(modifier = Modifier.fillMaxHeight()) {
-                        Text(
-                            text = "Filtrert søk",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        )
-                        FilterButtons(
-                            badevakt = sokViewModel.badevakt.value,
-                            onBadevaktChange = {
-                                sokViewModel.updateFilterState(
-                                    "Badevakt",
-                                    !sokViewModel.badevakt.value
-                                )
-                            },
-                            barnevennlig = sokViewModel.barnevennlig.value,
-                            onBarnevennligChange = {
-                                sokViewModel.updateFilterState(
-                                    "Barnevennlig",
-                                    !sokViewModel.barnevennlig.value
-                                )
-                            },
-                            grill = sokViewModel.grill.value,
-                            onGrillChange = {
-                                sokViewModel.updateFilterState(
-                                    "Grill",
-                                    !sokViewModel.grill.value
-                                )
-                            },
-                            kiosk = sokViewModel.kiosk.value,
-                            onKioskChange = {
-                                sokViewModel.updateFilterState(
-                                    "Kiosk",
-                                    !sokViewModel.kiosk.value
-                                )
-                            },
-                            tilpasning = sokViewModel.tilpasning.value,
-                            onTilpasningChange = {
-                                sokViewModel.updateFilterState(
-                                    "Tilpasning",
-                                    !sokViewModel.tilpasning.value
-                                )
-                            },
-                            toalett = sokViewModel.toalett.value,
-                            onToalettChange = {
-                                sokViewModel.updateFilterState(
-                                    "Toalett",
-                                    !sokViewModel.toalett.value
-                                )
-                            },
-                            badebrygge = sokViewModel.badebrygge.value,
-                            onBadebryggeChange = {
-                                sokViewModel.updateFilterState(
-                                    "Badebrygge",
-                                    !sokViewModel.badebrygge.value
-                                )
+                                    Text(
+                                        "Ingen resultater", modifier = Modifier
+                                            .padding(16.dp)
+                                            .align(Alignment.Center)
+                                    )
+                                }
                             }
-                        )
-
-                        LazyColumn(
-                            state = state,
-                            flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            items(sokResultater.beachList) { beach ->
-                                Badeinfoforbeachcard(beach, navController, beachinfo)
+                        } else {
+                            items(currentList) { beach ->
+                                localLoading.value = false
+                                Badeinfoforbeachcard(beach, -1, navController, beachinfo)
                             }
                         }
                     }
@@ -297,11 +338,6 @@ fun SearchScreen(
             }
         }
     }
-
-
-
-
-
-
+}
 
 
