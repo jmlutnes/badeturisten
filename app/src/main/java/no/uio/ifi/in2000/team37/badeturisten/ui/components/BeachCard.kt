@@ -94,7 +94,7 @@ fun BeachCard(
                 if(avstand>1) {
                     Text(
                         text = "${avstand} m",
-                        fontSize = 34.sp,
+                        fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
                         style =
                         TextStyle(
@@ -110,7 +110,7 @@ fun BeachCard(
                     )
                     Text(
                         text = "${avstand} m",
-                        fontSize = 34.sp,
+                        fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         modifier = Modifier
@@ -223,7 +223,7 @@ fun Badeinfoforbeachcard(
                     if(avstand>1) {
                         Text(
                             text = "${avstand} m",
-                            fontSize = 34.sp,
+                            fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             style =
                             TextStyle(
@@ -239,7 +239,7 @@ fun Badeinfoforbeachcard(
                         )
                         Text(
                             text = "${avstand} m",
-                            fontSize = 34.sp,
+                            fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                             modifier = Modifier

@@ -244,7 +244,7 @@ fun WarningIcon(warningvector: ImageVector) {
     )
 }
 
-@SuppressLint("MissingPermission")
+@SuppressLint("MissingPermission", "SuspiciousIndentation")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -539,8 +539,8 @@ fun HomeScreen(
                             .fillMaxSize()
                             .padding(horizontal = 20.dp),
                         ){
-                            if (localLoading.value) {CircularProgressIndicator(modifier = Modifier.align(Alignment.TopCenter))}
-                            if (isLoading) {CircularProgressIndicator(modifier = Modifier.align(Alignment.TopCenter))
+                            if (localLoading.value) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+                            if (isLoading) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                             } else {
                                 val state = rememberLazyListState()
                                 LazyRow(
