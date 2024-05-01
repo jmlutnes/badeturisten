@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -247,73 +248,76 @@ fun BeachProfile(
                                 )
 
                             }
+                            IconButton(modifier = Modifier.align(Alignment.BottomEnd).padding(17.dp),
+                                onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
+                                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart", tint = Color.White, modifier = Modifier
+                                    .size(50.dp))
+                            }
                         }
                     }
                 }
                 Spacer(
                     Modifier
-                        .height(15.dp)
+                        .height(10.dp)
                         .background(color = MaterialTheme.colorScheme.primaryContainer)
                 )
 
-                IconButton(onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
-                    Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart")
-                }
-                Card(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
-                    border = BorderStroke(1.5.dp, Color.LightGray)
-                ) {
-                    Box(
+                    Card(
                         modifier = Modifier
-                            .background(color = Color.White)
-                            .fillMaxSize()
+                            .padding(16.dp)
+                            .fillMaxSize(),
+                        border = BorderStroke(1.5.dp, Color.LightGray)
                     ) {
-                        Column {
-                            if(beach.beach?.waterTemp != null) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = "Badetemperatur",
-                                        fontWeight = FontWeight.SemiBold,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterVertically)
-                                            .padding(10.dp),
-                                    )
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        text = "${beach.beach?.waterTemp}°C",
-                                        modifier = Modifier
-                                            .padding(10.dp)
-                                            .align(Alignment.CenterVertically)
-                                    )
-                                }
-                            }
-                            if(beach.badevannsinfo?.waterQuality != null){
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = "Vannkvalitet",
-                                        fontWeight = FontWeight.SemiBold,
-                                        modifier = Modifier
-                                            .padding(10.dp)
-                                            .align(Alignment.CenterVertically)
-                                    )
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    beach.badevannsinfo?.waterQuality?.let {
+                        Box(
+                            modifier = Modifier
+                                .background(color = Color.White)
+                                .fillMaxSize()
+                        ) {
+                            Column {
+                                if (beach.beach?.waterTemp != null) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
                                         Text(
-                                            text = it,
+                                            text = "Badetemperatur",
+                                            fontWeight = FontWeight.SemiBold,
+                                            modifier = Modifier
+                                                .align(Alignment.CenterVertically)
+                                                .padding(10.dp),
+                                        )
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        Text(
+                                            text = "${beach.beach?.waterTemp}°C",
                                             modifier = Modifier
                                                 .padding(10.dp)
-                                                .align(Alignment.CenterVertically),
+                                                .align(Alignment.CenterVertically)
                                         )
                                     }
                                 }
+                                if (beach.badevannsinfo?.waterQuality != null) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = "Vannkvalitet",
+                                            fontWeight = FontWeight.SemiBold,
+                                            modifier = Modifier
+                                                .padding(10.dp)
+                                                .align(Alignment.CenterVertically)
+                                        )
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        beach.badevannsinfo?.waterQuality?.let {
+                                            Text(
+                                                text = it,
+                                                modifier = Modifier
+                                                    .padding(10.dp)
+                                                    .align(Alignment.CenterVertically),
+                                            )
+                                        }
+                                    }
+                                }
                             }
-                        }
+
                     }
                 }
                 if (beach.badevannsinfo?.facilitiesInfo != null) {
