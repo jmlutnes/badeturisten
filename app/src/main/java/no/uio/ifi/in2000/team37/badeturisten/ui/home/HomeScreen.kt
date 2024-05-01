@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -265,6 +266,7 @@ fun HomeScreen(
     val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val isLoading by homeViewModel.isLoading.collectAsState()
+    val localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
 
     val side1 = 450
     val side2 = 240
@@ -297,10 +299,12 @@ fun HomeScreen(
 
     Column(
         Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         Column(
-            modifier = Modifier,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primaryContainer),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(50.dp))
@@ -501,14 +505,16 @@ fun HomeScreen(
                 ) {
                     Column(
                         Modifier
-                            .wrapContentWidth(Alignment.CenterHorizontally),
+                            .fillMaxSize()
+                            //.padding(bottom = 60.dp),
                     ) {
-                        Box {
+                        Box(modifier = Modifier
+                            .fillMaxSize()
+                        ) {
                             Text(
                                 text = "Badesteder nær deg",
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 15.dp, bottom = 8.dp)
+                                    .padding(top = 15.dp, bottom = 40.dp)
                                     .align(Alignment.Center),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
@@ -528,24 +534,31 @@ fun HomeScreen(
                                 )
                             }
                         }
+
                         Box(modifier = Modifier
-                            .fillMaxSize()) {
-                            if (isLoading) {
-                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            .fillMaxSize()
+                            .padding(horizontal = 20.dp),
+                        ){
+                            if (localLoading.value) {CircularProgressIndicator(modifier = Modifier.align(Alignment.TopCenter))}
+                            if (isLoading) {CircularProgressIndicator(modifier = Modifier.align(Alignment.TopCenter))
                             } else {
                                 val state = rememberLazyListState()
                                 LazyRow(
                                     state = state,
                                     flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                                    modifier = Modifier
+                                        .fillMaxSize()
                                 ) {
                                     items(beachLocation) { beach ->
                                         beach.second?.let {
+                                        localLoading.value = false
                                             Badeinfoforbeachcard(
                                                 beach.first,
                                                 it, navController, beachinfo
                                             )
                                         }
                                     }
+
                                 }
                             }
                         }

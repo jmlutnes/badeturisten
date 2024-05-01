@@ -42,8 +42,8 @@ fun BeachCard(
         onClick = { navController.navigate("beachProfile/${beach.name}") },
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 10.dp)
-            .fillMaxHeight()
-            .width(160.dp),
+            .height(240.dp)
+            .width(180.dp),
         ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,7 +64,7 @@ fun BeachCard(
                 )
                 Text(
                     text = beach.name,
-                    fontSize = 16.sp,
+                    fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
                     style =
                     TextStyle(
@@ -81,7 +81,7 @@ fun BeachCard(
                 )
                 Text(
                     text = beach.name,
-                    fontSize = 16.sp,
+                    fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
@@ -93,8 +93,8 @@ fun BeachCard(
                 )
                 if(avstand>1) {
                     Text(
-                        text = "${avstand} meter unna",
-                        fontSize = 16.sp,
+                        text = "${avstand} m",
+                        fontSize = 34.sp,
                         fontWeight = FontWeight.Bold,
                         style =
                         TextStyle(
@@ -104,24 +104,24 @@ fun BeachCard(
                             )
                         ),
                         modifier = Modifier
-                            .align(Alignment.Center)
-                            .basicMarquee()
+                            .align(Alignment.BottomCenter)
+                            //.basicMarquee()
                             .padding(16.dp),
                     )
                     Text(
-                        text = "${avstand} meter unna",
-                        fontSize = 16.sp,
+                        text = "${avstand} m",
+                        fontSize = 34.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         modifier = Modifier
-                            .basicMarquee()
-                            .align(Alignment.Center)
+                            //.basicMarquee()
+                            .align(Alignment.BottomCenter)
                             .padding(16.dp),
                         style = TextStyle(color = Color.Black)
                     )
                 }
                 val tempText =
-                    if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
+                    if (beach.waterTemp != null) "${beach.waterTemp}°C \ni vannet" else ""
                 Text(
                     text = tempText,
                     fontSize = 16.sp,
@@ -134,7 +134,7 @@ fun BeachCard(
                         )
                     ),
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
+                        .align(Alignment.Center)
                         //.basicMarquee()
                         .padding(16.dp),
                     textAlign = TextAlign.Center
@@ -145,8 +145,8 @@ fun BeachCard(
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
-                        .basicMarquee()
-                        .align(Alignment.BottomCenter)
+                        //.basicMarquee()
+                        .align(Alignment.Center)
                         .padding(16.dp),
                     textAlign = TextAlign.Center,
                     style = TextStyle(color = Color.Black)
@@ -171,8 +171,8 @@ fun Badeinfoforbeachcard(
             onClick = { navController.navigate("beachProfile/${beach.name}") },
             modifier = Modifier
                 .padding(vertical = 10.dp, horizontal = 10.dp)
-                .fillMaxHeight()
-                .width(160.dp),
+                .height(240.dp)
+                .width(180.dp),
             ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -193,7 +193,7 @@ fun Badeinfoforbeachcard(
                     )
                     Text(
                         text = beach.name,
-                        fontSize = 20.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
                         style =
@@ -210,7 +210,7 @@ fun Badeinfoforbeachcard(
                     )
                     Text(
                         text = beach.name,
-                        fontSize = 20.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         textAlign = TextAlign.Center,
@@ -222,8 +222,8 @@ fun Badeinfoforbeachcard(
                     )
                     if(avstand>1) {
                         Text(
-                            text = "${avstand} meter unna",
-                            fontSize = 16.sp,
+                            text = "${avstand} m",
+                            fontSize = 34.sp,
                             fontWeight = FontWeight.Bold,
                             style =
                             TextStyle(
@@ -233,24 +233,24 @@ fun Badeinfoforbeachcard(
                                 )
                             ),
                             modifier = Modifier
-                                .align(Alignment.Center)
-                                .basicMarquee()
+                                .align(Alignment.BottomCenter)
+                                //.basicMarquee()
                                 .padding(16.dp),
                         )
                         Text(
-                            text = "${avstand} meter unna",
-                            fontSize = 16.sp,
+                            text = "${avstand} m",
+                            fontSize = 34.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                             modifier = Modifier
-                                .basicMarquee()
-                                .align(Alignment.Center)
+                                //.basicMarquee()
+                                .align(Alignment.BottomCenter)
                                 .padding(16.dp),
                             style = TextStyle(color = Color.Black)
                         )
                     }
                     val tempText =
-                        if (beach.waterTemp != null) "Badetemperatur: ${beach.waterTemp}°C" else ""
+                        if (beach.waterTemp != null) "${beach.waterTemp}°C \ni vannet" else ""
                     Text(
                         text = tempText,
                         fontSize = 16.sp,
@@ -264,7 +264,7 @@ fun Badeinfoforbeachcard(
                             )
                         ),
                         modifier = Modifier
-                            .align(Alignment.BottomCenter)
+                            .align(Alignment.Center)
                             //.basicMarquee()
                             .padding(16.dp),
                     )
@@ -275,7 +275,7 @@ fun Badeinfoforbeachcard(
                         color = Color.White,
                         modifier = Modifier
                             //.basicMarquee()
-                            .align(Alignment.BottomCenter)
+                            .align(Alignment.Center)
                             .padding(16.dp),
                         style = TextStyle(color = Color.Black),
                         textAlign = TextAlign.Center
