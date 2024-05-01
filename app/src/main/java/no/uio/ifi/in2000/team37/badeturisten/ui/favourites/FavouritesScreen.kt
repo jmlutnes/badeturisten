@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -70,19 +71,21 @@ fun FavouritesScreen(
                     )
                 Column(modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-
+                    .background(MaterialTheme.colorScheme.background),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     Box(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
                     ) {
-                        LazyHorizontalGrid(
+                        LazyVerticalGrid(
                             state = state,
                             modifier = Modifier
                                 .fillMaxSize(),
-                            rows = GridCells.Adaptive(180.dp),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalArrangement = Arrangement.Top,)
+                            columns = GridCells.Adaptive(170.dp),
+                            horizontalArrangement = Arrangement.Absolute.Center,
+                            verticalArrangement = Arrangement.Top)
                         {
                             items(favouritesState.favourites) { beach ->
                                 BeachCard(beach = beach, 0, navController = navController, null)

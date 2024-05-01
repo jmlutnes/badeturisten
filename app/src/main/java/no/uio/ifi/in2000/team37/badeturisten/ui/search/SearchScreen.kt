@@ -21,10 +21,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells.Fixed
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -308,20 +314,23 @@ fun SearchScreen(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            Box(modifier = Modifier.fillMaxSize()
-                .padding(horizontal = 30.dp, vertical = 15.dp)) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                //.padding(horizontal = 30.dp, vertical = 15.dp),
+                ,
+                contentAlignment = Alignment.Center) {
                 if (localLoading.value) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
                 if (isLoading) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
                 else {
-                    LazyHorizontalGrid(
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
                         state = state,
                         modifier = Modifier
                             .fillMaxSize(),
-                        rows = GridCells.Adaptive(120.dp),
-                        horizontalArrangement = Arrangement.Center,
+                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
                         verticalArrangement = Arrangement.Top,
                         userScrollEnabled = !(localLoading.value || isLoading)
                     ) {
