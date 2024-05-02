@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -77,6 +79,7 @@ import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 
@@ -241,7 +244,7 @@ fun WarningIcon(warningvector: ImageVector) {
     )
 }
 
-@SuppressLint("MissingPermission")
+@SuppressLint("MissingPermission", "SuspiciousIndentation")
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -263,6 +266,7 @@ fun HomeScreen(
     val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
     val isLoading by homeViewModel.isLoading.collectAsState()
+    val localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
 
     val side1 = 450
     val side2 = 240
@@ -295,10 +299,12 @@ fun HomeScreen(
 
     Column(
         Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         Column(
-            modifier = Modifier,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.primaryContainer),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(50.dp))
@@ -312,10 +318,12 @@ fun HomeScreen(
                         .size(400.dp, 200.dp)
                 ) {
                     Card(
+                        elevation = CardDefaults.elevatedCardElevation(8.dp),
                         modifier = Modifier
                             .clip(shape = RoundedCornerShape(10.dp))
                             .align(Alignment.BottomCenter)
-                            .padding(20.dp)
+                            .padding(20.dp),
+
                     ) {
                         Row(
                             modifier = Modifier
@@ -499,14 +507,16 @@ fun HomeScreen(
                 ) {
                     Column(
                         Modifier
-                            .wrapContentWidth(Alignment.CenterHorizontally),
+                            .fillMaxSize()
+                            //.padding(bottom = 60.dp),
                     ) {
-                        Box {
+                        Box(modifier = Modifier
+                            .fillMaxSize()
+                        ) {
                             Text(
                                 text = "Badesteder nær deg",
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 15.dp, bottom = 8.dp)
+                                    .padding(top = 15.dp, bottom = 40.dp)
                                     .align(Alignment.Center),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
@@ -526,26 +536,31 @@ fun HomeScreen(
                                 )
                             }
                         }
+
                         Box(modifier = Modifier
-                            .fillMaxSize()) {
-                            if (isLoading) {
-                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                            .fillMaxSize()
+                            .padding(horizontal = 20.dp),
+                        ){
+                            if (localLoading.value) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+                            if (isLoading) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                             } else {
                                 val state = rememberLazyListState()
-                                LazyColumn(
+                                LazyRow(
                                     state = state,
                                     flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxSize()
                                 ) {
                                     items(beachLocation) { beach ->
                                         beach.second?.let {
+                                        localLoading.value = false
                                             Badeinfoforbeachcard(
                                                 beach.first,
                                                 it, navController, beachinfo
                                             )
                                         }
                                     }
+
                                 }
                             }
                         }

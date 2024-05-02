@@ -16,12 +16,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -83,12 +86,12 @@ fun Kollektiv(beach: BeachUIState) {
         modifier = Modifier
             .padding(16.dp)
             .fillMaxSize(),
-        border = BorderStroke(1.5.dp, Color.LightGray)
+        elevation = CardDefaults.elevatedCardElevation(8.dp)
     ) {
         Box(
             modifier = Modifier
-                .background(color = Color.White)
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
         ) {
 
             Text(
@@ -185,14 +188,16 @@ fun BeachProfile(
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues)
+                .background(MaterialTheme.colorScheme.secondaryContainer),
         ) {
             item {
                 Surface(
                     modifier = Modifier
                         .fillMaxHeight(),
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                ) {
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    ) {
                     Column(
                         Modifier
                             .padding(16.dp)
@@ -214,8 +219,9 @@ fun BeachProfile(
                                     .clip(RoundedCornerShape(16.dp))
                                     .align(Alignment.Center)
                             )
-
-                            LottieAnimation()
+                            if(imageUrl == "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"){
+                                LottieAnimation()
+                            }
 
                             beach.beach?.let {
                                 Text(
@@ -225,7 +231,7 @@ fun BeachProfile(
                                     style =
                                     TextStyle(color = Color.Black,
                                         drawStyle = Stroke(width = 15f
-                                        )//join = StrokeJoin.Round)
+                                        )
                                     ),
                                     modifier = Modifier
                                         .align(Alignment.TopCenter)
@@ -241,79 +247,80 @@ fun BeachProfile(
                                         .basicMarquee()
                                         .align(Alignment.TopCenter)
                                         .padding(16.dp),
-
                                     style = TextStyle(color = Color.Black)
-                                    //join = StrokeJoin.Round)
                                 )
 
+                            }
+                            IconButton(modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(17.dp),
+                                onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
+                                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart", tint = Color.White, modifier = Modifier
+                                    .size(50.dp))
                             }
                         }
                     }
                 }
                 Spacer(
                     Modifier
-                        .height(15.dp)
-                        .background(color = MaterialTheme.colorScheme.primaryContainer)
+                        .height(10.dp)
                 )
-
-                IconButton(onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
-                    Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart")
-                }
-                Card(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
-                    border = BorderStroke(1.5.dp, Color.LightGray)
-                ) {
-                    Box(
+                    Card(
                         modifier = Modifier
-                            .background(color = Color.White)
-                            .fillMaxSize()
+                            .padding(16.dp)
+                            .fillMaxSize(),
+                        elevation = CardDefaults.elevatedCardElevation(8.dp)
                     ) {
-                        Column {
-                            if(beach.beach?.waterTemp != null) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = "Badetemperatur",
-                                        fontWeight = FontWeight.SemiBold,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterVertically)
-                                            .padding(10.dp),
-                                    )
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    Text(
-                                        text = "${beach.beach?.waterTemp}°C",
-                                        modifier = Modifier
-                                            .padding(10.dp)
-                                            .align(Alignment.CenterVertically)
-                                    )
-                                }
-                            }
-                            if(beach.badevannsinfo?.waterQuality != null){
-                                Row(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = "Vannkvalitet",
-                                        fontWeight = FontWeight.SemiBold,
-                                        modifier = Modifier
-                                            .padding(10.dp)
-                                            .align(Alignment.CenterVertically)
-                                    )
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    beach.badevannsinfo?.waterQuality?.let {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.background)
+                        ) {
+                            Column {
+                                if (beach.beach?.waterTemp != null) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
                                         Text(
-                                            text = it,
+                                            text = "Badetemperatur",
+                                            fontWeight = FontWeight.SemiBold,
+                                            modifier = Modifier
+                                                .align(Alignment.CenterVertically)
+                                                .padding(10.dp),
+                                        )
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        Text(
+                                            text = "${beach.beach?.waterTemp}°C",
                                             modifier = Modifier
                                                 .padding(10.dp)
-                                                .align(Alignment.CenterVertically),
+                                                .align(Alignment.CenterVertically)
                                         )
                                     }
                                 }
+                                if (beach.badevannsinfo?.waterQuality != null) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Text(
+                                            text = "Vannkvalitet",
+                                            fontWeight = FontWeight.SemiBold,
+                                            modifier = Modifier
+                                                .padding(10.dp)
+                                                .align(Alignment.CenterVertically)
+                                        )
+                                        Spacer(modifier = Modifier.weight(1f))
+                                        beach.badevannsinfo?.waterQuality?.let {
+                                            Text(
+                                                text = it,
+                                                modifier = Modifier
+                                                    .padding(10.dp)
+                                                    .align(Alignment.CenterVertically),
+                                            )
+                                        }
+                                    }
+                                }
                             }
-                        }
+
                     }
                 }
                 if (beach.badevannsinfo?.facilitiesInfo != null) {
@@ -322,15 +329,14 @@ fun BeachProfile(
                             .padding(16.dp)
                             .fillMaxSize()
                             .defaultMinSize(400.dp, 300.dp),
-                        border = BorderStroke(1.5.dp, Color.LightGray)
+                        elevation = CardDefaults.elevatedCardElevation(8.dp)
                     ) {
                         Box(
                             modifier = Modifier
-                                .background(color = Color.White)
+                                .background(MaterialTheme.colorScheme.background)
                                 .fillMaxSize()
                                 .defaultMinSize(400.dp, 300.dp)
-                                .padding(10.dp),
-                            //contentAlignment = Alignment.Center
+                                .padding(10.dp)
                         ) {
                             Column {
                                 Text(
@@ -361,12 +367,7 @@ fun BeachProfile(
                             }
                         }
                     }
-                    Spacer(
-                        modifier = Modifier
-                            .background(color = MaterialTheme.colorScheme.primaryContainer)
-                    )
                 }
-
                 if (beach.kollektivRute.isEmpty()) {
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {

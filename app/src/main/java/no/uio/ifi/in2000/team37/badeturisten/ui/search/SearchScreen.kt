@@ -11,16 +11,29 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells.Fixed
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -164,10 +177,10 @@ fun SearchScreen(
     val searchResult by searchViewModel.sokResultater.collectAsState()
     val beachState = searchViewModel.beachState.collectAsState().value
     val beachinfo = searchViewModel.beachDetails.collectAsState().value
-    val state = rememberLazyListState()
+    val state = rememberLazyGridState()
     var searchText by remember { mutableStateOf("") }
     val isLoading by searchViewModel.isLoading.collectAsState()
-    var localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
+    val localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
@@ -205,14 +218,14 @@ fun SearchScreen(
             ) {
                 Column(
                     modifier = Modifier
+                        .fillMaxWidth()
                 ) {
                     Column(
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.primary)
                             .padding(horizontal = 60.dp),
-
-                        ) {
-                        Spacer(Modifier.height(50.dp))
+                    ) {
+                        Spacer(Modifier.height(30.dp))
                         Text(
                             text = "Søk etter badesteder",
                             modifier = Modifier
@@ -235,6 +248,12 @@ fun SearchScreen(
                                 containerColor = MaterialTheme.colorScheme.background,
                             )
                         )
+                    }
+                    Column(
+                        modifier = Modifier
+                            .background(MaterialTheme.colorScheme.primary)
+                            .padding(horizontal = 10.dp)
+                    ) {
                         FilterButtons(
                             badevakt = searchViewModel.badevakt.value,
                             onBadevaktChange = {
@@ -301,15 +320,25 @@ fun SearchScreen(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            Box(modifier = Modifier.fillMaxSize()) {
-                if (localLoading.value) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
-                if (isLoading) {CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+            Box(modifier = Modifier
+                .fillMaxSize()
+                //.padding(horizontal = 30.dp, vertical = 15.dp),
+                ,
+                contentAlignment = Alignment.Center) {
+                if (localLoading.value) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))}
+                if (isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
                 else {
-                    LazyColumn(
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(180.dp),
                         state = state,
-                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
                         modifier = Modifier
                             .fillMaxSize(),
+                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
+                        verticalArrangement = Arrangement.Top,
+                        userScrollEnabled = !(localLoading.value || isLoading)
                     ) {
                         val currentList = if (filtrerte.equals("")) {
                             searchResult.beachList
@@ -319,7 +348,6 @@ fun SearchScreen(
                         if (currentList.isEmpty() && !(isLoading || localLoading.value)) {
                             item {
                                 Box(modifier = Modifier.fillMaxSize()) {
-
                                     Text(
                                         "Ingen resultater", modifier = Modifier
                                             .padding(16.dp)
@@ -339,5 +367,3 @@ fun SearchScreen(
         }
     }
 }
-
-
