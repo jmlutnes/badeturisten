@@ -507,7 +507,6 @@ fun HomeScreen(
                     Column(
                         Modifier
                             .fillMaxSize()
-                        //.padding(bottom = 60.dp),
                     ) {
                         Box(
                             modifier = Modifier
@@ -621,26 +620,27 @@ fun NoAlertDisplay() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(90.dp)
             .wrapContentWidth(Alignment.CenterHorizontally)
             .wrapContentHeight(Alignment.Bottom)
     ) {
         Box(
             modifier = Modifier
                 .size(310.dp, 190.dp)
-                .verticalNegativePadding(28.dp)
+                .verticalNegativePadding(70.dp)
                 .background(colorScheme.primary),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 50.dp, top = 10.dp)
+                    .padding(bottom = 110.dp, top = 10.dp)
                     .wrapContentWidth(Alignment.CenterHorizontally)
                     .wrapContentHeight(Alignment.Bottom)
             ) {
                 Card(
                     modifier = Modifier
                         .width(290.dp)
+                        .height(90.dp)
                         .padding(10.dp, 4.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = colorScheme.surface,

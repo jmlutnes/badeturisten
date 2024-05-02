@@ -30,12 +30,10 @@ class MetAlertsRepositoryImp(
                 if (
                     calculateStatus(endTimeStr) == "Aktiv" &&
                     feature.properties.county.contains("03")) {
-                    println("MetTime $endTimeStr")
                     createWeatherWarning(feature, endTimeStr)
                 } else null
             }
         }
-        println("Mettime ${metAlertsObservations.value}")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
