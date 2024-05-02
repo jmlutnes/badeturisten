@@ -1,18 +1,12 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -33,9 +27,9 @@ import androidx.compose.ui.unit.sp
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 
 @Composable
-fun MetAlertCard(weatherWarning: WeatherWarning): Boolean {
-    if (weatherWarning.status == "Aktiv") {
+fun MetAlertCard(weatherWarning: WeatherWarning) {
     Card(
+        elevation = CardDefaults.elevatedCardElevation(12.dp),
         modifier = Modifier
             .width(290.dp)
             .padding(10.dp, 4.dp),
@@ -49,69 +43,59 @@ fun MetAlertCard(weatherWarning: WeatherWarning): Boolean {
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-
-                    Text(
-                        text = "FAREVARSEL",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.5.em,
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ),
-                                lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Top,
-                                    trim = LineHeightStyle.Trim.None
-                                )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = "FAREVARSEL",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.5.em,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Top,
+                                trim = LineHeightStyle.Trim.None
                             )
-                        ),
-                        color = Color.Red,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                    )
-                }
-                Box(
+                        )
+                    ),
+                    color = Color.Red,
                     modifier = Modifier
-                        .fillMaxSize()
-                ) {
-
-                    Text(
-                        text = "${weatherWarning.description}",
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.2.em,
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ),
-                                lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Center,
-                                    trim = LineHeightStyle.Trim.LastLineBottom
-                                )
+                        .align(Alignment.TopCenter)
+                )
+            }
+            val tekstArea = "Farevarsel for " + weatherWarning.area.lowercase()+".\n"
+            val tekstInstruks = "\n${weatherWarning.instruction}"
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = tekstArea + weatherWarning.description + tekstInstruks,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.2.em,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Center,
+                                trim = LineHeightStyle.Trim.LastLineBottom
                             )
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                    )
-                }
-
-                // Text(text = "Event:  ${weatherWarning.event}",
-                //   fontSize = 13.sp)
-                //Text(text = "Alvorlighetsgrad: ${weatherWarning.severity}", fontSize = 13.sp)
-                //Text(text = "Instruksjon: ${weatherWarning.instruction}", fontSize = 13.sp)
-                //Text("Status: " + weatherWarning.status)
-                //Text("Web: " + weatherWarning.web)
+                        )
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                )
             }
         }
-       return false
-  }
-    return false
+    }
 }
 
 
