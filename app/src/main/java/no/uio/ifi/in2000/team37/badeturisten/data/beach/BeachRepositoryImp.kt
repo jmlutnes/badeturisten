@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachRepositoryImp @Inject constructor(
-    private val waterTempDataSource: WaterTemperatureDataSource
-): BeachRepository {
+    private val waterTempDataSource: WaterTemperatureDataSource,
+) : BeachRepository {
 
     override suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)

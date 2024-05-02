@@ -1,6 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepository
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
