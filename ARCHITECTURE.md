@@ -10,7 +10,7 @@ ViewModel-komponenter håndterer tilstandsstyringen for applikasjonen. De henter
 4. Repositories:
 Repositories abstraherer tilgangen til datakilder, og tillater ViewModel å hente data uten å måtte kjenne til detaljene om datakildene. De sikrer en ren separasjon og kapsling av datahåndtering.
 5. Datasources (API):
-6.  Datasources representerer de eksterne APIene som faktisk henter og lagrer data. Dette kan omfatte kommunikasjon med server-baserte APIer, databaser, filsystemer, etc.
+Datasources representerer de eksterne APIene som faktisk henter og lagrer data. Dette kan omfatte kommunikasjon med server-baserte APIer, databaser, filsystemer, etc.
 # Dataflyt
 Dataflyten i appen starter ved brukerforespørsler via UI, som går gjennom ViewModel til Repositories og til slutt til Datasources for å hente data fra våre utvalgte API. Data returneres via samme vei til brukergrensesnittet som oppdateres dynamisk.
 # Sikkerhetsvurderinger
