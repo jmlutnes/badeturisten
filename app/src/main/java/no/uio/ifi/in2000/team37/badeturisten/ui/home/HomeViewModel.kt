@@ -30,6 +30,8 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.ForecastNextHour
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
+import java.io.IOException
+import java.net.UnknownHostException
 
 import javax.inject.Inject
 import kotlin.math.*
@@ -94,15 +96,23 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _locationForecastRepository.loadForecastNextHour()
-            _beachRepository.loadBeaches()
-            _metAlertsRepository.getWeatherWarnings()
-            loadBeachInfo()
-            fetchLocationData()
-            beachState.update {
-                BeachesUIState(CombineBeachesUseCase(_beachRepository, _osloKommuneRepository)())
+            try {
+                _locationForecastRepository.loadForecastNextHour()
+                _beachRepository.loadBeaches()
+                _metAlertsRepository.getWeatherWarnings()
+                loadBeachInfo()
+                fetchLocationData()
+                beachState.update {
+                    BeachesUIState(CombineBeachesUseCase(_beachRepository, _osloKommuneRepository)())
+                }
+                sortDistances()
+            } catch (e: UnknownHostException) {
+                Log.e("HomeViewModel", "No internet connection available, unable to resolve host", e)
+            } catch (e: IOException) {
+                Log.e("HomeViewModel", "Network I/O error occurred", e)
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "An unexpected error occurred", e)
             }
-            sortDistances()
         }
     }
 
@@ -121,17 +131,29 @@ class HomeViewModel @Inject constructor(
     }
     private fun _refreshBeachLocation(){
         viewModelScope.launch {
-            Log.d("HomeViewModel", "Oppdaterer beach locations")
-            _isLoading.value = true
-            _beachLocation.value = emptyList()
-            delay(100)
-            fetchLocationData()
-            delay(100)
-            sortDistances()
-            _isLoading.value = false
-            Log.d("HomeViewModel", "Oppdaterer beach locations")
+            try {
+                Log.d("HomeViewModel", "Updating beach locations")
+                _isLoading.value = true
+                _beachLocation.value = emptyList()
+
+                delay(100)
+                fetchLocationData()
+                delay(100)
+                sortDistances()
+
+            } catch (e: UnknownHostException) {
+                Log.e("HomeViewModel", "Unable to resolve host: Internet connection might be down", e)
+            } catch (e: IOException) {
+                Log.e("HomeViewModel", "Network I/O error occurred during beach location refresh", e)
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "An unexpected error occurred during beach location refresh", e)
+            } finally {
+                _isLoading.value = false
+                Log.d("HomeViewModel", "Beach locations updated")
+            }
         }
     }
+
     fun refreshBeachLocations(){
         _refreshBeachLocation()
     }
@@ -141,15 +163,27 @@ class HomeViewModel @Inject constructor(
             try {
                 val beachDetails = getBeachInfo()
                 _beachDetails.value = beachDetails
+            } catch (e: UnknownHostException) {
+                Log.e("HomeViewModel", "Unable to resolve hostname: ${e.message}")
+            } catch (e: IOException) {
+                Log.e("HomeViewModel", "Network I/O error: ${e.message}")
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
+                Log.e("HomeViewModel", "General error occurred: ${e.message}")
                 _beachDetails.value = emptyMap()
             }
         }
     }
 
     private suspend fun getBeachInfo(): Map<String, BeachInfoForHomescreen?> {
-        return _osloKommuneRepository.findAllWebPages()
+        return try {
+            _osloKommuneRepository.findAllWebPages()
+        } catch (e: UnknownHostException) {
+            Log.e("HomeViewModel", "Network issue while fetching beach info: Unable to resolve hostname")
+            emptyMap()
+        } catch (e: IOException) {
+            Log.e("HomeViewModel", "Network I/O issue while fetching beach info")
+            emptyMap()
+        }
     }
 
     private fun sortDistances() {

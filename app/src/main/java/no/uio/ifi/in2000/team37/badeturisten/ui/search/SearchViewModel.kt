@@ -90,22 +90,25 @@ class SearchViewModel @Inject constructor (
         badebrygge: Boolean
     ) {
         _isLoading.value = true
-        try{
-        coroutineScope {
-            val oppdaterteStrender = async {
-                _osloKommuneRepository.makeBeachesFacilities(
-                    badevakt,
-                    barnevennlig,
-                    grill,
-                    kiosk,
-                    tilpasning,
-                    toalett,
-                    badebrygge
-                )
+        try {
+            coroutineScope {
+                val oppdaterteStrender = async {
+                    _osloKommuneRepository.makeBeachesFacilities(
+                        badevakt,
+                        barnevennlig,
+                        grill,
+                        kiosk,
+                        tilpasning,
+                        toalett,
+                        badebrygge
+                    )
+                }
+                _sokResultater.value = SokKommuneBeachList(oppdaterteStrender.await())
             }
-
-            _sokResultater.value = SokKommuneBeachList(oppdaterteStrender.await())
-        }
+        } catch (e: Exception) {
+            // log searchviewmodel
+            Log.e("SearchViewModel", "Error loading beaches by filter: ${e.message}")
+            _sokResultater.value = SokKommuneBeachList()
         } finally {
             _isLoading.value = false
         }
