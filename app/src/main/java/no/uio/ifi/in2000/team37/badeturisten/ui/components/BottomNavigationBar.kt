@@ -40,7 +40,6 @@ fun BottomNavigationBar(navController: NavHostController) {
                         }
                     }
                     navController.navigate(navigationItem.route) {
-                        Log.v("nav", navigationItem.route)
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
                         }
