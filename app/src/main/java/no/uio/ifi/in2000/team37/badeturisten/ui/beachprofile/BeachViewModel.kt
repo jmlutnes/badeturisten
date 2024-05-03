@@ -47,6 +47,10 @@ class BeachViewModel @Inject constructor(
     )
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
 
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     init {
         loadBeachInfo()
     }
@@ -54,6 +58,8 @@ class BeachViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
         viewModelScope.launch(Dispatchers.IO) {
+            _isLoading.value = true
+
             val beachinfo = _beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo = _osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lon?.toDouble()
@@ -93,7 +99,7 @@ class BeachViewModel @Inject constructor(
                     )
                 }
             }
-
+            _isLoading.value = false
         }
     }
 

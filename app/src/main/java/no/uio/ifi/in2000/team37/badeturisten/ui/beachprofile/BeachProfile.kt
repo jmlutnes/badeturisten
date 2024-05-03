@@ -2,7 +2,6 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -23,8 +22,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,20 +47,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
-
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import no.uio.ifi.in2000.team37.badeturisten.R
-
-import com.airbnb.lottie.compose.LottieAnimation
 import java.util.Locale
 
 @Composable
@@ -164,15 +161,21 @@ fun Kollektiv(beach: BeachUIState) {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun BeachProfile(
     navController: NavController,
-    beachName: String?
+    beachName: String?,
 ) {
     val beachViewModel: BeachViewModel = hiltViewModel()
 
     val beach = beachViewModel.beachUIState.collectAsState().value
+
+    val isLoading by beachViewModel.isLoading.collectAsState()
 
     Scaffold(
         topBar = {
@@ -186,192 +189,218 @@ fun BeachProfile(
             )
         },
     ) { paddingValues ->
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.secondaryContainer),
         ) {
-            item {
-                Surface(
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else {
+                LazyColumn(
                     modifier = Modifier
-                        .fillMaxHeight(),
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                    ) {
-                    Column(
-                        Modifier
-                            .padding(16.dp)
-                            .fillMaxSize()
-                    ) {
-                        Box(
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
+                ) {
+                    item {
+                        Surface(
                             modifier = Modifier
-                                .fillMaxSize()
-
+                                .fillMaxHeight(),
+                            color = MaterialTheme.colorScheme.secondaryContainer,
                         ) {
-                            val imageUrl = beach.badevannsinfo?.imageUrl ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
-
-                            AsyncImage(
-                                model = imageUrl,
-                                contentDescription = "Bilde fra Oslo Kommune",
-                                contentScale = ContentScale.FillWidth,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .align(Alignment.Center)
-                            )
-                            if(imageUrl == "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"){
-                                LottieAnimation()
-                            }
-
-                            beach.beach?.let {
-                                Text(
-                                    text = it.name,
-                                    fontSize = 25.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    style =
-                                    TextStyle(color = Color.Black,
-                                        drawStyle = Stroke(width = 15f
-                                        )
-                                    ),
+                            Column(
+                                Modifier
+                                    .padding(16.dp)
+                                    .fillMaxSize()
+                            ) {
+                                Box(
                                     modifier = Modifier
-                                        .align(Alignment.TopCenter)
-                                        .basicMarquee()
-                                        .padding(16.dp),
-                                )
-                                Text(
-                                    text = it.name,
-                                    fontSize = 25.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White,
-                                    modifier = Modifier
-                                        .basicMarquee()
-                                        .align(Alignment.TopCenter)
-                                        .padding(16.dp),
-                                    style = TextStyle(color = Color.Black)
-                                )
+                                        .fillMaxSize()
 
-                            }
-                            IconButton(modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(17.dp),
-                                onClick = { beach.beach?.let { beachViewModel.updateFavourites(it) } }) {
-                                Icon(imageVector = Icons.Filled.Favorite, contentDescription = "Heart", tint = Color.White, modifier = Modifier
-                                    .size(50.dp))
-                            }
-                        }
-                    }
-                }
-                Spacer(
-                    Modifier
-                        .height(10.dp)
-                )
-                    Card(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxSize(),
-                        elevation = CardDefaults.elevatedCardElevation(8.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.background)
-                        ) {
-                            Column {
-                                if (beach.beach?.waterTemp != null) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
+                                ) {
+                                    val imageUrl = beach.badevannsinfo?.imageUrl
+                                        ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
+
+                                    AsyncImage(
+                                        model = imageUrl,
+                                        contentDescription = "Bilde fra Oslo Kommune",
+                                        contentScale = ContentScale.FillWidth,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(16.dp))
+                                            .align(Alignment.Center)
+                                    )
+                                    if (imageUrl == "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp") {
+                                        LottieAnimation()
+                                    }
+
+                                    beach.beach?.let {
                                         Text(
-                                            text = "Badetemperatur",
-                                            fontWeight = FontWeight.SemiBold,
+                                            text = it.name,
+                                            fontSize = 25.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            style =
+                                            TextStyle(
+                                                color = Color.Black,
+                                                drawStyle = Stroke(
+                                                    width = 15f
+                                                )
+                                            ),
                                             modifier = Modifier
-                                                .align(Alignment.CenterVertically)
-                                                .padding(10.dp),
+                                                .align(Alignment.TopCenter)
+                                                .basicMarquee()
+                                                .padding(16.dp),
                                         )
-                                        Spacer(modifier = Modifier.weight(1f))
                                         Text(
-                                            text = "${beach.beach?.waterTemp}°C",
+                                            text = it.name,
+                                            fontSize = 25.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White,
                                             modifier = Modifier
-                                                .padding(10.dp)
-                                                .align(Alignment.CenterVertically)
+                                                .basicMarquee()
+                                                .align(Alignment.TopCenter)
+                                                .padding(16.dp),
+                                            style = TextStyle(color = Color.Black)
+                                        )
+
+                                    }
+                                    IconButton(modifier = Modifier
+                                        .align(Alignment.BottomEnd)
+                                        .padding(17.dp),
+                                        onClick = {
+                                            beach.beach?.let {
+                                                beachViewModel.updateFavourites(
+                                                    it
+                                                )
+                                            }
+                                        }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Favorite,
+                                            contentDescription = "Heart",
+                                            tint = Color.White,
+                                            modifier = Modifier
+                                                .size(50.dp)
                                         )
                                     }
                                 }
-                                if (beach.badevannsinfo?.waterQuality != null) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = "Vannkvalitet",
-                                            fontWeight = FontWeight.SemiBold,
-                                            modifier = Modifier
-                                                .padding(10.dp)
-                                                .align(Alignment.CenterVertically)
-                                        )
-                                        Spacer(modifier = Modifier.weight(1f))
-                                        beach.badevannsinfo?.waterQuality?.let {
+                            }
+                        }
+                        Spacer(
+                            Modifier
+                                .height(10.dp)
+                        )
+                        Card(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxSize(),
+                            elevation = CardDefaults.elevatedCardElevation(8.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.background)
+                            ) {
+                                Column {
+                                    if (beach.beach?.waterTemp != null) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
                                             Text(
-                                                text = it,
+                                                text = "Badetemperatur",
+                                                fontWeight = FontWeight.SemiBold,
+                                                modifier = Modifier
+                                                    .align(Alignment.CenterVertically)
+                                                    .padding(10.dp),
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            Text(
+                                                text = "${beach.beach?.waterTemp}°C",
                                                 modifier = Modifier
                                                     .padding(10.dp)
-                                                    .align(Alignment.CenterVertically),
+                                                    .align(Alignment.CenterVertically)
                                             )
+                                        }
+                                    }
+                                    if (beach.badevannsinfo?.waterQuality != null) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Text(
+                                                text = "Vannkvalitet",
+                                                fontWeight = FontWeight.SemiBold,
+                                                modifier = Modifier
+                                                    .padding(10.dp)
+                                                    .align(Alignment.CenterVertically)
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            beach.badevannsinfo?.waterQuality?.let {
+                                                Text(
+                                                    text = it,
+                                                    modifier = Modifier
+                                                        .padding(10.dp)
+                                                        .align(Alignment.CenterVertically),
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                        if (beach.badevannsinfo?.facilitiesInfo != null) {
+                            Card(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxSize()
+                                    .defaultMinSize(400.dp, 300.dp),
+                                elevation = CardDefaults.elevatedCardElevation(8.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .background(MaterialTheme.colorScheme.background)
+                                        .fillMaxSize()
+                                        .defaultMinSize(400.dp, 300.dp)
+                                        .padding(10.dp)
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "Fasiliteter",
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                        beach.badevannsinfo?.facilitiesInfo?.let {
+                                            Column(
+                                                modifier = Modifier
+                                                    .padding(4.dp)
+                                            ) {
+                                                Text(
+                                                    text = it,
+                                                    style = LocalTextStyle.current.merge(
+                                                        TextStyle(
+                                                            lineHeight = 2.0.em,
+                                                            platformStyle = PlatformTextStyle(
+                                                                includeFontPadding = false
+                                                            ),
+                                                            lineHeightStyle = LineHeightStyle(
+                                                                alignment = LineHeightStyle.Alignment.Center,
+                                                                trim = LineHeightStyle.Trim.None
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                                //Text("stjerner her?")
+                                            }
                                         }
                                     }
                                 }
                             }
-
-                    }
-                }
-                if (beach.badevannsinfo?.facilitiesInfo != null) {
-                    Card(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxSize()
-                            .defaultMinSize(400.dp, 300.dp),
-                        elevation = CardDefaults.elevatedCardElevation(8.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.background)
-                                .fillMaxSize()
-                                .defaultMinSize(400.dp, 300.dp)
-                                .padding(10.dp)
-                        ) {
-                            Column {
-                                Text(
-                                    text = "Fasiliteter",
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                                beach.badevannsinfo?.facilitiesInfo?.let {
-                                    Column (
-                                        modifier = Modifier
-                                            .padding(4.dp)
-                                    ){
-                                        Text(text = it,
-                                            style = LocalTextStyle.current.merge(
-                                                TextStyle(
-                                                    lineHeight = 2.0.em,
-                                                    platformStyle = PlatformTextStyle(
-                                                        includeFontPadding = false
-                                                    ),
-                                                    lineHeightStyle = LineHeightStyle(
-                                                        alignment = LineHeightStyle.Alignment.Center,
-                                                        trim = LineHeightStyle.Trim.None
-                                                    )
-                                                )
-                                            ))
-                                        //Text("stjerner her?")
-                                    }
-                                }
-                            }
                         }
+                        if (beach.kollektivRute.isEmpty()) {
+                            Spacer(modifier = Modifier.height(10.dp))
+                        } else {
+                            Kollektiv(beach)
+                        }
+                        //localLoading.value = false
                     }
-                }
-                if (beach.kollektivRute.isEmpty()) {
-                    Spacer(modifier = Modifier.height(10.dp))
-                } else {
-                    Kollektiv(beach)
                 }
             }
         }
