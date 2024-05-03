@@ -4,10 +4,6 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class EnTurHttpClient
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class EnTurHttpGeocoderHttpClient
 
 @Qualifier

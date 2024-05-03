@@ -11,7 +11,6 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.gson.gson
-import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
@@ -24,17 +23,6 @@ import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.*
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     // HttpClient for En Tur API
-    @Provides
-    @EnTurHttpClient
-    fun provideEnTurHttpClient(): HttpClient {
-        return HttpClient {
-            defaultRequest {
-                url("")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-            }
-            install(ContentNegotiation) { gson { } }
-        }
-    }
 
     @Provides
     @EnTurHttpGeocoderHttpClient
@@ -110,12 +98,6 @@ object NetworkModule {
             }
             install(ContentNegotiation) { gson {} }
         }
-    }
-
-    // Each data source provider method
-    @Provides
-    fun provideEnTurDataSource(@EnTurHttpGeocoderHttpClient client: HttpClient): EnTurDataSource {
-        return EnTurDataSource(client)
     }
 
     @Provides

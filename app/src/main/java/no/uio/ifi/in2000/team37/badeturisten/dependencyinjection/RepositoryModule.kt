@@ -7,11 +7,8 @@ import androidx.annotation.RequiresApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.entur.EnTurRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
@@ -26,7 +23,6 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasou
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
-import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
@@ -76,11 +72,5 @@ object RepositoryModule {
     @Singleton
     fun provideEnTurGeocoderRepository(dataSource: EnTurGeocoderDataSource): EnTurGeocoderRepository {
         return EnTurGeocoderRepositoryImp(dataSource)
-    }
-
-    @Provides
-    @Singleton
-    fun provideEnTurRepository(dataSource: EnTurDataSource): EnTurRepository {
-        return EnTurRepositoryImp(dataSource)
     }
 }
