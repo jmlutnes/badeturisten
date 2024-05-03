@@ -11,7 +11,7 @@ Badeturisten er designet med en klar separasjon av bekymringer gjennom en flerla
 - Unidirectional Data Flow (UDF): Garanterer at all tilstandsforvaltning er forutsigbar og enkel å følge, ved at data kun strømmer i en retning gjennom systemet.
 # Teknologivalg
 Frontend: Utviklet med Jetpack Compose for å maksimere gjenbruk av kode mellom plattformene og forbedre vedlikeholdbarheten.
-Backend: Implementert med ktor(json to kotlin), og tilbyr RESTful APIer til mobilklientene.
+Backend: Implementert med ktor(json to kotlin), og tilbyr APIer til mobilklientene.
 # Komponentbeskrivelse
 1. Brukerens Interaksjon:
 Brukeren interagerer med applikasjonens brukergrensesnitt gjennom en mobilapp. Dette inkluderer å klikke, scrolle, og andre former for input.
