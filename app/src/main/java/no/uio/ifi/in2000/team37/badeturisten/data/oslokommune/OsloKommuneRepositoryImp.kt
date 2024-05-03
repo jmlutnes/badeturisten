@@ -5,14 +5,14 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
 class OsloKommuneRepositoryImp @Inject constructor(
-    private val datasource: OsloKommuneDatasource
-): OsloKommuneRepository {
+    private val datasource: OsloKommuneDatasource,
+) : OsloKommuneRepository {
     private val beachList: MutableList<Beach> = mutableListOf()
 
     override suspend fun getDataForFacility(
@@ -22,7 +22,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         kiosk: Boolean,
         accessible: Boolean,
         toilets: Boolean,
-        divingTower: Boolean
+        divingTower: Boolean,
     ): jsontokotlin_kommune {
         return datasource.getDataForFasilitet(
             lifeguard,
@@ -35,9 +35,25 @@ class OsloKommuneRepositoryImp @Inject constructor(
         )
     }
 
-    override suspend fun makeBeachesFacilities(lifeguard: Boolean, childFriendly: Boolean, grill: Boolean, kiosk: Boolean, accessible: Boolean, toilets: Boolean, divingTower: Boolean ): List<Beach>  {
+    override suspend fun makeBeachesFacilities(
+        lifeguard: Boolean,
+        childFriendly: Boolean,
+        grill: Boolean,
+        kiosk: Boolean,
+        accessible: Boolean,
+        toilets: Boolean,
+        divingTower: Boolean,
+    ): List<Beach> {
         val localSearchList = mutableListOf<Beach>()
-        val result = getDataForFacility(lifeguard, childFriendly, grill, kiosk, accessible, toilets, divingTower)
+        val result = getDataForFacility(
+            lifeguard,
+            childFriendly,
+            grill,
+            kiosk,
+            accessible,
+            toilets,
+            divingTower
+        )
         return try {
             val features = result.data.geoJson.features
             features.forEach { feature ->
@@ -51,17 +67,16 @@ class OsloKommuneRepositoryImp @Inject constructor(
                 val lon: String = location[0].toString()
                 val lat: String = location[1].toString()
                 val position = Pos(lat, lon)
-
                 localSearchList.add(Beach(beachNameConverted, position, null))
             }
             return localSearchList
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Log.d("Oslo Kommune repository", "failed to make beaches")
             Log.e("Oslo Kommune repos", e.message.toString())
             emptyList()
         }
     }
+
     override fun extractUrl(inputString: String): String {
         val string = """href="(.*?)"""".toRegex()
         val matchResult = string.find(inputString)
@@ -94,7 +109,8 @@ class OsloKommuneRepositoryImp @Inject constructor(
             val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
             val url = extractUrl(beachNameNotConverted)
             val beachInfo = scrapeUrl(url)
-            localSearchList[beachNameConverted] = BeachInfoForHomescreen(beachNameConverted, beachInfo)
+            localSearchList[beachNameConverted] =
+                BeachInfoForHomescreen(beachNameConverted, beachInfo)
         }
         return localSearchList
     }
@@ -104,12 +120,12 @@ class OsloKommuneRepositoryImp @Inject constructor(
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent
             val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
-            if (beachNameConverted.contains(name)) {
+            if (beachNameConverted.contains(name)
+            ) {
                 val url = extractUrl(beachNameNotConverted)
                 return scrapeUrl(url)
             }
         }
-        // Log.e("OsloKommuneRepository", "No beach found")
         return null
     }
 
@@ -127,7 +143,16 @@ class OsloKommuneRepositoryImp @Inject constructor(
                 val lat: String = location[1].toString()
 
                 val position = Pos(lat, lon)
-                beachList.add(Beach(beachNameConverted, position, null))
+                if (!beachNameConverted.contains("Badstu")
+                    &&
+                    !beachNameConverted.contains("Tømmerholtjern")
+                    &&
+                    !beachNameConverted.contains("Smalvannet")
+                    &&
+                    !beachNameConverted.contains("Solbergvannet")
+                ) {
+                    beachList.add(Beach(beachNameConverted, position, null))
+                }
             }
             return beachList
 
