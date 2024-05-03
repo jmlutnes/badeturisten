@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -31,15 +32,20 @@ fun BottomNavigationBar(navController: NavHostController) {
                 },
                 onClick = {
                     if (navController.currentDestination?.route.equals("beachProfile/{beachName}")) {
-                        navController.popBackStack()
-                    } else {
-                        navController.navigate(navigationItem.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
+                        if (navigationItem.route == (navController.previousBackStackEntry?.destination?.route
+                                ?: "")
+                        ) {
+                            navController.popBackStack()
+                            return@NavigationBarItem
                         }
+                    }
+                    navController.navigate(navigationItem.route) {
+                        Log.v("nav", navigationItem.route)
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 }
             )
