@@ -50,6 +50,7 @@ fun BeachCard(
             modifier = Modifier
                 .fillMaxSize()
         ) {
+            val km = avstand/1000.0
             Box(Modifier.fillMaxSize()) {
                 val imageUrl = beachinfo?.info?.imageUrl
                     ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
@@ -93,7 +94,7 @@ fun BeachCard(
                 )
                 if(avstand>1) {
                     Text(
-                        text = "${avstand} m",
+                        text = "${String.format("%.1f", km)} km",
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
                         style =
@@ -109,7 +110,7 @@ fun BeachCard(
                             .padding(16.dp),
                     )
                     Text(
-                        text = "${avstand} m",
+                        text = "${String.format("%.1f", km)} km",
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -179,6 +180,7 @@ fun Badeinfoforbeachcard(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
+                val km = avstand/1000.0
                 Box(Modifier.fillMaxSize()) {
                     val imageUrl =
                         "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
@@ -222,7 +224,7 @@ fun Badeinfoforbeachcard(
                     )
                     if(avstand>1) {
                         Text(
-                            text = "${avstand} m",
+                            text = "${String.format("%.1f", km)} km",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             style =
@@ -238,7 +240,7 @@ fun Badeinfoforbeachcard(
                                 .padding(16.dp),
                         )
                         Text(
-                            text = "${avstand} m",
+                            text = "${String.format("%.1f", km)} km",
                             fontSize = 30.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
