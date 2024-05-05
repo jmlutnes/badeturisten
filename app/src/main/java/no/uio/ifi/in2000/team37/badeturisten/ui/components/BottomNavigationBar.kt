@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
