@@ -7,6 +7,6 @@ data class WeatherWarning(
     val severity: String,
     val instruction: String?,
     val eventEndingTime: String?,
-    val status: Any,
+    val status: String,
     val web: String?
 )
