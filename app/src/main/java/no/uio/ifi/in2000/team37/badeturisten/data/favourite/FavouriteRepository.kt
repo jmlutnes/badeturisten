@@ -1,7 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.favourite
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 class FavouriteRepository(private val favouriteDbHelper: FavouriteDbHelper) {

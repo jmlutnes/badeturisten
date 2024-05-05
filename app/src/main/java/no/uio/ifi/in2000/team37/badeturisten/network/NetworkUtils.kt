@@ -2,7 +2,6 @@ package no.uio.ifi.in2000.team37.badeturisten.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 
 object NetworkUtils {
     // Sjekker om det er ett koblet nettverk
