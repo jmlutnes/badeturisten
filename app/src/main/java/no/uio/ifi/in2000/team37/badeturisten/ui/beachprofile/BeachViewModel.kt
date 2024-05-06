@@ -35,6 +35,7 @@ class BeachViewModel @Inject constructor(
     private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
 ): ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
+
     private val _beachUIState = MutableStateFlow(
         BeachUIState(
             null, OsloKommuneBeachInfo(
@@ -60,8 +61,8 @@ class BeachViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
 
-            val beachinfo = _beachRepository.getBeach(beachName)
-            val osloKommuneBeachInfo = _osloKommuneRepository.getBeach(beachName)
+            val beachinfo: Beach? = _beachRepository.getBeach(beachName)
+            val osloKommuneBeachInfo: Beach? = _osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lon?.toDouble()
             val lat = beachinfo?.pos?.lat?.toDouble()
             println("lon:$lon \nlat:$lat")
@@ -107,6 +108,8 @@ class BeachViewModel @Inject constructor(
         Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
     }
     fun updateFavourites(beach: Beach) {
-        _beachRepository.updateFavourites(beach)
+        viewModelScope.launch {
+            _beachRepository.updateFavourites(beach)
+        }
     }
 }

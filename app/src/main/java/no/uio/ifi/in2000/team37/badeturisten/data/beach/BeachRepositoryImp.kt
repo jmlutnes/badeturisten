@@ -3,11 +3,11 @@ package no.uio.ifi.in2000.team37.badeturisten.data.beach
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import no.uio.ifi.in2000.team37.badeturisten.data.datastore.BeachDataStore
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
@@ -17,6 +17,7 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachRepositoryImp @Inject constructor(
     private val waterTempDataSource: WaterTemperatureDataSource,
+    private val beachListDataStore: DataStore<List<Beach>>
 ) : BeachRepository {
 
     override suspend fun waterTempGetData(): List<Tsery> {
@@ -26,7 +27,7 @@ class BeachRepositoryImp @Inject constructor(
     //flows
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
     private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
-    val beachlist: List<Beach> = mutableListOf<Beach>()
+    val beachlist: MutableList<Beach> = mutableListOf<Beach>()
 
     //henter flows
     override fun getBeachObservations(): StateFlow<List<Beach>> = beachObservations.asStateFlow()
@@ -48,7 +49,8 @@ class BeachRepositoryImp @Inject constructor(
             observations.map { tsery ->
                 Beach(
                     tsery.header.extra.name,
-                    tsery.header.extra.pos, tsery.observations.last().body.value.toDoubleOrNull()
+                    tsery.header.extra.pos, tsery.observations.last().body.value.toDoubleOrNull(),
+                    null
                 )
             }
         } catch (e: Exception) {
@@ -61,21 +63,18 @@ class BeachRepositoryImp @Inject constructor(
     override suspend fun getBeach(beachName: String): Beach? =
         beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-    override fun updateFavourites(beach: Beach?): List<Beach>{
+    // favourites only work on beach objects
+    override suspend fun updateFavourites(beach: Beach?): List<Beach>{
         if (beach != null) {
             if (beach in beachlist) {
-                beachlist.toMutableList().remove(beach)
+                beachlist.remove(beach)
             } else {
-                beachlist.toMutableList().add(beach)
+                beachlist.add(beach)
             }
         }
         favouriteObservations.value = beachlist  // Make sure this line is executing
         Log.d("BeachRepository", "Favorites updated: $beachlist")
+        beachListDataStore.updateData { beachlist }
         return beachlist
-    }
-
-    override suspend fun saveBeach(beach: Beach) {
-        updateFavourites(beach)
-        BeachDataStore.saveBeaches(beachlist)
     }
 }

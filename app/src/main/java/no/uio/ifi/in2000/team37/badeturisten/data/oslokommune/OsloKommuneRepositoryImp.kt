@@ -67,7 +67,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
                 val lon: String = location[0].toString()
                 val lat: String = location[1].toString()
                 val position = Pos(lat, lon)
-                localSearchList.add(Beach(beachNameConverted, position, null))
+                localSearchList.add(Beach(beachNameConverted, position, null, null))
             }
             return localSearchList
         } catch (e: Exception) {
@@ -151,7 +151,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
                     &&
                     !beachNameConverted.contains("Solbergvannet")
                 ) {
-                    beachList.add(Beach(beachNameConverted, position, null))
+                    beachList.add(Beach(beachNameConverted, position, null, null))
                 }
             }
             return beachList

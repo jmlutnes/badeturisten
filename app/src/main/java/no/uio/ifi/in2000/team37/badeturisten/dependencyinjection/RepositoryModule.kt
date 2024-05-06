@@ -4,6 +4,7 @@ import LocationRepositoryImp
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.datastore.core.DataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +28,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Singleton
 
 @Module
@@ -35,8 +37,8 @@ object RepositoryModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton
-    fun provideBeachRepository(dataSource: WaterTemperatureDataSource): BeachRepository {
-        return BeachRepositoryImp(dataSource)
+    fun provideBeachRepository(dataSource: WaterTemperatureDataSource, dataStore: DataStore<List<Beach>>): BeachRepository {
+        return BeachRepositoryImp(dataSource, dataStore)
     }
 
     @Provides
