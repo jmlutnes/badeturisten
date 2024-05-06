@@ -30,7 +30,7 @@ data class SokKommuneBeachList(
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachRepository: BeachRepository,
+    private val _beachRepository: BeachRepository
 ) : ViewModel() {
     var badevakt = mutableStateOf(false)
     var barnevennlig = mutableStateOf(false)
