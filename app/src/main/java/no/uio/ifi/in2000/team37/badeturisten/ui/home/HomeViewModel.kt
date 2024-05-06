@@ -36,9 +36,11 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 import kotlin.math.*
 
+
 data class MetAlertsUIState(
     val alerts: List<WeatherWarning> = listOf()
 )
+
 
 data class ForecastUIState(
     val forecastNextHour: ForecastNextHour? = null
