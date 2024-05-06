@@ -78,7 +78,6 @@ fun LottieAnimation() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Kollektiv(beach: BeachUIState) {
-//Kollektivruter
     Card(
         modifier = Modifier
             .padding(16.dp)
@@ -145,7 +144,7 @@ fun Kollektiv(beach: BeachUIState) {
                             ) {
                                 Spacer(modifier = Modifier.weight(1f))
                                 Text(
-                                    text = "${it.navn}",
+                                    text = it.navn,
                                     modifier = Modifier
                                         .basicMarquee()
                                         .align(Alignment.CenterVertically),
@@ -314,7 +313,7 @@ fun BeachProfile(
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             Text(
-                                                text = "${beach.beach?.waterTemp}°C",
+                                                text = "${beach.beach.waterTemp}°C",
                                                 modifier = Modifier
                                                     .padding(10.dp)
                                                     .align(Alignment.CenterVertically)
@@ -333,7 +332,7 @@ fun BeachProfile(
                                                     .align(Alignment.CenterVertically)
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
-                                            beach.badevannsinfo?.waterQuality?.let {
+                                            beach.badevannsinfo.waterQuality.let {
                                                 Text(
                                                     text = it,
                                                     modifier = Modifier
@@ -367,7 +366,7 @@ fun BeachProfile(
                                             text = "Fasiliteter",
                                             fontWeight = FontWeight.SemiBold
                                         )
-                                        beach.badevannsinfo?.facilitiesInfo?.let {
+                                        beach.badevannsinfo.facilitiesInfo.let {
                                             Column(
                                                 modifier = Modifier
                                                     .padding(4.dp)
@@ -387,7 +386,6 @@ fun BeachProfile(
                                                         )
                                                     )
                                                 )
-                                                //Text("stjerner her?")
                                             }
                                         }
                                     }
@@ -399,7 +397,6 @@ fun BeachProfile(
                         } else {
                             Kollektiv(beach)
                         }
-                        //localLoading.value = false
                     }
                 }
             }

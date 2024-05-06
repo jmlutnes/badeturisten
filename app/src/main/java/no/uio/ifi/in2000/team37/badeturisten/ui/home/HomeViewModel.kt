@@ -19,35 +19,39 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.ForecastNextHour
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.ForecastNextHour
-import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import java.io.IOException
 import java.net.UnknownHostException
-
 import javax.inject.Inject
-import kotlin.math.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.roundToInt
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 data class MetAlertsUIState(
-    val alerts: List<WeatherWarning> = listOf()
+    val alerts: List<WeatherWarning> = listOf(),
 )
 
 
 data class ForecastUIState(
-    val forecastNextHour: ForecastNextHour? = null
+    val forecastNextHour: ForecastNextHour? = null,
 )
 
-data class BeachesUIState (
-    val beaches: List<Beach> = listOf()
+data class BeachesUIState(
+    val beaches: List<Beach> = listOf(),
 )
 
 
@@ -59,35 +63,33 @@ class HomeViewModel @Inject constructor(
     private val _locationForecastRepository: LocationForecastRepository,
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
-    private val _metAlertsRepository: MetAlertsRepository
-): ViewModel() {
-    //henter vaer melding
-    val forecastState: StateFlow<ForecastUIState> = _locationForecastRepository.observeForecastNextHour()
-        .map { ForecastUIState(forecastNextHour = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ForecastUIState()
-        )
+    private val _metAlertsRepository: MetAlertsRepository,
+) : ViewModel() {
+    val forecastState: StateFlow<ForecastUIState> =
+        _locationForecastRepository.observeForecastNextHour()
+            .map { ForecastUIState(forecastNextHour = it) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = ForecastUIState()
+            )
 
-    //henter strender
     private val _beachDetails = MutableStateFlow<Map<String, BeachInfoForHomescreen?>>(emptyMap())
     val beachDetails: StateFlow<Map<String, BeachInfoForHomescreen?>> = _beachDetails.asStateFlow()
 
-    var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
+    private var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
-    //henter farevarsler
-    val metAlertsState: StateFlow<MetAlertsUIState> = _metAlertsRepository.getMetAlertsObservations()
-        .map { MetAlertsUIState(alerts = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MetAlertsUIState()
-        )
+    val metAlertsState: StateFlow<MetAlertsUIState> =
+        _metAlertsRepository.getMetAlertsObservations()
+            .map { MetAlertsUIState(alerts = it) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = MetAlertsUIState()
+            )
 
-    //Bruker lokasjon
-    private val _beachLocation = MutableStateFlow<List<Pair<Beach, Int?>>>(emptyList())
-    val beachLocation: StateFlow<List<Pair<Beach, Int?>>> = _beachLocation.asStateFlow()
+    private val _beachLocation = MutableStateFlow<List<Pair<Beach, Int>>>(emptyList())
+    val beachLocation: StateFlow<List<Pair<Beach, Int>>> = _beachLocation.asStateFlow()
 
     private val _location = MutableStateFlow<Location?>(null)
     val location: StateFlow<Location?> = _location.asStateFlow()
@@ -95,6 +97,9 @@ class HomeViewModel @Inject constructor(
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+    private val _ingenLokasjon = MutableStateFlow(false)
+    val ingenLokasjon: StateFlow<Boolean> = _ingenLokasjon.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -105,11 +110,20 @@ class HomeViewModel @Inject constructor(
                 loadBeachInfo()
                 fetchLocationData()
                 beachState.update {
-                    BeachesUIState(CombineBeachesUseCase(_beachRepository, _osloKommuneRepository)())
+                    BeachesUIState(
+                        CombineBeachesUseCase(
+                            _beachRepository,
+                            _osloKommuneRepository
+                        )()
+                    )
                 }
                 sortDistances()
             } catch (e: UnknownHostException) {
-                Log.e("HomeViewModel", "No internet connection available, unable to resolve host", e)
+                Log.e(
+                    "HomeViewModel",
+                    "No internet connection available, unable to resolve host",
+                    e
+                )
             } catch (e: IOException) {
                 Log.e("HomeViewModel", "Network I/O error occurred", e)
             } catch (e: Exception) {
@@ -121,7 +135,6 @@ class HomeViewModel @Inject constructor(
     private suspend fun fetchLocationData() {
         viewModelScope.launch {
             _locationRepository.fetchCurrentLocation()
-
             _locationRepository.locationData.collect { newLocation ->
                 if (newLocation == null) {
                     _locationRepository.fetchLastLocation()
@@ -131,24 +144,36 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-    private fun _refreshBeachLocation(){
+
+    private fun _refreshBeachLocation() {
         viewModelScope.launch {
             try {
                 Log.d("HomeViewModel", "Updating beach locations")
                 _isLoading.value = true
                 _beachLocation.value = emptyList()
-
                 delay(100)
                 fetchLocationData()
                 delay(100)
                 sortDistances()
 
             } catch (e: UnknownHostException) {
-                Log.e("HomeViewModel", "Unable to resolve host: Internet connection might be down", e)
+                Log.e(
+                    "HomeViewModel",
+                    "Unable to resolve host: Internet connection might be down",
+                    e
+                )
             } catch (e: IOException) {
-                Log.e("HomeViewModel", "Network I/O error occurred during beach location refresh", e)
+                Log.e(
+                    "HomeViewModel",
+                    "Network I/O error occurred during beach location refresh",
+                    e
+                )
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "An unexpected error occurred during beach location refresh", e)
+                Log.e(
+                    "HomeViewModel",
+                    "An unexpected error occurred during beach location refresh",
+                    e
+                )
             } finally {
                 _isLoading.value = false
                 Log.d("HomeViewModel", "Beach locations updated")
@@ -156,7 +181,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun refreshBeachLocations(){
+    fun refreshBeachLocations() {
         _refreshBeachLocation()
     }
 
@@ -180,7 +205,10 @@ class HomeViewModel @Inject constructor(
         return try {
             _osloKommuneRepository.findAllWebPages()
         } catch (e: UnknownHostException) {
-            Log.e("HomeViewModel", "Network issue while fetching beach info: Unable to resolve hostname")
+            Log.e(
+                "HomeViewModel",
+                "Network issue while fetching beach info: Unable to resolve hostname"
+            )
             emptyMap()
         } catch (e: IOException) {
             Log.e("HomeViewModel", "Network I/O issue while fetching beach info")
@@ -192,25 +220,29 @@ class HomeViewModel @Inject constructor(
         val locationMap = emptyMap<Beach, Int>().toMutableMap()
         var teller = -1
         beachState.value.beaches.forEach { beach ->
-            if(_location.value?.latitude != null) {
+            if (_location.value?.latitude != null) {
                 locationMap[beach] = locationDistance(beach.pos, _location.value)
-            }
-            else{
+                _ingenLokasjon.value = false
+            } else {
                 locationMap[beach] = teller
                 teller--
+                _ingenLokasjon.value = true
+
             }
         }
-        val sortedBeachesByDistance = sortBeachesByValue(locationMap)
         viewModelScope.launch {
             try {
-                _beachLocation.value = sortedBeachesByDistance
-                println(beachLocation)
+                if (ingenLokasjon.value) {
+                    _beachLocation.value = locationMap.toSortedMap(compareBy { it.name }).toList()
+                } else {
+                    val sortedBeachesByDistance = sortBeachesByValue(locationMap)
+                    _beachLocation.value = sortedBeachesByDistance
+                }
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
                 _beachLocation.value = emptyList()
             }
         }
-        println(sortedBeachesByDistance)
     }
 
     private fun locationDistance(loc1: Pos, loc2: Location?): Int {
@@ -229,7 +261,7 @@ class HomeViewModel @Inject constructor(
         return avstand.roundToInt()
     }
 
-    private fun sortBeachesByValue(beaches: Map<Beach, Int?>): List<Pair<Beach, Int?>> {
+    private fun sortBeachesByValue(beaches: Map<Beach, Int>): List<Pair<Beach, Int>> {
         return beaches.toList().sortedBy { it.second }
     }
 }
