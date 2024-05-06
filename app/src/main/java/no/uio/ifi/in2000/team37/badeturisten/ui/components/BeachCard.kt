@@ -66,7 +66,7 @@ fun BeachCard(
     navController: NavController,
     beachInfoMap: Map<String, BeachInfoForHomescreen?>,
 ) {
-    val customBlue = Color(0xFF4E5B71)
+    val customBlue = Color(0xFF2E4064)
     val brushUp = Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.9F), Color.Transparent))
     val brushDown =
         Brush.verticalGradient(listOf(Color.Transparent, customBlue.copy(alpha = 0.8F)))
