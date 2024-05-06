@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import no.uio.ifi.in2000.team37.badeturisten.data.datastore.BeachDataStore
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
@@ -230,5 +231,34 @@ class HomeViewModel @Inject constructor(
     private fun sortBeachesByValue(beaches: Map<Beach, Int?>): List<Pair<Beach, Int?>> {
         return beaches.toList().sortedBy { it.second }
     }
+
+
+    val beach = BeachDataStore.context.beachFlow.asLiveData()
+
+    // To save a beach
+    fun saveBeach(beach: Beach) {
+        viewModelScope.launch {
+            _beachRepository.saveBeach(beach)
+        }
+    }
+    /*
+    init {
+        viewModelScope.launch {
+            DataStoreManager.exampleSettingFlow.collect {
+                _exampleSetting.value = it
+            }
+        }
+    }
+
+    fun setExampleSetting(newValue: Boolean) {
+        viewModelScope.launch {
+            DataStoreManager.saveExampleSetting(newValue)
+        }
+    }
+
+    fun saveBeach(beach: BeachProto.Beach) {
+        _beachRepository.saveBeach(beach)
+    }
+    */
 }
 
