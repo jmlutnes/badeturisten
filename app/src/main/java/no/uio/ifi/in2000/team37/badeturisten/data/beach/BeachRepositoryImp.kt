@@ -7,6 +7,8 @@ import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
@@ -49,8 +51,8 @@ class BeachRepositoryImp @Inject constructor(
             observations.map { tsery ->
                 Beach(
                     tsery.header.extra.name,
-                    tsery.header.extra.pos, tsery.observations.last().body.value.toDoubleOrNull(),
-                    null
+                    tsery.header.extra.pos,
+                    tsery.observations.last().body.value.toDoubleOrNull()
                 )
             }
         } catch (e: Exception) {
@@ -74,7 +76,12 @@ class BeachRepositoryImp @Inject constructor(
         }
         favouriteObservations.value = beachlist  // Make sure this line is executing
         Log.d("BeachRepository", "Favorites updated: $beachlist")
-        beachListDataStore.updateData { beachlist }
+        try {
+            beachListDataStore.updateData { beachlist.toList() }
+        }catch (e: Exception) {
+            Log.e("BeachRepository", "Failed to save beachs: $beachlist", e)
+            throw e  // Or handle gracefully depending on your error strategy
+        }
         return beachlist
     }
 }
