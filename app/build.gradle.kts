@@ -112,6 +112,7 @@ dependencies {
     */
     implementation ("androidx.datastore:datastore-preferences:1.1.1")
     implementation ("androidx.datastore:datastore-core:1.1.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3") // Check latest version
 }
 kapt {
     correctErrorTypes = true

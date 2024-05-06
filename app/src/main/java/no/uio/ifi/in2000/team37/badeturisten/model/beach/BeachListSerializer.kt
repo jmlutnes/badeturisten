@@ -15,12 +15,17 @@ object BeachListSerializer : Serializer<List<Beach>> {
         return try {
             Json.decodeFromString(ListSerializer(Beach.serializer()), input.readBytes().decodeToString())
         } catch (e: SerializationException) {
-            Log.e("DataStore", "Error deserializing beaches", e)
+            Log.e("DataStore", "Serialization error on read", e)
             defaultValue
         }
     }
 
     override suspend fun writeTo(t: List<Beach>, output: OutputStream) {
-        output.write(Json.encodeToString(ListSerializer(Beach.serializer()), t).encodeToByteArray())
+        try {
+            val dataString = Json.encodeToString(ListSerializer(Beach.serializer()), t)
+            output.write(dataString.encodeToByteArray())
+        } catch (e: SerializationException) {
+            Log.e("DataStore", "Serialization error on write", e)
+        }
     }
 }

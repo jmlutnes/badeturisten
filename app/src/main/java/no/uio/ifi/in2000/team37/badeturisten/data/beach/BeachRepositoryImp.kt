@@ -7,8 +7,6 @@ import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
@@ -77,11 +75,22 @@ class BeachRepositoryImp @Inject constructor(
         favouriteObservations.value = beachlist  // Make sure this line is executing
         Log.d("BeachRepository", "Favorites updated: $beachlist")
         try {
-            beachListDataStore.updateData { beachlist.toList() }
+            beachListDataStore.updateData { currentBeaches ->
+                emptyList()  // Test with an empty list
+            }
+        } catch (e: Exception) {
+            Log.e("BeachRepository", "Failed to update with empty list", e)
+            throw e
+        }
+        /*try {
+            beachListDataStore.updateData { currentBeaches ->
+                Log.d("BeachRepository", "Current beaches in DataStore: $currentBeaches")
+                beachlist.toList()  // Assuming this transformation is necessary
+            }
         }catch (e: Exception) {
             Log.e("BeachRepository", "Failed to save beachs: $beachlist", e)
             throw e  // Or handle gracefully depending on your error strategy
-        }
+        }*/
         return beachlist
     }
 }
