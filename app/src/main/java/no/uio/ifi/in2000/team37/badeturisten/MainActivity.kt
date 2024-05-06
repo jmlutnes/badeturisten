@@ -3,7 +3,6 @@ package no.uio.ifi.in2000.team37.badeturisten
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -39,12 +38,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.datastore.dataStore
 import androidx.lifecycle.LifecycleEventObserver
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachListSerializer
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
 import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
@@ -53,17 +50,11 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 
-val Context.dataStore by dataStore(fileName = "favourites.json", serializer = BeachListSerializer)
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-/*
-
-    @Inject
-    lateinit var dataStoreManager: DataStoreManager
-*/
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
