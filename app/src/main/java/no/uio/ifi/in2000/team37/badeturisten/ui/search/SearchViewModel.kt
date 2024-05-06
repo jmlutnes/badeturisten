@@ -87,7 +87,7 @@ class SearchViewModel @Inject constructor(
         kiosk: Boolean,
         tilpasning: Boolean,
         toalett: Boolean,
-        badebrygge: Boolean,
+        badebrygge: Boolean
     ) {
         _isLoading.value = true
         try {
