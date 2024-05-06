@@ -54,7 +54,6 @@ class SearchViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             try {
-                //_beachRepository.loadBeaches()
                 val beachDetails = getBeachInfo()
                 _beachDetails.value = beachDetails
 
