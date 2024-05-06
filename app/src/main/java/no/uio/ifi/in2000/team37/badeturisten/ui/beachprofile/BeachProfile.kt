@@ -42,7 +42,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -70,7 +69,6 @@ fun LottieAnimation() {
         composition = composition,
         iterations = LottieConstants.IterateForever
     )
-
     LottieAnimation(
         composition = composition,
         progress = { progress },
@@ -79,8 +77,7 @@ fun LottieAnimation() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Kollektiv(beach: BeachUIState) {
-//Kollektivruter
+fun Transportation(beach: BeachUIState) {
     Card(
         modifier = Modifier
             .padding(16.dp)
@@ -92,19 +89,16 @@ fun Kollektiv(beach: BeachUIState) {
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-
             Text(
                 text = "Kollektivruter",
                 modifier = Modifier
                     .padding(10.dp),
                 fontWeight = FontWeight.SemiBold
             )
-
             Column(
                 Modifier
                     .fillMaxSize()
             ) {
-
                 beach.kollektivRute.forEach() {
                     val transport = when (it.transportMode) {
                         "bus" -> "Buss"
@@ -119,7 +113,6 @@ fun Kollektiv(beach: BeachUIState) {
                             ) else letter.toString()
                         }
                     }
-
                     Column(
                         Modifier
                             .fillMaxSize()
@@ -131,7 +124,7 @@ fun Kollektiv(beach: BeachUIState) {
                         ) {
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
-                                text = "${transport} ${it.linje}",
+                                text = "$transport ${it.linje}",
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically),
                                 fontWeight = FontWeight.SemiBold
@@ -147,7 +140,7 @@ fun Kollektiv(beach: BeachUIState) {
                             ) {
                                 Spacer(modifier = Modifier.weight(1f))
                                 Text(
-                                    text = "${it.navn}",
+                                    text = it.navn,
                                     modifier = Modifier
                                         .basicMarquee()
                                         .align(Alignment.CenterVertically),
@@ -161,11 +154,13 @@ fun Kollektiv(beach: BeachUIState) {
         }
     }
 }
+
 @Composable
-fun Gradient (){
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .clip(RoundedCornerShape(16.dp))
+fun Gradient() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(16.dp))
     ) {
         val customBlue = Color(0xFF4E5B71)
         val brushUp =
@@ -193,12 +188,8 @@ fun BeachProfile(
     beachName: String?,
 ) {
     val beachViewModel: BeachViewModel = hiltViewModel()
-
     val beach = beachViewModel.beachUIState.collectAsState().value
-
     val isLoading by beachViewModel.isLoading.collectAsState()
-
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -271,7 +262,6 @@ fun BeachProfile(
                                                 color = Color.White,
                                             )
                                         )
-
                                     }
                                     IconButton(modifier = Modifier
                                         .align(Alignment.BottomEnd)
@@ -323,7 +313,7 @@ fun BeachProfile(
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
                                             Text(
-                                                text = "${beach.beach?.waterTemp}°C",
+                                                text = "${beach.beach.waterTemp}°C",
                                                 modifier = Modifier
                                                     .padding(10.dp)
                                                     .align(Alignment.CenterVertically)
@@ -342,7 +332,7 @@ fun BeachProfile(
                                                     .align(Alignment.CenterVertically)
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
-                                            beach.badevannsinfo?.waterQuality?.let {
+                                            beach.badevannsinfo.waterQuality.let {
                                                 Text(
                                                     text = it,
                                                     modifier = Modifier
@@ -376,7 +366,7 @@ fun BeachProfile(
                                             text = "Fasiliteter",
                                             fontWeight = FontWeight.SemiBold
                                         )
-                                        beach.badevannsinfo?.facilitiesInfo?.let {
+                                        beach.badevannsinfo.facilitiesInfo.let {
                                             Column(
                                                 modifier = Modifier
                                                     .padding(4.dp)
@@ -396,7 +386,6 @@ fun BeachProfile(
                                                         )
                                                     )
                                                 )
-                                                //Text("stjerner her?")
                                             }
                                         }
                                     }
@@ -406,9 +395,8 @@ fun BeachProfile(
                         if (beach.kollektivRute.isEmpty()) {
                             Spacer(modifier = Modifier.height(10.dp))
                         } else {
-                            Kollektiv(beach)
+                            Transportation(beach)
                         }
-                        //localLoading.value = false
                     }
                 }
             }
