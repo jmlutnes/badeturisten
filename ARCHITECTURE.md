@@ -25,8 +25,8 @@ Repositories abstraherer tilgangen til datakilder, og tillater ViewModel å hent
 Datasources representerer de eksterne APIene som faktisk henter og lagrer data. Dette kan omfatte kommunikasjon med server-baserte APIer, databaser, filsystemer, etc.
 # API-Nivå og Plattformvalg
 Valget av API-nivå er en balanse mellom å støtte eldre enheter og å kunne utnytte nyere plattformfunksjoner som forbedrer ytelse, sikkerhet og brukeropplevelse.
-- Minimum API-nivå: Appen krever Android API-nivå 24
-- Anbefalt API-nivå: Android API-nivå 33 er anbefalt for å sikre optimal ytelse og bruk av de nyeste plattformsfunksjonene.
+- Minimum API-nivå: Appen krever Android API-nivå 25
+- Anbefalt API-nivå: Android API-nivå 34 er anbefalt for å sikre optimal ytelse og for bruk av de nyeste plattformsfunksjonene.
 # Sikkerhetsvurderinger
 - Dataintegritet: Vi benytter HTTPS for å sikre integriteten og sikkerheten til brukerdata som overføres.
 # Fremtidige Forbedringer
