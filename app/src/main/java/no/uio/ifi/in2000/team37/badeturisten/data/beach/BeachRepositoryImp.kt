@@ -28,8 +28,8 @@ class BeachRepositoryImp @Inject constructor(
     var beachlist: MutableList<Beach> = mutableListOf<Beach>()
 
     //henter flows
-    override fun getBeachObservations(): StateFlow<List<Beach>> = beachObservations.asStateFlow()
-    override fun getFavouriteObservations(): StateFlow<List<Beach>> =
+    override fun getBeachObservations() = beachObservations.asStateFlow()
+    override fun getFavouriteObservations() =
         favouriteObservations.asStateFlow()
 
     //oppdaterer flows

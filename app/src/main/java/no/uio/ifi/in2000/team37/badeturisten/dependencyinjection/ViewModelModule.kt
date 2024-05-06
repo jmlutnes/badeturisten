@@ -43,9 +43,10 @@ object ViewModelModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideFavouritesViewModel(
+        osloKommuneRepository: OsloKommuneRepository,
         beachRepository: BeachRepository
     ): FavouritesViewModel {
-        return FavouritesViewModel(beachRepository)
+        return FavouritesViewModel(osloKommuneRepository, beachRepository)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
