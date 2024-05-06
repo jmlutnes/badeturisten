@@ -167,7 +167,7 @@ fun Gradient (){
         .fillMaxSize()
         .clip(RoundedCornerShape(16.dp))
     ) {
-        val customBlue = Color(0xFF435C8F)
+        val customBlue = Color(0xFF4E5B71)
         val brushUp =
             Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.9F), Color.Transparent))
         Canvas(
