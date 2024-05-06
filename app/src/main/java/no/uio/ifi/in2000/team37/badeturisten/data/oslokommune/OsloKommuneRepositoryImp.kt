@@ -84,7 +84,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
     }
 
     override suspend fun scrapeUrl(input: String): OsloKommuneBeachInfo? {
-        return datasource.skrapUrl(input)
+        return datasource.scrapeUrl(input)
     }
 
     override suspend fun getBeaches(): List<Feature> {
