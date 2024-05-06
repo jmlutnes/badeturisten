@@ -4,7 +4,6 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,23 +16,22 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
-import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.BeachesUIState
 import javax.inject.Inject
 
 data class SokKommuneBeachList(
-    val beachList: List<Beach> = listOf()
+    val beachList: List<Beach> = listOf(),
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class SearchViewModel @Inject constructor (
+class SearchViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
-    ): ViewModel() {
+) : ViewModel() {
     var badevakt = mutableStateOf(false)
     var barnevennlig = mutableStateOf(false)
     var grill = mutableStateOf(false)
@@ -56,7 +54,7 @@ class SearchViewModel @Inject constructor (
     init {
         viewModelScope.launch {
             try {
-                _beachRepository.loadBeaches()
+                //_beachRepository.loadBeaches()
                 val beachDetails = getBeachInfo()
                 _beachDetails.value = beachDetails
 
@@ -78,9 +76,11 @@ class SearchViewModel @Inject constructor (
             }
         }
     }
+
     private suspend fun getBeachInfo(): Map<String, BeachInfoForHomescreen?> {
         return _osloKommuneRepository.findAllWebPages()
     }
+
     suspend fun loadBeachesByFilter(
         badevakt: Boolean,
         barnevennlig: Boolean,
@@ -88,7 +88,7 @@ class SearchViewModel @Inject constructor (
         kiosk: Boolean,
         tilpasning: Boolean,
         toalett: Boolean,
-        badebrygge: Boolean
+        badebrygge: Boolean,
     ) {
         _isLoading.value = true
         try {
