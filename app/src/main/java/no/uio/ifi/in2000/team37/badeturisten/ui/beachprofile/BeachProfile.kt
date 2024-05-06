@@ -236,7 +236,7 @@ fun BeachProfile(
                                     .fillMaxSize()
                             ) {
                                 Box(
-                                    modifier = ModifierB
+                                    modifier = Modifier
                                         .fillMaxSize()
 
                                 ) {
