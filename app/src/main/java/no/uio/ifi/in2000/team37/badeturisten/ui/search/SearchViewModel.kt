@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
+import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
@@ -31,8 +32,8 @@ data class SokKommuneBeachList(
 @HiltViewModel
 class SearchViewModel @Inject constructor (
     private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachRepository: BeachRepository
-): ViewModel() {
+    private val _beachRepository: BeachRepository,
+    ): ViewModel() {
     var badevakt = mutableStateOf(false)
     var barnevennlig = mutableStateOf(false)
     var grill = mutableStateOf(false)
@@ -55,6 +56,7 @@ class SearchViewModel @Inject constructor (
     init {
         viewModelScope.launch {
             try {
+                _beachRepository.loadBeaches()
                 val beachDetails = getBeachInfo()
                 _beachDetails.value = beachDetails
 

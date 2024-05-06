@@ -2,7 +2,6 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.search
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -149,7 +148,7 @@ fun FilterButtons(
 }
 
 @OptIn(
-    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class,
     ExperimentalMaterial3Api::class
 )
 @RequiresApi(Build.VERSION_CODES.O)
@@ -295,6 +294,13 @@ fun SearchScreen(
             val filtrerte = beachState.beaches.filter { strand ->
                 strand.name.contains(searchText, ignoreCase = true)
             }
+            val anyActiveFiltering = (searchViewModel.badevakt.value ||
+                    searchViewModel.barnevennlig.value ||
+                    searchViewModel.grill.value ||
+                    searchViewModel.kiosk.value ||
+                    searchViewModel.tilpasning.value ||
+                    searchViewModel.toalett.value ||
+                    searchViewModel.badebrygge.value)
             Text(
                 text = "Søkeresultater",
                 modifier = Modifier
@@ -324,14 +330,17 @@ fun SearchScreen(
                             .fillMaxSize(),
                         horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
                         verticalArrangement = Arrangement.Top,
-                        userScrollEnabled = !(localLoading.value || isLoading)
+                        userScrollEnabled = !(localLoading.value)
                     ) {
-                        val currentList = if (filtrerte.equals("")) {
-                            searchResult.beachList
-                        } else {
-                            searchResult.beachList.intersect(filtrerte.toSet()).toList()
-                        }
-                        if (currentList.isEmpty() && !(isLoading || localLoading.value)) {
+                        val currentList =
+                            if (searchText == "" && !anyActiveFiltering) {
+                                beachState.beaches.sortedBy { it.name }
+                            } else if (!anyActiveFiltering) {
+                                filtrerte
+                            } else {
+                                searchResult.beachList.intersect(filtrerte.toSet()).toList()
+                            }
+                        if (currentList.isEmpty() && !(localLoading.value)) {
                             item {
                                 Box(modifier = Modifier.fillMaxSize()) {
                                     Text(
