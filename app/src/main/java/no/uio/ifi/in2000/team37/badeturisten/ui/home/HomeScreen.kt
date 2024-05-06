@@ -79,7 +79,7 @@ import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 
 @Composable
@@ -560,7 +560,7 @@ fun HomeScreen(
                                     items(beachLocation) { beach ->
                                         beach.second?.let {
                                             localLoading.value = false
-                                            Badeinfoforbeachcard(
+                                            BeachCard(
                                                 beach.first,
                                                 it, navController, beachinfo
                                             )

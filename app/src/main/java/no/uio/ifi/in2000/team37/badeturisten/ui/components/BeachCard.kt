@@ -27,30 +27,29 @@ import coil.compose.AsyncImage
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BeachCard(
     beach: Beach,
     avstand: Int,
     navController: NavController,
-    beachinfo: BeachInfoForHomescreen?
+    beachInfoMap: Map<String, BeachInfoForHomescreen?>
 ) {
+    val beachinfo = beachInfoMap[beach.name]
+
     Card(
         onClick = { navController.navigate("beachProfile/${beach.name}") },
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 10.dp)
             .height(240.dp)
-            .width(180.dp),
-        ) {
+            .width(180.dp)
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
-            val km = avstand/1000.0
+            val km = avstand / 1000.0
             Box(Modifier.fillMaxSize()) {
-                val imageUrl = beachinfo?.info?.imageUrl
-                    ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
+                val imageUrl = beachinfo?.info?.imageUrl ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
                 AsyncImage(
                     model = imageUrl,
                     contentDescription = "Bilde fra Oslo Kommune",
@@ -64,16 +63,12 @@ fun BeachCard(
                     text = beach.name,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
-                    style =
-                    TextStyle(
+                    style = TextStyle(
                         color = Color.Black,
-                        drawStyle = Stroke(
-                            width = 15f
-                        )
+                        drawStyle = Stroke(width = 15f)
                     ),
                     modifier = Modifier
                         .align(Alignment.TopCenter)
-                        //.basicMarquee()
                         .padding(16.dp),
                     textAlign = TextAlign.Center
                 )
@@ -83,57 +78,46 @@ fun BeachCard(
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
-                        //.basicMarquee()
                         .align(Alignment.TopCenter)
                         .padding(16.dp),
                     style = TextStyle(color = Color.Black),
                     textAlign = TextAlign.Center
                 )
-                if(avstand>1) {
+                if (avstand > 1) {
                     Text(
                         text = "${String.format("%.1f", km)} km",
-                        fontSize = 30.sp,
+                        fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        style =
-                        TextStyle(
+                        style = TextStyle(
                             color = Color.Black,
-                            drawStyle = Stroke(
-                                width = 15f
-                            )
+                            drawStyle = Stroke(width = 15f)
                         ),
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
-                            //.basicMarquee()
                             .padding(16.dp),
                     )
                     Text(
                         text = "${String.format("%.1f", km)} km",
-                        fontSize = 30.sp,
+                        fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         modifier = Modifier
-                            //.basicMarquee()
                             .align(Alignment.BottomCenter)
                             .padding(16.dp),
                         style = TextStyle(color = Color.Black)
                     )
                 }
-                val tempText =
-                    if (beach.waterTemp != null) "${beach.waterTemp}°C \ni vannet" else ""
+                val tempText = if (beach.waterTemp != null) "${beach.waterTemp}°C \ni vannet" else ""
                 Text(
                     text = tempText,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    style =
-                    TextStyle(
+                    style = TextStyle(
                         color = Color.Black,
-                        drawStyle = Stroke(
-                            width = 15f
-                        )
+                        drawStyle = Stroke(width = 15f)
                     ),
                     modifier = Modifier
                         .align(Alignment.Center)
-                        //.basicMarquee()
                         .padding(16.dp),
                     textAlign = TextAlign.Center
                 )
@@ -143,7 +127,6 @@ fun BeachCard(
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     modifier = Modifier
-                        //.basicMarquee()
                         .align(Alignment.Center)
                         .padding(16.dp),
                     textAlign = TextAlign.Center,
@@ -153,135 +136,3 @@ fun BeachCard(
         }
     }
 }
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun Badeinfoforbeachcard(
-    beach: Beach,
-    avstand: Int,
-    navController: NavController,
-    beachInfoMap: Map<String, BeachInfoForHomescreen?>
-) {
-    beachInfoMap[beach.name]?.let { badeinfo ->
-        BeachCard(beach = beach, avstand = avstand, navController = navController, badeinfo)
-    } ?: run {
-        Card(
-            onClick = { navController.navigate("beachProfile/${beach.name}") },
-            modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 10.dp)
-                .height(240.dp)
-                .width(180.dp),
-            ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                val km = avstand/1000.0
-                Box(Modifier.fillMaxSize()) {
-                    val imageUrl =
-                        "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
-                    AsyncImage(
-                        model = imageUrl,
-                        contentDescription = "Bilde fra Oslo Kommune",
-                        contentScale = ContentScale.FillHeight,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(16.dp))
-                            .align(Alignment.Center)
-                    )
-                    Text(
-                        text = beach.name,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        style =
-                        TextStyle(
-                            color = Color.Black,
-                            drawStyle = Stroke(
-                                width = 15f
-                            )
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            //.basicMarquee()
-                            .padding(16.dp),
-                    )
-                    Text(
-                        text = beach.name,
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            //.basicMarquee()
-                            .align(Alignment.TopCenter)
-                            .padding(16.dp),
-                        style = TextStyle(color = Color.Black)
-                    )
-                    if(avstand>1) {
-                        Text(
-                            text = "${String.format("%.1f", km)} km",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold,
-                            style =
-                            TextStyle(
-                                color = Color.Black,
-                                drawStyle = Stroke(
-                                    width = 15f
-                                )
-                            ),
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                //.basicMarquee()
-                                .padding(16.dp),
-                        )
-                        Text(
-                            text = "${String.format("%.1f", km)} km",
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            modifier = Modifier
-                                //.basicMarquee()
-                                .align(Alignment.BottomCenter)
-                                .padding(16.dp),
-                            style = TextStyle(color = Color.Black)
-                        )
-                    }
-                    val tempText =
-                        if (beach.waterTemp != null) "${beach.waterTemp}°C \ni vannet" else ""
-                    Text(
-                        text = tempText,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        style =
-                        TextStyle(
-                            color = Color.Black,
-                            drawStyle = Stroke(
-                                width = 15f
-                            )
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            //.basicMarquee()
-                            .padding(16.dp),
-                    )
-                    Text(
-                        text = tempText,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier
-                            //.basicMarquee()
-                            .align(Alignment.Center)
-                            .padding(16.dp),
-                        style = TextStyle(color = Color.Black),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-        }
-    }
-}
-
