@@ -12,6 +12,7 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -310,7 +311,7 @@ fun HomeScreen(
             Spacer(Modifier.height(50.dp))
             Column(
                 modifier = Modifier
-                    .defaultMinSize(400.dp, 240.dp),  //Avstand mellom toppdel og underdel
+                    .defaultMinSize(400.dp, 240.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
@@ -433,7 +434,6 @@ fun HomeScreen(
                             }
                         }
                     }
-
                     Column(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -441,7 +441,6 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Box {
-                            //For å opprettholde struktur selv om siden lastes inn.
                             imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
                                 Image(
                                     painter = it,
@@ -452,7 +451,6 @@ fun HomeScreen(
                                     contentScale = ContentScale.Fit,
                                 )
                             }
-                            //Bilde med vaerikon
                             if (forecastState != null) {
                                 val imageName = forecastState.symbolCode
                                 val imageID = imageMap[imageName]
@@ -538,11 +536,9 @@ fun HomeScreen(
                                 )
                             }
                         }
-
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 20.dp),
                         ) {
                             if (localLoading.value) {
                                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -555,7 +551,9 @@ fun HomeScreen(
                                     state = state,
                                     flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
                                     modifier = Modifier
-                                        .fillMaxSize()
+                                        .fillMaxSize(),
+                                    contentPadding = PaddingValues(6.dp),
+                                    horizontalArrangement = Arrangement.Center
                                 ) {
                                     items(beachLocation) { beach ->
                                         beach.second?.let {
@@ -566,7 +564,6 @@ fun HomeScreen(
                                             )
                                         }
                                     }
-
                                 }
                             }
                         }
@@ -609,7 +606,6 @@ fun AlertDisplay(alertState: MetAlertsUIState) {
                         MetAlertCard(weatherWarning = alert)
                     }
                 }
-
             }
         }
     }
@@ -677,7 +673,6 @@ fun NormalDisplay() {
             .height(90.dp)
             .wrapContentWidth(Alignment.CenterHorizontally)
             .wrapContentHeight(Alignment.Bottom)
-
     ) {
         Box(
             modifier = Modifier
