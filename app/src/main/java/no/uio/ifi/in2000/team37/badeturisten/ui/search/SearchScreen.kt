@@ -35,7 +35,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -50,7 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 
 @Composable
 fun CustomToggleButton(
@@ -307,9 +306,7 @@ fun SearchScreen(
             )
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                //.padding(horizontal = 30.dp, vertical = 15.dp),
-                ,
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 if (localLoading.value) {
@@ -345,7 +342,7 @@ fun SearchScreen(
                         } else {
                             items(currentList) { beach ->
                                 localLoading.value = false
-                                Badeinfoforbeachcard(beach, -1, navController, beachinfo)
+                                BeachCard(beach, -1, navController, beachinfo)
                             }
                         }
                     }
