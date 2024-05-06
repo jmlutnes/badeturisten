@@ -173,7 +173,7 @@ fun Gradient (){
         Canvas(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp),
+                .height(100.dp),
             onDraw = {
                 drawRect(brushUp)
             }
