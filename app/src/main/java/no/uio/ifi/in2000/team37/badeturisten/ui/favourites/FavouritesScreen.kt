@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -37,6 +38,8 @@ fun FavouritesScreen(
     val favouritesViewModel: FavouritesViewModel = hiltViewModel()
 
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
+
+    val beachinfo = favouritesViewModel.beachDetails.collectAsState().value
 
     val state = rememberLazyGridState()
     Column(
@@ -83,7 +86,7 @@ fun FavouritesScreen(
                             verticalArrangement = Arrangement.Top)
                         {
                             items(favouritesState.favourites) { beach ->
-                                BeachCard(beach = beach, 0, navController = navController, null)
+                                Badeinfoforbeachcard(beach = beach, 0, navController = navController, beachinfo)
                             }
                         }
                     }
