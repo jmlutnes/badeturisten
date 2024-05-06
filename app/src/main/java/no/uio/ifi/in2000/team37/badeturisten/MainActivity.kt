@@ -80,6 +80,11 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
 class MainActivity : ComponentActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+/*
+
+    @Inject
+    lateinit var dataStoreManager: DataStoreManager
+*/
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -41,4 +41,9 @@ interface BeachRepository {
      * Returns list of favourite beaches
      */
     fun updateFavourites(beach: Beach?): List<Beach>
+
+    /**
+     * saves beach in a datastore
+     */
+    suspend fun saveBeach(beach: Beach)
 }

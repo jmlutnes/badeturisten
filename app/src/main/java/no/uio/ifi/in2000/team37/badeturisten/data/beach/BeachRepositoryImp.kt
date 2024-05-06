@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import no.uio.ifi.in2000.team37.badeturisten.data.datastore.BeachDataStore
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
@@ -25,7 +26,7 @@ class BeachRepositoryImp @Inject constructor(
     //flows
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
     private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
-    var beachlist: MutableList<Beach> = mutableListOf<Beach>()
+    val beachlist: List<Beach> = mutableListOf<Beach>()
 
     //henter flows
     override fun getBeachObservations(): StateFlow<List<Beach>> = beachObservations.asStateFlow()
@@ -60,16 +61,21 @@ class BeachRepositoryImp @Inject constructor(
     override suspend fun getBeach(beachName: String): Beach? =
         beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-    override fun updateFavourites(beach: Beach?): List<Beach> {
+    override fun updateFavourites(beach: Beach?): List<Beach>{
         if (beach != null) {
             if (beach in beachlist) {
-                beachlist.remove(beach)
+                beachlist.toMutableList().remove(beach)
             } else {
-                beachlist.add(beach)
+                beachlist.toMutableList().add(beach)
             }
         }
         favouriteObservations.value = beachlist  // Make sure this line is executing
         Log.d("BeachRepository", "Favorites updated: $beachlist")
         return beachlist
+    }
+
+    override suspend fun saveBeach(beach: Beach) {
+        updateFavourites(beach)
+        BeachDataStore.saveBeaches(beachlist)
     }
 }
