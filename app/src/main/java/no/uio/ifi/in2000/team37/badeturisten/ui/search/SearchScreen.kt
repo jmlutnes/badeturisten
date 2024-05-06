@@ -35,6 +35,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -161,9 +162,9 @@ fun SearchScreen(
     val beachState = searchViewModel.beachState.collectAsState().value
     val beachinfo = searchViewModel.beachDetails.collectAsState().value
     val state = rememberLazyGridState()
-    var searchText by remember { mutableStateOf("") }
+    var searchText by rememberSaveable { mutableStateOf("") }
     val isLoading by searchViewModel.isLoading.collectAsState()
-    val localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
+    val localLoading: MutableState<Boolean> = rememberSaveable { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
