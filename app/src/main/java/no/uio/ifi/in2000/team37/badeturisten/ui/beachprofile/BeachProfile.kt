@@ -2,6 +2,7 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
@@ -39,6 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
@@ -159,6 +161,25 @@ fun Kollektiv(beach: BeachUIState) {
         }
     }
 }
+@Composable
+fun Gradient (){
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .clip(RoundedCornerShape(16.dp))
+    ) {
+        val customBlue = Color(0xFF435C8F)
+        val brushUp =
+            Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.9F), Color.Transparent))
+        Canvas(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp),
+            onDraw = {
+                drawRect(brushUp)
+            }
+        )
+    }
+}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(
@@ -176,6 +197,7 @@ fun BeachProfile(
     val beach = beachViewModel.beachUIState.collectAsState().value
 
     val isLoading by beachViewModel.isLoading.collectAsState()
+
 
     Scaffold(
         topBar = {
@@ -214,7 +236,7 @@ fun BeachProfile(
                                     .fillMaxSize()
                             ) {
                                 Box(
-                                    modifier = Modifier
+                                    modifier = ModifierB
                                         .fillMaxSize()
 
                                 ) {
@@ -226,41 +248,28 @@ fun BeachProfile(
                                         contentDescription = "Bilde fra Oslo Kommune",
                                         contentScale = ContentScale.FillWidth,
                                         modifier = Modifier
-                                            .fillMaxWidth()
+                                            .fillMaxSize()
                                             .clip(RoundedCornerShape(16.dp))
                                             .align(Alignment.Center)
                                     )
+                                    Gradient()
                                     if (imageUrl == "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp") {
                                         LottieAnimation()
                                     }
-
                                     beach.beach?.let {
                                         Text(
                                             text = it.name,
                                             fontSize = 25.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            style =
-                                            TextStyle(
-                                                color = Color.Black,
-                                                drawStyle = Stroke(
-                                                    width = 15f
-                                                )
-                                            ),
-                                            modifier = Modifier
-                                                .align(Alignment.TopCenter)
-                                                .basicMarquee()
-                                                .padding(16.dp),
-                                        )
-                                        Text(
-                                            text = it.name,
-                                            fontSize = 25.sp,
-                                            fontWeight = FontWeight.Bold,
+                                            fontWeight = FontWeight.SemiBold,
                                             color = Color.White,
                                             modifier = Modifier
                                                 .basicMarquee()
                                                 .align(Alignment.TopCenter)
                                                 .padding(16.dp),
-                                            style = TextStyle(color = Color.Black)
+                                            style = TextStyle(
+                                                letterSpacing = 0.4.sp,
+                                                color = Color.White,
+                                            )
                                         )
 
                                     }

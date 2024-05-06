@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -67,9 +66,10 @@ fun BeachCard(
     navController: NavController,
     beachInfoMap: Map<String, BeachInfoForHomescreen?>,
 ) {
-    val brushUp = Brush.verticalGradient(listOf(MaterialTheme.colorScheme.primary.copy(alpha = 0.9F), Color.Transparent))
+    val customBlue = Color(0xFF3C5382)
+    val brushUp = Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.7F), Color.Transparent))
     val brushDown =
-        Brush.verticalGradient(listOf(Color.Transparent, MaterialTheme.colorScheme.primary.copy(alpha = 0.9F)))
+        Brush.verticalGradient(listOf(Color.Transparent, customBlue.copy(alpha = 0.8F)))
 
     val beachinfo = beachInfoMap[beach.name]
 
