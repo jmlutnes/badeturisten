@@ -324,8 +324,7 @@ fun HomeScreen(
                             .clip(shape = RoundedCornerShape(10.dp))
                             .align(Alignment.BottomCenter)
                             .padding(20.dp),
-
-                        ) {
+                    ) {
                         Row(
                             modifier = Modifier
                                 .background(colorScheme.primary)
@@ -402,8 +401,7 @@ fun HomeScreen(
                                         modifier = Modifier
                                             .fillMaxSize(),
                                         horizontalAlignment = Alignment.CenterHorizontally,
-
-                                        ) {
+                                    ) {
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxSize()
@@ -448,7 +446,7 @@ fun HomeScreen(
                                     alignment = Alignment.TopCenter,
                                     colorFilter = ColorFilter.tint(Color.White),
                                     contentDescription = "Laster værikon",
-                                    contentScale = ContentScale.Fit,
+                                    contentScale = ContentScale.Fit
                                 )
                             }
                             if (forecastState != null) {
@@ -461,7 +459,7 @@ fun HomeScreen(
                                         modifier = imageModifier,
                                         alignment = Alignment.TopCenter,
                                         contentDescription = "Værikon",
-                                        contentScale = ContentScale.Fit,
+                                        contentScale = ContentScale.Fit
                                     )
                                 }
                             }
@@ -527,7 +525,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(horizontal = 10.dp)
                                     .size(48.dp)
-                                    .align(Alignment.TopEnd),
+                                    .align(Alignment.TopEnd)
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.Refresh,
@@ -600,7 +598,7 @@ fun AlertDisplay(alertState: MetAlertsUIState) {
                         .fillMaxSize()
                         .padding(top = 5.dp)
                         .wrapContentWidth(Alignment.CenterHorizontally)
-                        .wrapContentHeight(Alignment.CenterVertically),
+                        .wrapContentHeight(Alignment.CenterVertically)
                 ) {
                     items(alertState.alerts) { alert ->
                         MetAlertCard(weatherWarning = alert)
@@ -640,7 +638,7 @@ fun NoAlertDisplay() {
                         .height(90.dp)
                         .padding(10.dp, 4.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = colorScheme.surface,
+                        containerColor = colorScheme.surface
                     )
                 ) {
                     Column(
@@ -700,7 +698,7 @@ fun NormalDisplay() {
                             lineHeightStyle = LineHeightStyle(
                                 alignment = LineHeightStyle.Alignment.Proportional,
                                 trim = LineHeightStyle.Trim.None
-                            ),
+                            )
                         )
                     )
                 )
