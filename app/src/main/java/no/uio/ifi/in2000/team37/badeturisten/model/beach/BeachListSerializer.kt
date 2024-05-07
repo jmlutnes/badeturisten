@@ -16,7 +16,7 @@ object BeachListSerializer : Serializer<List<Beach>> {
             Json.decodeFromString(ListSerializer(Beach.serializer()), input.readBytes().decodeToString())
         } catch (e: SerializationException) {
             Log.e("DataStore", "Serialization error on read", e)
-            defaultValue
+            return defaultValue
         }
     }
 

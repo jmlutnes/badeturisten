@@ -9,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineScope
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
@@ -37,8 +38,8 @@ object RepositoryModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton
-    fun provideBeachRepository(dataSource: WaterTemperatureDataSource, dataStore: DataStore<List<Beach>>): BeachRepository {
-        return BeachRepositoryImp(dataSource, dataStore)
+    fun provideBeachRepository(dataSource: WaterTemperatureDataSource, dataStore: DataStore<List<Beach>>, coroutineScope: CoroutineScope): BeachRepository {
+        return BeachRepositoryImp(dataSource, dataStore, coroutineScope)
     }
 
     @Provides

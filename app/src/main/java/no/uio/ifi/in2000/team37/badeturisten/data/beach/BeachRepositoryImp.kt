@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.datastore.core.DataStore
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,28 +14,37 @@ import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachRepositoryImp @Inject constructor(
     private val waterTempDataSource: WaterTemperatureDataSource,
-    private val beachListDataStore: DataStore<List<Beach>>
+    private val beachListDataStore: DataStore<List<Beach>>,
+    private val coroutineScope: CoroutineScope
 ) : BeachRepository {
+    init {
+        // loadInitialData
+        coroutineScope.launch {
+            beachListDataStore.data.collect { beaches ->
+                favouriteList = beaches.toMutableList()
+                favouriteObservations.value = favouriteList
+            }
+        }
+    }
+
+    private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
+    private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
+    var favouriteList: MutableList<Beach> = mutableListOf<Beach>()
+
+    override fun getBeachObservations(): StateFlow<List<Beach>> = beachObservations.asStateFlow()
+    override fun getFavouriteObservations(): StateFlow<List<Beach>> =
+        favouriteObservations.asStateFlow()
 
     override suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData(59.91, 10.74, 10, 50)
     }
 
-    //flows
-    private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
-    private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
-    val beachlist: MutableList<Beach> = mutableListOf<Beach>()
-
-    //henter flows
-    override fun getBeachObservations() = beachObservations.asStateFlow()
-    override fun getFavouriteObservations() =
-        favouriteObservations.asStateFlow()
-
-    //oppdaterer flows
     override suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
 
@@ -66,31 +76,24 @@ class BeachRepositoryImp @Inject constructor(
     // favourites only work on beach objects
     override suspend fun updateFavourites(beach: Beach?): List<Beach>{
         if (beach != null) {
-            if (beach in beachlist) {
-                beachlist.remove(beach)
+            if (beach in favouriteList) {
+                favouriteList.remove(beach)
             } else {
-                beachlist.add(beach)
+                favouriteList.add(beach)
+            }
+
+            favouriteObservations.value = favouriteList  // Make sure this line is executing
+            Log.d("BeachRepository", "Favorites updated: $favouriteList")
+
+            try {
+                beachListDataStore.updateData {favouriteList.toList()  // Convert mutable list to list
+                }
+                val results: List<Beach> = beachListDataStore.data.first()
+                Log.d("BeachRepository", "Successfully updated and read from DataStore: $results")
+            } catch (e: Exception) {
+                Log.e("BeachRepository", "Failed to update DataStore with favouriteList", e)
             }
         }
-        favouriteObservations.value = beachlist  // Make sure this line is executing
-        Log.d("BeachRepository", "Favorites updated: $beachlist")
-        try {
-            beachListDataStore.updateData { currentBeaches ->
-                emptyList()  // Test with an empty list
-            }
-        } catch (e: Exception) {
-            Log.e("BeachRepository", "Failed to update with empty list", e)
-            throw e
-        }
-        /*try {
-            beachListDataStore.updateData { currentBeaches ->
-                Log.d("BeachRepository", "Current beaches in DataStore: $currentBeaches")
-                beachlist.toList()  // Assuming this transformation is necessary
-            }
-        }catch (e: Exception) {
-            Log.e("BeachRepository", "Failed to save beachs: $beachlist", e)
-            throw e  // Or handle gracefully depending on your error strategy
-        }*/
-        return beachlist
+        return favouriteList
     }
 }
