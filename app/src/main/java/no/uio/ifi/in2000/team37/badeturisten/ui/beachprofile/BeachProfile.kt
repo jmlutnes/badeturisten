@@ -48,6 +48,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -251,10 +252,11 @@ fun BeachProfile(
                                         Text(
                                             text = it.name,
                                             fontSize = 25.sp,
-                                            fontWeight = FontWeight.SemiBold,
+                                            fontWeight = FontWeight.Medium,
                                             color = Color.White,
+                                            textAlign = TextAlign.Center,
                                             modifier = Modifier
-                                                .basicMarquee()
+                                                //.basicMarquee()
                                                 .align(Alignment.TopCenter)
                                                 .padding(16.dp),
                                             style = TextStyle(
