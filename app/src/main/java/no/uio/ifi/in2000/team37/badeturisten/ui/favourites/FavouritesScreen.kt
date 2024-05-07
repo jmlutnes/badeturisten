@@ -37,11 +37,9 @@ fun FavouritesScreen(
     val favouritesViewModel: FavouritesViewModel = hiltViewModel()
 
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
-
     val beachinfo = favouritesViewModel.beachDetails.collectAsState().value
 
     val state = rememberLazyGridState()
-
 
     Column(
         modifier = Modifier
