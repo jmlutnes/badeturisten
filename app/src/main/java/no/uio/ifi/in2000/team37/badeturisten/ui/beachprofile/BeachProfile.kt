@@ -198,7 +198,7 @@ fun BeachProfile(
 
     LaunchedEffect(Unit) {
         // Upon initial composition, check and update the favorites
-        beachViewModel.checkAndUpdateFavorites(beach)
+        beach.beach?.let { beachViewModel.checkAndUpdateFavorites(it) }
     }
     Scaffold(
         topBar = {
@@ -284,11 +284,11 @@ fun BeachProfile(
                                                 )
                                             }
                                         }) {
-                                        val isFavorited =
+
                                         Icon(
-                                            imageVector = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                                            imageVector = if (isFavorited == true) Icons.Filled.Favorite else Icons.Outlined.Favorite,
                                             contentDescription = "Heart",
-                                            tint = if (isFavorited) Color.Red else Color.White,
+                                            tint = if (isFavorited == true) Color.Red else Color.White,
                                             modifier = Modifier
                                                 .size(50.dp)
                                         )
