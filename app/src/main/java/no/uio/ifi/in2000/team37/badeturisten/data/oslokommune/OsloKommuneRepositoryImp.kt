@@ -15,6 +15,46 @@ class OsloKommuneRepositoryImp @Inject constructor(
 ) : OsloKommuneRepository {
     private val beachList: MutableList<Beach> = mutableListOf()
 
+    override suspend fun getDataForFacilityEach(
+        lifeguard: Boolean,
+        childFriendly: Boolean,
+        grill: Boolean,
+        kiosk: Boolean,
+        accessible: Boolean,
+        toilets: Boolean,
+        divingTower: Boolean
+    ): List<jsontokotlin_kommune> {
+        val flags = listOf(lifeguard, childFriendly, grill, kiosk, accessible, toilets, divingTower)
+        val arguments = listOf(
+            "lifeguard",
+            "childFriendly",
+            "grill",
+            "kiosk",
+            "accessible",
+            "toilets",
+            "divingTower"
+        )
+        val results = mutableListOf<jsontokotlin_kommune>()
+
+        flags.forEachIndexed { index, value ->
+            if (value) {
+                val tempFlags = flags.mapIndexed { i, _ -> i == index }
+                val result = datasource.getDataForFasilitet(
+                    lifeguard = tempFlags[0],
+                    childFriendly = tempFlags[1],
+                    grill = tempFlags[2],
+                    kiosk = tempFlags[3],
+                    accessible = tempFlags[4],
+                    toilets = tempFlags[5],
+                    divingTower = tempFlags[6]
+                )
+                results.add(result)
+            }
+        }
+
+        return results
+    }
+
     override suspend fun getDataForFacility(
         lifeguard: Boolean,
         childFriendly: Boolean,

@@ -26,6 +26,7 @@ data class SokKommuneBeachList(
     val beachList: List<Beach> = listOf(),
 )
 
+@Suppress("IMPLICIT_CAST_TO_ANY")
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
@@ -75,6 +76,36 @@ class SearchViewModel @Inject constructor(
             }
         }
     }
+    suspend fun loadBeachesIntersect() {
+        _isLoading.value = true
+        try {
+            val results = _osloKommuneRepository.getDataForFacilityEach(
+                badevakt.value,
+                barnevennlig.value,
+                grill.value,
+                kiosk.value,
+                tilpasning.value,
+                toalett.value,
+                badebrygge.value
+            )
+
+            val intersectedResults = if (results.isNotEmpty()) {
+                results.groupBy { it }.filter { it.value.size == results.size }.keys.toList()
+            } else {
+                emptyList()
+            }
+
+            _sokResultater.value = SokKommuneBeachList(intersectedResults)
+        } catch (e: Exception) {
+            Log.e("SearchViewModel", "Error loading intersected beaches: ${e.message}")
+            _sokResultater.value = SokKommuneBeachList(emptyList())
+        } finally {
+            _isLoading.value = false
+        }
+    }
+
+
+
 
     private suspend fun getBeachInfo(): Map<String, BeachInfoForHomescreen?> {
         return _osloKommuneRepository.findAllWebPages()

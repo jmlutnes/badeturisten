@@ -7,6 +7,17 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 
 interface OsloKommuneRepository {
+
+    suspend fun getDataForFacilityEach(
+        lifeguard: Boolean,
+        childFriendly: Boolean,
+        grill: Boolean,
+        kiosk: Boolean,
+        accessible: Boolean,
+        toilets: Boolean,
+        divingTower: Boolean
+    ):  List<jsontokotlin_kommune>
+
     /**
      * Send in boolean parameters for which facilities Oslo Kommune website to seach for.
      * Returns all the beaches with at least one of the parameters.
