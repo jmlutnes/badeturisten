@@ -42,7 +42,7 @@ fun FavouritesScreen(
 
     val state = rememberLazyGridState()
 
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -67,13 +67,14 @@ fun FavouritesScreen(
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseOnSurface,
-                    )
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -84,10 +85,16 @@ fun FavouritesScreen(
                                 .fillMaxSize(),
                             columns = GridCells.Adaptive(180.dp),
                             //horizontalArrangement = Arrangement.Absolute.Center,
-                            verticalArrangement = Arrangement.Top)
+                            verticalArrangement = Arrangement.Top
+                        )
                         {
                             items(favouritesState.favourites) { beach ->
-                                BeachCard(beach = beach, 0, navController = navController, beachinfo)
+                                BeachCard(
+                                    beach = beach,
+                                    0,
+                                    navController = navController,
+                                    beachinfo
+                                )
                             }
                         }
                     }

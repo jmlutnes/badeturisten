@@ -279,7 +279,11 @@ fun BeachProfile(
                                         .align(Alignment.BottomEnd)
                                         .padding(17.dp),
                                         onClick = {
-                                            beach.beach?.let { beachViewModel.checkAndUpdateFavorites(it) }
+                                            beach.beach?.let {
+                                                beachViewModel.checkAndUpdateFavorites(
+                                                    it
+                                                )
+                                            }
                                         }) {
                                         Icon(
                                             imageVector = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.Favorite,

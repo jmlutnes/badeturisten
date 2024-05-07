@@ -28,7 +28,7 @@ data class FavouritesUIState(
 class FavouritesViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository
-): ViewModel() {
+) : ViewModel() {
     private val _beachDetails = MutableStateFlow<Map<String, BeachInfoForHomescreen?>>(emptyMap())
     val beachDetails: StateFlow<Map<String, BeachInfoForHomescreen?>> = _beachDetails.asStateFlow()
 

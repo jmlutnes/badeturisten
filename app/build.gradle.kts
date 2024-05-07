@@ -55,8 +55,8 @@ android {
 
 dependencies {
     //Location
-    implementation ("com.google.android.gms:play-services-location:21.2.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
 
     implementation("com.google.android.datatransport:transport-runtime:3.3.0")
     implementation("androidx.room:room-ktx:2.6.1")
@@ -102,14 +102,14 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
     // ViewModel and Hilt ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    kapt ("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Datastore
-    implementation ("androidx.datastore:datastore-preferences:1.1.1")
-    implementation ("androidx.datastore:datastore-core:1.1.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.datastore:datastore-core:1.1.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }
 kapt {
     correctErrorTypes = true

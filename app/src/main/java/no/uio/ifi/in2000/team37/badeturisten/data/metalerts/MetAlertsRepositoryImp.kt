@@ -14,11 +14,12 @@ import java.time.format.DateTimeFormatter
 
 class MetAlertsRepositoryImp(
     private val datasource: MetAlertsDataSource
-): MetAlertsRepository{
+) : MetAlertsRepository {
 
     //lager en flow av MetAlerts
     private val metAlertsObservations = MutableStateFlow<List<WeatherWarning>>(listOf())
     override fun getMetAlertsObservations() = metAlertsObservations.asStateFlow()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getWeatherWarnings() {
         val result = datasource.getData()
@@ -33,7 +34,6 @@ class MetAlertsRepositoryImp(
             }.distinctBy { it.area + it.event + it.description }
         }
     }
-
 
 
     @RequiresApi(Build.VERSION_CODES.O)

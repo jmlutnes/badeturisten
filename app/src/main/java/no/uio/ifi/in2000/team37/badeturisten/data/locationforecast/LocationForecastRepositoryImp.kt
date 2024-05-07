@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class LocationForecastRepositoryImp @Inject constructor(
     private val datasource: LocationForecastDataSource
-): LocationForecastRepository{
+) : LocationForecastRepository {
 
     private val forecastNextHour = MutableStateFlow<ForecastNextHour?>(null)
 
@@ -18,7 +18,8 @@ class LocationForecastRepositoryImp @Inject constructor(
 
         if (result != null) {
             val temp = result.properties.timeseries[0].data.instant.details.airTemperature
-            val precipitation = result.properties.timeseries[0].data.next1Hours.details.precipitationAmount
+            val precipitation =
+                result.properties.timeseries[0].data.next1Hours.details.precipitationAmount
             val symbolCode = result.properties.timeseries[0].data.next1Hours.summary.symbolCode
             val forecast = ForecastNextHour(temp, precipitation, symbolCode)
 
@@ -27,5 +28,7 @@ class LocationForecastRepositoryImp @Inject constructor(
             }
         }
     }
-    override fun observeForecastNextHour(): StateFlow<ForecastNextHour?> = forecastNextHour.asStateFlow()
+
+    override fun observeForecastNextHour(): StateFlow<ForecastNextHour?> =
+        forecastNextHour.asStateFlow()
 }

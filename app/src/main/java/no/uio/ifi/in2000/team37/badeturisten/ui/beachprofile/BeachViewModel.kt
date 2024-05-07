@@ -64,7 +64,6 @@ class BeachViewModel @Inject constructor(
         viewModelScope.launch {
             _beachRepository.updateFavourites(beach)
             _isFavorited.value = _beachRepository.checkFavourite(beach)
-            Log.d("beachviewmodel, checkAndUpdateFavorites", "Favorittstatus endret: ${_isFavorited.value}")
         }
     }
 
@@ -89,12 +88,12 @@ class BeachViewModel @Inject constructor(
             val lat = beachinfo?.pos?.lat?.toDouble()
 
             var bussstasjoner: Bussstasjoner? = null
-            if ((lon == null) || (lat == null)) {
+            bussstasjoner = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
-                bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
+                _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
             } else {
                 //Fetch ID for all buss stasions based on location
-                bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
+                _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
             }
 
             val unikeBussruter = mutableSetOf<Bussrute>()
@@ -122,9 +121,9 @@ class BeachViewModel @Inject constructor(
                     )
                 }
             }
-            if (beachinfo != null){
+            if (beachinfo != null) {
                 checkFavourite(beachinfo)
-            } else if (osloKommuneBeachInfo != null){
+            } else if (osloKommuneBeachInfo != null) {
                 checkFavourite(osloKommuneBeachInfo)
             }
             _isLoading.value = false

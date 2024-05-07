@@ -28,7 +28,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
     suspend fun scrapeUrl(url: String): OsloKommuneBeachInfo? {
         try {
             val response: HttpResponse = client.get(url)
-            return if (response.status.value in 200 .. 299) {
+            return if (response.status.value in 200..299) {
                 val responseBody = response.bodyAsText()
                 return scrapeBeachInfoFromResponse(responseBody)
             } else {
@@ -71,7 +71,8 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
             val facilityList = section.select("h2:contains(Fasiliteter) + div ul li")
             facilityList.forEach { li ->
                 val contentWithBrReplaced = li.html().replace("<br>", "•")
-                val elements = Jsoup.parse(contentWithBrReplaced).text().split("•").map { it.trim() }
+                val elements =
+                    Jsoup.parse(contentWithBrReplaced).text().split("•").map { it.trim() }
                 elements.forEach { tekst ->
                     val formattedText = tekst.removePrefix("• ").let {
                         if (it.isNotBlank()) "• $it\n" else ""
@@ -135,6 +136,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
 }
 
 val gson = Gson()
+
 /**
  * Help class to seperate data class objects with the same names.
  */
@@ -144,7 +146,11 @@ class ItemDeserializer : JsonDeserializer<Item> {
     /**
      * Manual desearialize because Value has two equal variables
      */
-    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Item {
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        context: JsonDeserializationContext
+    ): Item {
         val jsonObject = json.asJsonObject
         // Extract common areas
         val id = jsonObject.get("id").asString

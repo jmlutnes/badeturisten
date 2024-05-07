@@ -28,74 +28,74 @@ import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 
 @Composable
 fun MetAlertCard(weatherWarning: WeatherWarning) {
-        Card(
-            elevation = CardDefaults.elevatedCardElevation(12.dp),
+    Card(
+        elevation = CardDefaults.elevatedCardElevation(12.dp),
+        modifier = Modifier
+            .width(290.dp)
+            .padding(10.dp, 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        )
+    ) {
+        Column(
             modifier = Modifier
-                .width(290.dp)
-                .padding(10.dp, 4.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            )
+                .padding(10.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
         ) {
-            Column(
+            Box(
                 modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight()
+                    .fillMaxSize()
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Text(
-                        text = "FAREVARSEL",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.5.em,
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ),
-                                lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Top,
-                                    trim = LineHeightStyle.Trim.None
-                                )
+                Text(
+                    text = "FAREVARSEL",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.5.em,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Top,
+                                trim = LineHeightStyle.Trim.None
                             )
-                        ),
-                        color = Color.Red,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                    )
-                }
-                val tekstArea = "Farevarsel for " + weatherWarning.area.lowercase() + ".\n"
-                val tekstInstruks = "\n${weatherWarning.instruction}"
-                Box(
+                        )
+                    ),
+                    color = Color.Red,
                     modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Text(
-                        text = tekstArea + weatherWarning.description + tekstInstruks,
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.2.em,
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ),
-                                lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Center,
-                                    trim = LineHeightStyle.Trim.LastLineBottom
-                                )
+                        .align(Alignment.TopCenter)
+                )
+            }
+            val tekstArea = "Farevarsel for " + weatherWarning.area.lowercase() + ".\n"
+            val tekstInstruks = "\n${weatherWarning.instruction}"
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = tekstArea + weatherWarning.description + tekstInstruks,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.2.em,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Center,
+                                trim = LineHeightStyle.Trim.LastLineBottom
                             )
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                    )
-                }
+                        )
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                )
             }
         }
     }
+}
 
 
