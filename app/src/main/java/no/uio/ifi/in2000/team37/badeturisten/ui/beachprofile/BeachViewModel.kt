@@ -57,6 +57,16 @@ class BeachViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _isFavorited = MutableStateFlow<Boolean?>(null)
+    val isFavorited: StateFlow<Boolean?> = _isFavorited.asStateFlow()
+
+    fun checkAndUpdateFavorites(beach: Beach) {
+        viewModelScope.launch {
+            val updatedFavoritesList = _beachRepository.updateFavourites(beach)
+            _isFavorited.value = updatedFavoritesList.contains(beach)
+        }
+    }
+
 
     init {
         loadBeachInfo()
@@ -114,9 +124,14 @@ class BeachViewModel @Inject constructor(
         Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
     }
 
-    fun updateFavourites(beach: Beach) {
+    fun updateFavourites(beach: Beach): Boolean {
+        var isFavorited: Boolean = false
+
         viewModelScope.launch {
-            _beachRepository.updateFavourites(beach)
+            val updatedFavoritesList = _beachRepository.updateFavourites(beach)
+            isFavorited = updatedFavoritesList.contains(beach)
         }
+
+        return isFavorited
     }
 }

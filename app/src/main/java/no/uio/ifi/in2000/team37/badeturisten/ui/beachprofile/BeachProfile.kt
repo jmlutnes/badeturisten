@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,6 +36,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -191,6 +193,13 @@ fun BeachProfile(
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
+    // Collect favorite status updates
+    val isFavorited by beachViewModel.isFavorited.collectAsState(initial = null)
+
+    LaunchedEffect(Unit) {
+        // Upon initial composition, check and update the favorites
+        beachViewModel.checkAndUpdateFavorites(beach)
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -275,10 +284,11 @@ fun BeachProfile(
                                                 )
                                             }
                                         }) {
+                                        val isFavorited =
                                         Icon(
-                                            imageVector = Icons.Filled.Favorite,
+                                            imageVector = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.Favorite,
                                             contentDescription = "Heart",
-                                            tint = Color.White,
+                                            tint = if (isFavorited) Color.Red else Color.White,
                                             modifier = Modifier
                                                 .size(50.dp)
                                         )
