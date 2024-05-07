@@ -62,11 +62,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.wear.compose:compose-material:1.3.1")
     implementation("com.google.android.gms:play-services-location:21.2.0")
-    val ktor_version = "2.3.10"
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-android:$ktor_version")
-    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -85,8 +80,16 @@ dependencies {
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    val nav_version = "2.7.7"
 
+    // Ktor
+    val ktor_version = "2.3.10"
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
+
+    // Navigation
+    val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
     // Lottie-animation
@@ -99,10 +102,14 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
 
     // ViewModel and Hilt ViewModel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0") // Or use the latest version
-    //implementation ("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     kapt ("androidx.hilt:hilt-compiler:1.2.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+    // Datastore
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
+    implementation ("androidx.datastore:datastore-core:1.1.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }
 kapt {
     correctErrorTypes = true

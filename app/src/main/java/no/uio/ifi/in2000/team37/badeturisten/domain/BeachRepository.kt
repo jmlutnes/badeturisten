@@ -40,5 +40,5 @@ interface BeachRepository {
      * Recieves a beach object and adds or removes the beach based on the favourite beach list
      * Returns list of favourite beaches
      */
-    fun updateFavourites(beach: Beach?): List<Beach>
+    suspend fun updateFavourites(beach: Beach?): List<Beach>
 }
