@@ -1,8 +1,8 @@
 # Introduksjon
-Dette dokumentet beskriver den overordnede arkitekturen og designprinsippene for Badeturisten, en mobilapplikasjon utviklet for å vise vann temperaturen og vann kvaliteten for badestrender rundtom i Oslo-området. Dokumentet er rettet mot utviklere, driftspersonell og andre tekniske interessenter som vil vedlikeholde og videreutvikle løsningen.
+Dette dokumentet beskriver den overordnede arkitekturen og designprinsippene for Badeturisten, en mobilapplikasjon utviklet for å vise vanntemperaturen og vannkvaliteten for badestrender rundtom i Oslo-området. Dokumentet er rettet mot utviklere, driftspersonell og andre tekniske interessenter som vil vedlikeholde og videreutvikle løsningen.
 # Systemarkitektur
 Høy-Nivå Oversikt
-Badeturisten er designet med en klar separasjon av bekymringer gjennom en flerlags arkitektur, som inkluderer:
+Badeturisten er designet med en klar separasjon av bekymringer gjennom en flerlagsarkitektur, som inkluderer:
 - Presentasjonslag – Håndterer all brukerinteraksjon og presenterer data. Utviklet med Jetpack Compose.
 - Forretningslogikklag – Inneholder all forretningslogikk og applikasjonsstatshåndtering. Dette laget bruker MVVM og UDF prinsipper for å sikre høy kohesjon og lav kobling.
 - Data Access Layer (DAL) – Abstraherer tilgang til datakilder som nettverks APIer ved bruk av ktor og lokale databaser. Implementert ved bruk av Dagger Hilt i et Repository-mønstret for fleksibilitet og isolasjon. -- "lokale databser" endre hvis det ikke blir implementert datastore for favoritter.
