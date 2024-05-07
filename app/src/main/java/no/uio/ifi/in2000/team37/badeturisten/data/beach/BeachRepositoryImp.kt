@@ -96,4 +96,8 @@ class BeachRepositoryImp @Inject constructor(
         }
         return favouriteList
     }
+
+    override fun checkFavourite(beach: Beach): Boolean {
+        return beach in favouriteList
+    }
 }

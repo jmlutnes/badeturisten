@@ -57,19 +57,25 @@ class BeachViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _isFavorited = MutableStateFlow<Boolean?>(null)
-    val isFavorited: StateFlow<Boolean?> = _isFavorited.asStateFlow()
+    private val _isFavorited = MutableStateFlow<Boolean>(false)
+    val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
 
     fun checkAndUpdateFavorites(beach: Beach) {
         viewModelScope.launch {
-            val updatedFavoritesList = _beachRepository.updateFavourites(beach)
-            _isFavorited.value = updatedFavoritesList.contains(beach)
+            _beachRepository.updateFavourites(beach)
+            _isFavorited.value = _beachRepository.checkFavourite(beach)
+            Log.d("beachviewmodel, checkAndUpdateFavorites", "Favorittstatus endret: ${_isFavorited.value}")
         }
     }
 
+    fun checkFavourite(beach: Beach) {
+        _isFavorited.value = _beachRepository.checkFavourite(beach)
+        Log.d("beachviewmodel, checkFavourite", "Favorittstatus endret: ${_isFavorited.value}")
+    }
 
     init {
         loadBeachInfo()
+        Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -81,7 +87,7 @@ class BeachViewModel @Inject constructor(
             val osloKommuneBeachInfo: Beach? = _osloKommuneRepository.getBeach(beachName)
             val lon = beachinfo?.pos?.lon?.toDouble()
             val lat = beachinfo?.pos?.lat?.toDouble()
-            println("lon:$lon \nlat:$lat")
+
             var bussstasjoner: Bussstasjoner? = null
             if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
@@ -116,22 +122,12 @@ class BeachViewModel @Inject constructor(
                     )
                 }
             }
+            if (beachinfo != null){
+                checkFavourite(beachinfo)
+            } else if (osloKommuneBeachInfo != null){
+                checkFavourite(osloKommuneBeachInfo)
+            }
             _isLoading.value = false
         }
-    }
-
-    init {
-        Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
-    }
-
-    fun updateFavourites(beach: Beach): Boolean {
-        var isFavorited: Boolean = false
-
-        viewModelScope.launch {
-            val updatedFavoritesList = _beachRepository.updateFavourites(beach)
-            isFavorited = updatedFavoritesList.contains(beach)
-        }
-
-        return isFavorited
     }
 }

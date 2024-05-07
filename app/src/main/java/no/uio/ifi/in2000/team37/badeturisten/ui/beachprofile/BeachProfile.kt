@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -193,12 +194,12 @@ fun BeachProfile(
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
-    // Collect favorite status updates
-    val isFavorited by beachViewModel.isFavorited.collectAsState(initial = null)
+    val isFavorited by beachViewModel.isFavorited.collectAsState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(isFavorited) {
         // Upon initial composition, check and update the favorites
-        beach.beach?.let { beachViewModel.checkAndUpdateFavorites(it) }
+        beach.beach?.let { beachViewModel.checkFavourite(it) }
+        Log.d("beachprofile", "Favorittstatus endret: $isFavorited")
     }
     Scaffold(
         topBar = {
@@ -278,17 +279,12 @@ fun BeachProfile(
                                         .align(Alignment.BottomEnd)
                                         .padding(17.dp),
                                         onClick = {
-                                            beach.beach?.let {
-                                                beachViewModel.updateFavourites(
-                                                    it
-                                                )
-                                            }
+                                            beach.beach?.let { beachViewModel.checkAndUpdateFavorites(it) }
                                         }) {
-
                                         Icon(
-                                            imageVector = if (isFavorited == true) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                                            imageVector = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.Favorite,
                                             contentDescription = "Heart",
-                                            tint = if (isFavorited == true) Color.Red else Color.White,
+                                            tint = if (isFavorited) Color.Red else Color.White,
                                             modifier = Modifier
                                                 .size(50.dp)
                                         )
