@@ -12,6 +12,7 @@ import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -311,7 +312,7 @@ fun HomeScreen(
             Spacer(Modifier.height(50.dp))
             Column(
                 modifier = Modifier
-                    .defaultMinSize(400.dp, 240.dp),  //Avstand mellom toppdel og underdel
+                    .defaultMinSize(400.dp, 240.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
@@ -324,8 +325,7 @@ fun HomeScreen(
                             .clip(shape = RoundedCornerShape(10.dp))
                             .align(Alignment.BottomCenter)
                             .padding(20.dp),
-
-                        ) {
+                    ) {
                         Row(
                             modifier = Modifier
                                 .background(colorScheme.primary)
@@ -402,8 +402,7 @@ fun HomeScreen(
                                         modifier = Modifier
                                             .fillMaxSize(),
                                         horizontalAlignment = Alignment.CenterHorizontally,
-
-                                        ) {
+                                    ) {
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxSize()
@@ -434,7 +433,6 @@ fun HomeScreen(
                             }
                         }
                     }
-
                     Column(
                         modifier = Modifier
                             .fillMaxSize(),
@@ -442,7 +440,6 @@ fun HomeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Box {
-                            //For å opprettholde struktur selv om siden lastes inn.
                             imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
                                 Image(
                                     painter = it,
@@ -450,10 +447,9 @@ fun HomeScreen(
                                     alignment = Alignment.TopCenter,
                                     colorFilter = ColorFilter.tint(Color.White),
                                     contentDescription = "Laster værikon",
-                                    contentScale = ContentScale.Fit,
+                                    contentScale = ContentScale.Fit
                                 )
                             }
-                            //Bilde med vaerikon
                             if (forecastState != null) {
                                 val imageName = forecastState.symbolCode
                                 val imageID = imageMap[imageName]
@@ -464,7 +460,7 @@ fun HomeScreen(
                                         modifier = imageModifier,
                                         alignment = Alignment.TopCenter,
                                         contentDescription = "Værikon",
-                                        contentScale = ContentScale.Fit,
+                                        contentScale = ContentScale.Fit
                                     )
                                 }
                             }
@@ -530,7 +526,7 @@ fun HomeScreen(
                                 modifier = Modifier
                                     .padding(horizontal = 10.dp)
                                     .size(48.dp)
-                                    .align(Alignment.TopEnd),
+                                    .align(Alignment.TopEnd)
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.Refresh,
@@ -542,7 +538,6 @@ fun HomeScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 20.dp),
                         ) {
                             if (localLoading.value) {
                                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -555,7 +550,9 @@ fun HomeScreen(
                                     state = state,
                                     flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
                                     modifier = Modifier
-                                        .fillMaxSize()
+                                        .fillMaxSize(),
+                                    contentPadding = PaddingValues(6.dp),
+                                    horizontalArrangement = Arrangement.Center
                                 ) {
                                     items(beachLocation) { beach ->
                                         beach.second.let {
@@ -603,13 +600,12 @@ fun AlertDisplay(alertState: MetAlertsUIState) {
                         .fillMaxSize()
                         .padding(top = 5.dp)
                         .wrapContentWidth(Alignment.CenterHorizontally)
-                        .wrapContentHeight(Alignment.CenterVertically),
+                        .wrapContentHeight(Alignment.CenterVertically)
                 ) {
                     items(alertState.alerts) { alert ->
                         MetAlertCard(weatherWarning = alert)
                     }
                 }
-
             }
         }
     }
@@ -644,7 +640,7 @@ fun NoAlertDisplay() {
                         .height(90.dp)
                         .padding(10.dp, 4.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = colorScheme.surface,
+                        containerColor = colorScheme.surface
                     )
                 ) {
                     Column(
@@ -677,7 +673,6 @@ fun NormalDisplay() {
             .height(90.dp)
             .wrapContentWidth(Alignment.CenterHorizontally)
             .wrapContentHeight(Alignment.Bottom)
-
     ) {
         Box(
             modifier = Modifier
@@ -705,7 +700,7 @@ fun NormalDisplay() {
                             lineHeightStyle = LineHeightStyle(
                                 alignment = LineHeightStyle.Alignment.Proportional,
                                 trim = LineHeightStyle.Trim.None
-                            ),
+                            )
                         )
                     )
                 )

@@ -1,9 +1,10 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -14,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -28,12 +29,48 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 
 @Composable
+fun GradientUp(brush: Brush, waterTemp: Double?) {
+    val modifier = if(waterTemp != null) {Modifier
+        .fillMaxWidth()
+        .height(150.dp)}
+    else{
+        Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+    }
+
+        Canvas(
+        modifier = modifier,
+        onDraw = {
+            drawRect(brush)
+        }
+    )
+}
+
+@Composable
+fun GradientDown(brush: Brush) {
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(140.dp),
+        onDraw = {
+            drawRect(brush)
+        }
+    )
+}
+
+@Composable
 fun BeachCard(
     beach: Beach,
     avstand: Int,
     navController: NavController,
-    beachInfoMap: Map<String, BeachInfoForHomescreen?>
+    beachInfoMap: Map<String, BeachInfoForHomescreen?>,
 ) {
+    val customBlue = Color(0xFF2E4064)
+    val brushUp = Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.9F), Color.Transparent))
+    val brushDown =
+        Brush.verticalGradient(listOf(Color.Transparent, customBlue.copy(alpha = 0.8F)))
+
     val beachinfo = beachInfoMap[beach.name]
 
     Card(
@@ -49,7 +86,8 @@ fun BeachCard(
         ) {
             val km = avstand / 1000.0
             Box(Modifier.fillMaxSize()) {
-                val imageUrl = beachinfo?.info?.imageUrl ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
+                val imageUrl = beachinfo?.info?.imageUrl
+                    ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
                 AsyncImage(
                     model = imageUrl,
                     contentDescription = "Bilde fra Oslo Kommune",
@@ -59,79 +97,56 @@ fun BeachCard(
                         .clip(RoundedCornerShape(16.dp))
                         .align(Alignment.Center)
                 )
-                Text(
-                    text = beach.name,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = TextStyle(
-                        color = Color.Black,
-                        drawStyle = Stroke(width = 15f)
-                    ),
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(16.dp),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = beach.name,
-                    fontSize = 17.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(16.dp),
-                    style = TextStyle(color = Color.Black),
-                    textAlign = TextAlign.Center
-                )
+                Box(modifier = Modifier.align(Alignment.TopStart)) { GradientUp(brushUp, beach.waterTemp) }
+                if (avstand > 1) {
+                    Box(modifier = Modifier.align(Alignment.BottomEnd)) { GradientDown(brushDown) }
+                }
+                Column(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = beach.name,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Medium,
+                        style = TextStyle(
+                            letterSpacing = 0.2.sp,
+                            color = Color.White,
+                        ),
+                        modifier = Modifier
+                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 4.dp), // Redusert bunnpadding
+                        textAlign = TextAlign.Center
+                    )
+
+                    val tempText = if (beach.waterTemp != null) "${beach.waterTemp}°C i vannet" else ""
+
+                    Text(
+                        text = tempText,
+                        fontSize = 14.sp,
+                        color = Color.White,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                        textAlign = TextAlign.Center,
+                        style = TextStyle(
+                            letterSpacing = 0.2.sp,
+                            color = Color.White,
+                        ),
+                    )
+                }
+
                 if (avstand > 1) {
                     Text(
                         text = "${String.format("%.1f", km)} km",
                         fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold,
                         style = TextStyle(
-                            color = Color.Black,
-                            drawStyle = Stroke(width = 15f)
+                            letterSpacing = 0.2.sp,
+                            color = Color.White,
                         ),
                         modifier = Modifier
                             .align(Alignment.BottomCenter)
                             .padding(16.dp),
                     )
-                    Text(
-                        text = "${String.format("%.1f", km)} km",
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(16.dp),
-                        style = TextStyle(color = Color.Black)
-                    )
                 }
-                val tempText = if (beach.waterTemp != null) "${beach.waterTemp}°C \ni vannet" else ""
-                Text(
-                    text = tempText,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = TextStyle(
-                        color = Color.Black,
-                        drawStyle = Stroke(width = 15f)
-                    ),
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(16.dp),
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = tempText,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(16.dp),
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(color = Color.Black)
-                )
             }
         }
     }
