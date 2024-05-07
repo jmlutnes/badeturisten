@@ -108,7 +108,7 @@ fun BeachCard(
                     Text(
                         text = beach.name,
                         fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Medium,
                         style = TextStyle(
                             letterSpacing = 0.2.sp,
                             color = Color.White,

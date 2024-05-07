@@ -167,7 +167,7 @@ fun SearchScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
     )
     {
         LaunchedEffect(
@@ -197,98 +197,94 @@ fun SearchScreen(
         ) {
             Column(
                 modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary)
                     .fillMaxWidth()
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp),
                 ) {
-                    Column(
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        text = "Søk etter badesteder",
                         modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primary)
-                            .padding(horizontal = 60.dp),
-                    ) {
-                        Spacer(Modifier.height(30.dp))
-                        Text(
-                            text = "Søk etter badesteder",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colorScheme.inverseOnSurface,
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.inverseOnSurface
+                    )
+                    TextField(
+                        value = searchText,
+                        onValueChange = { searchText = it },
+                        label = { Text("Søk") },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = MaterialTheme.colorScheme.background
                         )
-                        TextField(
-                            value = searchText,
-                            onValueChange = { searchText = it },
-                            label = { Text("Søk etter badesteder") },
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                            colors = TextFieldDefaults.textFieldColors(
-                                containerColor = MaterialTheme.colorScheme.background,
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    FilterButtons(
+                        badevakt = searchViewModel.badevakt.value,
+                        onBadevaktChange = {
+                            searchViewModel.updateFilterState(
+                                "Badevakt",
+                                !searchViewModel.badevakt.value
                             )
-                        )
-                    }
-                    Column(
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.primary)
-                            .padding(horizontal = 10.dp)
-                    ) {
-                        FilterButtons(
-                            badevakt = searchViewModel.badevakt.value,
-                            onBadevaktChange = {
-                                searchViewModel.updateFilterState(
-                                    "Badevakt",
-                                    !searchViewModel.badevakt.value
-                                )
-                            },
-                            barnevennlig = searchViewModel.barnevennlig.value,
-                            onBarnevennligChange = {
-                                searchViewModel.updateFilterState(
-                                    "Barnevennlig",
-                                    !searchViewModel.barnevennlig.value
-                                )
-                            },
-                            grill = searchViewModel.grill.value,
-                            onGrillChange = {
-                                searchViewModel.updateFilterState(
-                                    "Grill",
-                                    !searchViewModel.grill.value
-                                )
-                            },
-                            kiosk = searchViewModel.kiosk.value,
-                            onKioskChange = {
-                                searchViewModel.updateFilterState(
-                                    "Kiosk",
-                                    !searchViewModel.kiosk.value
-                                )
-                            },
-                            tilpasning = searchViewModel.tilpasning.value,
-                            onTilpasningChange = {
-                                searchViewModel.updateFilterState(
-                                    "Tilpasning",
-                                    !searchViewModel.tilpasning.value
-                                )
-                            },
-                            toalett = searchViewModel.toalett.value,
-                            onToalettChange = {
-                                searchViewModel.updateFilterState(
-                                    "Toalett",
-                                    !searchViewModel.toalett.value
-                                )
-                            },
-                            badebrygge = searchViewModel.badebrygge.value,
-                            onBadebryggeChange = {
-                                searchViewModel.updateFilterState(
-                                    "Badebrygge",
-                                    !searchViewModel.badebrygge.value
-                                )
-                            }
-                        )
-                    }
+                        },
+                        barnevennlig = searchViewModel.barnevennlig.value,
+                        onBarnevennligChange = {
+                            searchViewModel.updateFilterState(
+                                "Barnevennlig",
+                                !searchViewModel.barnevennlig.value
+                            )
+                        },
+                        grill = searchViewModel.grill.value,
+                        onGrillChange = {
+                            searchViewModel.updateFilterState(
+                                "Grill",
+                                !searchViewModel.grill.value
+                            )
+                        },
+                        kiosk = searchViewModel.kiosk.value,
+                        onKioskChange = {
+                            searchViewModel.updateFilterState(
+                                "Kiosk",
+                                !searchViewModel.kiosk.value
+                            )
+                        },
+                        tilpasning = searchViewModel.tilpasning.value,
+                        onTilpasningChange = {
+                            searchViewModel.updateFilterState(
+                                "Tilpasning",
+                                !searchViewModel.tilpasning.value
+                            )
+                        },
+                        toalett = searchViewModel.toalett.value,
+                        onToalettChange = {
+                            searchViewModel.updateFilterState(
+                                "Toalett",
+                                !searchViewModel.toalett.value
+                            )
+                        },
+                        badebrygge = searchViewModel.badebrygge.value,
+                        onBadebryggeChange = {
+                            searchViewModel.updateFilterState(
+                                "Badebrygge",
+                                !searchViewModel.badebrygge.value
+                            )
+                        }
+                    )
                 }
             }
             val filtrerte = beachState.beaches.filter { strand ->
