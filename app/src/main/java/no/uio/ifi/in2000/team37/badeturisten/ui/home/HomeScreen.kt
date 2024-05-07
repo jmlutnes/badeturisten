@@ -49,6 +49,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -78,7 +79,7 @@ import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.Badeinfoforbeachcard
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 
 @Composable
@@ -260,15 +261,15 @@ fun HomeScreen(
     val alertState = homeViewModel.metAlertsState.collectAsState().value
     val beachinfo = homeViewModel.beachDetails.collectAsState().value
 
-    var clicked by remember { mutableStateOf(false) }
-    val areActiveAlerts = remember { mutableStateOf(false) }
+    var clicked by rememberSaveable { mutableStateOf(false) }
+    val areActiveAlerts = rememberSaveable { mutableStateOf(false) }
     val warningVectorWhite = rememberWarning(false)
     val warningVectorRed = rememberWarning(true)
-    val showNormalScreen: MutableState<Boolean> = remember { mutableStateOf(false) }
-    val showNoAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
-    val showAlertDisplay: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val showNormalScreen: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+    val showNoAlertDisplay: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+    val showAlertDisplay: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     val isLoading by homeViewModel.isLoading.collectAsState()
-    val localLoading: MutableState<Boolean> = remember { mutableStateOf(true) }
+    val localLoading: MutableState<Boolean> = rememberSaveable { mutableStateOf(true) }
 
     val side1 = 450
     val side2 = 240
@@ -559,7 +560,7 @@ fun HomeScreen(
                                     items(beachLocation) { beach ->
                                         beach.second?.let {
                                             localLoading.value = false
-                                            Badeinfoforbeachcard(
+                                            BeachCard(
                                                 beach.first,
                                                 it, navController, beachinfo
                                             )

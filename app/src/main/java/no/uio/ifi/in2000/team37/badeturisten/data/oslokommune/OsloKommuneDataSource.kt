@@ -25,7 +25,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
      * Send in URL. Using Jsoup to scrape the website on Oslo Commune.
      * Returns a OsloKommuneBeachInfo object.
      */
-    suspend fun skrapUrl(url: String): OsloKommuneBeachInfo? {
+    suspend fun scrapeUrl(url: String): OsloKommuneBeachInfo? {
         try {
             val response: HttpResponse = client.get(url)
             return if (response.status.value in 200 .. 299) {

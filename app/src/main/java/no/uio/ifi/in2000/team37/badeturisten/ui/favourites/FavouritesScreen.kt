@@ -38,7 +38,11 @@ fun FavouritesScreen(
 
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
 
+    val beachinfo = favouritesViewModel.beachDetails.collectAsState().value
+
     val state = rememberLazyGridState()
+
+    
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -83,7 +87,7 @@ fun FavouritesScreen(
                             verticalArrangement = Arrangement.Top)
                         {
                             items(favouritesState.favourites) { beach ->
-                                BeachCard(beach = beach, 0, navController = navController, null)
+                                BeachCard(beach = beach, 0, navController = navController, beachinfo)
                             }
                         }
                     }

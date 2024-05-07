@@ -3,6 +3,7 @@ package no.uio.ifi.in2000.team37.badeturisten.data.metalerts
 import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.jsontokotlinmetalerts.Feature
@@ -18,7 +19,6 @@ class MetAlertsRepositoryImp(
     //lager en flow av MetAlerts
     private val metAlertsObservations = MutableStateFlow<List<WeatherWarning>>(listOf())
     override fun getMetAlertsObservations() = metAlertsObservations.asStateFlow()
-
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getWeatherWarnings() {
         val result = datasource.getData()
@@ -27,14 +27,14 @@ class MetAlertsRepositoryImp(
         metAlertsObservations.update {
             featuresArray.mapNotNull { feature ->
                 val endTimeStr = feature.whenX.interval[1]
-                if (
-                    calculateStatus(endTimeStr) == "Aktiv" &&
-                    feature.properties.county.contains("03")) {
+                if (calculateStatus(endTimeStr) == "Aktiv" && feature.properties.county.contains("03")) {
                     createWeatherWarning(feature, endTimeStr)
                 } else null
-            }
+            }.distinctBy { it.area + it.event + it.description }
         }
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun calculateStatus(eventEndingTime: String?): String {
@@ -43,6 +43,7 @@ class MetAlertsRepositoryImp(
         return if (endTime.isAfter(currentTime)) "Aktiv" else "Inaktiv"
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createWeatherWarning(feature: Feature, endTimeStr: String): WeatherWarning {
         return feature.properties.let { prop ->
             WeatherWarning(
