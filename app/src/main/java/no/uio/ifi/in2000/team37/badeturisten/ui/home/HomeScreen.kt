@@ -269,6 +269,7 @@ fun HomeScreen(
     val showNormalScreen: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     val showNoAlertDisplay: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+    val ingenLokasjon by homeViewModel.ingenLokasjon.collectAsState()
     val isLoading by homeViewModel.isLoading.collectAsState()
     val localLoading: MutableState<Boolean> = rememberSaveable { mutableStateOf(true) }
 
@@ -510,7 +511,7 @@ fun HomeScreen(
                                 .fillMaxSize()
                         ) {
                             Text(
-                                text = "Badesteder nær deg",
+                                text = if (ingenLokasjon) "Badesteder" else "Badesteder nær deg",
                                 modifier = Modifier
                                     .padding(top = 15.dp, bottom = 20.dp)
                                     .align(Alignment.Center),
@@ -554,11 +555,12 @@ fun HomeScreen(
                                     horizontalArrangement = Arrangement.Center
                                 ) {
                                     items(beachLocation) { beach ->
-                                        beach.second?.let {
+                                        beach.second.let {
                                             localLoading.value = false
                                             BeachCard(
                                                 beach.first,
-                                                it, navController, beachinfo
+                                                it,
+                                                navController, beachinfo
                                             )
                                         }
                                     }

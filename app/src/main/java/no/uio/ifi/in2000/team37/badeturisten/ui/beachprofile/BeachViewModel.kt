@@ -22,7 +22,12 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import javax.inject.Inject
 
-data class BeachUIState(val beach: Beach? = null, val badevannsinfo: OsloKommuneBeachInfo?, val kollektivRute: MutableList<Bussrute> = mutableListOf())
+data class BeachUIState(
+    val beach: Beach? = null,
+    val badevannsinfo: OsloKommuneBeachInfo?,
+    val kollektivRute: MutableList<Bussrute> = mutableListOf(),
+)
+
 data class Bussrute(val linje: String, val navn: String, val transportMode: String)
 
 @HiltViewModel
@@ -32,8 +37,8 @@ class BeachViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
     private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
-    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository
-): ViewModel() {
+    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository,
+) : ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
     private val _beachUIState = MutableStateFlow(
         BeachUIState(
@@ -51,6 +56,7 @@ class BeachViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+
     init {
         loadBeachInfo()
     }
@@ -67,7 +73,7 @@ class BeachViewModel @Inject constructor(
             println("lon:$lon \nlat:$lat")
             var bussstasjoner: Bussstasjoner? = null
             if ((lon == null) || (lat == null)) {
-                //fetch ID for all buss stations based on name
+                //Fetch ID for all buss stations based on name
                 bussstasjoner = _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
             } else {
                 //Fetch ID for all buss stasions based on location
@@ -106,6 +112,7 @@ class BeachViewModel @Inject constructor(
     init {
         Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
     }
+
     fun updateFavourites(beach: Beach) {
         _beachRepository.updateFavourites(beach)
     }
