@@ -84,6 +84,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.R
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
@@ -302,15 +303,23 @@ fun HomeScreen(
             circlegradient
         )
 
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember {
         SnackbarHostState()
     }
+    val isConnectivityIssue = homeViewModel.isConnectivityIssue.collectAsState()
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
     ) {
+        if (isConnectivityIssue.value) {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(
+                    message = "Kunne ikke laste informasjon.\nVennligst sjekk nettverkstilkoblingen din"
+                )
+            }
+        }
         LaunchedEffect(alertState.alerts) {
             areActiveAlerts.value = alertState.alerts.isNotEmpty()
         }

@@ -101,6 +101,9 @@ class HomeViewModel @Inject constructor(
     private val _ingenLokasjon = MutableStateFlow(false)
     val ingenLokasjon: StateFlow<Boolean> = _ingenLokasjon.asStateFlow()
 
+    private val _isConnectivityIssue = MutableStateFlow(false)
+    val isConnectivityIssue = _isConnectivityIssue.asStateFlow()
+
     init {
         viewModelScope.launch {
             try {
@@ -118,15 +121,22 @@ class HomeViewModel @Inject constructor(
                     )
                 }
                 sortDistances()
+
+                if (beachState.value.beaches.isEmpty()) {
+                    _isConnectivityIssue.update { true }
+                } else _isConnectivityIssue.update { false }
             } catch (e: UnknownHostException) {
+                _isConnectivityIssue.update { true }
                 Log.e(
                     "HomeViewModel",
                     "No internet connection available, unable to resolve host",
                     e
                 )
             } catch (e: IOException) {
+                _isConnectivityIssue.update { true }
                 Log.e("HomeViewModel", "Network I/O error occurred", e)
             } catch (e: Exception) {
+                _isConnectivityIssue.update { true }
                 Log.e("HomeViewModel", "An unexpected error occurred", e)
             }
         }
