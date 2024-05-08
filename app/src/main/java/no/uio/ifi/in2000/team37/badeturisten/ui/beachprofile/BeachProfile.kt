@@ -183,8 +183,6 @@ fun Gradient() {
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
 )
 @Composable
 fun BeachProfile(
