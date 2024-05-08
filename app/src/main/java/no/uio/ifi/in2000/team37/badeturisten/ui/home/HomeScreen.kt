@@ -38,10 +38,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,6 +54,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -296,135 +301,147 @@ fun HomeScreen(
         .background(
             circlegradient
         )
-    LaunchedEffect(alertState.alerts) {
-        areActiveAlerts.value = alertState.alerts.isNotEmpty()
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember {
+        SnackbarHostState()
     }
-    Column(
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) {
+        LaunchedEffect(alertState.alerts) {
+            areActiveAlerts.value = alertState.alerts.isNotEmpty()
+        }
         Column(
-            modifier = Modifier
-                .background(colorScheme.primaryContainer),
-            horizontalAlignment = Alignment.CenterHorizontally
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(it)
         ) {
-            Spacer(Modifier.height(50.dp))
             Column(
                 modifier = Modifier
-                    .defaultMinSize(400.dp, 240.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .background(colorScheme.primaryContainer),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(
+                Spacer(Modifier.height(50.dp))
+                Column(
                     modifier = Modifier
-                        .size(400.dp, 200.dp)
+                        .defaultMinSize(400.dp, 240.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Card(
-                        elevation = CardDefaults.elevatedCardElevation(8.dp),
+                    Box(
                         modifier = Modifier
-                            .clip(shape = RoundedCornerShape(10.dp))
-                            .align(Alignment.BottomCenter)
-                            .padding(20.dp),
+                            .size(400.dp, 200.dp)
                     ) {
-                        Row(
+                        Card(
+                            elevation = CardDefaults.elevatedCardElevation(8.dp),
                             modifier = Modifier
-                                .background(colorScheme.primary)
-                                .size(310.dp, 100.dp)
+                                .clip(shape = RoundedCornerShape(10.dp))
+                                .align(Alignment.BottomCenter)
+                                .padding(20.dp),
                         ) {
-                            if (forecastState != null) {
-                                val tempText = "${forecastState.temp}°"
-                                val precipitationText = "${forecastState.precipitation} mm"
-                                Column(
-                                    modifier = Modifier
-                                        .size(100.dp, 100.dp)
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                    ) {
-                                        Text(
-                                            text = "Oslo",
-                                            fontSize = 15.sp,
-                                            modifier = Modifier
-                                                .padding(horizontal = 10.dp, vertical = 5.dp)
-                                                .align(Alignment.TopStart),
-                                            color = colorScheme.inverseOnSurface,
-                                        )
-                                        Text(
-                                            text = tempText.dropLast(3) + "°C",
-                                            fontSize = 34.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.BottomEnd)
-                                                .padding(8.dp),
-                                            color = colorScheme.inverseOnSurface,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                    }
-                                }
-                                Column(
-                                    modifier = Modifier
-                                        .size(110.dp, 100.dp)
-                                ) {
-                                    Spacer(
-                                        modifier = Modifier
-                                            .size(110.dp, 100.dp)
-                                    )
-                                }
-                                Column(
-                                    modifier = Modifier
-                                        .size(100.dp, 100.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                ) {
+                            Row(
+                                modifier = Modifier
+                                    .background(colorScheme.primary)
+                                    .size(310.dp, 100.dp)
+                            ) {
+                                if (forecastState != null) {
+                                    val tempText = "${forecastState.temp}°"
+                                    val precipitationText = "${forecastState.precipitation} mm"
                                     Column(
                                         modifier = Modifier
-                                            .size(100.dp, 30.dp)
+                                            .size(100.dp, 100.dp)
                                     ) {
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxSize()
                                         ) {
-                                            if (precipitationText != "0.0 mm") {
-                                                Text(
-                                                    text = precipitationText,
-                                                    fontSize = 15.sp,
-                                                    modifier = Modifier
-                                                        .padding(
-                                                            horizontal = 10.dp,
-                                                            vertical = 5.dp
-                                                        )
-                                                        .align(Alignment.TopEnd),
-                                                    color = colorScheme.inverseOnSurface,
-                                                )
-                                            }
+                                            Text(
+                                                text = "Oslo",
+                                                fontSize = 15.sp,
+                                                modifier = Modifier
+                                                    .padding(horizontal = 10.dp, vertical = 5.dp)
+                                                    .align(Alignment.TopStart),
+                                                color = colorScheme.inverseOnSurface,
+                                            )
+                                            Text(
+                                                text = tempText.dropLast(3) + "°C",
+                                                fontSize = 34.sp,
+                                                modifier = Modifier
+                                                    .align(Alignment.BottomEnd)
+                                                    .padding(8.dp),
+                                                color = colorScheme.inverseOnSurface,
+                                                fontWeight = FontWeight.Bold
+                                            )
                                         }
                                     }
                                     Column(
                                         modifier = Modifier
-                                            .fillMaxSize(),
+                                            .size(110.dp, 100.dp)
+                                    ) {
+                                        Spacer(
+                                            modifier = Modifier
+                                                .size(110.dp, 100.dp)
+                                        )
+                                    }
+                                    Column(
+                                        modifier = Modifier
+                                            .size(100.dp, 100.dp),
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                     ) {
-                                        Box(
+                                        Column(
                                             modifier = Modifier
-                                                .fillMaxSize()
-                                                .align(Alignment.CenterHorizontally)
+                                                .size(100.dp, 30.dp)
                                         ) {
                                             Box(
                                                 modifier = Modifier
-                                                    .size(60.dp, 60.dp)
-                                                    .align(Alignment.Center)
+                                                    .fillMaxSize()
                                             ) {
-                                                Button(
-                                                    onClick = {
-                                                        clicked = !clicked
-                                                    },
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                ) {
+                                                if (precipitationText != "0.0 mm") {
+                                                    Text(
+                                                        text = precipitationText,
+                                                        fontSize = 15.sp,
+                                                        modifier = Modifier
+                                                            .padding(
+                                                                horizontal = 10.dp,
+                                                                vertical = 5.dp
+                                                            )
+                                                            .align(Alignment.TopEnd),
+                                                        color = colorScheme.inverseOnSurface,
+                                                    )
                                                 }
-                                                if (areActiveAlerts.value) {
-                                                    WarningIcon(warningvector = warningVectorRed)
-                                                } else {
-                                                    WarningIcon(warningVectorWhite)
+                                            }
+                                        }
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxSize(),
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxSize()
+                                                    .align(Alignment.CenterHorizontally)
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .size(60.dp, 60.dp)
+                                                        .align(Alignment.Center)
+                                                ) {
+                                                    Button(
+                                                        onClick = {
+                                                            clicked = !clicked
+                                                        },
+                                                        modifier = Modifier
+                                                            .padding(5.dp)
+                                                    ) {
+                                                    }
+                                                    if (areActiveAlerts.value) {
+                                                        WarningIcon(warningvector = warningVectorRed)
+                                                    } else {
+                                                        WarningIcon(warningVectorWhite)
+                                                    }
                                                 }
                                             }
                                         }
@@ -432,136 +449,136 @@ fun HomeScreen(
                                 }
                             }
                         }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box {
-                            imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
-                                Image(
-                                    painter = it,
-                                    modifier = imageModifier,
-                                    alignment = Alignment.TopCenter,
-                                    colorFilter = ColorFilter.tint(Color.White),
-                                    contentDescription = "Laster værikon",
-                                    contentScale = ContentScale.Fit
-                                )
-                            }
-                            if (forecastState != null) {
-                                val imageName = forecastState.symbolCode
-                                val imageID = imageMap[imageName]
-                                if (imageID != null) {
-                                    val image = painterResource(id = imageID)
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Box {
+                                imageMap["clearsky_day"]?.let { painterResource(it) }?.let {
                                     Image(
-                                        painter = image,
+                                        painter = it,
                                         modifier = imageModifier,
                                         alignment = Alignment.TopCenter,
-                                        contentDescription = "Værikon",
+                                        colorFilter = ColorFilter.tint(Color.White),
+                                        contentDescription = "Laster værikon",
                                         contentScale = ContentScale.Fit
                                     )
+                                }
+                                if (forecastState != null) {
+                                    val imageName = forecastState.symbolCode
+                                    val imageID = imageMap[imageName]
+                                    if (imageID != null) {
+                                        val image = painterResource(id = imageID)
+                                        Image(
+                                            painter = image,
+                                            modifier = imageModifier,
+                                            alignment = Alignment.TopCenter,
+                                            contentDescription = "Værikon",
+                                            contentScale = ContentScale.Fit
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            if (!areActiveAlerts.value && !clicked && !showNoAlertDisplay.value && !showAlertDisplay.value) {
-                showNormalScreen.value = true
-            }
-            if (!areActiveAlerts.value && clicked) {
-                showNoAlertDisplay.value = true
-            }
-            if (!areActiveAlerts.value && !clicked) {
-                showNoAlertDisplay.value = false
-            }
-            if (areActiveAlerts.value && !clicked) {
-                showAlertDisplay.value = true
-            }
-            if (areActiveAlerts.value && clicked) {
-                showAlertDisplay.value = false
-            }
-            Column {
-                if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
-                    NormalDisplay()
-                } else if (showAlertDisplay.value) {
-                    AlertDisplay(alertState)
-                } else if (showNoAlertDisplay.value) {
-                    NoAlertDisplay()
-                    LaunchedEffect(Unit) {
-                        delay(3000)
-                        showNoAlertDisplay.value = false
-                        showNormalScreen.value = !showNormalScreen.value
-                        clicked = !clicked
-                    }
+                if (!areActiveAlerts.value && !clicked && !showNoAlertDisplay.value && !showAlertDisplay.value) {
+                    showNormalScreen.value = true
                 }
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(colorScheme.background)
-                ) {
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            Text(
-                                text = if (ingenLokasjon) "Badesteder" else "Badesteder nær deg",
-                                modifier = Modifier
-                                    .padding(top = 15.dp, bottom = 20.dp)
-                                    .align(Alignment.Center),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            )
-                            IconButton(
-                                onClick = {
-                                    homeViewModel.refreshBeachLocations()
-                                },
-                                modifier = Modifier
-                                    .padding(horizontal = 10.dp)
-                                    .size(48.dp)
-                                    .align(Alignment.TopEnd)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Refresh,
-                                    contentDescription = "Oppdater",
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
+                if (!areActiveAlerts.value && clicked) {
+                    showNoAlertDisplay.value = true
+                }
+                if (!areActiveAlerts.value && !clicked) {
+                    showNoAlertDisplay.value = false
+                }
+                if (areActiveAlerts.value && !clicked) {
+                    showAlertDisplay.value = true
+                }
+                if (areActiveAlerts.value && clicked) {
+                    showAlertDisplay.value = false
+                }
+                Column {
+                    if (showNormalScreen.value && !showNoAlertDisplay.value && !showAlertDisplay.value) {
+                        NormalDisplay()
+                    } else if (showAlertDisplay.value) {
+                        AlertDisplay(alertState)
+                    } else if (showNoAlertDisplay.value) {
+                        NoAlertDisplay()
+                        LaunchedEffect(Unit) {
+                            delay(3000)
+                            showNoAlertDisplay.value = false
+                            showNormalScreen.value = !showNormalScreen.value
+                            clicked = !clicked
                         }
-                        Box(
-                            modifier = Modifier
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(colorScheme.background)
+                    ) {
+                        Column(
+                            Modifier
                                 .fillMaxSize()
                         ) {
-                            if (localLoading.value) {
-                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                            }
-                            if (isLoading) {
-                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                            } else {
-                                val state = rememberLazyListState()
-                                LazyRow(
-                                    state = state,
-                                    flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                Text(
+                                    text = if (ingenLokasjon) "Badesteder" else "Badesteder nær deg",
                                     modifier = Modifier
-                                        .fillMaxSize(),
-                                    contentPadding = PaddingValues(6.dp),
-                                    horizontalArrangement = Arrangement.Center
+                                        .padding(top = 15.dp, bottom = 20.dp)
+                                        .align(Alignment.Center),
+                                    fontSize = 18.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                                IconButton(
+                                    onClick = {
+                                        homeViewModel.refreshBeachLocations()
+                                    },
+                                    modifier = Modifier
+                                        .padding(horizontal = 10.dp)
+                                        .size(48.dp)
+                                        .align(Alignment.TopEnd)
                                 ) {
-                                    items(beachLocation) { beach ->
-                                        beach.second.let {
-                                            localLoading.value = false
-                                            BeachCard(
-                                                beach.first,
-                                                it,
-                                                navController, beachinfo
-                                            )
+                                    Icon(
+                                        imageVector = Icons.Filled.Refresh,
+                                        contentDescription = "Oppdater",
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                if (localLoading.value) {
+                                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                                }
+                                if (isLoading) {
+                                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                                } else {
+                                    val state = rememberLazyListState()
+                                    LazyRow(
+                                        state = state,
+                                        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+                                        modifier = Modifier
+                                            .fillMaxSize(),
+                                        contentPadding = PaddingValues(6.dp),
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        items(beachLocation) { beach ->
+                                            beach.second.let {
+                                                localLoading.value = false
+                                                BeachCard(
+                                                    beach.first,
+                                                    it,
+                                                    navController, beachinfo
+                                                )
+                                            }
                                         }
                                     }
                                 }
