@@ -259,6 +259,7 @@ fun SearchScreen(
             ) {
                 noResultsMessage = ""
                 LaunchedEffect(
+                    Unit,
                     searchResult,
                     searchText,
                     isLoading,
@@ -302,7 +303,7 @@ fun SearchScreen(
                                         text = noResultsMessage,
                                         modifier = Modifier
                                             .align(Alignment.CenterStart)
-                                            .padding(6.dp),
+                                            .padding(vertical = 30.dp, horizontal = 30.dp),
                                         fontSize = 18.sp,
                                         textAlign = TextAlign.Center
                                     )
