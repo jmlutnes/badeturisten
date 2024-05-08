@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
+
 interface EnTurGeocoderRepository {
 
     /**

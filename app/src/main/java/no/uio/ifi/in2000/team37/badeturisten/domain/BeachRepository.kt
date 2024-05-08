@@ -41,4 +41,9 @@ interface BeachRepository {
      * Returns list of favourite beaches
      */
     suspend fun updateFavourites(beach: Beach?): List<Beach>
+
+    /**
+     * checks and return ture or false depending on if a beach is favourite list
+     */
+    fun checkFavourite(beach: Beach): Boolean
 }

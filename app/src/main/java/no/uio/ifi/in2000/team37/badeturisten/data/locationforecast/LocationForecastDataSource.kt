@@ -10,9 +10,9 @@ class LocationForecastDataSource(@LocationForecastHttpClient private val client:
     suspend fun getForecastData(): LocationForecastData? {
         // Henter værdata med koordinater for Oslo sentrum
         val response =
-        client.get("weatherapi/locationforecast/2.0/compact?lat=59.91276&lon=10.74608")
+            client.get("weatherapi/locationforecast/2.0/compact?lat=59.91276&lon=10.74608")
 
-        return if (response.status.value in 200 .. 299) {
+        return if (response.status.value in 200..299) {
             response.body<LocationForecastData>()
         } else {
             null

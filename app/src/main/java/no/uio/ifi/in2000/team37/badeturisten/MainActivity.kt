@@ -124,6 +124,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
     private fun getLastLocation() {
         if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
@@ -139,8 +140,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
     }
+
     @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 101 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             getLastLocation()
@@ -148,6 +154,7 @@ class MainActivity : ComponentActivity() {
             println("Permission was denied")
         }
     }
+
     private fun checkLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
@@ -179,7 +186,7 @@ fun AppContent() {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
-    ) {paddingValues ->
+    ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screens.Home.route,

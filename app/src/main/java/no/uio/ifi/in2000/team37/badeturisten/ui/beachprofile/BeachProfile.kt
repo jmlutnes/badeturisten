@@ -1,6 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -22,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,6 +37,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -191,6 +194,13 @@ fun BeachProfile(
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
+    val isFavorited by beachViewModel.isFavorited.collectAsState()
+
+    LaunchedEffect(isFavorited) {
+        // Upon initial composition, check and update the favorites
+        beach.beach?.let { beachViewModel.checkFavourite(it) }
+        Log.d("beachprofile", "Favorittstatus endret: $isFavorited")
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -270,15 +280,15 @@ fun BeachProfile(
                                         .padding(17.dp),
                                         onClick = {
                                             beach.beach?.let {
-                                                beachViewModel.updateFavourites(
+                                                beachViewModel.checkAndUpdateFavorites(
                                                     it
                                                 )
                                             }
                                         }) {
                                         Icon(
-                                            imageVector = Icons.Filled.Favorite,
+                                            imageVector = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.Favorite,
                                             contentDescription = "Heart",
-                                            tint = Color.White,
+                                            tint = if (isFavorited) Color.Red else Color.White,
                                             modifier = Modifier
                                                 .size(50.dp)
                                         )

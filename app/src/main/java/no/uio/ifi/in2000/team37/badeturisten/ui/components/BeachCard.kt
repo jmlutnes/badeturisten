@@ -30,16 +30,17 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
 
 @Composable
 fun GradientUp(brush: Brush, waterTemp: Double?) {
-    val modifier = if(waterTemp != null) {Modifier
-        .fillMaxWidth()
-        .height(150.dp)}
-    else{
+    val modifier = if (waterTemp != null) {
+        Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+    } else {
         Modifier
             .fillMaxWidth()
             .height(90.dp)
     }
 
-        Canvas(
+    Canvas(
         modifier = modifier,
         onDraw = {
             drawRect(brush)
@@ -97,7 +98,12 @@ fun BeachCard(
                         .clip(RoundedCornerShape(16.dp))
                         .align(Alignment.Center)
                 )
-                Box(modifier = Modifier.align(Alignment.TopStart)) { GradientUp(brushUp, beach.waterTemp) }
+                Box(modifier = Modifier.align(Alignment.TopStart)) {
+                    GradientUp(
+                        brushUp,
+                        beach.waterTemp
+                    )
+                }
                 if (avstand > 1) {
                     Box(modifier = Modifier.align(Alignment.BottomEnd)) { GradientDown(brushDown) }
                 }
@@ -114,11 +120,17 @@ fun BeachCard(
                             color = Color.White,
                         ),
                         modifier = Modifier
-                            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 4.dp), // Redusert bunnpadding
+                            .padding(
+                                top = 16.dp,
+                                start = 16.dp,
+                                end = 16.dp,
+                                bottom = 4.dp
+                            ), // Redusert bunnpadding
                         textAlign = TextAlign.Center
                     )
 
-                    val tempText = if (beach.waterTemp != null) "${beach.waterTemp}°C i vannet" else ""
+                    val tempText =
+                        if (beach.waterTemp != null) "${beach.waterTemp}°C i vannet" else ""
 
                     Text(
                         text = tempText,

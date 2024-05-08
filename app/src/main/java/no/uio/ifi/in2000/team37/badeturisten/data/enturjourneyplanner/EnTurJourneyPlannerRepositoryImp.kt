@@ -5,9 +5,9 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.Bussrute
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import javax.inject.Inject
 
-class EnTurJourneyPlannerRepositoryImp @Inject constructor (
+class EnTurJourneyPlannerRepositoryImp @Inject constructor(
     private val datasource: EnTurJourneyPlannerDataSource
-): EnTurJourneyPlannerRepository{
+) : EnTurJourneyPlannerRepository {
     /**
      * Send in Buss station ID (Using the EnTurGeocoder) to receive all the busses related to the station.
      * Makes Bussrute objects with the line, name, and transport mode (bus/tram/coach/water)

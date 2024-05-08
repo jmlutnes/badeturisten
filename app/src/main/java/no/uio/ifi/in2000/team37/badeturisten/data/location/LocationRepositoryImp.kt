@@ -15,13 +15,18 @@ import javax.inject.Inject
 @Suppress("DEPRECATION")
 class LocationRepositoryImp @Inject constructor(
     private val context: Context
-): LocationRepository {
-    private var fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+) : LocationRepository {
+    private var fusedLocationClient: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(context)
     private val _locationData = MutableStateFlow<Location?>(null)
     override val locationData: StateFlow<Location?> get() = _locationData.asStateFlow()
 
     override fun fetchLastLocation() {
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             _locationData.value = null
             return
         }
@@ -33,12 +38,19 @@ class LocationRepositoryImp @Inject constructor(
     }
 
     override fun fetchCurrentLocation() {
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             _locationData.value = null
             return
         }
         val cancellationTokenSource = CancellationTokenSource()
-        fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token)
+        fusedLocationClient.getCurrentLocation(
+            LocationRequest.PRIORITY_HIGH_ACCURACY,
+            cancellationTokenSource.token
+        )
             .addOnSuccessListener { location: Location? ->
                 _locationData.value = location
             }
