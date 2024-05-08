@@ -44,6 +44,7 @@ interface OsloKommuneRepository {
      * returns the URL as String
      */
     fun extractUrl(inputString: String): String
+
     /**
      * Send in URL, and Oslo Commune will be scraped for facilities, waterquality and image URL.
      * Returns a OsloKommuneBeachInfo object

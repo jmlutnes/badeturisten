@@ -21,8 +21,8 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CheckboxDefaults.colors
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -134,9 +134,6 @@ fun FilterButtons(
     }
 }
 
-@OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class
-)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(

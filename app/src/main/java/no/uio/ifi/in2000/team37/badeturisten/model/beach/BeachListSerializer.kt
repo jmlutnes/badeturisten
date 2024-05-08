@@ -13,7 +13,10 @@ object BeachListSerializer : Serializer<List<Beach>> {
 
     override suspend fun readFrom(input: InputStream): List<Beach> {
         return try {
-            Json.decodeFromString(ListSerializer(Beach.serializer()), input.readBytes().decodeToString())
+            Json.decodeFromString(
+                ListSerializer(Beach.serializer()),
+                input.readBytes().decodeToString()
+            )
         } catch (e: SerializationException) {
             Log.e("DataStore", "Serialization error on read", e)
             return defaultValue
