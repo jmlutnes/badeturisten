@@ -192,12 +192,8 @@ fun BeachProfile(
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
     val isFavorited by beachViewModel.isFavorited.collectAsState()
+    beach.beach?.let { beachViewModel.checkFavourite(it) }
 
-    LaunchedEffect(isFavorited) {
-        // Upon initial composition, check and update the favorites
-        beach.beach?.let { beachViewModel.checkFavourite(it) }
-        Log.d("beachprofile", "Favorittstatus endret: $isFavorited")
-    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -277,9 +273,7 @@ fun BeachProfile(
                                         .padding(17.dp),
                                         onClick = {
                                             beach.beach?.let {
-                                                beachViewModel.checkAndUpdateFavorites(
-                                                    it
-                                                )
+                                                beachViewModel.checkAndUpdateFavorites(it)
                                             }
                                         }) {
                                         Icon(
