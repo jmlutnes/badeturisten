@@ -187,7 +187,6 @@ fun Gradient() {
 @Composable
 fun BeachProfile(
     navController: NavController,
-    beachName: String?,
 ) {
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value

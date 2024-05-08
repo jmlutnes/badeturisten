@@ -63,8 +63,6 @@ class MainActivity : ComponentActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         setContent {
-            val snackbarHostState = remember { SnackbarHostState() }
-            val scope = rememberCoroutineScope()
 
             var locationPermissionsGranted by remember { mutableStateOf(checkLocationPermission()) }
             var shouldShowPermissionRationale by remember {
@@ -195,9 +193,8 @@ fun AppContent() {
             composable(
                 route = "beachProfile/{beachName}",
                 arguments = listOf(navArgument("beachName") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val beachName = backStackEntry.arguments?.getString("beachName")
-                BeachProfile(navController = navController, beachName = beachName)
+            ) {
+                BeachProfile(navController = navController)
             }
 
             composable(route = "homeScreen") {

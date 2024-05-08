@@ -42,7 +42,7 @@ class BeachRepositoryImp @Inject constructor(
         favouriteObservations.asStateFlow()
 
     override suspend fun waterTempGetData(): List<Tsery> {
-        return waterTempDataSource.getData(59.91, 10.74, 10, 50)
+        return waterTempDataSource.getData()
     }
 
     override suspend fun loadBeaches() {
