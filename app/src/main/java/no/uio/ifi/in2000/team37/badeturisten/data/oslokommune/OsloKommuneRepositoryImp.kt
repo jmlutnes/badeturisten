@@ -6,7 +6,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinosloko
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachAndBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import javax.inject.Inject
 
@@ -14,46 +14,6 @@ class OsloKommuneRepositoryImp @Inject constructor(
     private val datasource: OsloKommuneDatasource,
 ) : OsloKommuneRepository {
     private val beachList: MutableList<Beach> = mutableListOf()
-
-    override suspend fun getDataForFacilityEach(
-        lifeguard: Boolean,
-        childFriendly: Boolean,
-        grill: Boolean,
-        kiosk: Boolean,
-        accessible: Boolean,
-        toilets: Boolean,
-        divingTower: Boolean
-    ): List<jsontokotlin_kommune> {
-        val flags = listOf(lifeguard, childFriendly, grill, kiosk, accessible, toilets, divingTower)
-        val arguments = listOf(
-            "lifeguard",
-            "childFriendly",
-            "grill",
-            "kiosk",
-            "accessible",
-            "toilets",
-            "divingTower"
-        )
-        val results = mutableListOf<jsontokotlin_kommune>()
-
-        flags.forEachIndexed { index, value ->
-            if (value) {
-                val tempFlags = flags.mapIndexed { i, _ -> i == index }
-                val result = datasource.getDataForFasilitet(
-                    lifeguard = tempFlags[0],
-                    childFriendly = tempFlags[1],
-                    grill = tempFlags[2],
-                    kiosk = tempFlags[3],
-                    accessible = tempFlags[4],
-                    toilets = tempFlags[5],
-                    divingTower = tempFlags[6]
-                )
-                results.add(result)
-            }
-        }
-
-        return results
-    }
 
     override suspend fun getDataForFacility(
         lifeguard: Boolean,
@@ -63,16 +23,100 @@ class OsloKommuneRepositoryImp @Inject constructor(
         accessible: Boolean,
         toilets: Boolean,
         divingTower: Boolean,
-    ): jsontokotlin_kommune {
-        return datasource.getDataForFasilitet(
-            lifeguard,
-            childFriendly,
-            grill,
-            kiosk,
-            accessible,
-            toilets,
-            divingTower
+    ): List<jsontokotlin_kommune> {
+        val results = mutableListOf<jsontokotlin_kommune>()
+        if (lifeguard) results.addAll(
+            listOf(
+                datasource.getDataForFasilitet(
+                    lifeguard = true,
+                    childFriendly = false,
+                    grill = false,
+                    kiosk = false,
+                    accessible = false,
+                    toilets = false,
+                    divingTower = false
+                )
+            )
         )
+        if (childFriendly) results.addAll(
+            listOf(
+                datasource.getDataForFasilitet(
+                    lifeguard = false,
+                    childFriendly = true,
+                    grill = false,
+                    kiosk = false,
+                    accessible = false,
+                    toilets = false,
+                    divingTower = false
+                )
+            )
+        )
+        if (grill) results.addAll(
+            listOf(
+                datasource.getDataForFasilitet(
+                    lifeguard = false,
+                    childFriendly = false,
+                    grill = true,
+                    kiosk = false,
+                    accessible = false,
+                    toilets = false,
+                    divingTower = false
+                )
+            )
+        )
+        if (kiosk) results.addAll(
+            listOf(
+                datasource.getDataForFasilitet(
+                    lifeguard = false,
+                    childFriendly = false,
+                    grill = false,
+                    kiosk = true,
+                    accessible = false,
+                    toilets = false,
+                    divingTower = false
+                )
+            )
+        )
+        if (accessible) results.addAll(
+            listOf(
+                datasource.getDataForFasilitet(
+                    lifeguard = false,
+                    childFriendly = false,
+                    grill = false,
+                    kiosk = false,
+                    accessible = true,
+                    toilets = false,
+                    divingTower = false
+                )
+            )
+        )
+        if (toilets) results.addAll(
+            listOf(
+                datasource.getDataForFasilitet(
+                    lifeguard = false,
+                    childFriendly = false,
+                    grill = false,
+                    kiosk = false,
+                    accessible = false,
+                    toilets = true,
+                    divingTower = false
+                )
+            )
+        )
+        if (divingTower) results.addAll(
+            listOf(
+                datasource.getDataForFasilitet(
+                    lifeguard = false,
+                    childFriendly = false,
+                    grill = false,
+                    kiosk = false,
+                    accessible = false,
+                    toilets = false,
+                    divingTower = true
+                )
+            )
+        )
+        return results
     }
 
     override suspend fun makeBeachesFacilities(
@@ -85,34 +129,30 @@ class OsloKommuneRepositoryImp @Inject constructor(
         divingTower: Boolean,
     ): List<Beach> {
         val localSearchList = mutableListOf<Beach>()
-        val result = getDataForFacility(
-            lifeguard,
-            childFriendly,
-            grill,
-            kiosk,
-            accessible,
-            toilets,
-            divingTower
-        )
-        return try {
-            val features = result.data.geoJson.features
-            features.forEach { feature ->
-                //Name
-                val beachNameNotConverted: String = feature.properties.popupContent
-                val beachNameConverted: String =
-                    extractBeachFromHTML(beachNameNotConverted)
 
-                //Location
-                val location = feature.geometry.coordinates
-                val lon: String = location[0].toString()
-                val lat: String = location[1].toString()
-                val position = Pos(lat, lon)
-                localSearchList.add(Beach(beachNameConverted, position, null))
+        val result = getDataForFacility(
+            lifeguard, childFriendly, grill, kiosk, accessible, toilets, divingTower
+        )
+
+        return try {
+            for (jsontokotlinKommune in result) {
+                val features = jsontokotlinKommune.data.geoJson.features
+
+                features.forEach { feature ->
+                    val beachNameNotConverted: String = feature.properties.popupContent
+                    val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
+
+                    val location = feature.geometry.coordinates
+                    val lon: String = location[0].toString()
+                    val lat: String = location[1].toString()
+                    val position = Pos(lat, lon)
+
+                    localSearchList.add(Beach(beachNameConverted, position, null))
+                }
             }
-            return localSearchList
+            localSearchList
         } catch (e: Exception) {
-            Log.d("Oslo Kommune repository", "failed to make beaches")
-            Log.e("Oslo Kommune repos", e.message.toString())
+            Log.d("Oslo Kommune repository", "Failed to make beaches: ${e.localizedMessage}")
             emptyList()
         }
     }
@@ -141,16 +181,15 @@ class OsloKommuneRepositoryImp @Inject constructor(
         return ""
     }
 
-    override suspend fun findAllWebPages(): MutableMap<String, BeachInfoForHomescreen> {
-        val localSearchList = mutableMapOf<String, BeachInfoForHomescreen>()
+    override suspend fun findAllWebPages(): MutableMap<String, BeachAndBeachInfo> {
+        val localSearchList = mutableMapOf<String, BeachAndBeachInfo>()
         val features = getBeaches()
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent
             val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
             val url = extractUrl(beachNameNotConverted)
             val beachInfo = scrapeUrl(url)
-            localSearchList[beachNameConverted] =
-                BeachInfoForHomescreen(beachNameConverted, beachInfo)
+            localSearchList[beachNameConverted] = BeachAndBeachInfo(beachNameConverted, beachInfo)
         }
         return localSearchList
     }
@@ -160,8 +199,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         features.forEach { feature ->
             val beachNameNotConverted: String = feature.properties.popupContent
             val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
-            if (beachNameConverted.contains(name)
-            ) {
+            if (beachNameConverted.contains(name)) {
                 val url = extractUrl(beachNameNotConverted)
                 return scrapeUrl(url)
             }
@@ -175,21 +213,16 @@ class OsloKommuneRepositoryImp @Inject constructor(
             println(features)
             features.forEach { feature ->
                 val beachNameNotConverted: String = feature.properties.popupContent
-                val beachNameConverted: String =
-                    extractBeachFromHTML(beachNameNotConverted)
+                val beachNameConverted: String = extractBeachFromHTML(beachNameNotConverted)
 
                 val location = feature.geometry.coordinates
                 val lon: String = location[0].toString()
                 val lat: String = location[1].toString()
 
                 val position = Pos(lat, lon)
-                if (!beachNameConverted.contains("Badstu")
-                    &&
-                    !beachNameConverted.contains("Tømmerholtjern")
-                    &&
-                    !beachNameConverted.contains("Smalvannet")
-                    &&
-                    !beachNameConverted.contains("Solbergvannet")
+                if (!beachNameConverted.contains("Badstu") && !beachNameConverted.contains("Tømmerholtjern") && !beachNameConverted.contains(
+                        "Smalvannet"
+                    ) && !beachNameConverted.contains("Solbergvannet")
                 ) {
                     beachList.add(Beach(beachNameConverted, position, null))
                 }

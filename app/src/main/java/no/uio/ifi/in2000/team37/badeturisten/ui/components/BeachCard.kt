@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachAndBeachInfo
 
 @Composable
 fun GradientUp(brush: Brush, waterTemp: Double?) {
@@ -64,7 +64,7 @@ fun BeachCard(
     beach: Beach,
     avstand: Int,
     navController: NavController,
-    beachInfoMap: Map<String, BeachInfoForHomescreen?>,
+    beachInfoMap: Map<String, BeachAndBeachInfo?>,
 ) {
     val customBlue = Color(0xFF2E4064)
     val brushUp = Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.9F), Color.Transparent))

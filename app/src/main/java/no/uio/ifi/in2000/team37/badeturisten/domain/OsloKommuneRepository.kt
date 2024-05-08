@@ -3,12 +3,16 @@ package no.uio.ifi.in2000.team37.badeturisten.domain
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Feature
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachAndBeachInfo
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 
 interface OsloKommuneRepository {
 
-    suspend fun getDataForFacilityEach(
+    /**
+     * Send in boolean parameters for which facilities on the Oslo Commune website to look for.
+     * Returns list of all the beaches with each of the given parameters.
+     */
+    suspend fun getDataForFacility(
         lifeguard: Boolean,
         childFriendly: Boolean,
         grill: Boolean,
@@ -19,22 +23,8 @@ interface OsloKommuneRepository {
     ):  List<jsontokotlin_kommune>
 
     /**
-     * Send in boolean parameters for which facilities Oslo Kommune website to seach for.
-     * Returns all the beaches with at least one of the parameters.
-     */
-    suspend fun getDataForFacility(
-        lifeguard: Boolean,
-        childFriendly: Boolean,
-        grill: Boolean,
-        kiosk: Boolean,
-        accessible: Boolean,
-        toilets: Boolean,
-        divingTower: Boolean
-    ): jsontokotlin_kommune
-
-    /**
      *Send in boolean parameters for which facilities Oslo Commune website to search for.
-     *For each of the beaches fetched from Oslo Commune extract the website for specific location,
+     *For each of the beaches fetched from Oslo Commune extract the website for specific locations,
      *and adds them to local list.
      *The name is the extracted from the HTML. Location is fetched from the beach.
      *Returns a list with all the beaches with the given facilities.
@@ -77,7 +67,7 @@ interface OsloKommuneRepository {
      * Get the name and URL for the site using extractBeachFromHTML method.
      * Then uses skrapUrl to fetch the OsloKommuneBeachInfo for the specific site.
      */
-    suspend fun findAllWebPages(): MutableMap<String, BeachInfoForHomescreen>
+    suspend fun findAllWebPages(): MutableMap<String, BeachAndBeachInfo>
 
     /**
      * Send in name of a bathing site which is available on the Oslo Commune website.
