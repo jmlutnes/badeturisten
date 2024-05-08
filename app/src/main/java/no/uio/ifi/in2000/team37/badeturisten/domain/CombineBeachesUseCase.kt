@@ -4,8 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
 @RequiresApi(Build.VERSION_CODES.O)

@@ -73,7 +73,6 @@ class BeachRepositoryImp @Inject constructor(
     override suspend fun getBeach(beachName: String): Beach? =
         beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-    // favourites only work on beach objects
     override suspend fun updateFavourites(beach: Beach?): List<Beach> {
         if (beach != null) {
             if (beach in favouriteList) {
