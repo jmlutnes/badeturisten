@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -54,7 +53,7 @@ fun FavouritesScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
     ) {
         Column(
             Modifier
@@ -77,33 +76,34 @@ fun FavouritesScreen(
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseOnSurface,
                 )
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     Log.d("favouriteScreen", "${favouritesState.favourites.isEmpty()}")
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        if(favouritesState.favourites.isEmpty()){
+                        if (favouritesState.favourites.isEmpty()) {
                             val inlineContent = (
-                                mapOf(
-                                    "heartIcon" to InlineTextContent(
-                                        placeholder = Placeholder(
-                                            width = 1.em,
-                                            height = 1.em,
-                                            placeholderVerticalAlign = PlaceholderVerticalAlign.AboveBaseline
-                                        )
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Favorite,
-                                            contentDescription = "Heart"
-                                        )
-                                    })
-                                )
+                                    mapOf(
+                                        "heartIcon" to InlineTextContent(
+                                            placeholder = Placeholder(
+                                                width = 1.em,
+                                                height = 1.em,
+                                                placeholderVerticalAlign = PlaceholderVerticalAlign.AboveBaseline
+                                            )
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Filled.Favorite,
+                                                contentDescription = "Heart"
+                                            )
+                                        })
+                                    )
                             Text(
                                 text = buildAnnotatedString {
                                     append("Legg til dine favoritter ved å trykke på hjerte ikonet (")
