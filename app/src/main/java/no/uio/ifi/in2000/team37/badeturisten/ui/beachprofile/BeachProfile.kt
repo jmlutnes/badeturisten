@@ -183,13 +183,10 @@ fun Gradient() {
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
 )
 @Composable
 fun BeachProfile(
     navController: NavController,
-    beachName: String?,
 ) {
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value
