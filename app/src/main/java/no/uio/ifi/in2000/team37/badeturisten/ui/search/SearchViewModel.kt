@@ -28,7 +28,6 @@ data class SokKommuneBeachList(
     val beachList: List<Beach> = listOf(),
 )
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
