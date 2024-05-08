@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CheckboxDefaults.colors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -70,9 +69,7 @@ fun CustomToggleButton(
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 10.sp,
                 color = if (checked) Color.White else MaterialTheme.colorScheme.onPrimaryContainer,
-
-
-                )
+            )
         )
     }
 }
