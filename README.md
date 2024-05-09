@@ -12,6 +12,45 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 
 
 ## 📚Biblioteker 
+### Google Play Services Location
+- Formål: Gir lokasjonstjenester.
+- Versjon: 21.2.0
+- Dokumentasjon: [Play Services Location](https://developers.google.com/android/reference/com/google/android/gms/location/package-summary)
+
+### Kotlinx Coroutines for Google Play Services
+- Formål: Utvidelse av Kotlin Coroutines for å støtte Google Play Services-tjenester.
+- Versjon: 1.6.0
+- Dokumentasjon: [Kotlinx Coroutines](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-play-services)
+
+### Android Data Transport Runtime
+- Formål: Hjelper med datainnsamling og levering for tjenester.
+- Versjon: 3.3.0
+- Dokumentasjon: [Transport Runtime](https://github.com/google/dagger)
+
+### AndroidX Room with KTX
+- Formål: Forenkler databasearbeid med Kotlin flerspråkstillegg (KTX).
+- Versjon: 2.6.1
+- Dokumentasjon: [Room Database](https://developer.android.com/training/data-storage/room)
+
+### Wear Compose Material
+- Formål: Jetpack Compose-biblioteker spesifikt for Wear OS.
+- Versjon: 1.3.1
+- Dokumentasjon: [Wear Compose Material](https://developer.android.com/jetpack/compose)
+
+### AndroidX Core KTX
+- Formål: Forenkler bruken av sentrale Android API-er med Kotlin utvidelser.
+- Versjon: 1.12.0
+- Dokumentasjon: [Core KTX](https://developer.android.com/kotlin/ktx#core)
+
+### AndroidX Lifecycle Runtime KTX
+- Formål: Tilbyr Kotlin spesifikke API-er for lifecycle runtime.
+- Versjon: 2.7.0
+- Dokumentasjon: [Lifecycle KTX](https://developer.android.com/kotlin/ktx#lifecycle-runtime)
+
+### AndroidX Activity Compose
+- Formål: Integrasjon av Jetpack Compose med Activity-biblioteker.
+- Versjon: 1.8.2
+- Dokumentasjon: [Activity Compose](https://developer.android.com/jetpack/compose/tooling#activity)
 
 
 ## 🧑‍💻Gruppemedlemer 
