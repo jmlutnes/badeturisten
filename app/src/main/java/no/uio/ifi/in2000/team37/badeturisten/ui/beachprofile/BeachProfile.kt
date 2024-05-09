@@ -105,7 +105,7 @@ fun Transportation(beach: BeachUIState) {
                 Modifier
                     .fillMaxSize()
             ) {
-                beach.kollektivRute.forEach {
+                beach.busRoutes.forEach {
                     val transport = when (it.transportMode) {
                         "bus" -> "Buss"
                         "water" -> "Båt"
@@ -130,7 +130,7 @@ fun Transportation(beach: BeachUIState) {
                         ) {
                             Spacer(modifier = Modifier.weight(1f))
                             Text(
-                                text = "$transport ${it.linje}",
+                                text = "$transport ${it.routeNumber}",
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically),
                                 fontWeight = FontWeight.SemiBold
@@ -146,7 +146,7 @@ fun Transportation(beach: BeachUIState) {
                             ) {
                                 Spacer(modifier = Modifier.weight(1f))
                                 Text(
-                                    text = it.navn,
+                                    text = it.name,
                                     modifier = Modifier
                                         .basicMarquee()
                                         .align(Alignment.CenterVertically),
@@ -256,7 +256,7 @@ fun BeachProfile(
                                         .fillMaxSize()
 
                                 ) {
-                                    val imageUrl = beach.badevannsinfo?.imageUrl
+                                    val imageUrl = beach.beachInfo?.imageUrl
                                         ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
 
                                     AsyncImage(
@@ -344,7 +344,7 @@ fun BeachProfile(
                                             )
                                         }
                                     }
-                                    if (beach.badevannsinfo?.waterQuality != null) {
+                                    if (beach.beachInfo?.waterQuality != null) {
                                         Row(
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
@@ -356,7 +356,7 @@ fun BeachProfile(
                                                     .align(Alignment.CenterVertically)
                                             )
                                             Spacer(modifier = Modifier.weight(1f))
-                                            beach.badevannsinfo.waterQuality.let {
+                                            beach.beachInfo.waterQuality.let {
                                                 Text(
                                                     text = it,
                                                     modifier = Modifier
@@ -370,7 +370,7 @@ fun BeachProfile(
 
                             }
                         }
-                        if (beach.badevannsinfo?.facilitiesInfo != null) {
+                        if (beach.beachInfo?.facilitiesInfo != null) {
                             Card(
                                 modifier = Modifier
                                     .padding(16.dp)
@@ -390,7 +390,7 @@ fun BeachProfile(
                                             text = "Fasiliteter",
                                             fontWeight = FontWeight.SemiBold
                                         )
-                                        beach.badevannsinfo.facilitiesInfo.let {
+                                        beach.beachInfo.facilitiesInfo.let {
                                             Column(
                                                 modifier = Modifier
                                                     .padding(4.dp)
@@ -416,7 +416,7 @@ fun BeachProfile(
                                 }
                             }
                         }
-                        if (beach.kollektivRute.isEmpty()) {
+                        if (beach.busRoutes.isEmpty()) {
                             Spacer(modifier = Modifier.height(10.dp))
                         } else {
                             Transportation(beach)

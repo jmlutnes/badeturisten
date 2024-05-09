@@ -8,7 +8,7 @@ import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurHttpGeocod
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.jsontokotlinenturgeocoder.jsontokotlinenturgeocoder
 import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
 
-data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
+data class BusStations(val stations: List<Bussstasjon>)
 
 class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: HttpClient) {
     /**
