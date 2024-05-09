@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachAndBeachInfo
 import javax.inject.Inject
 
 data class FavouritesUIState(
@@ -28,11 +28,10 @@ data class FavouritesUIState(
 class FavouritesViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository
-) : ViewModel() {
-    private val _beachDetails = MutableStateFlow<Map<String, BeachInfoForHomescreen?>>(emptyMap())
-    val beachDetails: StateFlow<Map<String, BeachInfoForHomescreen?>> = _beachDetails.asStateFlow()
+): ViewModel() {
+    private val _beachDetails = MutableStateFlow<Map<String, BeachAndBeachInfo?>>(emptyMap())
+    val beachDetails: StateFlow<Map<String, BeachAndBeachInfo?>> = _beachDetails.asStateFlow()
 
-    //val favouritesState: MutableStateFlow<FavouritesUIState> = MutableStateFlow(FavouritesUIState())
     val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavouriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(
@@ -41,7 +40,7 @@ class FavouritesViewModel @Inject constructor(
             initialValue = FavouritesUIState()
         )
 
-    private suspend fun getBeachInfo(): Map<String, BeachInfoForHomescreen?> {
+    private suspend fun getBeachInfo(): Map<String, BeachAndBeachInfo?> {
         return _osloKommuneRepository.findAllWebPages()
     }
 

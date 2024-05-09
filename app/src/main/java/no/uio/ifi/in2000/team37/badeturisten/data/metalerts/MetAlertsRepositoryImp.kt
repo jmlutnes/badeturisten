@@ -3,7 +3,6 @@ package no.uio.ifi.in2000.team37.badeturisten.data.metalerts
 import android.os.Build
 import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.jsontokotlinmetalerts.Feature
@@ -16,7 +15,6 @@ class MetAlertsRepositoryImp(
     private val datasource: MetAlertsDataSource
 ) : MetAlertsRepository {
 
-    //lager en flow av MetAlerts
     private val metAlertsObservations = MutableStateFlow<List<WeatherWarning>>(listOf())
     override fun getMetAlertsObservations() = metAlertsObservations.asStateFlow()
 

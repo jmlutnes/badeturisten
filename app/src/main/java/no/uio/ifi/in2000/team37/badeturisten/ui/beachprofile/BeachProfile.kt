@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -21,7 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
@@ -186,18 +185,16 @@ fun Gradient() {
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
 )
 @Composable
 fun BeachProfile(
     navController: NavController,
-    beachName: String?,
 ) {
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
     val isFavorited by beachViewModel.isFavorited.collectAsState()
+    beach.beach?.let { beachViewModel.checkFavourite(it) }
 
     val snackbarHostState = remember {
         SnackbarHostState()
@@ -214,7 +211,7 @@ fun BeachProfile(
                 title = { Text(text = "Badested") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -297,9 +294,7 @@ fun BeachProfile(
                                         .padding(17.dp),
                                         onClick = {
                                             beach.beach?.let {
-                                                beachViewModel.checkAndUpdateFavorites(
-                                                    it
-                                                )
+                                                beachViewModel.checkAndUpdateFavorites(it)
                                             }
                                         }) {
                                         Icon(

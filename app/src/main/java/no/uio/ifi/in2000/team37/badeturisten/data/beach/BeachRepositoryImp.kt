@@ -42,7 +42,7 @@ class BeachRepositoryImp @Inject constructor(
         favouriteObservations.asStateFlow()
 
     override suspend fun waterTempGetData(): List<Tsery> {
-        return waterTempDataSource.getData(59.91, 10.74, 10, 50)
+        return waterTempDataSource.getData()
     }
 
     override suspend fun loadBeaches() {
@@ -73,7 +73,6 @@ class BeachRepositoryImp @Inject constructor(
     override suspend fun getBeach(beachName: String): Beach? =
         beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-    // favourites only work on beach objects
     override suspend fun updateFavourites(beach: Beach?): List<Beach> {
         if (beach != null) {
             if (beach in favouriteList) {

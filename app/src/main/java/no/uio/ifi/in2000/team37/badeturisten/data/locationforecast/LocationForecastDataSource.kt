@@ -8,7 +8,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.jsontokotlin.
 
 class LocationForecastDataSource(@LocationForecastHttpClient private val client: HttpClient) {
     suspend fun getForecastData(): LocationForecastData? {
-        // Henter værdata med koordinater for Oslo sentrum
+        // fetch weather data with coordinates to Oslo centrum
         val response =
             client.get("weatherapi/locationforecast/2.0/compact?lat=59.91276&lon=10.74608")
 

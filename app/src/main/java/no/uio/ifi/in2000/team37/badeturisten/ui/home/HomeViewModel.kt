@@ -29,7 +29,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachInfoForHomescreen
+import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachAndBeachInfo
 import java.io.IOException
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -74,8 +74,8 @@ class HomeViewModel @Inject constructor(
                 initialValue = ForecastUIState()
             )
 
-    private val _beachDetails = MutableStateFlow<Map<String, BeachInfoForHomescreen?>>(emptyMap())
-    val beachDetails: StateFlow<Map<String, BeachInfoForHomescreen?>> = _beachDetails.asStateFlow()
+    private val _beachDetails = MutableStateFlow<Map<String, BeachAndBeachInfo?>>(emptyMap())
+    val beachDetails: StateFlow<Map<String, BeachAndBeachInfo?>> = _beachDetails.asStateFlow()
 
     private var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
@@ -211,7 +211,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getBeachInfo(): Map<String, BeachInfoForHomescreen?> {
+    private suspend fun getBeachInfo(): Map<String, BeachAndBeachInfo?> {
         return try {
             _osloKommuneRepository.findAllWebPages()
         } catch (e: UnknownHostException) {

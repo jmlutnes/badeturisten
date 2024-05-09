@@ -108,7 +108,7 @@ fun FavouritesScreen(
                                 text = buildAnnotatedString {
                                     append("Legg til dine favoritter ved å trykke på hjerte ikonet (")
                                     appendInlineContent("heartIcon", "[heartIcon]")
-                                    append(") i en strand profil!")
+                                    append(") i profilen til et badested!")
                                 },
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold,
@@ -122,7 +122,6 @@ fun FavouritesScreen(
                                 modifier = Modifier
                                     .fillMaxSize(),
                                 columns = GridCells.Adaptive(180.dp),
-                                //horizontalArrangement = Arrangement.Absolute.Center,
                                 verticalArrangement = Arrangement.Top
                             )
                             {
