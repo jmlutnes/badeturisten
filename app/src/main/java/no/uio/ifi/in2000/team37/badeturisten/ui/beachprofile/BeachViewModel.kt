@@ -13,22 +13,28 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Bussstasjoner
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Busstations
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
 import javax.inject.Inject
 
 data class BeachUIState(
     val beach: Beach? = null,
-    val badevannsinfo: OsloKommuneBeachInfo?,
-    val kollektivRute: MutableList<Bussrute> = mutableListOf(),
+    val beachInfo: OsloKommuneBeachInfo?,
+    val transportationRoutes: MutableList<BusRoute> = mutableListOf(),
 )
 
-data class Bussrute(val linje: String, val navn: String, val transportMode: String)
+data class BusRoute(
+    val line: String,
+    val name: String,
+    val transportMode: String,
+    val busstation: Busstation,
+)
 
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
@@ -44,11 +50,8 @@ class BeachViewModel @Inject constructor(
     private val _beachUIState = MutableStateFlow(
         BeachUIState(
             null, OsloKommuneBeachInfo(
-                null,
-                null,
-                null
-            ),
-            kollektivRute = mutableListOf<Bussrute>()
+                null, null, null
+            ), transportationRoutes = mutableListOf()
         )
     )
     val beachUIState: StateFlow<BeachUIState> = _beachUIState.asStateFlow()
@@ -57,10 +60,10 @@ class BeachViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _isFavorited = MutableStateFlow<Boolean>(false)
+    private val _isFavorited = MutableStateFlow(false)
     val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
 
-    fun updateFavorites(beach: Beach) {
+    fun checkAndUpdateFavorites(beach: Beach) {
         viewModelScope.launch {
             _beachRepository.updateFavourites(beach)
             _isFavorited.value = _beachRepository.checkFavourite(beach)
@@ -87,37 +90,37 @@ class BeachViewModel @Inject constructor(
             val lon = beachinfo?.pos?.lon?.toDouble()
             val lat = beachinfo?.pos?.lat?.toDouble()
 
-            val bussstasjoner: Bussstasjoner?
-            bussstasjoner = if ((lon == null) || (lat == null)) {
+            val bussstasjoner: Busstations? = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
-                _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
+                _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
             } else {
                 //Fetch ID for all buss stasions based on location
-                _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
+                _enTurRepositoryGeocoderRepository.fetchBusRouteLoc(lat, lon)
             }
 
-            val unikeBussruter = mutableSetOf<Bussrute>()
-            bussstasjoner?.bussstasjon?.forEach { stasjon ->
+            val unikeBussruter = mutableSetOf<BusRoute>()
+            bussstasjoner?.busstation?.forEach { stasjon ->
                 stasjon.id?.let { id ->
-                    _enTurRepositoryJourneyPlanner.hentBussruterMedId(id)?.let { bussruter ->
-                        unikeBussruter.addAll(bussruter)
-                    }
+                    _enTurRepositoryJourneyPlanner.fetchBusroutesById(id, stasjon)
+                        ?.let { bussruter ->
+                            unikeBussruter.addAll(bussruter)
+                        }
                 }
             }
-            val alleBussruter: MutableList<Bussrute> = unikeBussruter.toMutableList()
+            val alleBussruter: MutableList<BusRoute> = unikeBussruter.toMutableList()
             val vannkvalitet: OsloKommuneBeachInfo? = _osloKommuneRepository.findWebPage(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
                     currentUIState.copy(
                         beach = beachinfo,
-                        badevannsinfo = vannkvalitet,
-                        alleBussruter
+                        beachInfo = vannkvalitet,
+                        transportationRoutes = alleBussruter
                     )
                 } else {
                     currentUIState.copy(
                         beach = osloKommuneBeachInfo,
-                        badevannsinfo = vannkvalitet,
-                        alleBussruter
+                        beachInfo = vannkvalitet,
+                        transportationRoutes = alleBussruter
                     )
                 }
             }

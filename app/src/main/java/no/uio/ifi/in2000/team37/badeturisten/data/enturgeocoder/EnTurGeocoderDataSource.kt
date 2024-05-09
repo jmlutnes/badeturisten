@@ -5,9 +5,9 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurHttpGeocoderHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.jsontokotlinenturgeocoder.jsontokotlinenturgeocoder
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
 
-data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
+data class Busstations(val busstation: List<Busstation>)
 
 class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: HttpClient) {
     /**
@@ -19,8 +19,8 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
         lon: Double
     ): jsontokotlinenturgeocoder {
         //Change radius and size if necessary
-        val radius = 0.5
-        val size = 5
+        val radius = 1
+        val size = 8
         val data =
             client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
         return data.body<jsontokotlinenturgeocoder>()
@@ -30,10 +30,10 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
      *Fetch buss stations based on input name
      */
     suspend fun getDataName(
-        navn: String
+        name: String
     ): jsontokotlinenturgeocoder {
         val data =
-            client.get("autocomplete?text=$navn&layers=venue")
+            client.get("autocomplete?text=$name&size=1&boundary.county_ids=KVE:TopographicPlace:32")
         return data.body<jsontokotlinenturgeocoder>()
     }
 }

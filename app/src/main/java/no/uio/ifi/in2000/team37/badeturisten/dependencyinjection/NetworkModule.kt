@@ -17,13 +17,10 @@ import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForec
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
-import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.*
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    // HttpClient for En Tur API
-
     @Provides
     @EnTurHttpGeocoderHttpClient
     fun provideEnTurGeocoderHttpClient(): HttpClient {

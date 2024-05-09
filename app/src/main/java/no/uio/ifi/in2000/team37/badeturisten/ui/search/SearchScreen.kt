@@ -257,11 +257,9 @@ fun SearchScreen(
             Box(
                 modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
-                noResultsMessage = ""
                 LaunchedEffect(
                     Unit,
-                    searchResult,
-                    searchText,
+                    filtrerte,
                     isLoading,
                     lifeGuard,
                     childFriendly,
@@ -272,7 +270,7 @@ fun SearchScreen(
                     divingTower
                 ) {
                     noResultsMessage = ""
-                    delay(200)
+                    delay(500)
                     noResultsMessage = "Ingen resultater"
                 }
                 if (localLoading.value) {
