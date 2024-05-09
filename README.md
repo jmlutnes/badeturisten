@@ -3,7 +3,7 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 
 ## 🧑‍🍳Oppskrift
 1. For å kunne få tilgang til applikasjonen må du først laste ned [latest version of Android Studio](https://developer.android.com/studio)
-2. Klon dette repoet til din lokale maskin ved å bruke denne kommandoen på terminalen din: git clone [url].
+2. Klon dette repoet til din lokale maskin ved å bruke kommandoen ~~~git clone [url].~~~ på terminalen din.
 
 
 ## 📄Dokumentasjon 
