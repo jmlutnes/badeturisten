@@ -220,8 +220,9 @@ class OsloKommuneRepositoryImp @Inject constructor(
                 val lat: String = location[1].toString()
 
                 val position = Pos(lat, lon)
-                if (!beachNameConverted.contains("Badstu") && !beachNameConverted.contains("Tømmerholtjern") &&
-                    !beachNameConverted.contains("Smalvannet") && !beachNameConverted.contains("Sørenga sjøbad") && !beachNameConverted.contains(
+                if (!beachNameConverted.contains("Badstu") && !beachNameConverted.contains("Tømmerholtjern") && !beachNameConverted.contains(
+                        "Smalvannet"
+                    ) && !beachNameConverted.contains("Sørenga sjøbad") && !beachNameConverted.contains(
                         "Solbergvannet"
                     )
                 ) {
