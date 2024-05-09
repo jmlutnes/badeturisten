@@ -190,6 +190,7 @@ fun rememberDirectionsBus(): ImageVector {
         }.build()
     }
 }
+
 @Composable
 fun rememberDirectionsBoat(): ImageVector {
     return remember {
@@ -325,6 +326,7 @@ fun rememberDirectionsBoat(): ImageVector {
         }.build()
     }
 }
+
 @Composable
 fun rememberTrain(): ImageVector {
     return remember {
@@ -436,6 +438,7 @@ fun rememberTrain(): ImageVector {
         }.build()
     }
 }
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Transportation(beach: BeachUIState) {
@@ -490,6 +493,7 @@ fun Transportation(beach: BeachUIState) {
                                 contentScale = ContentScale.Fit
                             )
                         }
+
                         "rail", "metro", "tram" -> {
                             Image(
                                 imageVector = rememberTrain(),
@@ -502,6 +506,7 @@ fun Transportation(beach: BeachUIState) {
                                 contentScale = ContentScale.Fit
                             )
                         }
+
                         else -> {
                             Image(
                                 imageVector = rememberDirectionsBus(),
@@ -523,6 +528,15 @@ fun Transportation(beach: BeachUIState) {
                         fontWeight = FontWeight.Medium,
                         fontStyle = FontStyle.Normal,
                         fontSize = 23.sp
+                    )
+                    Text(
+                        text = it.bussstasjon.navn.toString(),
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .align(Alignment.Center),
+                        fontWeight = FontWeight.Medium,
+                        fontStyle = FontStyle.Normal,
+                        fontSize = 20.sp
                     )
                     Text(
                         text = it.navn,
