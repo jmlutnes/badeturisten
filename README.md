@@ -176,8 +176,8 @@ I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikas
 
 
 ## 🧑‍💻Gruppemedlemer 
-Johan (jmutnes) \
-Thanh (dantn) \
+Jöhan Markus Ludvigsen Utnes (jmutnes) \
+Dan Thanh Ngu (dantn) \
 Adam Nils Giæver (adamng) \
 Bleron Strana (blerons) \
 Danela Sabamali (danelas) \
