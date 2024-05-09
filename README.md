@@ -7,8 +7,8 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 
 
 # Dokumentasjon 
-Her finner du [ARCHITECTURE.md](https://github.uio.no/IN2000-V24/team-37/blob/master/ARCHITECTURE.md) \
-Her finner du 
+[ARCHITECTURE.md](https://github.uio.no/IN2000-V24/team-37/blob/master/ARCHITECTURE.md) \
+[MODELING.md](https://github.uio.no/IN2000-V24/team-37/blob/master/MODELING.md) \
 
 
 # Biblioteker 
