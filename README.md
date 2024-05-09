@@ -92,6 +92,86 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 - Versjon: 3.5.1
 - Dokumentasjon: [Espresso](https://developer.android.com/training/testing/espresso)
 
+### Jsoup
+- Formål: Bibliotek for HTML parsing og manipulasjon.
+- Versjon: 1.12.1
+- Dokumentasjon: [Jsoup](https://jsoup.org/)
+
+### Coil for Compose
+- Formål: Image loading bibliotek designet for Jetpack Compose.
+- Versjon: 2.6.0
+- Dokumentasjon: [Coil Compose](https://coil-kt.github.io/coil/compose/)
+
+### Ktor Client
+- Formål: Asynkron nettverksklient for å lage HTTP-etterspørsler.
+- Versjon: 2.3.10 (bruk `ktor_version` variablen)
+- Dokumentasjon: [Ktor Client](https://ktor.io/docs/client.html)
+
+### Ktor Serialization Gson
+- Formål: Støtte for JSON serialisering gjennom ktor ved å bruke Gson.
+- Versjon: 2.3.10 (bruk `ktor_version` variablen)
+- Dokumentasjon: [Ktor Gson](https://ktor.io/docs/gson.html)
+
+### AndroidX Navigation Components for Compose
+- Formål: Navigasjonshjelpemidler for apps bygget med Jetpack Compose.
+- Versjon: 2.3.10 (bruk `ktor_version` variablen)
+- Dokumentasjon: [Navigation Compose](https://developer.android.com/jetpack/compose/navigation)
+
+### Lottie for Compose
+- Formål: Bibliotek for å lage avanserte animasjoner med Adobe After Effects.
+- Versjon: 6.4.0
+- Dokumentasjon: [Lottie Compose](https://lottiefiles.com/lottie-for-android)
+
+### Dagger Hilt
+- Formål: Dependency injection bibliotek.
+- Versjon: 2.51.1 (bruk `hilt_version` variablen)
+- Dokumentasjon: [Dagger Hilt](https://dagger.dev/hilt/)
+
+### AndroidX Hilt Navigation Compose
+- Formål: Integrerer Hilt DI med Navigation i Jetpack Compose.
+- Versjon: 1.2.0
+- Dokumentasjon: [Hilt Navigation Compose](https://developer.android.com/jetpack/androidx/releases/hilt)
+
+### AndroidX ViewModel KTX
+- Formål: Forenkler håndtering av UI-relaterte data ved å overleve konfigurasjonsendringer.
+- Versjon: 2.7.0
+- Dokumentasjon: [ViewModel KTX](https://developer.android.com/topic/libraries/architecture/viewmodel)
+
+### DataStore Preferences Core
+- Formål: Skrive og lese data asynkront, konsekvent og transaksjonelt.
+- Versjon: 1.1.1
+- Dokumentasjon: [DataStore Core](https://developer.android.com/topic/libraries/architecture/datastore)
+
+### AndroidX DataStore Preferences
+- Formål: Lagring av lettvektige preferansedata.
+- Versjon: 1.1.1
+- Dokumentasjon: [DataStore Preferences](https://developer.android.com/topic/libraries/architecture/datastore#preferences-datastore)
+
+### Android UI Testing
+- Formål: Testing bibliotek for Jetpack Compose.
+- Versjon: (Bruker `junit_version` variablen)
+- Dokumentasjon: [Compose UI Testing](https://developer.android.com/jetpack/compose/testing)
+
+### AndroidX UI Tooling
+- Formål: Tilleggsverktøy for feilsøking og ytelsesanalyse av Compose UI.
+- Versjon: (Spesifiser versjonen)
+- Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling#compose-tooling-library)
+
+### Kotlinx Coroutines Test
+- Formål: Bibliotek som inneholder testingversktøy for Kotlin Coroutines.
+- Versjon: 1.8.1-Beta
+- Dokumentasjon: [Kotlinx Coroutines Test](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/)
+
+### Android Test Manifest
+- Formål: Hjelper med å inkludere manifestinformasjon for testing.
+- Versjon: (Spesifiser versjonen)
+- Dokumentasjon: [Test Manifest](https://developer.android.com/training/testing/set-up-project)
+
+### Hilt Compiler
+- Formål: Annotation Processor for Dagger Hilt.
+- Versjon: (Bruker `hilt_version` variablen)
+- Dokumentasjon: [Hilt Compiler](https://dagger.dev/hilt/compiler.html)
+
 
 ## 🧑‍💻Gruppemedlemer 
 Johan (jmutnes) \
