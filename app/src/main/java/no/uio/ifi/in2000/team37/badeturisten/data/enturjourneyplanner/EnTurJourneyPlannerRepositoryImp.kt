@@ -2,25 +2,25 @@ package no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner
 
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
-import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.Bussrute
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
+import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BusRoute
 import javax.inject.Inject
 
 class EnTurJourneyPlannerRepositoryImp @Inject constructor(
     private val datasource: EnTurJourneyPlannerDataSource,
 ) : EnTurJourneyPlannerRepository {
-    override suspend fun hentBussruterMedId(
-        bussstasjonId: String,
-        bussstasjon: Bussstasjon,
-    ): MutableList<Bussrute>? {
-        val lines = mutableListOf<Bussrute>() // Local instance of list
+    override suspend fun fetchBusroutesById(
+        busstationId: String,
+        busstation: Busstation,
+    ): MutableList<BusRoute>? {
+        val lines = mutableListOf<BusRoute>() // Local instance of list
 
         return try {
             // fetch planning data based on buss station ID
-            val ruteData: jsontokotlinenturjourneyplanner = datasource.getRute(bussstasjonId)
-            ruteData.data.stopPlace.estimatedCalls.forEach { estimatedCall ->
+            val routeData: jsontokotlinenturjourneyplanner = datasource.getRoute(busstationId)
+            routeData.data.stopPlace.estimatedCalls.forEach { estimatedCall ->
                 val line = estimatedCall.serviceJourney.journeyPattern.line
-                lines.add(Bussrute(line.publicCode, line.name, line.transportMode, bussstasjon))
+                lines.add(BusRoute(line.publicCode, line.name, line.transportMode, busstation))
             }
             lines
         } catch (e: Exception) {

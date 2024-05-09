@@ -1,7 +1,7 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
-import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.Bussrute
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
+import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BusRoute
 
 interface EnTurJourneyPlannerRepository {
     /**
@@ -9,5 +9,5 @@ interface EnTurJourneyPlannerRepository {
      * Makes Bussrute objects with the line, name, and transport mode (bus/tram/coach/water)
      * returns a mutable list with all the busses related to the buss station.
      */
-    suspend fun hentBussruterMedId(bussstasjonId: String, bussstasjon: Bussstasjon): MutableList<Bussrute>?
+    suspend fun fetchBusroutesById(busstationId: String, busstation: Busstation): MutableList<BusRoute>?
 }

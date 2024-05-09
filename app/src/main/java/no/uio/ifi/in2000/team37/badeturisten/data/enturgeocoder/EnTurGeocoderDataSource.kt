@@ -5,9 +5,9 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurHttpGeocoderHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.jsontokotlinenturgeocoder.jsontokotlinenturgeocoder
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Bussstasjon
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
 
-data class Bussstasjoner(val bussstasjon: List<Bussstasjon>)
+data class Busstations(val busstation: List<Busstation>)
 
 class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: HttpClient) {
     /**

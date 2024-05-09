@@ -18,7 +18,7 @@ class EnTurJourneyPlannerDataSource(@EnTurJourneyPlannerHttpClient private val c
      * Sends a request for the JourneyPlanner API with the ID.
      */
     @OptIn(InternalAPI::class)
-    suspend fun getRute(id: String): jsontokotlinenturjourneyplanner {
+    suspend fun getRoute(id: String): jsontokotlinenturjourneyplanner {
         val graphQLQuery = """
         query MinQuery {
           stopPlace(id: "$id") {
