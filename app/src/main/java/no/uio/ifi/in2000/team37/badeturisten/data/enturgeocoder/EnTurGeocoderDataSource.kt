@@ -19,8 +19,8 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
         lon: Double
     ): jsontokotlinenturgeocoder {
         //Change radius and size if necessary
-        val radius = 0.5
-        val size = 5
+        val radius = 5
+        val size = 10
         val data =
             client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
         return data.body<jsontokotlinenturgeocoder>()
