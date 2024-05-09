@@ -52,6 +52,46 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 - Versjon: 1.8.2
 - Dokumentasjon: [Activity Compose](https://developer.android.com/jetpack/compose/tooling#activity)
 
+### AndroidX Compose UI
+- Formål: Grunnleggende UI-terkomponenter for å bygge apps med Jetpack Compose.
+- Versjon: (Spesifiser versjon)
+- Dokumentasjon: [Compose UI](https://developer.android.com/jetpack/compose/setup#compose-compiler)
+
+### AndroidX Compose UI Graphics
+- Formål: Grafikkrelaterte API-er for Jetpack Compose.
+- Versjon: (Spesifiser versjon)
+- Dokumentasjon: [Compose Graphics](https://developer.android.com/jetpack/compose/graphics)
+
+### AndroidX Compose UI Tooling Preview
+- Formål: Forhåndsvisningsfunksjoner for UI-komponenter innenfor Android Studio.
+- Versjon: (Spesifiser versjon)
+- Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling)
+
+### AndroidX Compose Material 3
+- Formål: Material Design 3-komponenter for Jetpack Compose.
+- Versjon: 1.2.1
+- Dokumentasjon: [Material 3](https://developer.android.com/jetpack/androidx/releases/material3)
+
+### AndroidX Lifecycle ViewModel Compose
+- Formål: Integrasjon av ViewModel med Jetpack Compose.
+- Versjon: 2.7.0
+- Dokumentasjon: [ViewModel Compose](https://developer.android.com/jetpack/compose/state#viewmodel-state)
+
+### JUnit
+- Formål: Enhetstesting framework for Java og Android.
+- Versjon: 4.13.2
+- Dokumentasjon: [JUnit](https://junit.org/junit4/)
+
+### AndroidX Test JUnit
+- Formål: Android-spesifikk utvidelse av JUnit for integrasjonstester.
+- Versjon: 1.1.5
+- Dokumentasjon: [AndroidX Test](https://developer.android.com/training/testing/junit-rules)
+
+### AndroidX Espresso Core
+- Formål: UI-testing framework for Android.
+- Versjon: 3.5.1
+- Dokumentasjon: [Espresso](https://developer.android.com/training/testing/espresso)
+
 
 ## 🧑‍💻Gruppemedlemer 
 Johan (jmutnes) \
