@@ -33,7 +33,7 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
         navn: String
     ): jsontokotlinenturgeocoder {
         val data =
-            client.get("autocomplete?text=$navn&layers=venue")
+            client.get("autocomplete?text=$navn&boundary.locality_gid=KVE:TopographicPlace:0301")
         return data.body<jsontokotlinenturgeocoder>()
     }
 }

@@ -92,7 +92,7 @@ class BeachViewModel @Inject constructor(
 
             val bussstasjoner: Bussstasjoner? = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
-                _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
+                _enTurRepositoryGeocoderRepository.hentBussruteName("${beachName} Oslo")
             } else {
                 //Fetch ID for all buss stasions based on location
                 _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)

@@ -472,7 +472,7 @@ fun Transportation(beach: BeachUIState) {
             Card(
                 modifier = Modifier
                     .padding(8.dp)
-                    .size(180.dp, 80.dp),
+                    .size(180.dp, 130.dp),
                 elevation = CardDefaults.elevatedCardElevation(3.dp)
             ) {
                 Box(
@@ -525,7 +525,7 @@ fun Transportation(beach: BeachUIState) {
                         modifier = Modifier
                             .padding(10.dp)
                             .align(Alignment.TopCenter),
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.SemiBold,
                         fontStyle = FontStyle.Normal,
                         fontSize = 23.sp
                     )
@@ -533,10 +533,11 @@ fun Transportation(beach: BeachUIState) {
                         text = it.bussstasjon.navn.toString(),
                         modifier = Modifier
                             .padding(10.dp)
-                            .align(Alignment.Center),
+                            .align(Alignment.Center)
+                            .basicMarquee(),
                         fontWeight = FontWeight.Medium,
                         fontStyle = FontStyle.Normal,
-                        fontSize = 20.sp
+                        fontSize = 18.sp
                     )
                     Text(
                         text = it.navn,
