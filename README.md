@@ -1,4 +1,4 @@
-# Team-37
+# 🌟Team-37
 I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet befinner seg og oppskrift på hvordan man kjører applikasjonen. 
 
 # 🧑‍🍳Oppskrift
