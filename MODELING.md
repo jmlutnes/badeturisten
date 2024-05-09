@@ -19,3 +19,6 @@
 
 <img width="1163" alt="Skjermbilde 2024-05-06 kl  16 00 15" src="https://media.github.uio.no/user/9706/files/6b1027ae-4a98-423d-8fca-18f17490250c">
 
+# Sekvensdiagram: Favoritter 
+
+<img width="457" alt="Skjermbilde 2024-05-09 kl  22 42 45" src="https://media.github.uio.no/user/9706/files/cc837fc2-7b97-44ce-8278-b2ee4965e5fc">
