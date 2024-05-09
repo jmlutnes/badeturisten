@@ -5,7 +5,7 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 1. For å kunne få tilgang til applikasjonen må du først laste ned [latest version of Android Studio](https://developer.android.com/studio)
 2. Klon dette repoet til din lokale maskin ved å bruke skrive inn dette på terminalen din. \
  ```git clone + [url]``` 
-3. Bygg og kjør prosjektet på en emulator eller en fysisk enhet som støtter API-nivåene som er henvist i rapporten under _brukerdokumentasjon_
+3. Bygg og kjør prosjektet på en emulator eller en fysisk enhet som støtter API-nivåene som er henvist i rapporten under *brukerdokumentasjon*
 
 
 ## 📄Dokumentasjon 
