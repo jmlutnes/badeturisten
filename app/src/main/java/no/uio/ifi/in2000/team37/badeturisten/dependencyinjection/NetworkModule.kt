@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
@@ -97,6 +98,11 @@ object NetworkModule {
                 header("X-Gravitee-API-Key", "your-api-key-here")
             }
             install(ContentNegotiation) { gson {} }
+            install(HttpTimeout) {
+                this.requestTimeoutMillis = 5000
+                this.connectTimeoutMillis = 5000
+                this.socketTimeoutMillis = 5000
+            }
         }
     }
 
