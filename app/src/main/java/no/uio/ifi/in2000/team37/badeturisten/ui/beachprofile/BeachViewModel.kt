@@ -36,8 +36,8 @@ class BeachViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
-    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
-    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository,
+    private val _enTurGeocoderRepository: EnTurGeocoderRepository,
+    private val _enTurJourneyPlannerRepository: EnTurJourneyPlannerRepository,
 ) : ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
 
@@ -92,28 +92,31 @@ class BeachViewModel @Inject constructor(
 
             val busStations: BusStations? = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
-                _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)
+                _enTurGeocoderRepository.hentBussruteName(beachName)
             } else {
-                //Fetch ID for all buss stasions based on location
-                _enTurRepositoryGeocoderRepository.hentBussruteLoc(lat, lon)
+                //Fetch ID for all buss stations based on location
+                _enTurGeocoderRepository.hentBussruteLoc(lat, lon)
             }
-            
+            // The EnTurGeocoderRepository-methods for getting bus routes
+            // only return null when there is an error, and will
+            // return an empty object if there simply are no routes near the beach.
+            // busStations being null is therefore indicative of an error
+            if (busStations == null) {
+                _isConnectivityIssue.update { true }
+            }
+            Log.d("beachViewModel", busStations.toString())
 
             val uniqueRoutes = mutableSetOf<BusRoute>()
             busStations?.stations?.forEach { station ->
                 station.id?.let { id ->
-                    _enTurRepositoryJourneyPlanner.getBusRoutesById(id)?.let { routes ->
+                    _enTurJourneyPlannerRepository.getBusRoutesById(id)?.let { routes ->
                         uniqueRoutes.addAll(routes)
                     }
                 }
             }
             val allRoutes: MutableList<BusRoute> = uniqueRoutes.toMutableList()
             val waterQuality: OsloKommuneBeachInfo? = _osloKommuneRepository.findWebPage(beachName)
-            if (waterQuality == null) {
-                _isConnectivityIssue.update { true }
-            } else {
-                _isConnectivityIssue.update { false }
-            }
+
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
                     currentUIState.copy(
@@ -131,7 +134,6 @@ class BeachViewModel @Inject constructor(
             }
             if (beachinfo != null) {
                 checkFavourite(beachinfo)
-                _isConnectivityIssue.update { false }
             } else if (osloKommuneBeachInfo != null) {
                 checkFavourite(osloKommuneBeachInfo)
             } else {

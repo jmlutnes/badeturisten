@@ -7,8 +7,8 @@ class EnTurGeocoderRepositoryImp(
     private val datasource: EnTurGeocoderDataSource
 ) : EnTurGeocoderRepository {
     override suspend fun hentBussruteLoc(lat: Double, lon: Double): BusStations? {
-        val nearestStopPlace = datasource.getDataLoc(lat, lon)
-        val bussstasjoner = nearestStopPlace?.features?.map { feature ->
+        val nearestStopPlace = datasource.getDataLoc(lat, lon) ?: return null
+        val busStations = nearestStopPlace?.features?.map { feature ->
             Bussstasjon(
                 id = feature.properties.id,
                 navn = feature.properties.name,
@@ -18,15 +18,15 @@ class EnTurGeocoderRepositoryImp(
                 )
             )
         }
-        if (bussstasjoner != null) {
-            return if (bussstasjoner.isNotEmpty()) BusStations(bussstasjoner) else null
+        if (busStations != null) {
+            return if (busStations.isNotEmpty()) BusStations(busStations) else null
         }
-        return null
+        return BusStations(emptyList())
     }
 
     override suspend fun hentBussruteName(navn: String): BusStations? {
-        val stoppesteder = datasource.getDataName(navn)
-        val bussstasjoner = stoppesteder?.features?.map { feature ->
+        val stops = datasource.getDataName(navn) ?: return null
+        val busStations = stops?.features?.map { feature ->
             Bussstasjon(
                 id = feature.properties.id,
                 navn = feature.properties.name,
@@ -36,9 +36,9 @@ class EnTurGeocoderRepositoryImp(
                 )
             )
         }
-        if (bussstasjoner != null) {
-            return if (bussstasjoner.isNotEmpty()) BusStations(bussstasjoner) else null
+        if (busStations != null) {
+            return if (busStations.isNotEmpty()) BusStations(busStations) else null
         }
-        return null
+        return BusStations(emptyList())
     }
 }

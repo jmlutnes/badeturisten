@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner
 
+import android.util.Log
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BusRoute
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
@@ -20,7 +21,7 @@ class EnTurJourneyPlannerRepositoryImp @Inject constructor(
             }
             lines
         } catch (e: Exception) {
-            println("En feil oppstod ved henting av bussruter: ${e.message}")
+            e.message?.let { Log.d("journeyplanner", it) }
             null
         }
     }
