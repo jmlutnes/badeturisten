@@ -54,17 +54,17 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 
 ### AndroidX Compose UI
 - Formål: Grunnleggende UI-terkomponenter for å bygge apps med Jetpack Compose.
-- Versjon: (Spesifiser versjon)
+- Versjon: 😵‍💫
 - Dokumentasjon: [Compose UI](https://developer.android.com/jetpack/compose/setup#compose-compiler)
 
 ### AndroidX Compose UI Graphics
 - Formål: Grafikkrelaterte API-er for Jetpack Compose.
-- Versjon: (Spesifiser versjon)
+- Versjon: 😵‍💫
 - Dokumentasjon: [Compose Graphics](https://developer.android.com/jetpack/compose/graphics)
 
 ### AndroidX Compose UI Tooling Preview
 - Formål: Forhåndsvisningsfunksjoner for UI-komponenter innenfor Android Studio.
-- Versjon: (Spesifiser versjon)
+- Versjon: 😵‍💫
 - Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling)
 
 ### AndroidX Compose Material 3
@@ -104,17 +104,17 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 
 ### Ktor Client
 - Formål: Asynkron nettverksklient for å lage HTTP-etterspørsler.
-- Versjon: 2.3.10 (bruk `ktor_version` variablen)
+- Versjon: 2.3.10
 - Dokumentasjon: [Ktor Client](https://ktor.io/docs/client.html)
 
 ### Ktor Serialization Gson
 - Formål: Støtte for JSON serialisering gjennom ktor ved å bruke Gson.
-- Versjon: 2.3.10 (bruk `ktor_version` variablen)
+- Versjon: 2.3.10 
 - Dokumentasjon: [Ktor Gson](https://ktor.io/docs/gson.html)
 
 ### AndroidX Navigation Components for Compose
 - Formål: Navigasjonshjelpemidler for apps bygget med Jetpack Compose.
-- Versjon: 2.3.10 (bruk `ktor_version` variablen)
+- Versjon: 2.3.10
 - Dokumentasjon: [Navigation Compose](https://developer.android.com/jetpack/compose/navigation)
 
 ### Lottie for Compose
@@ -124,7 +124,7 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 
 ### Dagger Hilt
 - Formål: Dependency injection bibliotek.
-- Versjon: 2.51.1 (bruk `hilt_version` variablen)
+- Versjon: 2.51.1
 - Dokumentasjon: [Dagger Hilt](https://dagger.dev/hilt/)
 
 ### AndroidX Hilt Navigation Compose
@@ -149,27 +149,27 @@ I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet b
 
 ### Android UI Testing
 - Formål: Testing bibliotek for Jetpack Compose.
-- Versjon: (Bruker `junit_version` variablen)
+- Versjon: 1.6.7
 - Dokumentasjon: [Compose UI Testing](https://developer.android.com/jetpack/compose/testing)
 
 ### AndroidX UI Tooling
 - Formål: Tilleggsverktøy for feilsøking og ytelsesanalyse av Compose UI.
-- Versjon: (Spesifiser versjonen)
+- Versjon: 😵‍💫
 - Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling#compose-tooling-library)
 
-### Kotlinx Coroutines Test
+### Kotlinx Coroutines Test 😵‍💫
 - Formål: Bibliotek som inneholder testingversktøy for Kotlin Coroutines.
 - Versjon: 1.8.1-Beta
 - Dokumentasjon: [Kotlinx Coroutines Test](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/)
 
 ### Android Test Manifest
 - Formål: Hjelper med å inkludere manifestinformasjon for testing.
-- Versjon: (Spesifiser versjonen)
+- Versjon: 😵‍💫
 - Dokumentasjon: [Test Manifest](https://developer.android.com/training/testing/set-up-project)
 
 ### Hilt Compiler
 - Formål: Annotation Processor for Dagger Hilt.
-- Versjon: (Bruker `hilt_version` variablen)
+- Versjon: 2.51.1
 - Dokumentasjon: [Hilt Compiler](https://dagger.dev/hilt/compiler.html)
 
 
