@@ -257,7 +257,6 @@ fun SearchScreen(
             Box(
                 modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
-                noResultsMessage = ""
                 LaunchedEffect(
                     Unit,
                     searchResult,

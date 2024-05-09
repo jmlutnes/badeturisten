@@ -1,14 +1,16 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
@@ -19,6 +21,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -37,7 +42,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -82,82 +86,70 @@ fun LottieAnimation() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Transportation(beach: BeachUIState) {
-    Card(
+    val state = rememberLazyListState()
+    Text(
+        text = "Kollektivruter",
         modifier = Modifier
-            .padding(16.dp)
+            .padding(10.dp),
+        fontWeight = FontWeight.SemiBold
+    )
+    LazyRow(
+        state = state,
+        flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
+        modifier = Modifier
             .fillMaxSize(),
-        elevation = CardDefaults.elevatedCardElevation(8.dp)
+        contentPadding = PaddingValues(6.dp),
+        horizontalArrangement = Arrangement.Center
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            Text(
-                text = "Kollektivruter",
+        items(beach.kollektivRute) {
+            val transport = when (it.transportMode) {
+                "bus" -> "Buss"
+                "water" -> "Båt"
+                "rail" -> "Tog"
+                "tram" -> "Trikk"
+                "metro" -> "T-Bane"
+                "coach" -> "Buss"
+                else -> it.transportMode.replaceFirstChar { letter ->
+                    if (letter.isLowerCase()) letter.titlecase(
+                        Locale.getDefault()
+                    ) else letter.toString()
+                }
+            }
+            Card(
                 modifier = Modifier
-                    .padding(10.dp),
-                fontWeight = FontWeight.SemiBold
-            )
-            Column(
-                Modifier
-                    .fillMaxSize()
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .height(80.dp),
+                elevation = CardDefaults.elevatedCardElevation(8.dp)
             ) {
-                beach.kollektivRute.forEach() {
-                    val transport = when (it.transportMode) {
-                        "bus" -> "Buss"
-                        "water" -> "Båt"
-                        "rail" -> "Tog"
-                        "tram" -> "Trikk"
-                        "metro" -> "T-Bane"
-                        "coach" -> "Buss"
-                        else -> it.transportMode.replaceFirstChar { letter ->
-                            if (letter.isLowerCase()) letter.titlecase(
-                                Locale.getDefault()
-                            ) else letter.toString()
-                        }
-                    }
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .padding(8.dp)
-                    ) {
-                        Row(
-                            Modifier
-                                .fillMaxSize()
-                        ) {
-                            Spacer(modifier = Modifier.weight(1f))
-                            Text(
-                                text = "$transport ${it.linje}",
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically),
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-                        Column(
-                            Modifier
-                                .fillMaxSize()
-                        ) {
-                            Row(
-                                Modifier
-                                    .fillMaxSize()
-                            ) {
-                                Spacer(modifier = Modifier.weight(1f))
-                                Text(
-                                    text = it.navn,
-                                    modifier = Modifier
-                                        .basicMarquee()
-                                        .align(Alignment.CenterVertically),
-                                    fontStyle = FontStyle.Italic
-                                )
-                            }
-                        }
-                    }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    Text(
+                        text = "$transport ${it.linje}",
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .align(Alignment.TopCenter),
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 25.sp
+                        )
+                    Text(
+                        text = it.navn,
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .basicMarquee()
+                            .align(Alignment.BottomCenter),
+                        fontSize = 12.sp,
+                        fontStyle = FontStyle.Italic
+                    )
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun Gradient() {
@@ -200,7 +192,10 @@ fun BeachProfile(
                 title = { Text(text = "Badested") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 }
             )
@@ -259,7 +254,6 @@ fun BeachProfile(
                                             color = Color.White,
                                             textAlign = TextAlign.Center,
                                             modifier = Modifier
-                                                //.basicMarquee()
                                                 .align(Alignment.TopCenter)
                                                 .padding(16.dp),
                                             style = TextStyle(
@@ -397,9 +391,22 @@ fun BeachProfile(
                         }
                         if (beach.kollektivRute.isEmpty()) {
                             Spacer(modifier = Modifier.height(10.dp))
-                        } else {
-                            Transportation(beach)
-                        }
+                        } else
+                            Card(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth()
+                                    .height(180.dp),
+                                elevation = CardDefaults.elevatedCardElevation(8.dp)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(MaterialTheme.colorScheme.background)
+                                ) {
+                                    Transportation(beach)
+                                }
+                            }
                     }
                 }
             }
