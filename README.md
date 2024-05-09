@@ -1,7 +1,9 @@
 # Team-37
 I dette repositoriet finner du informasjon om hvor dokumentasjon av prosjektet befinner seg og oppskrift på hvordan man kjører applikasjonen. 
 
-# Krav 
+# Oppskrift
+1. For å kunne få tilgang til applikasjonen må du først laste ned [Latest version of Android Studio] (https://developer.android.com/studio)
+2. Så må du 
 
 
 # Dokumentasjon 
