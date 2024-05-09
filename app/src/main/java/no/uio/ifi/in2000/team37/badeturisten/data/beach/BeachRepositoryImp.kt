@@ -8,20 +8,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachRepositoryImp @Inject constructor(
     private val waterTempDataSource: WaterTemperatureDataSource,
     private val beachListDataStore: DataStore<List<Beach>>,
-    private val coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
 ) : BeachRepository {
     init {
         // loadInitialData
@@ -35,7 +35,7 @@ class BeachRepositoryImp @Inject constructor(
 
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
     private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
-    var favouriteList: MutableList<Beach> = mutableListOf<Beach>()
+    private var favouriteList: MutableList<Beach> = mutableListOf()
 
     override fun getBeachObservations(): StateFlow<List<Beach>> = beachObservations.asStateFlow()
     override fun getFavouriteObservations(): StateFlow<List<Beach>> =
@@ -48,7 +48,6 @@ class BeachRepositoryImp @Inject constructor(
     override suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
 
-        //oppdaterer i homeviewmodel i stedet
         beachObservations.update {
             makeBeaches(observationsFromDataSource)
         }
