@@ -28,6 +28,5 @@
 
 # Flytdiagram: Filtrert søk 
 
-<img width="893" alt="Skjermbilde 2024-05-09 kl  22 45 38" src="https://media.github.uio.no/user/9706/files/8a70e914-e428-4938-89ec-9db9526b5824">
 <img width="814" alt="Skjermbilde 2024-05-09 kl  22 46 10" src="https://media.github.uio.no/user/9706/files/21bb8908-7f37-44aa-b107-ae8e7eeaff44">
 
