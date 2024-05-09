@@ -1,5 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -17,13 +18,17 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
     suspend fun getDataLoc(
         lat: Double,
         lon: Double
-    ): jsontokotlinenturgeocoder {
+    ): jsontokotlinenturgeocoder? {
         //Change radius and size if necessary
         val radius = 0.5
         val size = 5
-        val data =
-            client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
-        return data.body<jsontokotlinenturgeocoder>()
+        return try {
+            val data =
+                client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
+            data.body<jsontokotlinenturgeocoder>()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     /**
@@ -31,9 +36,15 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
      */
     suspend fun getDataName(
         navn: String
-    ): jsontokotlinenturgeocoder {
-        val data =
-            client.get("autocomplete?text=$navn&layers=venue")
-        return data.body<jsontokotlinenturgeocoder>()
+    ): jsontokotlinenturgeocoder? {
+        return try {
+            val data =
+                client.get("autocomplete?text=$navn&layers=venue")
+            Log.d("geocoder", data.status.value.toString())
+            data.body<jsontokotlinenturgeocoder>()
+        } catch (e: Exception) {
+            e.message?.let { Log.e("geocoder", it) }
+            null
+        }
     }
 }

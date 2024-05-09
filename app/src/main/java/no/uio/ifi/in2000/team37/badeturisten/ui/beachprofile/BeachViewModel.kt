@@ -82,7 +82,6 @@ class BeachViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
-        Log.d("debug", "start")
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
 
