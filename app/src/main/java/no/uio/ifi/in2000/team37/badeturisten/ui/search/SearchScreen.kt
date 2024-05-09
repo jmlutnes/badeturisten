@@ -259,8 +259,7 @@ fun SearchScreen(
             ) {
                 LaunchedEffect(
                     Unit,
-                    searchResult,
-                    searchText,
+                    filtrerte,
                     isLoading,
                     lifeGuard,
                     childFriendly,
@@ -271,7 +270,7 @@ fun SearchScreen(
                     divingTower
                 ) {
                     noResultsMessage = ""
-                    delay(200)
+                    delay(500)
                     noResultsMessage = "Ingen resultater"
                 }
                 if (localLoading.value) {

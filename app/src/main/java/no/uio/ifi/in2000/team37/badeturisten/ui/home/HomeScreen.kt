@@ -424,7 +424,7 @@ fun HomeScreen(
                                                 if (areActiveAlerts.value) {
                                                     WarningIcon(warningvector = warningVectorRed)
                                                 } else {
-                                                    WarningIcon(warningVectorWhite)
+                                                    WarningIcon(warningvector = warningVectorWhite)
                                                 }
                                             }
                                         }
