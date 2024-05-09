@@ -60,6 +60,9 @@ class BeachViewModel @Inject constructor(
     private val _isFavorited = MutableStateFlow<Boolean>(false)
     val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
 
+    private val _isConnectivityIssue = MutableStateFlow(false)
+    val isConnectivityIssue = _isConnectivityIssue.asStateFlow()
+
     fun checkAndUpdateFavorites(beach: Beach) {
         viewModelScope.launch {
             _beachRepository.updateFavourites(beach)
@@ -79,6 +82,7 @@ class BeachViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
+        Log.d("debug", "start")
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
 
@@ -122,9 +126,13 @@ class BeachViewModel @Inject constructor(
                 }
             }
             if (beachinfo != null) {
+                _isConnectivityIssue.update { false }
                 checkFavourite(beachinfo)
             } else if (osloKommuneBeachInfo != null) {
+                _isConnectivityIssue.update { false }
                 checkFavourite(osloKommuneBeachInfo)
+            } else {
+                _isConnectivityIssue.update { true }
             }
             _isLoading.value = false
         }
