@@ -1,5 +1,5 @@
 # 🌟Team-37
-I dette repositoriet finner en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
+I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
 
 ## 🧑‍🍳Oppskrift
 1. For å kunne få tilgang til applikasjonen må du først laste ned [latest version of Android Studio](https://developer.android.com/studio)
