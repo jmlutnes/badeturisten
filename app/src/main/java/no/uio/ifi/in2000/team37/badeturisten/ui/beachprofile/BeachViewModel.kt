@@ -33,7 +33,7 @@ data class Bussrute(val linje: String, val navn: String, val transportMode: Stri
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
     private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
@@ -60,7 +60,7 @@ class BeachViewModel @Inject constructor(
     private val _isFavorited = MutableStateFlow<Boolean>(false)
     val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
 
-    fun checkAndUpdateFavorites(beach: Beach) {
+    fun updateFavorites(beach: Beach) {
         viewModelScope.launch {
             _beachRepository.updateFavourites(beach)
             _isFavorited.value = _beachRepository.checkFavourite(beach)
@@ -87,7 +87,7 @@ class BeachViewModel @Inject constructor(
             val lon = beachinfo?.pos?.lon?.toDouble()
             val lat = beachinfo?.pos?.lat?.toDouble()
 
-            var bussstasjoner: Bussstasjoner?
+            val bussstasjoner: Bussstasjoner?
             bussstasjoner = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
                 _enTurRepositoryGeocoderRepository.hentBussruteName(beachName)

@@ -1,7 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -37,7 +36,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -273,7 +271,7 @@ fun BeachProfile(
                                         .padding(17.dp),
                                         onClick = {
                                             beach.beach?.let {
-                                                beachViewModel.checkAndUpdateFavorites(it)
+                                                beachViewModel.updateFavorites(it)
                                             }
                                         }) {
                                         Icon(
