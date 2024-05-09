@@ -9,7 +9,6 @@
 <img width="823" alt="Skjermbilde 2024-05-06 kl  15 51 03" src="https://media.github.uio.no/user/9706/files/5584640a-3e67-4199-a964-5075bca36123">
 
 
-
 # Sekvensdiagram: Stedsposisjon
 
 <img width="581" alt="Skjermbilde 2024-05-06 kl  15 45 19" src="https://media.github.uio.no/user/9706/files/cc9ca785-14d4-4dec-b9de-ae67a60bdd60">
@@ -22,3 +21,12 @@
 # Sekvensdiagram: Favoritter 
 
 <img width="457" alt="Skjermbilde 2024-05-09 kl  22 42 45" src="https://media.github.uio.no/user/9706/files/cc837fc2-7b97-44ce-8278-b2ee4965e5fc">
+
+# Flytdiagram: Favoritter 
+
+<img width="757" alt="Skjermbilde 2024-05-09 kl  22 44 25" src="https://media.github.uio.no/user/9706/files/42fda48c-d58b-45a0-8ccd-e305424c98cc">
+
+# Flytdiagram: Filtrert søk 
+
+<img width="893" alt="Skjermbilde 2024-05-09 kl  22 45 38" src="https://media.github.uio.no/user/9706/files/8a70e914-e428-4938-89ec-9db9526b5824">
+
