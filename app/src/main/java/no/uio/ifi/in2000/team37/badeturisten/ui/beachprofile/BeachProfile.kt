@@ -105,7 +105,7 @@ fun Transportation(beach: BeachUIState) {
                 Modifier
                     .fillMaxSize()
             ) {
-                beach.kollektivRute.forEach() {
+                beach.kollektivRute.forEach {
                     val transport = when (it.transportMode) {
                         "bus" -> "Buss"
                         "water" -> "Båt"
