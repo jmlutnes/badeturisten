@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -28,6 +29,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -471,83 +473,94 @@ fun Transportation(beach: BeachUIState) {
             }
             Card(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .size(180.dp, 130.dp),
-                elevation = CardDefaults.elevatedCardElevation(3.dp)
+                    .padding(vertical = 10.dp, horizontal = 10.dp)
+                    .width(160.dp)
+                    .fillMaxHeight(),
+                //elevation = CardDefaults.elevatedCardElevation(3.dp)
             ) {
-                Box(
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.errorContainer)
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    when (it.transportMode) {
-                        "water" -> {
-                            Image(
-                                imageVector = rememberDirectionsBoat(),
-                                contentDescription = "Icon of boat",
-                                modifier = Modifier
-                                    .padding(vertical = 10.dp, horizontal = 5.dp)
-                                    .size(30.dp)
-                                    .background(Color.Transparent)
-                                    .align(Alignment.TopStart),
-                                contentScale = ContentScale.Fit
-                            )
-                        }
+                    Column(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        when (it.transportMode) {
+                            "water" -> {
+                                Image(
+                                    imageVector = rememberDirectionsBoat(),
+                                    contentDescription = "Icon of boat",
+                                    modifier = Modifier
+                                        .padding(top = 10.dp)
+                                        .size(30.dp)
+                                        .background(Color.Transparent)
+                                )
+                            }
 
-                        "rail", "metro", "tram" -> {
-                            Image(
-                                imageVector = rememberTrain(),
-                                contentDescription = "Icon of train",
-                                modifier = Modifier
-                                    .padding(vertical = 10.dp, horizontal = 5.dp)
-                                    .size(30.dp)
-                                    .background(Color.Transparent)
-                                    .align(Alignment.TopStart),
-                                contentScale = ContentScale.Fit
-                            )
-                        }
+                            "rail", "metro", "tram" -> {
+                                Image(
+                                    imageVector = rememberTrain(),
+                                    contentDescription = "Icon of train",
+                                    modifier = Modifier
+                                        .padding(top = 10.dp)
+                                        .size(30.dp)
+                                        .background(Color.Transparent)
+                                )
+                            }
 
-                        else -> {
-                            Image(
-                                imageVector = rememberDirectionsBus(),
-                                contentDescription = "Icon of bus",
-                                modifier = Modifier
-                                    .padding(vertical = 10.dp, horizontal = 5.dp)
-                                    .size(30.dp)
-                                    .background(Color.Transparent)
-                                    .align(Alignment.TopStart),
-                                contentScale = ContentScale.Fit
-                            )
+                            else -> {
+                                Image(
+                                    imageVector = rememberDirectionsBus(),
+                                    contentDescription = "Icon of bus",
+                                    modifier = Modifier
+                                        .padding(top = 10.dp)
+                                        .size(30.dp)
+                                        .background(Color.Transparent)
+                                )
+                            }
                         }
+                        Text(
+                            text = "$transport ${it.linje}",
+                            fontWeight = FontWeight.SemiBold,
+                            fontStyle = FontStyle.Normal,
+                            fontSize = 18.sp,
+                            modifier = Modifier
+                                .padding(top = 0.dp)
+                        )
+                        Text(
+                            text = it.navn,
+                            modifier = Modifier
+                                .basicMarquee()
+                                .padding(horizontal = 6.dp, vertical = 0.dp),
+                            fontSize = 12.sp,
+                            fontStyle = FontStyle.Italic,
+                        )
                     }
-                    Text(
-                        text = "$transport ${it.linje}",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .align(Alignment.TopCenter),
-                        fontWeight = FontWeight.SemiBold,
-                        fontStyle = FontStyle.Normal,
-                        fontSize = 23.sp
-                    )
-                    Text(
-                        text = it.bussstasjon.navn.toString(),
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .align(Alignment.Center)
-                            .basicMarquee(),
-                        fontWeight = FontWeight.Medium,
-                        fontStyle = FontStyle.Normal,
-                        fontSize = 18.sp
-                    )
-                    Text(
-                        text = it.navn,
-                        modifier = Modifier
-                            .padding(horizontal = 4.dp, vertical = 8.dp)
-                            .basicMarquee()
-                            .align(Alignment.BottomCenter),
-                        fontSize = 12.sp,
-                        fontStyle = FontStyle.Italic,
-                    )
+                    Column (modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp, top = 10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Icon(
+                            imageVector = Icons.Filled.LocationOn,
+                            contentDescription = "Location Sign",
+                            tint = Color.Black,
+                            modifier = Modifier.size(30.dp)
+                        )
+                        Text(
+                            text = it.bussstasjon.navn.toString(),
+                            modifier = Modifier
+                                .basicMarquee(),
+                            fontWeight = FontWeight.Medium,
+                            fontStyle = FontStyle.Normal,
+                            fontSize = 16.sp
+                        )
+                    }
                 }
             }
         }
@@ -783,7 +796,7 @@ fun BeachProfile(
                             modifier = Modifier
                                 .padding(16.dp)
                                 .fillMaxWidth()
-                                .height(180.dp),
+                                .height(270.dp),
                             elevation = CardDefaults.elevatedCardElevation(8.dp)
                         ) {
                             Column(
