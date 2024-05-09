@@ -19,7 +19,7 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
         lon: Double
     ): jsontokotlinenturgeocoder {
         //Change radius and size if necessary
-        val radius = 1
+        val radius = 0.5
         val size = 8
         val data =
             client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue")
@@ -33,7 +33,7 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
         name: String
     ): jsontokotlinenturgeocoder {
         val data =
-            client.get("autocomplete?text=$name&size=5&boundary.county_ids=KVE:TopographicPlace:32")
+            client.get("autocomplete?text=$name&size=1&boundary.county_ids=KVE:TopographicPlace:32")
         return data.body<jsontokotlinenturgeocoder>()
     }
 }
