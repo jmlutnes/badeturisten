@@ -96,7 +96,7 @@ class BeachViewModel @Inject constructor(
             val lon = beachInfo?.pos?.lon?.toDouble()
             val lat = beachInfo?.pos?.lat?.toDouble()
 
-            val busstations: Busstations? = if ((lon == null) || (lat == null)) {
+            val busStations: Busstations? = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
                 _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
             } else {
@@ -105,7 +105,7 @@ class BeachViewModel @Inject constructor(
             }
 
             val uniqueBusRoutes = mutableSetOf<BusRoute>()
-            busstations?.busstation?.forEach { station ->
+            busStations?.busstation?.forEach { station ->
                 station.id?.let { id ->
                     _enTurRepositoryJourneyPlanner.fetchBusroutesById(id, station)
                         ?.let { busroutes ->
