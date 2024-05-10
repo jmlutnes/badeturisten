@@ -78,7 +78,7 @@ class BeachViewModel @Inject constructor(
      */
     fun checkFavourite(beach: Beach) {
         _isFavorited.value = _beachRepository.checkFavourite(beach)
-        Log.d("beachviewmodel, checkFavourite", "Favorittstatus endret: ${_isFavorited.value}")
+        Log.d("beachviewmodel, checkFavourite", "Favorittstatus changed: ${_isFavorited.value}")
     }
 
     init {
@@ -96,7 +96,7 @@ class BeachViewModel @Inject constructor(
             val lon = beachinfo?.pos?.lon?.toDouble()
             val lat = beachinfo?.pos?.lat?.toDouble()
 
-            val bussstasjoner: Busstations? = if ((lon == null) || (lat == null)) {
+            val busstations: Busstations? = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
                 _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
             } else {
@@ -105,7 +105,7 @@ class BeachViewModel @Inject constructor(
             }
 
             val uniqueBusRoutes = mutableSetOf<BusRoute>()
-            bussstasjoner?.busstation?.forEach { station ->
+            busstations?.busstation?.forEach { station ->
                 station.id?.let { id ->
                     _enTurRepositoryJourneyPlanner.fetchBusroutesById(id, station)
                         ?.let { busroutes ->
