@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.favourites
+package no.uio.ifi.in2000.team37.badeturisten.ui.favorites
 
 import android.os.Build
 import android.util.Log
@@ -25,14 +25,14 @@ data class FavouritesUIState(
 
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class FavouritesViewModel @Inject constructor(
+class FavoritesViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository
 ): ViewModel() {
     private val _beachDetails = MutableStateFlow<Map<String, BeachAndBeachInfo?>>(emptyMap())
     val beachDetails: StateFlow<Map<String, BeachAndBeachInfo?>> = _beachDetails.asStateFlow()
 
-    val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavouriteObservations()
+    val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavoriteObservations()
         .map { FavouritesUIState(favourites = it) }
         .stateIn(
             viewModelScope,

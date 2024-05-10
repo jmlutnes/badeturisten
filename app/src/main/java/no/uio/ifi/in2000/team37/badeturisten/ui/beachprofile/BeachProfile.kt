@@ -475,8 +475,7 @@ fun Transportation(beach: BeachUIState) {
                 modifier = Modifier
                     .padding(vertical = 10.dp, horizontal = 10.dp)
                     .width(160.dp)
-                    .fillMaxHeight(),
-                //elevation = CardDefaults.elevatedCardElevation(3.dp)
+                    .fillMaxHeight()
             ) {
                 Column(
                     modifier = Modifier
@@ -596,7 +595,7 @@ fun BeachProfile(
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
     val isFavorited by beachViewModel.isFavorited.collectAsState()
-    beach.beach?.let { beachViewModel.checkFavourite(it) }
+    beach.beach?.let { beachViewModel.checkFavorite(it) }
 
     Scaffold(
         topBar = {

@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.favourites
+package no.uio.ifi.in2000.team37.badeturisten.ui.favorites
 
 import android.os.Build
 import android.util.Log
@@ -41,10 +41,10 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FavouritesScreen(
+fun FavoritesScreen(
     navController: NavController,
 ) {
-    val favouritesViewModel: FavouritesViewModel = hiltViewModel()
+    val favouritesViewModel: FavoritesViewModel = hiltViewModel()
 
     val favouritesState = favouritesViewModel.favouritesState.collectAsState().value
     val beachinfo = favouritesViewModel.beachDetails.collectAsState().value

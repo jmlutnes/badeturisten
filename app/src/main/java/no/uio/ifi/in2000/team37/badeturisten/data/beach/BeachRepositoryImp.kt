@@ -27,19 +27,19 @@ class BeachRepositoryImp @Inject constructor(
         // loadInitialData
         coroutineScope.launch {
             beachListDataStore.data.collect { beaches ->
-                favouriteList = beaches.toMutableList()
-                favouriteObservations.value = favouriteList
+                favoriteList = beaches.toMutableList()
+                favoriteObservations.value = favoriteList
             }
         }
     }
 
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
-    private val favouriteObservations = MutableStateFlow<List<Beach>>(listOf())
-    private var favouriteList: MutableList<Beach> = mutableListOf()
+    private val favoriteObservations = MutableStateFlow<List<Beach>>(listOf())
+    private var favoriteList: MutableList<Beach> = mutableListOf()
 
     override fun getBeachObservations(): StateFlow<List<Beach>> = beachObservations.asStateFlow()
-    override fun getFavouriteObservations(): StateFlow<List<Beach>> =
-        favouriteObservations.asStateFlow()
+    override fun getFavoriteObservations(): StateFlow<List<Beach>> =
+        favoriteObservations.asStateFlow()
 
     override suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData()
@@ -72,31 +72,31 @@ class BeachRepositoryImp @Inject constructor(
     override suspend fun getBeach(beachName: String): Beach? =
         beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-    override suspend fun updateFavourites(beach: Beach?): List<Beach> {
+    override suspend fun updateFavorites(beach: Beach?): List<Beach> {
         if (beach != null) {
-            if (beach in favouriteList) {
-                favouriteList.remove(beach)
+            if (beach in favoriteList) {
+                favoriteList.remove(beach)
             } else {
-                favouriteList.add(beach)
+                favoriteList.add(beach)
             }
 
-            favouriteObservations.value = favouriteList  // Make sure this line is executing
-            Log.d("BeachRepository", "Favorites updated: $favouriteList")
+            favoriteObservations.value = favoriteList  // Make sure this line is executing
+            Log.d("BeachRepository", "Favorites updated: $favoriteList")
 
             try {
                 beachListDataStore.updateData {
-                    favouriteList.toList()  // Convert mutable list to list
+                    favoriteList.toList()  // Convert mutable list to list
                 }
                 val results: List<Beach> = beachListDataStore.data.first()
                 Log.d("BeachRepository", "Successfully updated and read from DataStore: $results")
             } catch (e: Exception) {
-                Log.e("BeachRepository", "Failed to update DataStore with favouriteList", e)
+                Log.e("BeachRepository", "Failed to update DataStore with favoriteList", e)
             }
         }
-        return favouriteList
+        return favoriteList
     }
 
-    override fun checkFavourite(beach: Beach): Boolean {
-        return beach in favouriteList
+    override fun checkFavorite(beach: Beach): Boolean {
+        return beach in favoriteList
     }
 }

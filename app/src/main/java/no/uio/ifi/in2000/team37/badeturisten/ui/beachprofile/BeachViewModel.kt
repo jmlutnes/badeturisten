@@ -64,21 +64,21 @@ class BeachViewModel @Inject constructor(
     val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
 
     /**
-     * Update favourite list
+     * Update favorite list
      */
     fun checkAndUpdateFavorites(beach: Beach) {
         viewModelScope.launch {
-            _beachRepository.updateFavourites(beach)
-            _isFavorited.value = _beachRepository.checkFavourite(beach)
+            _beachRepository.updateFavorites(beach)
+            _isFavorited.value = _beachRepository.checkFavorite(beach)
         }
     }
 
     /**
-     * Check if beach is in favourite list
+     * Check if beach is in favorite list
      */
-    fun checkFavourite(beach: Beach) {
-        _isFavorited.value = _beachRepository.checkFavourite(beach)
-        Log.d("beachviewmodel, checkFavourite", "Favorittstatus changed: ${_isFavorited.value}")
+    fun checkFavorite(beach: Beach) {
+        _isFavorited.value = _beachRepository.checkFavorite(beach)
+        Log.d("beachviewmodel, checkFavorite", "Favorittstatus changed: ${_isFavorited.value}")
     }
 
     init {
@@ -91,10 +91,10 @@ class BeachViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
 
-            val beachinfo: Beach? = _beachRepository.getBeach(beachName)
+            val beachInfo: Beach? = _beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo: Beach? = _osloKommuneRepository.getBeach(beachName)
-            val lon = beachinfo?.pos?.lon?.toDouble()
-            val lat = beachinfo?.pos?.lat?.toDouble()
+            val lon = beachInfo?.pos?.lon?.toDouble()
+            val lat = beachInfo?.pos?.lat?.toDouble()
 
             val busstations: Busstations? = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
@@ -116,9 +116,9 @@ class BeachViewModel @Inject constructor(
             val allBusRoutes: MutableList<BusRoute> = uniqueBusRoutes.toMutableList()
             val waterQuality: OsloKommuneBeachInfo? = _osloKommuneRepository.findWebPage(beachName)
             _beachUIState.update { currentUIState ->
-                if (beachinfo != null) {
+                if (beachInfo != null) {
                     currentUIState.copy(
-                        beach = beachinfo,
+                        beach = beachInfo,
                         beachInfo = waterQuality,
                         transportationRoutes = allBusRoutes
                     )
@@ -130,10 +130,10 @@ class BeachViewModel @Inject constructor(
                     )
                 }
             }
-            if (beachinfo != null) {
-                checkFavourite(beachinfo)
+            if (beachInfo != null) {
+                checkFavorite(beachInfo)
             } else if (osloKommuneBeachInfo != null) {
-                checkFavourite(osloKommuneBeachInfo)
+                checkFavorite(osloKommuneBeachInfo)
             }
             _isLoading.value = false
         }

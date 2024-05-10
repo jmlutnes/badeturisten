@@ -14,7 +14,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
-import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.favorites.FavoritesViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 
 @Module
@@ -42,11 +42,11 @@ object ViewModelModule {
 
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
-    fun provideFavouritesViewModel(
+    fun provideFavoritesViewModel(
         osloKommuneRepository: OsloKommuneRepository,
         beachRepository: BeachRepository
-    ): FavouritesViewModel {
-        return FavouritesViewModel(osloKommuneRepository, beachRepository)
+    ): FavoritesViewModel {
+        return FavoritesViewModel(osloKommuneRepository, beachRepository)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

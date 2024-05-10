@@ -98,8 +98,8 @@ class HomeViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _ingenLokasjon = MutableStateFlow(false)
-    val ingenLokasjon: StateFlow<Boolean> = _ingenLokasjon.asStateFlow()
+    private val _noLocation = MutableStateFlow(false)
+    val noLocation: StateFlow<Boolean> = _noLocation.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -222,17 +222,17 @@ class HomeViewModel @Inject constructor(
         beachState.value.beaches.forEach { beach ->
             if (_location.value?.latitude != null) {
                 locationMap[beach] = locationDistance(beach.pos, _location.value)
-                _ingenLokasjon.value = false
+                _noLocation.value = false
             } else {
                 locationMap[beach] = teller
                 teller--
-                _ingenLokasjon.value = true
+                _noLocation.value = true
 
             }
         }
         viewModelScope.launch {
             try {
-                if (ingenLokasjon.value) {
+                if (noLocation.value) {
                     _beachLocation.value = locationMap.toSortedMap(compareBy { it.name }).toList()
                 } else {
                     val sortedBeachesByDistance = sortBeachesByValue(locationMap)

@@ -41,6 +41,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,8 +81,8 @@ import androidx.navigation.NavController
 import androidx.wear.compose.foundation.lazy.verticalNegativePadding
 import kotlinx.coroutines.delay
 import no.uio.ifi.in2000.team37.badeturisten.R
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.WeatherWarning
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BeachCard
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.MetAlertCard
 
 @Composable
 fun rememberWarning(areActiveAlerts: Boolean): ImageVector {
@@ -237,9 +238,9 @@ val imageMap = mapOf(
 )
 
 @Composable
-fun WarningIcon(warningvector: ImageVector) {
+fun WarningIcon(warningVector: ImageVector) {
     Image(
-        imageVector = warningvector,
+        imageVector = warningVector,
         contentDescription = "Warning Icon",
         modifier = Modifier
             .size(100.dp, 100.dp)
@@ -260,7 +261,7 @@ fun HomeScreen(
     val forecastState = homeViewModel.forecastState.collectAsState().value.forecastNextHour
     val beachLocation by homeViewModel.beachLocation.collectAsState()
     val alertState = homeViewModel.metAlertsState.collectAsState().value
-    val beachinfo = homeViewModel.beachDetails.collectAsState().value
+    val beachInfo = homeViewModel.beachDetails.collectAsState().value
 
     var clicked by rememberSaveable { mutableStateOf(false) }
     val areActiveAlerts = rememberSaveable { mutableStateOf(false) }
@@ -269,14 +270,14 @@ fun HomeScreen(
     val showNormalScreen: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     val showNoAlertDisplay: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
     val showAlertDisplay: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
-    val ingenLokasjon by homeViewModel.ingenLokasjon.collectAsState()
+    val noLocation by homeViewModel.noLocation.collectAsState()
     val isLoading by homeViewModel.isLoading.collectAsState()
     val localLoading: MutableState<Boolean> = rememberSaveable { mutableStateOf(true) }
 
     val side1 = 450
     val side2 = 240
 
-    val circlegradient = Brush.radialGradient(
+    val circleGradient = Brush.radialGradient(
         listOf(colorScheme.secondaryContainer, colorScheme.primary),
         center = Offset(side1 / 3.5f, side2 / 2.0f),
         radius = side1 / 1.54f,
@@ -294,7 +295,7 @@ fun HomeScreen(
         )
         .padding(10.dp)
         .background(
-            circlegradient
+            circleGradient
         )
     LaunchedEffect(alertState.alerts) {
         areActiveAlerts.value = alertState.alerts.isNotEmpty()
@@ -422,9 +423,9 @@ fun HomeScreen(
                                                 ) {
                                                 }
                                                 if (areActiveAlerts.value) {
-                                                    WarningIcon(warningvector = warningVectorRed)
+                                                    WarningIcon(warningVector = warningVectorRed)
                                                 } else {
-                                                    WarningIcon(warningvector = warningVectorWhite)
+                                                    WarningIcon(warningVector = warningVectorWhite)
                                                 }
                                             }
                                         }
@@ -511,7 +512,7 @@ fun HomeScreen(
                                 .fillMaxSize()
                         ) {
                             Text(
-                                text = if (ingenLokasjon) "Badesteder" else "Badesteder nær deg",
+                                text = if (noLocation) "Badesteder" else "Badesteder nær deg",
                                 modifier = Modifier
                                     .padding(top = 15.dp, bottom = 20.dp)
                                     .align(Alignment.Center),
@@ -560,7 +561,7 @@ fun HomeScreen(
                                             BeachCard(
                                                 beach.first,
                                                 it,
-                                                navController, beachinfo
+                                                navController, beachInfo
                                             )
                                         }
                                     }
@@ -703,6 +704,78 @@ fun NormalDisplay() {
                             )
                         )
                     )
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MetAlertCard(weatherWarning: WeatherWarning) {
+    Card(
+        elevation = CardDefaults.elevatedCardElevation(12.dp),
+        modifier = Modifier
+            .width(290.dp)
+            .padding(10.dp, 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colorScheme.surface,
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = "FAREVARSEL",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.5.em,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Top,
+                                trim = LineHeightStyle.Trim.None
+                            )
+                        )
+                    ),
+                    color = Color.Red,
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                )
+            }
+            val textArea = "Farevarsel for " + weatherWarning.area.lowercase() + ".\n"
+            val textInstruction = "\n${weatherWarning.instruction}"
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Text(
+                    text = textArea + weatherWarning.description + textInstruction,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.2.em,
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Center,
+                                trim = LineHeightStyle.Trim.LastLineBottom
+                            )
+                        )
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.Center)
                 )
             }
         }

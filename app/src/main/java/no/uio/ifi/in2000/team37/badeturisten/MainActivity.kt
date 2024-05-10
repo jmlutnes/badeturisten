@@ -43,7 +43,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
-import no.uio.ifi.in2000.team37.badeturisten.ui.favourites.FavouritesScreen
+import no.uio.ifi.in2000.team37.badeturisten.ui.favorites.FavoritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomNavigationBar
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
@@ -202,7 +202,7 @@ fun AppContent() {
             }
 
             composable(route = "favoritesScreen") {
-                FavouritesScreen(navController = navController)
+                FavoritesScreen(navController = navController)
             }
             composable(route = "searchScreen") {
                 SearchScreen(navController = navController)

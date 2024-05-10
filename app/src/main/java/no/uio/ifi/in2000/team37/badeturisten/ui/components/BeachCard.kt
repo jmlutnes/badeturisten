@@ -63,7 +63,7 @@ fun GradientDown(brush: Brush) {
 @Composable
 fun BeachCard(
     beach: Beach,
-    avstand: Int,
+    distance: Int,
     navController: NavController,
     beachInfoMap: Map<String, BeachAndBeachInfo?>,
 ) {
@@ -85,7 +85,7 @@ fun BeachCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            val km = avstand / 1000.0
+            val km = distance / 1000.0
             Box(Modifier.fillMaxSize()) {
                 val imageUrl = beachinfo?.info?.imageUrl
                     ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
@@ -104,7 +104,7 @@ fun BeachCard(
                         beach.waterTemp
                     )
                 }
-                if (avstand > 1) {
+                if (distance > 1) {
                     Box(modifier = Modifier.align(Alignment.BottomEnd)) { GradientDown(brushDown) }
                 }
                 Column(
@@ -146,7 +146,7 @@ fun BeachCard(
                     )
                 }
 
-                if (avstand > 1) {
+                if (distance > 1) {
                     Text(
                         text = "${String.format("%.1f", km)} km",
                         fontSize = 28.sp,
