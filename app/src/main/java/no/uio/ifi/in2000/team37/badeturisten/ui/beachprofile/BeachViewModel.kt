@@ -63,6 +63,9 @@ class BeachViewModel @Inject constructor(
     private val _isFavorited = MutableStateFlow(false)
     val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
 
+    /**
+     * Update favourite list
+     */
     fun checkAndUpdateFavorites(beach: Beach) {
         viewModelScope.launch {
             _beachRepository.updateFavourites(beach)
@@ -70,6 +73,9 @@ class BeachViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Check if beach is in favourite list
+     */
     fun checkFavourite(beach: Beach) {
         _isFavorited.value = _beachRepository.checkFavourite(beach)
         Log.d("beachviewmodel, checkFavourite", "Favorittstatus endret: ${_isFavorited.value}")
@@ -98,29 +104,29 @@ class BeachViewModel @Inject constructor(
                 _enTurRepositoryGeocoderRepository.fetchBusRouteLoc(lat, lon)
             }
 
-            val unikeBussruter = mutableSetOf<BusRoute>()
-            bussstasjoner?.busstation?.forEach { stasjon ->
-                stasjon.id?.let { id ->
-                    _enTurRepositoryJourneyPlanner.fetchBusroutesById(id, stasjon)
-                        ?.let { bussruter ->
-                            unikeBussruter.addAll(bussruter)
+            val uniqueBusRoutes = mutableSetOf<BusRoute>()
+            bussstasjoner?.busstation?.forEach { station ->
+                station.id?.let { id ->
+                    _enTurRepositoryJourneyPlanner.fetchBusroutesById(id, station)
+                        ?.let { busroutes ->
+                            uniqueBusRoutes.addAll(busroutes)
                         }
                 }
             }
-            val alleBussruter: MutableList<BusRoute> = unikeBussruter.toMutableList()
-            val vannkvalitet: OsloKommuneBeachInfo? = _osloKommuneRepository.findWebPage(beachName)
+            val allBusRoutes: MutableList<BusRoute> = uniqueBusRoutes.toMutableList()
+            val waterQuality: OsloKommuneBeachInfo? = _osloKommuneRepository.findWebPage(beachName)
             _beachUIState.update { currentUIState ->
                 if (beachinfo != null) {
                     currentUIState.copy(
                         beach = beachinfo,
-                        beachInfo = vannkvalitet,
-                        transportationRoutes = alleBussruter
+                        beachInfo = waterQuality,
+                        transportationRoutes = allBusRoutes
                     )
                 } else {
                     currentUIState.copy(
                         beach = osloKommuneBeachInfo,
-                        beachInfo = vannkvalitet,
-                        transportationRoutes = alleBussruter
+                        beachInfo = waterQuality,
+                        transportationRoutes = allBusRoutes
                     )
                 }
             }
