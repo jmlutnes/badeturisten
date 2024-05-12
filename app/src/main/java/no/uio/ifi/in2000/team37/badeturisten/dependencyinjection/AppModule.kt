@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
-import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.*
 
 @Module
 @InstallIn(SingletonComponent::class)

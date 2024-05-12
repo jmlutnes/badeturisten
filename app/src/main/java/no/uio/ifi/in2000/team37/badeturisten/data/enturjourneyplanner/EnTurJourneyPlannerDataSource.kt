@@ -9,8 +9,8 @@ import io.ktor.http.contentType
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurJourneyPlannerHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
+import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurJourneyPlannerHttpClient
 
 class EnTurJourneyPlannerDataSource(@EnTurJourneyPlannerHttpClient private val client: HttpClient) {
     /**
@@ -47,7 +47,7 @@ class EnTurJourneyPlannerDataSource(@EnTurJourneyPlannerHttpClient private val c
             put("query", graphQLQuery)
         }.toString()
 
-        val response: HttpResponse = client.post() {
+        val response: HttpResponse = client.post {
             contentType(ContentType.Application.Json)
             body = requestBody
         }

@@ -15,13 +15,13 @@ import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDat
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.EnTurJourneyPlannerRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.locationforecast.LocationForecastDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsDataSource
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
@@ -38,7 +38,11 @@ object RepositoryModule {
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton
-    fun provideBeachRepository(dataSource: WaterTemperatureDataSource, dataStore: DataStore<List<Beach>>, coroutineScope: CoroutineScope): BeachRepository {
+    fun provideBeachRepository(
+        dataSource: WaterTemperatureDataSource,
+        dataStore: DataStore<List<Beach>>,
+        coroutineScope: CoroutineScope,
+    ): BeachRepository {
         return BeachRepositoryImp(dataSource, dataStore, coroutineScope)
     }
 
@@ -65,6 +69,7 @@ object RepositoryModule {
     fun provideMetAlertsRepository(dataSource: MetAlertsDataSource): MetAlertsRepository {
         return MetAlertsRepositoryImp(dataSource)
     }
+
     @Provides
     @Singleton
     fun provideEnTurJourneyPlannerRepository(enTurJourneyPlannerDataSource: EnTurJourneyPlannerDataSource): EnTurJourneyPlannerRepository {

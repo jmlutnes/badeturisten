@@ -8,7 +8,6 @@ import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.jsontokotlinmetalert
 class MetAlertsDataSource(private val client: HttpClient) {
     suspend fun getData(): MetAlerts { //lat og lon send med
         val data = client.get("weatherapi/metalerts/2.0/all.json")
-        val response = data.body<MetAlerts>()
-        return response
+        return data.body<MetAlerts>()
     }
 }

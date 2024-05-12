@@ -528,8 +528,7 @@ fun Transportation(beach: BeachUIState) {
                             fontWeight = FontWeight.SemiBold,
                             fontStyle = FontStyle.Normal,
                             fontSize = 18.sp,
-                            modifier = Modifier
-                                .padding(top = 0.dp)
+                            modifier = Modifier.padding(top = 0.dp)
                         )
                         Text(
                             text = it.name,
@@ -540,11 +539,12 @@ fun Transportation(beach: BeachUIState) {
                             fontStyle = FontStyle.Italic,
                         )
                     }
-                    Column (modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 10.dp, top = 10.dp),
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 10.dp, top = 10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.LocationOn,
                             contentDescription = "Location Sign",
@@ -553,8 +553,7 @@ fun Transportation(beach: BeachUIState) {
                         )
                         Text(
                             text = it.busstation.name.toString(),
-                            modifier = Modifier
-                                .basicMarquee(),
+                            modifier = Modifier.basicMarquee(),
                             fontWeight = FontWeight.Medium,
                             fontStyle = FontStyle.Normal,
                             fontSize = 16.sp

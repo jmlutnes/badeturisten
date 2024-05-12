@@ -13,8 +13,8 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.LocationRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.MetAlertsRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
-import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.favorites.FavoritesViewModel
+import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeViewModel
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 
 @Module
@@ -44,7 +44,7 @@ object ViewModelModule {
     @Provides
     fun provideFavoritesViewModel(
         osloKommuneRepository: OsloKommuneRepository,
-        beachRepository: BeachRepository
+        beachRepository: BeachRepository,
     ): FavoritesViewModel {
         return FavoritesViewModel(osloKommuneRepository, beachRepository)
     }
@@ -53,7 +53,7 @@ object ViewModelModule {
     @Provides
     fun provideSearchViewModel(
         osloKommuneRepository: OsloKommuneRepository,
-        beachRepository: BeachRepository
+        beachRepository: BeachRepository,
     ): SearchViewModel {
         return SearchViewModel(osloKommuneRepository, beachRepository)
     }

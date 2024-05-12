@@ -40,24 +40,18 @@ fun GradientUp(brush: Brush, waterTemp: Double?) {
             .height(90.dp)
     }
 
-    Canvas(
-        modifier = modifier,
-        onDraw = {
-            drawRect(brush)
-        }
-    )
+    Canvas(modifier = modifier, onDraw = {
+        drawRect(brush)
+    })
 }
 
 @Composable
 fun GradientDown(brush: Brush) {
-    Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(140.dp),
-        onDraw = {
-            drawRect(brush)
-        }
-    )
+    Canvas(modifier = Modifier
+        .fillMaxWidth()
+        .height(140.dp), onDraw = {
+        drawRect(brush)
+    })
 }
 
 @Composable
@@ -69,8 +63,7 @@ fun BeachCard(
 ) {
     val customBlue = Color(0xFF2E4064)
     val brushUp = Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.9F), Color.Transparent))
-    val brushDown =
-        Brush.verticalGradient(listOf(Color.Transparent, customBlue.copy(alpha = 0.8F)))
+    val brushDown = Brush.verticalGradient(listOf(Color.Transparent, customBlue.copy(alpha = 0.8F)))
 
     val beachinfo = beachInfoMap[beach.name]
 
@@ -82,8 +75,7 @@ fun BeachCard(
             .width(180.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
+            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()
         ) {
             val km = distance / 1000.0
             Box(Modifier.fillMaxSize()) {
@@ -100,8 +92,7 @@ fun BeachCard(
                 )
                 Box(modifier = Modifier.align(Alignment.TopStart)) {
                     GradientUp(
-                        brushUp,
-                        beach.waterTemp
+                        brushUp, beach.waterTemp
                     )
                 }
                 if (distance > 1) {
@@ -119,12 +110,8 @@ fun BeachCard(
                             letterSpacing = 0.2.sp,
                             color = Color.White,
                         ),
-                        modifier = Modifier
-                            .padding(
-                                top = 16.dp,
-                                start = 16.dp,
-                                end = 16.dp,
-                                bottom = 4.dp
+                        modifier = Modifier.padding(
+                                top = 16.dp, start = 16.dp, end = 16.dp, bottom = 4.dp
                             ), // Redusert bunnpadding
                         textAlign = TextAlign.Center
                     )
@@ -136,8 +123,7 @@ fun BeachCard(
                         text = tempText,
                         fontSize = 14.sp,
                         color = Color.White,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp),
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         textAlign = TextAlign.Center,
                         style = TextStyle(
                             letterSpacing = 0.2.sp,

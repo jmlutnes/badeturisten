@@ -2,14 +2,15 @@ package no.uio.ifi.in2000.team37.badeturisten.ui.components
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.compose.material3.*
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -18,15 +19,13 @@ fun BottomNavigationBar(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
     NavigationBar {
         BottomNavigationItem().bottomNavigationItems().forEachIndexed { _, navigationItem ->
-            NavigationBarItem(
-                selected = navigationItem.route == currentDestination?.route,
+            NavigationBarItem(selected = navigationItem.route == currentDestination?.route,
                 label = {
                     Text(navigationItem.label)
                 },
                 icon = {
                     Icon(
-                        navigationItem.icon,
-                        contentDescription = navigationItem.label
+                        navigationItem.icon, contentDescription = navigationItem.label
                     )
                 },
                 onClick = {
@@ -45,8 +44,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
-            )
+                })
         }
     }
 }

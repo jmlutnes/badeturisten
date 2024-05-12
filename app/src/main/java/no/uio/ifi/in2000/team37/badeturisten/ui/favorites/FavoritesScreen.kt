@@ -52,18 +52,15 @@ fun FavoritesScreen(
     val state = rememberLazyGridState()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
     ) {
         Column(
-            Modifier
-                .fillMaxSize(),
+            Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Column(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
+                modifier = Modifier.background(MaterialTheme.colorScheme.primary)
             ) {
                 Spacer(Modifier.height(50.dp))
                 Text(
@@ -76,33 +73,30 @@ fun FavoritesScreen(
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.inverseOnSurface,
                 )
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     Log.d("favouriteScreen", "${favouritesState.favourites.isEmpty()}")
                     Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                     ) {
-                        if(favouritesState.favourites.isEmpty()){
-                            val inlineContent = (
-                                mapOf(
-                                    "heartIcon" to InlineTextContent(
-                                        placeholder = Placeholder(
-                                            width = 1.em,
-                                            height = 1.em,
-                                            placeholderVerticalAlign = PlaceholderVerticalAlign.AboveBaseline
-                                        )
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Favorite,
-                                            contentDescription = "Heart"
-                                        )
-                                    })
+                        if (favouritesState.favourites.isEmpty()) {
+                            val inlineContent = (mapOf("heartIcon" to InlineTextContent(
+                                placeholder = Placeholder(
+                                    width = 1.em,
+                                    height = 1.em,
+                                    placeholderVerticalAlign = PlaceholderVerticalAlign.AboveBaseline
                                 )
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Favorite,
+                                    contentDescription = "Heart"
+                                )
+                            }))
                             Text(
                                 text = buildAnnotatedString {
                                     append("Legg til dine favoritter ved å trykke på hjerte ikonet (")
@@ -118,18 +112,13 @@ fun FavoritesScreen(
                         } else {
                             LazyVerticalGrid(
                                 state = state,
-                                modifier = Modifier
-                                    .fillMaxSize(),
+                                modifier = Modifier.fillMaxSize(),
                                 columns = GridCells.Adaptive(180.dp),
                                 verticalArrangement = Arrangement.Top
-                            )
-                            {
+                            ) {
                                 items(favouritesState.favourites) { beach ->
                                     BeachCard(
-                                        beach = beach,
-                                        0,
-                                        navController = navController,
-                                        beachinfo
+                                        beach = beach, 0, navController = navController, beachinfo
                                     )
                                 }
                             }
