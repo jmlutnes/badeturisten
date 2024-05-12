@@ -93,15 +93,15 @@ class BeachViewModel @Inject constructor(
 
             val beachInfo: Beach? = _beachRepository.getBeach(beachName)
             val osloKommuneBeachInfo: Beach? = _osloKommuneRepository.getBeach(beachName)
-            val lon = beachInfo?.pos?.lon?.toDouble()
-            val lat = beachInfo?.pos?.lat?.toDouble()
+            val lon = beachInfo?.pos?.lon
+            val lat = beachInfo?.pos?.lat
 
             val busStations: Busstations? = if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
                 _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
             } else {
-                //Fetch ID for all buss stasions based on location
-                _enTurRepositoryGeocoderRepository.fetchBusRouteLoc(lat, lon)
+                //Fetch ID for all buss stations based on location
+                _enTurRepositoryGeocoderRepository.fetchBusRouteLoc(lat.toDouble(), lon.toDouble())
             }
 
             val uniqueBusRoutes = mutableSetOf<BusRoute>()
