@@ -123,12 +123,12 @@ class MainActivity : ComponentActivity() {
         }
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                if (location != null) {
-                    println("Location: ${location.latitude}, ${location.longitude}")
-                } else {
-                    println("No location available.")
-                }
+            if (location != null) {
+                println("Location: ${location.latitude}, ${location.longitude}")
+            } else {
+                println("No location available.")
             }
+        }
     }
 
     @Deprecated("Deprecated in Java")

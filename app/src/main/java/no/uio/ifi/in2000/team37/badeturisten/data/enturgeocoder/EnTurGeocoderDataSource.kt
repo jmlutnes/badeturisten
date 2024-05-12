@@ -22,7 +22,7 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
         val radius = 1
         val size = 8
         val data =
-            client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&layers=venue&categories=onstreetBus,onstreetTram,airport,railStation,metroStation,busStation,coachStation,tramStation,harbourPort,ferryPort,ferryStop,liftStation,vehicleRailInterchange,other")
+            client.get("reverse?point.lat=$lat&point.lon=$lon&boundary.circle.radius=$radius&size=$size&categories=onstreetBus,onstreetTram,airport,railStation,metroStation,busStation,coachStation,tramStation,harbourPort,ferryPort,ferryStop,liftStation,vehicleRailInterchange,other")
         return data.body<jsontokotlinenturgeocoder>()
     }
 
@@ -33,7 +33,7 @@ class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: H
         name: String,
     ): jsontokotlinenturgeocoder {
         val data =
-            client.get("autocomplete?text=$name&size=1&layers=venue&categories=onstreetBus,onstreetTram,airport,railStation,metroStation,busStation,coachStation,tramStation,harbourPort,ferryPort,ferryStop,liftStation,vehicleRailInterchange,other&boundary.county_ids=KVE:TopographicPlace:03,KVE:TopographicPlace:32")
+            client.get("autocomplete?text=$name&size=1&categories=onstreetBus,onstreetTram,airport,railStation,metroStation,busStation,coachStation,tramStation,harbourPort,ferryPort,ferryStop,liftStation,vehicleRailInterchange,other&boundary.county_ids=KVE:TopographicPlace:03,KVE:TopographicPlace:32")
         return data.body<jsontokotlinenturgeocoder>()
     }
 }

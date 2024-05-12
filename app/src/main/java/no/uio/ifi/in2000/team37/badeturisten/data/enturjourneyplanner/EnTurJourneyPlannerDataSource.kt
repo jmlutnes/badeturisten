@@ -24,6 +24,7 @@ class EnTurJourneyPlannerDataSource(@EnTurJourneyPlannerHttpClient private val c
           stopPlace(id: "$id") {
             id
             name
+            transportMode
             estimatedCalls(numberOfDepartures: 1) {
               expectedDepartureTime
               destinationDisplay {
