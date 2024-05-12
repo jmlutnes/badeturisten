@@ -288,10 +288,8 @@ fun HomeScreen(
         .clip(CircleShape)
         .border(
             BorderStroke(
-                10.dp,
-                colorScheme.primary
-            ),
-            CircleShape
+                10.dp, colorScheme.primary
+            ), CircleShape
         )
         .padding(10.dp)
         .background(
@@ -306,19 +304,16 @@ fun HomeScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Column(
-            modifier = Modifier
-                .background(colorScheme.primaryContainer),
+            modifier = Modifier.background(colorScheme.primaryContainer),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(50.dp))
             Column(
-                modifier = Modifier
-                    .defaultMinSize(400.dp, 240.dp),
+                modifier = Modifier.defaultMinSize(400.dp, 240.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(400.dp, 200.dp)
+                    modifier = Modifier.size(400.dp, 200.dp)
                 ) {
                     Card(
                         elevation = CardDefaults.elevatedCardElevation(8.dp),
@@ -336,18 +331,18 @@ fun HomeScreen(
                                 val tempText = "${forecastState.temp}°"
                                 val precipitationText = "${forecastState.precipitation} mm"
                                 Column(
-                                    modifier = Modifier
-                                        .size(100.dp, 100.dp)
+                                    modifier = Modifier.size(100.dp, 100.dp)
                                 ) {
                                     Box(
-                                        modifier = Modifier
-                                            .fillMaxSize()
+                                        modifier = Modifier.fillMaxSize()
                                     ) {
                                         Text(
                                             text = "Oslo",
                                             fontSize = 15.sp,
                                             modifier = Modifier
-                                                .padding(horizontal = 10.dp, vertical = 5.dp)
+                                                .padding(
+                                                    horizontal = 10.dp, vertical = 5.dp
+                                                )
                                                 .align(Alignment.TopStart),
                                             color = colorScheme.inverseOnSurface,
                                         )
@@ -363,26 +358,21 @@ fun HomeScreen(
                                     }
                                 }
                                 Column(
-                                    modifier = Modifier
-                                        .size(110.dp, 100.dp)
+                                    modifier = Modifier.size(110.dp, 100.dp)
                                 ) {
                                     Spacer(
-                                        modifier = Modifier
-                                            .size(110.dp, 100.dp)
+                                        modifier = Modifier.size(110.dp, 100.dp)
                                     )
                                 }
                                 Column(
-                                    modifier = Modifier
-                                        .size(100.dp, 100.dp),
+                                    modifier = Modifier.size(100.dp, 100.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
                                     Column(
-                                        modifier = Modifier
-                                            .size(100.dp, 30.dp)
+                                        modifier = Modifier.size(100.dp, 30.dp)
                                     ) {
                                         Box(
-                                            modifier = Modifier
-                                                .fillMaxSize()
+                                            modifier = Modifier.fillMaxSize()
                                         ) {
                                             if (precipitationText != "0.0 mm") {
                                                 Text(
@@ -390,8 +380,7 @@ fun HomeScreen(
                                                     fontSize = 15.sp,
                                                     modifier = Modifier
                                                         .padding(
-                                                            horizontal = 10.dp,
-                                                            vertical = 5.dp
+                                                            horizontal = 10.dp, vertical = 5.dp
                                                         )
                                                         .align(Alignment.TopEnd),
                                                     color = colorScheme.inverseOnSurface,
@@ -400,8 +389,7 @@ fun HomeScreen(
                                         }
                                     }
                                     Column(
-                                        modifier = Modifier
-                                            .fillMaxSize(),
+                                        modifier = Modifier.fillMaxSize(),
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                     ) {
                                         Box(
@@ -417,11 +405,8 @@ fun HomeScreen(
                                                 Button(
                                                     onClick = {
                                                         clicked = !clicked
-                                                    },
-                                                    modifier = Modifier
-                                                        .padding(5.dp)
-                                                ) {
-                                                }
+                                                    }, modifier = Modifier.padding(5.dp)
+                                                ) {}
                                                 if (areActiveAlerts.value) {
                                                     WarningIcon(warningVector = warningVectorRed)
                                                 } else {
@@ -435,8 +420,7 @@ fun HomeScreen(
                         }
                     }
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -504,12 +488,10 @@ fun HomeScreen(
                         .background(colorScheme.background)
                 ) {
                     Column(
-                        Modifier
-                            .fillMaxSize()
+                        Modifier.fillMaxSize()
                     ) {
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
+                            modifier = Modifier.fillMaxSize()
                         ) {
                             Text(
                                 text = if (noLocation) "Badesteder" else "Badesteder nær deg",
@@ -537,8 +519,7 @@ fun HomeScreen(
                             }
                         }
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
+                            modifier = Modifier.fillMaxSize()
                         ) {
                             if (localLoading.value) {
                                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -550,8 +531,7 @@ fun HomeScreen(
                                 LazyRow(
                                     state = state,
                                     flingBehavior = rememberSnapFlingBehavior(lazyListState = state),
-                                    modifier = Modifier
-                                        .fillMaxSize(),
+                                    modifier = Modifier.fillMaxSize(),
                                     contentPadding = PaddingValues(6.dp),
                                     horizontalArrangement = Arrangement.Center
                                 ) {
@@ -559,9 +539,7 @@ fun HomeScreen(
                                         beach.second.let {
                                             localLoading.value = false
                                             BeachCard(
-                                                beach.first,
-                                                it,
-                                                navController, beachInfo
+                                                beach.first, it, navController, beachInfo
                                             )
                                         }
                                     }
@@ -574,6 +552,7 @@ fun HomeScreen(
         }
     }
 }
+
 
 @SuppressLint("RestrictedApi")
 @Composable
@@ -653,8 +632,7 @@ fun NoAlertDisplay() {
                     ) {
                         Text(
                             text = "Ingen varsler",
-                            modifier = Modifier
-                                .padding(10.dp),
+                            modifier = Modifier.padding(10.dp),
                             textAlign = TextAlign.Center,
                             fontSize = 12.sp
                         )
@@ -687,18 +665,15 @@ fun NormalDisplay() {
             ) {
                 Text(
                     text = "Her har vi samlet Oslos beste badeperler for deg!",
-                    modifier = Modifier
-                        .padding(20.dp),
+                    modifier = Modifier.padding(20.dp),
                     textAlign = TextAlign.Center,
                     fontSize = 14.sp,
                     color = colorScheme.primary,
                     style = LocalTextStyle.current.merge(
                         TextStyle(
-                            lineHeight = 1.1.em,
-                            platformStyle = PlatformTextStyle(
+                            lineHeight = 1.1.em, platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
-                            ),
-                            lineHeightStyle = LineHeightStyle(
+                            ), lineHeightStyle = LineHeightStyle(
                                 alignment = LineHeightStyle.Alignment.Proportional,
                                 trim = LineHeightStyle.Trim.None
                             )
@@ -728,8 +703,7 @@ fun MetAlertCard(weatherWarning: WeatherWarning) {
                 .wrapContentHeight()
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 Text(
                     text = "FAREVARSEL",
@@ -737,26 +711,22 @@ fun MetAlertCard(weatherWarning: WeatherWarning) {
                     fontSize = 12.sp,
                     style = LocalTextStyle.current.merge(
                         TextStyle(
-                            lineHeight = 1.5.em,
-                            platformStyle = PlatformTextStyle(
+                            lineHeight = 1.5.em, platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
-                            ),
-                            lineHeightStyle = LineHeightStyle(
+                            ), lineHeightStyle = LineHeightStyle(
                                 alignment = LineHeightStyle.Alignment.Top,
                                 trim = LineHeightStyle.Trim.None
                             )
                         )
                     ),
                     color = Color.Red,
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
+                    modifier = Modifier.align(Alignment.TopCenter)
                 )
             }
             val textArea = "Farevarsel for " + weatherWarning.area.lowercase() + ".\n"
             val textInstruction = "\n${weatherWarning.instruction}"
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 Text(
                     text = textArea + weatherWarning.description + textInstruction,
@@ -764,18 +734,15 @@ fun MetAlertCard(weatherWarning: WeatherWarning) {
                     textAlign = TextAlign.Center,
                     style = LocalTextStyle.current.merge(
                         TextStyle(
-                            lineHeight = 1.2.em,
-                            platformStyle = PlatformTextStyle(
+                            lineHeight = 1.2.em, platformStyle = PlatformTextStyle(
                                 includeFontPadding = false
-                            ),
-                            lineHeightStyle = LineHeightStyle(
+                            ), lineHeightStyle = LineHeightStyle(
                                 alignment = LineHeightStyle.Alignment.Center,
                                 trim = LineHeightStyle.Trim.LastLineBottom
                             )
                         )
                     ),
-                    modifier = Modifier
-                        .align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
         }

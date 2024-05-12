@@ -145,7 +145,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun _refreshBeachLocation() {
+    private fun modelRefreshBeachLocation() {
         viewModelScope.launch {
             try {
                 Log.d("HomeViewModel", "Updating beach locations")
@@ -182,7 +182,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun refreshBeachLocations() {
-        _refreshBeachLocation()
+        modelRefreshBeachLocation()
     }
 
     private fun loadBeachInfo() {
