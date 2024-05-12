@@ -67,8 +67,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     val forecastState: StateFlow<ForecastUIState> =
         _locationForecastRepository.observeForecastNextHour()
-            .map { ForecastUIState(forecastNextHour = it) }
-            .stateIn(
+            .map { ForecastUIState(forecastNextHour = it) }.stateIn(
                 viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ForecastUIState()
@@ -80,8 +79,7 @@ class HomeViewModel @Inject constructor(
     private var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
     val metAlertsState: StateFlow<MetAlertsUIState> =
-        _metAlertsRepository.getMetAlertsObservations()
-            .map { MetAlertsUIState(alerts = it) }
+        _metAlertsRepository.getMetAlertsObservations().map { MetAlertsUIState(alerts = it) }
             .stateIn(
                 viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
@@ -112,17 +110,14 @@ class HomeViewModel @Inject constructor(
                 beachState.update {
                     BeachesUIState(
                         CombineBeachesUseCase(
-                            _beachRepository,
-                            _osloKommuneRepository
+                            _beachRepository, _osloKommuneRepository
                         )()
                     )
                 }
                 sortDistances()
             } catch (e: UnknownHostException) {
                 Log.e(
-                    "HomeViewModel",
-                    "No internet connection available, unable to resolve host",
-                    e
+                    "HomeViewModel", "No internet connection available, unable to resolve host", e
                 )
             } catch (e: IOException) {
                 Log.e("HomeViewModel", "Network I/O error occurred", e)
@@ -158,21 +153,15 @@ class HomeViewModel @Inject constructor(
 
             } catch (e: UnknownHostException) {
                 Log.e(
-                    "HomeViewModel",
-                    "Unable to resolve host: Internet connection might be down",
-                    e
+                    "HomeViewModel", "Unable to resolve host: Internet connection might be down", e
                 )
             } catch (e: IOException) {
                 Log.e(
-                    "HomeViewModel",
-                    "Network I/O error occurred during beach location refresh",
-                    e
+                    "HomeViewModel", "Network I/O error occurred during beach location refresh", e
                 )
             } catch (e: Exception) {
                 Log.e(
-                    "HomeViewModel",
-                    "An unexpected error occurred during beach location refresh",
-                    e
+                    "HomeViewModel", "An unexpected error occurred during beach location refresh", e
                 )
             } finally {
                 _isLoading.value = false
@@ -253,9 +242,7 @@ class HomeViewModel @Inject constructor(
         val lon2 = Math.toRadians(loc2?.longitude ?: 999.0)
         val dLat = lat2 - lat1
         val dLon = lon2 - lon1
-        val a = sin(dLat / 2).pow(2) +
-                cos(lat1) * cos(lat2) *
-                sin(dLon / 2).pow(2)
+        val a = sin(dLat / 2).pow(2) + cos(lat1) * cos(lat2) * sin(dLon / 2).pow(2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         val avstand = earthRadius * c
         return avstand.roundToInt()
