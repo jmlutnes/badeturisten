@@ -118,6 +118,7 @@ class BeachViewModel @Inject constructor(
             // return an empty object if there simply are no routes near the beach.
             // busStations being null is therefore indicative of an error
             if (busStations == null) {
+                Log.d("snackbar", "$busStations")
                 _isConnectivityIssue.update { true }
             }
             val uniqueBusRoutes = mutableSetOf<BusRoute>()

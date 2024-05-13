@@ -459,115 +459,117 @@ fun Transportation(beach: BeachUIState) {
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.Center
     ) {
-        items(beach.transportationRoutes) {
-            val transport: String?
-            if (it.transportMode != null) {
-                transport = when (it.transportMode) {
-                    "bus" -> "Buss"
-                    "water" -> "Båt"
-                    "rail" -> "Tog"
-                    "tram" -> "Trikk"
-                    "metro" -> "T-Bane"
-                    "coach" -> "Buss"
-                    else -> it.transportMode.replaceFirstChar { letter ->
-                        if (letter.isLowerCase()) letter.titlecase(
-                            Locale.getDefault()
-                        ) else letter.toString()
+        beach.transportationRoutes.forEach {
+            item(beach.transportationRoutes) {
+                val transport: String?
+                if (it.transportMode != null) {
+                    transport = when (it.transportMode) {
+                        "bus" -> "Buss"
+                        "water" -> "Båt"
+                        "rail" -> "Tog"
+                        "tram" -> "Trikk"
+                        "metro" -> "T-Bane"
+                        "coach" -> "Buss"
+                        else -> it.transportMode.replaceFirstChar { letter ->
+                            if (letter.isLowerCase()) letter.titlecase(
+                                Locale.getDefault()
+                            ) else letter.toString()
+                        }
                     }
+                } else {
+                    transport = null
                 }
-            } else {
-                transport = null
-            }
-            Card(
-                modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 10.dp)
-                    .width(160.dp)
-                    .fillMaxHeight()
-            ) {
-                Column(
+                Card(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.secondaryContainer),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(vertical = 10.dp, horizontal = 10.dp)
+                        .width(160.dp)
+                        .fillMaxHeight()
                 ) {
                     Column(
                         modifier = Modifier
-                            .padding(4.dp)
-                            .fillMaxWidth(),
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.secondaryContainer),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        when (it.transportMode) {
-                            "water" -> {
-                                Image(
-                                    imageVector = rememberDirectionsBoat(),
-                                    contentDescription = "Icon of boat",
-                                    modifier = Modifier
-                                        .padding(top = 10.dp)
-                                        .size(30.dp)
-                                        .background(Color.Transparent)
-                                )
-                            }
-
-                            "rail", "metro", "tram" -> {
-                                Image(
-                                    imageVector = rememberTrain(),
-                                    contentDescription = "Icon of train",
-                                    modifier = Modifier
-                                        .padding(top = 10.dp)
-                                        .size(30.dp)
-                                        .background(Color.Transparent)
-                                )
-                            }
-
-                            else -> {
-                                Image(
-                                    imageVector = rememberDirectionsBus(),
-                                    contentDescription = "Icon of bus",
-                                    modifier = Modifier
-                                        .padding(top = 10.dp)
-                                        .size(30.dp)
-                                        .background(Color.Transparent)
-                                )
-                            }
-                        }
-                        if (transport != null) {
-                            Text(
-                                text = "$transport ${it.line ?: ""}",
-                                fontWeight = FontWeight.SemiBold,
-                                fontStyle = FontStyle.Normal,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(top = 0.dp)
-                            )
-                        }
-                        Text(
-                            text = if (it.line != null) it.name else {
-                                "Stoppested"
-                            },
-                            modifier = Modifier
-                                .basicMarquee()
-                                .padding(horizontal = 6.dp, vertical = 0.dp),
-                            fontSize = 12.sp,
-                            fontStyle = FontStyle.Italic,
-                        )
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp, top = 10.dp),
+                                .padding(4.dp)
+                                .fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Icon(
-                                imageVector = Icons.Filled.LocationOn,
-                                contentDescription = "Location Sign",
-                                tint = Color.Black,
-                                modifier = Modifier.size(30.dp)
-                            )
+                            when (it.transportMode) {
+                                "water" -> {
+                                    Image(
+                                        imageVector = rememberDirectionsBoat(),
+                                        contentDescription = "Icon of boat",
+                                        modifier = Modifier
+                                            .padding(top = 10.dp)
+                                            .size(30.dp)
+                                            .background(Color.Transparent)
+                                    )
+                                }
+
+                                "rail", "metro", "tram" -> {
+                                    Image(
+                                        imageVector = rememberTrain(),
+                                        contentDescription = "Icon of train",
+                                        modifier = Modifier
+                                            .padding(top = 10.dp)
+                                            .size(30.dp)
+                                            .background(Color.Transparent)
+                                    )
+                                }
+
+                                else -> {
+                                    Image(
+                                        imageVector = rememberDirectionsBus(),
+                                        contentDescription = "Icon of bus",
+                                        modifier = Modifier
+                                            .padding(top = 10.dp)
+                                            .size(30.dp)
+                                            .background(Color.Transparent)
+                                    )
+                                }
+                            }
+                            if (transport != null) {
+                                Text(
+                                    text = "$transport ${it.line ?: ""}",
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontStyle = FontStyle.Normal,
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.padding(top = 0.dp)
+                                )
+                            }
                             Text(
-                                text = it.busstation.name.toString(),
-                                modifier = Modifier.basicMarquee(),
-                                fontWeight = FontWeight.Medium,
-                                fontStyle = FontStyle.Normal,
-                                fontSize = 16.sp
+                                text = if (it.line != null) it.name else {
+                                    "Stoppested"
+                                },
+                                modifier = Modifier
+                                    .basicMarquee()
+                                    .padding(horizontal = 6.dp, vertical = 0.dp),
+                                fontSize = 12.sp,
+                                fontStyle = FontStyle.Italic,
                             )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 10.dp, top = 10.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.LocationOn,
+                                    contentDescription = "Location Sign",
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(30.dp)
+                                )
+                                Text(
+                                    text = it.busstation.name.toString(),
+                                    modifier = Modifier.basicMarquee(),
+                                    fontWeight = FontWeight.Medium,
+                                    fontStyle = FontStyle.Normal,
+                                    fontSize = 16.sp
+                                )
+                            }
                         }
                     }
                 }

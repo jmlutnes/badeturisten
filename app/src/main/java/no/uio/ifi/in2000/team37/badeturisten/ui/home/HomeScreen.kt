@@ -53,7 +53,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -302,7 +301,6 @@ fun HomeScreen(
     LaunchedEffect(alertState.alerts) {
         areActiveAlerts.value = alertState.alerts.isNotEmpty()
     }
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember {
         SnackbarHostState()
     }
@@ -324,7 +322,9 @@ fun HomeScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Column(
-                modifier = Modifier.background(colorScheme.primaryContainer).padding(it),
+                modifier = Modifier
+                    .background(colorScheme.primaryContainer)
+                    .padding(it),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(Modifier.height(50.dp))
@@ -572,199 +572,198 @@ fun HomeScreen(
             }
         }
     }
+}
 
-
-    @SuppressLint("RestrictedApi")
-    @Composable
-    fun AlertDisplay(alertState: MetAlertsUIState) {
-        Column(
+@SuppressLint("RestrictedApi")
+@Composable
+fun AlertDisplay(alertState: MetAlertsUIState) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentHeight(Alignment.CenterVertically)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .wrapContentHeight(Alignment.CenterVertically)
-                .wrapContentWidth(Alignment.CenterHorizontally)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(310.dp, 90.dp)
-                    .verticalNegativePadding(70.dp)
-                    .background(colorScheme.primary)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 60.dp),
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 5.dp)
-                            .wrapContentWidth(Alignment.CenterHorizontally)
-                            .wrapContentHeight(Alignment.CenterVertically)
-                    ) {
-                        items(alertState.alerts) { alert ->
-                            MetAlertCard(weatherWarning = alert)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Composable
-    fun NoAlertDisplay() {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(90.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally)
-                .wrapContentHeight(Alignment.Bottom)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(310.dp, 190.dp)
-                    .verticalNegativePadding(70.dp)
-                    .background(colorScheme.primary),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 110.dp, top = 10.dp)
-                        .wrapContentWidth(Alignment.CenterHorizontally)
-                        .wrapContentHeight(Alignment.Bottom)
-                ) {
-                    Card(
-                        modifier = Modifier
-                            .width(290.dp)
-                            .height(90.dp)
-                            .padding(10.dp, 4.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = colorScheme.surface
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .verticalScroll(rememberScrollState()),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = "Ingen varsler",
-                                modifier = Modifier.padding(10.dp),
-                                textAlign = TextAlign.Center,
-                                fontSize = 12.sp
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @SuppressLint("RestrictedApi")
-    @Composable
-    fun NormalDisplay() {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(90.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally)
-                .wrapContentHeight(Alignment.Bottom)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(310.dp, 190.dp)
-                    .verticalNegativePadding(50.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 30.dp, top = 9.dp)
-                ) {
-                    Text(
-                        text = "Her har vi samlet Oslos beste badeperler for deg!",
-                        modifier = Modifier.padding(20.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 14.sp,
-                        color = colorScheme.primary,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.1.em, platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ), lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Proportional,
-                                    trim = LineHeightStyle.Trim.None
-                                )
-                            )
-                        )
-                    )
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun MetAlertCard(weatherWarning: WeatherWarning) {
-        Card(
-            elevation = CardDefaults.elevatedCardElevation(12.dp),
-            modifier = Modifier
-                .width(290.dp)
-                .padding(10.dp, 4.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = colorScheme.surface,
-            )
+                .size(310.dp, 90.dp)
+                .verticalNegativePadding(70.dp)
+                .background(colorScheme.primary)
         ) {
             Column(
                 modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth()
-                    .wrapContentHeight()
+                    .fillMaxSize()
+                    .padding(bottom = 60.dp),
+                verticalArrangement = Arrangement.Top
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize()
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 5.dp)
+                        .wrapContentWidth(Alignment.CenterHorizontally)
+                        .wrapContentHeight(Alignment.CenterVertically)
                 ) {
-                    Text(
-                        text = "FAREVARSEL",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.5.em, platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ), lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Top,
-                                    trim = LineHeightStyle.Trim.None
-                                )
-                            )
-                        ),
-                        color = Color.Red,
-                        modifier = Modifier.align(Alignment.TopCenter)
-                    )
+                    items(alertState.alerts) { alert ->
+                        MetAlertCard(weatherWarning = alert)
+                    }
                 }
-                val textArea = "Farevarsel for " + weatherWarning.area.lowercase() + ".\n"
-                val textInstruction = "\n${weatherWarning.instruction}"
-                Box(
-                    modifier = Modifier.fillMaxSize()
+            }
+        }
+    }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun NoAlertDisplay() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+            .wrapContentHeight(Alignment.Bottom)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(310.dp, 190.dp)
+                .verticalNegativePadding(70.dp)
+                .background(colorScheme.primary),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 110.dp, top = 10.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+                    .wrapContentHeight(Alignment.Bottom)
+            ) {
+                Card(
+                    modifier = Modifier
+                        .width(290.dp)
+                        .height(90.dp)
+                        .padding(10.dp, 4.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = colorScheme.surface
+                    )
                 ) {
-                    Text(
-                        text = textArea + weatherWarning.description + textInstruction,
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                        style = LocalTextStyle.current.merge(
-                            TextStyle(
-                                lineHeight = 1.2.em, platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false
-                                ), lineHeightStyle = LineHeightStyle(
-                                    alignment = LineHeightStyle.Alignment.Center,
-                                    trim = LineHeightStyle.Trim.LastLineBottom
-                                )
-                            )
-                        ),
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Ingen varsler",
+                            modifier = Modifier.padding(10.dp),
+                            textAlign = TextAlign.Center,
+                            fontSize = 12.sp
+                        )
+                    }
                 }
+            }
+        }
+    }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun NormalDisplay() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+            .wrapContentHeight(Alignment.Bottom)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(310.dp, 190.dp)
+                .verticalNegativePadding(50.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 30.dp, top = 9.dp)
+            ) {
+                Text(
+                    text = "Her har vi samlet Oslos beste badeperler for deg!",
+                    modifier = Modifier.padding(20.dp),
+                    textAlign = TextAlign.Center,
+                    fontSize = 14.sp,
+                    color = colorScheme.primary,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.1.em, platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ), lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Proportional,
+                                trim = LineHeightStyle.Trim.None
+                            )
+                        )
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun MetAlertCard(weatherWarning: WeatherWarning) {
+    Card(
+        elevation = CardDefaults.elevatedCardElevation(12.dp),
+        modifier = Modifier
+            .width(290.dp)
+            .padding(10.dp, 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = colorScheme.surface,
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    text = "FAREVARSEL",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.5.em, platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ), lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Top,
+                                trim = LineHeightStyle.Trim.None
+                            )
+                        )
+                    ),
+                    color = Color.Red,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
+            val textArea = "Farevarsel for " + weatherWarning.area.lowercase() + ".\n"
+            val textInstruction = "\n${weatherWarning.instruction}"
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(
+                    text = textArea + weatherWarning.description + textInstruction,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeight = 1.2.em, platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ), lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Center,
+                                trim = LineHeightStyle.Trim.LastLineBottom
+                            )
+                        )
+                    ),
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
     }
