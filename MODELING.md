@@ -56,7 +56,7 @@ Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badest
 3. Brukeren trykker på "favorittknapp"-en 
 4. Systemet legger til badestedet i favoritter
 
-**Alternativ flyt 1, steg 4:** Badestedet er allerede i favoritter 
+**Alternativ flyt 1, steg 4:** Badestedet er allerede i favoritter \
 A1.1. Systemet fjerner badestedet fra favoritter 
 
 # Sekvensdiagram
