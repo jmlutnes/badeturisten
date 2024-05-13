@@ -16,6 +16,8 @@ Appen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter 
 
 
 # Funksjonalitet: Visning av kollektivtransport
+Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport brukeren kan benytte seg av for å komme seg til badestedet.
+
 
 # Use Case-diagram
 
@@ -30,6 +32,7 @@ Appen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter 
 
 
 # Funksjonalitet: Legge til favoritter 
+Appen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
 
 # Sekvensdiagram
 
