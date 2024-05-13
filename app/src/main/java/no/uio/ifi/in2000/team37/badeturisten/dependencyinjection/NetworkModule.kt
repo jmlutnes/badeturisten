@@ -5,7 +5,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
@@ -31,11 +30,6 @@ object NetworkModule {
                 header("ET-Client-Name", "in2000study-application")
             }
             install(ContentNegotiation) { gson { } }
-            install(HttpTimeout) {
-                this.requestTimeoutMillis = 5000
-                this.connectTimeoutMillis = 5000
-                this.socketTimeoutMillis = 5000
-            }
         }
     }
 
@@ -49,11 +43,6 @@ object NetworkModule {
                 header("ET-Client-Name", "in2000study-application")
             }
             install(ContentNegotiation) { gson { } }
-            install(HttpTimeout) {
-                this.requestTimeoutMillis = 5000
-                this.connectTimeoutMillis = 5000
-                this.socketTimeoutMillis = 5000
-            }
         }
     }
 
@@ -66,11 +55,6 @@ object NetworkModule {
                 url("https://havvarsel-frost.met.no")
             }
             install(ContentNegotiation) { gson {} }
-            install(HttpTimeout) {
-                this.requestTimeoutMillis = 5000
-                this.connectTimeoutMillis = 5000
-                this.socketTimeoutMillis = 5000
-            }
         }
     }
 
@@ -84,11 +68,6 @@ object NetworkModule {
                 header("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
             }
             install(ContentNegotiation) { gson {} }
-            install(HttpTimeout) {
-                this.requestTimeoutMillis = 5000
-                this.connectTimeoutMillis = 5000
-                this.socketTimeoutMillis = 5000
-            }
         }
     }
 
@@ -102,11 +81,6 @@ object NetworkModule {
                 header("X-Gravitee-API-Key", "91eb6bae-3896-4da4-8a6a-a3a5266bf179")
             }
             install(ContentNegotiation) { gson {} }
-            install(HttpTimeout) {
-                this.requestTimeoutMillis = 5000
-                this.connectTimeoutMillis = 5000
-                this.socketTimeoutMillis = 5000
-            }
         }
     }
 
@@ -120,11 +94,6 @@ object NetworkModule {
                 header("X-Gravitee-API-Key", "your-api-key-here")
             }
             install(ContentNegotiation) { gson {} }
-            install(HttpTimeout) {
-                this.requestTimeoutMillis = 5000
-                this.connectTimeoutMillis = 5000
-                this.socketTimeoutMillis = 5000
-            }
         }
     }
 

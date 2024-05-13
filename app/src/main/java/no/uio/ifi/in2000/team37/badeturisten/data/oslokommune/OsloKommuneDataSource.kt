@@ -128,14 +128,10 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
      * Fetch all the bathing sites in the Oslo Commune API.
      */
     suspend fun getData(
-    ): jsontokotlin_kommune? {
-        return try {
-            val data =
-                client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
-            data.body<jsontokotlin_kommune>()
-        } catch (e: Exception) {
-            null
-        }
+    ): jsontokotlin_kommune {
+        val data =
+            client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
+        return data.body<jsontokotlin_kommune>()
     }
 }
 
