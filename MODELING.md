@@ -46,14 +46,6 @@ Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport
 <img width="823" alt="Skjermbilde 2024-05-06 kl  15 51 03" src="https://media.github.uio.no/user/9706/files/5584640a-3e67-4199-a964-5075bca36123">
 
 
-# Funksjonalitet: Sortering av badesteder 
-Applikasjonen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabetisk eller etter avstand. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand, slik at brukerne lett kan finne ut om deres nærmeste badesteder tilfredsstiller deres ønsker. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
-
-# Sekvensdiagram
-
-<img width="581" alt="Skjermbilde 2024-05-06 kl  15 45 19" src="https://media.github.uio.no/user/9706/files/cc9ca785-14d4-4dec-b9de-ae67a60bdd60">
-
-
 # Funksjonalitet: Legge til favoritter 
 Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
 
@@ -66,5 +58,12 @@ Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badest
 # Tilstandsdiagram
 
 <img width="757" alt="Skjermbilde 2024-05-09 kl  22 44 25" src="https://media.github.uio.no/user/9706/files/42fda48c-d58b-45a0-8ccd-e305424c98cc">
+
+# Funksjonalitet: Sortering av badesteder 
+Applikasjonen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabetisk eller etter avstand. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand, slik at brukerne lett kan finne ut om deres nærmeste badesteder tilfredsstiller deres ønsker. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
+
+# Sekvensdiagram
+
+<img width="581" alt="Skjermbilde 2024-05-06 kl  15 45 19" src="https://media.github.uio.no/user/9706/files/cc9ca785-14d4-4dec-b9de-ae67a60bdd60">
 
 
