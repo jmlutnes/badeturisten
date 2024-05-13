@@ -1,4 +1,6 @@
 # Funksjonalitet: Filtrert søk 
+Appen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter som de blir presentert for (hentet fra Oslo Kommune); badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, blir presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
+
 
 # Use Case-diagram
 
