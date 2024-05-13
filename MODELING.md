@@ -81,6 +81,16 @@ A1.1. Systemet fjerner badestedet fra favoritter
 ## Funksjonalitet: Sortering av badesteder 
 Applikasjonen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabetisk eller etter avstand. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand, slik at brukerne lett kan finne ut om deres nærmeste badesteder tilfredsstiller deres ønsker. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
 
+### Tekstlig beskrivelse 
+**Hovedflyt**
+1. Systemet ber om stedstilgang 
+
+**Alternativ flyt 1, steg 1:** Brukeren avslår forespørselen 
+A1.1. Brukeren får en oversikt over badesteder i alfabetisk rekkefølge 
+
+**Alternativ flyt 2, steg 1:** Brukeren godtar forespørselen 
+A2.1. Brukeren får en oversikt over badesteder sortert etter avstand 
+
 ### Sekvensdiagram
 
 <img width="581" alt="Skjermbilde 2024-05-06 kl  15 45 19" src="https://media.github.uio.no/user/9706/files/cc9ca785-14d4-4dec-b9de-ae67a60bdd60">
