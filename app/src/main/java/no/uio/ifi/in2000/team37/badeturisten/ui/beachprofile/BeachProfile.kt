@@ -614,7 +614,7 @@ fun BeachProfile(
 
     LaunchedEffect(isFavorited) {
         // Upon initial composition, check and update the favorites
-        beach.beach?.let { beachViewModel.checkFavourite(it) }
+        beach.beach?.let { beachViewModel.checkFavorite(it) }
     }
     Scaffold(
         topBar = {
