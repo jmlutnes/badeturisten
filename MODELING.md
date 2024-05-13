@@ -14,7 +14,7 @@ Appen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter 
 
 <img width="708" alt="Skjermbilde 2024-05-06 kl  15 49 32" src="https://media.github.uio.no/user/9706/files/4585cd92-c538-46ad-a768-0eb3feaa5165">
 
-# Flytdiagram
+# Tilstandsdiagram
 
 <img width="814" alt="Skjermbilde 2024-05-09 kl  22 46 10" src="https://media.github.uio.no/user/9706/files/21bb8908-7f37-44aa-b107-ae8e7eeaff44">
 
@@ -46,7 +46,7 @@ Appen gir brukeren muligheten til å favorisere badesteder. Disse badestedene bl
 
 <img width="457" alt="Skjermbilde 2024-05-09 kl  22 42 45" src="https://media.github.uio.no/user/9706/files/cc837fc2-7b97-44ce-8278-b2ee4965e5fc">
 
-# Flytdiagram
+# Tilstandsdiagram
 
 <img width="757" alt="Skjermbilde 2024-05-09 kl  22 44 25" src="https://media.github.uio.no/user/9706/files/42fda48c-d58b-45a0-8ccd-e305424c98cc">
 
