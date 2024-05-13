@@ -169,10 +169,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
 
     override suspend fun getBeaches(): List<Feature> {
         val item = datasource.getData()
-        if (item != null) {
-            return item.data.geoJson.features
-        }
-        return emptyList()
+        return item.data.geoJson.features
     }
 
     override fun extractBeachFromHTML(html: String): String {

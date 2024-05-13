@@ -8,12 +8,10 @@ interface EnTurGeocoderRepository {
      * Send in latitude and longitude to fetch all the stop places in the nearby area.
      * To change the radius for search, change the radius in EnTurGeocoderDataSource
      */
-
     suspend fun fetchBusRouteLoc(lat: Double, lon: Double): Busstations?
 
     /**
      * Send in site name to fetch all the stop places in the nearby area.
      */
-
     suspend fun fetchBusRouteName(name: String): Busstations?
 }
