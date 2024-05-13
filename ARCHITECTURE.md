@@ -1,7 +1,7 @@
 # Introduksjon
 Dette dokumentet beskriver den overordnede arkitekturen og designprinsippene for Badeturisten, en mobilapplikasjon utviklet for å vise vanntemperaturen og vannkvaliteten for badestrender rundtom i Oslo-området. Dokumentet er rettet mot utviklere, driftspersonell og andre tekniske interessenter som vil vedlikeholde og videreutvikle løsningen.
 # Systemarkitektur
-Høy-Nivå Oversikt
+Høy-Nivå Oversikt \
 Badeturisten er designet med en klar separasjon av bekymringer gjennom en flerlagsarkitektur, som inkluderer:
 - Presentasjonslag – Håndterer all brukerinteraksjon og presenterer data. Utviklet med Jetpack Compose.
 - Forretningslogikklag – Inneholder all forretningslogikk og applikasjonsstatshåndtering. Dette laget bruker MVVM og UDF prinsipper for å sikre høy kohesjon og lav kobling.
