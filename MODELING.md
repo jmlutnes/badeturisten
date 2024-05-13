@@ -1,5 +1,5 @@
-# Funksjonelle krav 
-Appen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. 
+# Applikasjonens funksjonelle krav 
+Applikasjonen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. 
 
 
 # Funksjonalitet: Visning av badestedsinformasjon 
@@ -11,7 +11,7 @@ Når brukeren trykker på et badested, presenteres de for nyttig informasjon om 
 
 
 # Funksjonalitet: Filtrert søk 
-Appen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter som de blir presentert for (hentet fra Oslo Kommune); badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
+Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter som de blir presentert for (hentet fra Oslo Kommune); badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
 
 
 # Use Case-diagram
@@ -37,7 +37,7 @@ Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport
 
 
 # Funksjonalitet: Sortering av badesteder 
-Appen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabetisk eller etter avstand. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand, slik at brukerne lett kan finne ut om deres nærmeste badesteder tilfredsstiller deres ønsker. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
+Applikasjonen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabetisk eller etter avstand. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand, slik at brukerne lett kan finne ut om deres nærmeste badesteder tilfredsstiller deres ønsker. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
 
 # Sekvensdiagram
 
@@ -45,7 +45,7 @@ Appen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabe
 
 
 # Funksjonalitet: Legge til favoritter 
-Appen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
+Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
 
 # Sekvensdiagram
 
