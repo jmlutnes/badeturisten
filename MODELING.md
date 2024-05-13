@@ -1,5 +1,5 @@
 # Funksjonalitet: Visning av badestedsinformasjon 
-Når brukeren trykker på et badekort, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, vanntemperatur, fasiliteter og kollektivruter i nærheten. 
+Når brukeren trykker på et badested, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, vanntemperatur, fasiliteter og kollektivruter i nærheten. 
 
 # Use Case-diagram 
 
