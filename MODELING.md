@@ -1,5 +1,5 @@
 # Funksjonelle krav 
-Appen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. ![image](https://media.github.uio.no/user/9706/files/5e831cce-1d85-4375-a7bf-d924f706a456)
+Appen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. 
 
 
 # Funksjonalitet: Visning av badestedsinformasjon 
