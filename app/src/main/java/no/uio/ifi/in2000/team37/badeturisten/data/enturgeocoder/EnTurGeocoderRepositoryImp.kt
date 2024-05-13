@@ -6,8 +6,9 @@ import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
 class EnTurGeocoderRepositoryImp(
     private val datasource: EnTurGeocoderDataSource,
 ) : EnTurGeocoderRepository {
+
     override suspend fun fetchBusRouteLoc(lat: Double, lon: Double): Busstations? {
-        val nearestStopPlace = datasource.getDataLoc(lat, lon)
+        val nearestStopPlace = datasource.getDataLoc(lat, lon) ?: return null
         val busstations = nearestStopPlace.features.map { feature ->
             Busstation(
                 id = feature.properties.id, name = feature.properties.name, coordinates = Pair(
@@ -15,11 +16,11 @@ class EnTurGeocoderRepositoryImp(
                 )
             )
         }
-        return if (busstations.isNotEmpty()) Busstations(busstations) else null
+        return if (busstations.isNotEmpty()) Busstations(busstations) else Busstations(emptyList())
     }
 
     override suspend fun fetchBusRouteName(name: String): Busstations? {
-        val stops = datasource.getDataName(name)
+        val stops = datasource.getDataName(name) ?: return null
         val busstations = stops.features.map { feature ->
             Busstation(
                 id = feature.properties.id, name = feature.properties.name, coordinates = Pair(
@@ -27,6 +28,6 @@ class EnTurGeocoderRepositoryImp(
                 )
             )
         }
-        return if (busstations.isNotEmpty()) Busstations(busstations) else null
+        return if (busstations.isNotEmpty()) Busstations(busstations) else Busstations(emptyList())
     }
 }

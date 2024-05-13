@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -40,10 +39,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -457,115 +459,117 @@ fun Transportation(beach: BeachUIState) {
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.Center
     ) {
-        items(beach.transportationRoutes) {
-            val transport: String?
-            if (it.transportMode != null) {
-                transport = when (it.transportMode) {
-                    "bus" -> "Buss"
-                    "water" -> "Båt"
-                    "rail" -> "Tog"
-                    "tram" -> "Trikk"
-                    "metro" -> "T-Bane"
-                    "coach" -> "Buss"
-                    else -> it.transportMode.replaceFirstChar { letter ->
-                        if (letter.isLowerCase()) letter.titlecase(
-                            Locale.getDefault()
-                        ) else letter.toString()
+        beach.transportationRoutes.forEach {
+            item(beach.transportationRoutes) {
+                val transport: String?
+                if (it.transportMode != null) {
+                    transport = when (it.transportMode) {
+                        "bus" -> "Buss"
+                        "water" -> "Båt"
+                        "rail" -> "Tog"
+                        "tram" -> "Trikk"
+                        "metro" -> "T-Bane"
+                        "coach" -> "Buss"
+                        else -> it.transportMode.replaceFirstChar { letter ->
+                            if (letter.isLowerCase()) letter.titlecase(
+                                Locale.getDefault()
+                            ) else letter.toString()
+                        }
                     }
+                } else {
+                    transport = null
                 }
-            } else {
-                transport = null
-            }
-            Card(
-                modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 10.dp)
-                    .width(160.dp)
-                    .fillMaxHeight()
-            ) {
-                Column(
+                Card(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.secondaryContainer),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(vertical = 10.dp, horizontal = 10.dp)
+                        .width(160.dp)
+                        .fillMaxHeight()
                 ) {
                     Column(
                         modifier = Modifier
-                            .padding(4.dp)
-                            .fillMaxWidth(),
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.secondaryContainer),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        when (it.transportMode) {
-                            "water" -> {
-                                Image(
-                                    imageVector = rememberDirectionsBoat(),
-                                    contentDescription = "Icon of boat",
-                                    modifier = Modifier
-                                        .padding(top = 10.dp)
-                                        .size(30.dp)
-                                        .background(Color.Transparent)
-                                )
-                            }
-
-                            "rail", "metro", "tram" -> {
-                                Image(
-                                    imageVector = rememberTrain(),
-                                    contentDescription = "Icon of train",
-                                    modifier = Modifier
-                                        .padding(top = 10.dp)
-                                        .size(30.dp)
-                                        .background(Color.Transparent)
-                                )
-                            }
-
-                            else -> {
-                                Image(
-                                    imageVector = rememberDirectionsBus(),
-                                    contentDescription = "Icon of bus",
-                                    modifier = Modifier
-                                        .padding(top = 10.dp)
-                                        .size(30.dp)
-                                        .background(Color.Transparent)
-                                )
-                            }
-                        }
-                        if (transport != null) {
-                            Text(
-                                text = "$transport ${it.line ?: ""}",
-                                fontWeight = FontWeight.SemiBold,
-                                fontStyle = FontStyle.Normal,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(top = 0.dp)
-                            )
-                        }
-                        Text(
-                            text = if (it.line != null) it.name else {
-                                "Stoppested"
-                            },
-                            modifier = Modifier
-                                .basicMarquee()
-                                .padding(horizontal = 6.dp, vertical = 0.dp),
-                            fontSize = 12.sp,
-                            fontStyle = FontStyle.Italic,
-                        )
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp, top = 10.dp),
+                                .padding(4.dp)
+                                .fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Icon(
-                                imageVector = Icons.Filled.LocationOn,
-                                contentDescription = "Location Sign",
-                                tint = Color.Black,
-                                modifier = Modifier.size(30.dp)
-                            )
+                            when (it.transportMode) {
+                                "water" -> {
+                                    Image(
+                                        imageVector = rememberDirectionsBoat(),
+                                        contentDescription = "Icon of boat",
+                                        modifier = Modifier
+                                            .padding(top = 10.dp)
+                                            .size(30.dp)
+                                            .background(Color.Transparent)
+                                    )
+                                }
+
+                                "rail", "metro", "tram" -> {
+                                    Image(
+                                        imageVector = rememberTrain(),
+                                        contentDescription = "Icon of train",
+                                        modifier = Modifier
+                                            .padding(top = 10.dp)
+                                            .size(30.dp)
+                                            .background(Color.Transparent)
+                                    )
+                                }
+
+                                else -> {
+                                    Image(
+                                        imageVector = rememberDirectionsBus(),
+                                        contentDescription = "Icon of bus",
+                                        modifier = Modifier
+                                            .padding(top = 10.dp)
+                                            .size(30.dp)
+                                            .background(Color.Transparent)
+                                    )
+                                }
+                            }
+                            if (transport != null) {
+                                Text(
+                                    text = "$transport ${it.line ?: ""}",
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontStyle = FontStyle.Normal,
+                                    fontSize = 18.sp,
+                                    modifier = Modifier.padding(top = 0.dp)
+                                )
+                            }
                             Text(
-                                text = it.busstation.name.toString(),
-                                modifier = Modifier.basicMarquee(),
-                                fontWeight = FontWeight.Medium,
-                                fontStyle = FontStyle.Normal,
-                                fontSize = 16.sp
+                                text = if (it.line != null) it.name else {
+                                    "Stoppested"
+                                },
+                                modifier = Modifier
+                                    .basicMarquee()
+                                    .padding(horizontal = 6.dp, vertical = 0.dp),
+                                fontSize = 12.sp,
+                                fontStyle = FontStyle.Italic,
                             )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 10.dp, top = 10.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.LocationOn,
+                                    contentDescription = "Location Sign",
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(30.dp)
+                                )
+                                Text(
+                                    text = it.busstation.name.toString(),
+                                    modifier = Modifier.basicMarquee(),
+                                    fontWeight = FontWeight.Medium,
+                                    fontStyle = FontStyle.Normal,
+                                    fontSize = 16.sp
+                                )
+                            }
                         }
                     }
                 }
@@ -605,6 +609,15 @@ fun BeachProfile(
     val isFavorited by beachViewModel.isFavorited.collectAsState()
     beach.beach?.let { beachViewModel.checkFavorite(it) }
 
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    val isConnectivityIssue = beachViewModel.isConnectivityIssue.collectAsState()
+
+    LaunchedEffect(isFavorited) {
+        // Upon initial composition, check and update the favorites
+        beach.beach?.let { beachViewModel.checkFavorite(it) }
+    }
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "Badested") }, navigationIcon = {
@@ -616,7 +629,17 @@ fun BeachProfile(
                 }
             })
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) { paddingValues ->
+        if (isConnectivityIssue.value) {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(
+                    message = "Kunne ikke laste informasjon.\nVennligst sjekk nettverkstilkoblingen din"
+                )
+            }
+        }
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
