@@ -13,7 +13,7 @@ Når brukeren trykker på et badested, presenteres de for nyttig informasjon om 
 # Funksjonalitet: Filtrert søk 
 Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter som de blir presentert for (hentet fra Oslo Kommune); badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
 
-# Tekstlig beskrivelse av hovedflyt 
+# Tekstlig beskrivelse 
 1. Brukeren går inn til funksjonen gjennom Navigation-bar 
 2. Systemet henter badestedene i Oslo fra API-er 
 3. Brukeren får en oversikt over badesteder i Oslo og ulike filtreringskategorier (fasiliteter) 
@@ -56,6 +56,8 @@ Applikasjonen vår har to ulike måter å sortere badestedene i hjemskjermen på
 
 # Funksjonalitet: Legge til favoritter 
 Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
+
+# Tekstlig beskrivelse 
 
 # Sekvensdiagram
 
