@@ -5,6 +5,12 @@ Applikasjonen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de v
 # Funksjonalitet: Visning av badestedsinformasjon 
 Når brukeren trykker på et badested, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, badetemperatur, fasiliteter og kollektivruter. 
 
+# Tekstlig beskrivelse 
+1. Brukeren får en oversikt over badesteder 
+2. Brukeren velger et badested 
+3. Systemet henter informasjon om badestedet fra API-er 
+4. Brukeren får tilgjengelig informasjon om badestedet 
+
 # Use Case-diagram 
 
 <img width="757" alt="Skjermbilde 2024-05-13 kl  11 57 58" src="https://media.github.uio.no/user/9706/files/602f387d-7273-4ddc-b267-a262e3e90fbf">
