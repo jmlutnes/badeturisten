@@ -40,6 +40,11 @@ Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badesteden
 # Funksjonalitet: Visning av kollektivtransport
 Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport brukeren kan benytte seg av for å komme seg til badestedet.
 
+# Tekstlig beskrivelse 
+1. Brukeren får en oversikt over badesteder 
+2. Brukeren trykker på et badested 
+3. Systemet henter informasjon om badestedet fra API-er 
+4. Brukeren får en oversikt over kollektivruter i nærheten av badestedet 
 
 # Use Case-diagram
 
