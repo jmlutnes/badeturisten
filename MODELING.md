@@ -37,7 +37,7 @@ Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport
 
 
 # Funksjonalitet: Sortering av badesteder 
-Appen vår har to ulike måter å sortere badestedene i hjemskjermen på. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand. På denne måten kan brukerne lett finne ut om deres nærmeste badesteder er aktuelle for dem. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
+Appen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabetisk eller etter avstand. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand, slik at brukerne lett kan finne ut om deres nærmeste badesteder tilfredsstiller deres ønsker. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
 
 # Sekvensdiagram
 
