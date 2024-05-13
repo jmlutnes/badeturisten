@@ -50,7 +50,7 @@ Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport
 Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
 
 # Tekstlig beskrivelse 
-**Hovedløp **
+**Hovedflyt**
 1. Brukeren velger et badested 
 2. Systemet viser badestedsprofil 
 3. Brukeren trykker på "favorittknapp"-en 
