@@ -3,7 +3,7 @@ Applikasjonen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de v
 
 
 # Funksjonalitet: Visning av badestedsinformasjon 
-Når brukeren trykker på et badested, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, vanntemperatur, fasiliteter og kollektivruter i nærheten. 
+Når brukeren trykker på et badested, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, badetemperatur, fasiliteter og kollektivruter. 
 
 # Use Case-diagram 
 
@@ -12,6 +12,16 @@ Når brukeren trykker på et badested, presenteres de for nyttig informasjon om 
 
 # Funksjonalitet: Filtrert søk 
 Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter som de blir presentert for (hentet fra Oslo Kommune); badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
+
+# Tekstlig beskrivelse av hovedflyt 
+1. Brukeren går inn til funksjonen gjennom Navigation-bar 
+2. Systemet henter badestedene i Oslo fra API-er 
+3. Brukeren får en oversikt over badesteder i Oslo og ulike filtreringskategorier (fasiliteter) 
+4. Brukeren trykker på kategorier som badestedene filtreres etter 
+5. Systemet viser oversikt over badestedene som kun går under disse kategoriene
+6. Brukeren trykker på ett av de resulterende badestedene 
+7. Systemet henter informasjon om badestedet fra API-er 
+8. Brukeren får tilgjengelig informasjon om badestedet (vannkvalitet, badetemperatur, fasiliteter og kollektivruter) 
 
 
 # Use Case-diagram
