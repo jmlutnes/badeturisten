@@ -36,7 +36,7 @@ Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport
 <img width="823" alt="Skjermbilde 2024-05-06 kl  15 51 03" src="https://media.github.uio.no/user/9706/files/5584640a-3e67-4199-a964-5075bca36123">
 
 
-# Funksjonalitet: Stedstilgang 
+# Funksjonalitet: Sortering av badesteder 
 
 # Sekvensdiagram
 
