@@ -53,7 +53,7 @@ Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badest
 **Hovedflyt**
 1. Brukeren velger et badested 
 2. Systemet viser badestedsprofil 
-3. Brukeren trykker på "favorittknapp"-en 
+3. Brukeren trykker på "favorittknappen" 
 4. Systemet legger til badestedet i favoritter
 
 **Alternativ flyt 1, steg 4:** Badestedet er allerede i favoritter \
