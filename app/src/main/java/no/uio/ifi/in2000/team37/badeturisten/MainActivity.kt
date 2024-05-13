@@ -20,32 +20,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.LifecycleEventObserver
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
-import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
-import no.uio.ifi.in2000.team37.badeturisten.ui.favorites.FavoritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BeachProfile
 import no.uio.ifi.in2000.team37.badeturisten.ui.components.BottomNavigationBar
+import no.uio.ifi.in2000.team37.badeturisten.ui.components.Screens
+import no.uio.ifi.in2000.team37.badeturisten.ui.favorites.FavoritesScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.home.HomeScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchScreen
 import no.uio.ifi.in2000.team37.badeturisten.ui.theme.BadeturistenTheme
@@ -74,8 +70,7 @@ class MainActivity : ComponentActivity() {
             var currentPermissionsStatus by remember {
                 mutableStateOf(
                     decideCurrentPermissionStatus(
-                        locationPermissionsGranted,
-                        shouldShowPermissionRationale
+                        locationPermissionsGranted, shouldShowPermissionRationale
                     )
                 )
             }
@@ -93,8 +88,7 @@ class MainActivity : ComponentActivity() {
                 shouldDirectUserToApplicationSettings =
                     !shouldShowPermissionRationale && !locationPermissionsGranted
                 currentPermissionsStatus = decideCurrentPermissionStatus(
-                    locationPermissionsGranted,
-                    shouldShowPermissionRationale
+                    locationPermissionsGranted, shouldShowPermissionRationale
                 )
             }
 
@@ -113,8 +107,7 @@ class MainActivity : ComponentActivity() {
 
             BadeturistenTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     AppContent()
 
@@ -124,26 +117,25 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun getLastLocation() {
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 101)
             return
         }
 
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                if (location != null) {
-                    println("Location: ${location.latitude}, ${location.longitude}")
-                } else {
-                    println("No location available.")
-                }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                println("Location: ${location.latitude}, ${location.longitude}")
+            } else {
+                println("No location available.")
             }
+        }
     }
 
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 101 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -155,8 +147,7 @@ class MainActivity : ComponentActivity() {
 
     private fun checkLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            this, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -182,9 +173,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppContent() {
     val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
-    ) { paddingValues ->
+    Scaffold(bottomBar = { BottomNavigationBar(navController) }) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screens.Home.route,

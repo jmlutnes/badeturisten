@@ -9,5 +9,8 @@ interface EnTurJourneyPlannerRepository {
      * Makes Bussrute objects with the line, name, and transport mode (bus/tram/coach/water)
      * returns a mutable list with all the busses related to the buss station.
      */
-    suspend fun fetchBusroutesById(busstationId: String, busstation: Busstation): MutableList<BusRoute>?
+    suspend fun fetchBusroutesById(
+        busstationId: String,
+        busstation: Busstation,
+    ): MutableList<BusRoute>?
 }

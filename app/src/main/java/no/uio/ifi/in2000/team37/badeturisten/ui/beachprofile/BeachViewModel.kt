@@ -30,9 +30,9 @@ data class BeachUIState(
 )
 
 data class BusRoute(
-    val line: String,
+    val line: String?,
     val name: String,
-    val transportMode: String,
+    val transportMode: String?,
     val busstation: Busstation,
 )
 
@@ -95,15 +95,20 @@ class BeachViewModel @Inject constructor(
             val osloKommuneBeachInfo: Beach? = _osloKommuneRepository.getBeach(beachName)
             val lon = beachInfo?.pos?.lon
             val lat = beachInfo?.pos?.lat
+            var busStations: Busstations?
 
-            val busStations: Busstations? = if ((lon == null) || (lat == null)) {
+            if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
-                _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
+                busStations = _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
             } else {
                 //Fetch ID for all buss stations based on location
-                _enTurRepositoryGeocoderRepository.fetchBusRouteLoc(lat.toDouble(), lon.toDouble())
+                busStations = _enTurRepositoryGeocoderRepository.fetchBusRouteLoc(
+                    lat.toDouble(), lon.toDouble()
+                )
+                if (busStations?.busstation?.isEmpty() == true) {
+                    busStations = _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
+                }
             }
-
             val uniqueBusRoutes = mutableSetOf<BusRoute>()
             busStations?.busstation?.forEach { station ->
                 station.id?.let { id ->

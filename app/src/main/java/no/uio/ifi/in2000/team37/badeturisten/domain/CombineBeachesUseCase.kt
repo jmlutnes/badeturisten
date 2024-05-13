@@ -9,7 +9,7 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 @RequiresApi(Build.VERSION_CODES.O)
 class CombineBeachesUseCase(
     private val beachRepository: BeachRepository,
-    private val osloKommuneRepository: OsloKommuneRepository
+    private val osloKommuneRepository: OsloKommuneRepository,
 ) {
     private val defaultDispatcher = Dispatchers.Default
 
@@ -18,8 +18,7 @@ class CombineBeachesUseCase(
         val beachesFromOsloKommune = osloKommuneRepository.makeBeaches()
 
         combineBeaches(
-            beachesFromMet = beachesFromMet,
-            beachesFromOsloKommune = beachesFromOsloKommune
+            beachesFromMet = beachesFromMet, beachesFromOsloKommune = beachesFromOsloKommune
         )
     }
 
@@ -30,7 +29,7 @@ class CombineBeachesUseCase(
      */
     fun combineBeaches(
         beachesFromMet: List<Beach>,
-        beachesFromOsloKommune: List<Beach>
+        beachesFromOsloKommune: List<Beach>,
     ): List<Beach> {
         val combinedMap = beachesFromMet.associateBy { it.name }.toMutableMap()
 

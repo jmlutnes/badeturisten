@@ -8,7 +8,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.LocationForecastRepository
 import javax.inject.Inject
 
 class LocationForecastRepositoryImp @Inject constructor(
-    private val datasource: LocationForecastDataSource
+    private val datasource: LocationForecastDataSource,
 ) : LocationForecastRepository {
 
     private val forecastNextHour = MutableStateFlow<ForecastNextHour?>(null)

@@ -18,9 +18,22 @@ class EnTurJourneyPlannerRepositoryImp @Inject constructor(
         return try {
             // fetch planning data based on buss station ID
             val routeData: jsontokotlinenturjourneyplanner = datasource.getRoute(busstationId)
-            routeData.data.stopPlace.estimatedCalls.forEach { estimatedCall ->
-                val line = estimatedCall.serviceJourney.journeyPattern.line
-                lines.add(BusRoute(line.publicCode, line.name, line.transportMode, busstation))
+            if (routeData.data.stopPlace.estimatedCalls.isEmpty() && routeData.data.stopPlace.transportMode[0] != "bus") {
+                val line = routeData.data.stopPlace
+                lines.add(
+                    BusRoute(
+                        null, line.name, line.transportMode[0], busstation
+                    )
+                )
+            } else {
+                routeData.data.stopPlace.estimatedCalls.forEach { estimatedCall ->
+                    val line = estimatedCall.serviceJourney.journeyPattern.line
+                    lines.add(
+                        BusRoute(
+                            line.publicCode, line.name, line.transportMode, busstation
+                        )
+                    )
+                }
             }
             lines
         } catch (e: Exception) {

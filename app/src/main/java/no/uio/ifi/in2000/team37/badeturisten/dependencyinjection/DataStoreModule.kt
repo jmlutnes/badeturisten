@@ -16,8 +16,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataStoreModule {
     private val Context.dataStore by dataStore(
-        fileName = "favorites.json",
-        serializer = BeachListSerializer
+        fileName = "favorites.json", serializer = BeachListSerializer
     )
 
     @Singleton
