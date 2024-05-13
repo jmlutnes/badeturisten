@@ -85,10 +85,10 @@ Applikasjonen vår har to ulike måter å sortere badestedene i hjemskjermen på
 **Hovedflyt**
 1. Systemet ber om stedstilgang 
 
-**Alternativ flyt 1, steg 1:** Brukeren avslår forespørselen 
+**Alternativ flyt 1, steg 1:** Brukeren avslår forespørselen \
 A1.1. Brukeren får en oversikt over badesteder i alfabetisk rekkefølge 
 
-**Alternativ flyt 2, steg 1:** Brukeren godtar forespørselen 
+**Alternativ flyt 2, steg 1:** Brukeren godtar forespørselen \
 A2.1. Brukeren får en oversikt over badesteder sortert etter avstand 
 
 ### Sekvensdiagram
