@@ -32,7 +32,7 @@ Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport
 
 
 # Funksjonalitet: Legge til favoritter 
-Appen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
+Appen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
 
 # Sekvensdiagram
 
