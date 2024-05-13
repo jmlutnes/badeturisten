@@ -1,3 +1,7 @@
+# Funksjonelle krav 
+Appen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. ![image](https://media.github.uio.no/user/9706/files/5e831cce-1d85-4375-a7bf-d924f706a456)
+
+
 # Funksjonalitet: Visning av badestedsinformasjon 
 Når brukeren trykker på et badested, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, vanntemperatur, fasiliteter og kollektivruter i nærheten. 
 
