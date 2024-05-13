@@ -9,5 +9,7 @@ data class StopPlace(
     @SerializedName("id")
     val id: String,
     @SerializedName("name")
-    val name: String
+    val name: String,
+    @SerializedName("transportMode")
+    val transportMode: List<String>
 )

@@ -1,4 +1,4 @@
-package no.uio.ifi.in2000.team37.badeturisten.ui.favourites
+package no.uio.ifi.in2000.team37.badeturisten.ui.favorites
 
 import android.os.Build
 import android.util.Log
@@ -20,25 +20,25 @@ import no.uio.ifi.in2000.team37.badeturisten.model.beach.BeachAndBeachInfo
 import javax.inject.Inject
 
 data class FavouritesUIState(
-    val favourites: List<Beach> = listOf()
+    val favourites: List<Beach> = listOf(),
 )
 
 @HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class FavouritesViewModel @Inject constructor(
+class FavoritesViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachRepository: BeachRepository
-): ViewModel() {
+    private val _beachRepository: BeachRepository,
+) : ViewModel() {
     private val _beachDetails = MutableStateFlow<Map<String, BeachAndBeachInfo?>>(emptyMap())
     val beachDetails: StateFlow<Map<String, BeachAndBeachInfo?>> = _beachDetails.asStateFlow()
 
-    val favouritesState: StateFlow<FavouritesUIState> = _beachRepository.getFavouriteObservations()
-        .map { FavouritesUIState(favourites = it) }
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = FavouritesUIState()
-        )
+    val favouritesState: StateFlow<FavouritesUIState> =
+        _beachRepository.getFavoriteObservations().map { FavouritesUIState(favourites = it) }
+            .stateIn(
+                viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = FavouritesUIState()
+            )
 
     private suspend fun getBeachInfo(): Map<String, BeachAndBeachInfo?> {
         return _osloKommuneRepository.findAllWebPages()

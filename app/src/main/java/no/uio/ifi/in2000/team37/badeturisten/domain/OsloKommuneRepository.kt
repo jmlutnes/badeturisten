@@ -19,8 +19,8 @@ interface OsloKommuneRepository {
         kiosk: Boolean,
         accessible: Boolean,
         toilets: Boolean,
-        divingTower: Boolean
-    ):  List<jsontokotlin_kommune>
+        divingTower: Boolean,
+    ): List<jsontokotlin_kommune>
 
     /**
      *Send in boolean parameters for which facilities Oslo Commune website to search for.
@@ -36,7 +36,7 @@ interface OsloKommuneRepository {
         kiosk: Boolean,
         accessible: Boolean,
         toilets: Boolean,
-        divingTower: Boolean
+        divingTower: Boolean,
     ): List<Beach>
 
     /**

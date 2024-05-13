@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @Suppress("DEPRECATION")
 class LocationRepositoryImp @Inject constructor(
-    private val context: Context
+    private val context: Context,
 ) : LocationRepository {
     private var fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
@@ -23,8 +23,7 @@ class LocationRepositoryImp @Inject constructor(
 
     override fun fetchLastLocation() {
         if (ContextCompat.checkSelfPermission(
-                context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                context, android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             _locationData.value = null
@@ -39,8 +38,7 @@ class LocationRepositoryImp @Inject constructor(
 
     override fun fetchCurrentLocation() {
         if (ContextCompat.checkSelfPermission(
-                context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                context, android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             _locationData.value = null
@@ -48,13 +46,10 @@ class LocationRepositoryImp @Inject constructor(
         }
         val cancellationTokenSource = CancellationTokenSource()
         fusedLocationClient.getCurrentLocation(
-            LocationRequest.PRIORITY_HIGH_ACCURACY,
-            cancellationTokenSource.token
-        )
-            .addOnSuccessListener { location: Location? ->
+            LocationRequest.PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token
+        ).addOnSuccessListener { location: Location? ->
                 _locationData.value = location
-            }
-            .addOnFailureListener {
+            }.addOnFailureListener {
                 _locationData.value = null
             }
     }

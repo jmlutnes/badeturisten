@@ -9,24 +9,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class BottomNavigationItem(
     val label: String = "",
     val icon: ImageVector = Icons.Filled.Home,
-    val route: String = ""
+    val route: String = "",
 ) {
     fun bottomNavigationItems(): List<BottomNavigationItem> {
         return listOf(
             BottomNavigationItem(
-                label = "Hjem",
-                icon = Icons.Filled.Home,
-                route = Screens.Home.route
+                label = "Hjem", icon = Icons.Filled.Home, route = Screens.Home.route
             ),
             BottomNavigationItem(
-                label = "Favoritter",
-                icon = Icons.Filled.Favorite,
-                route = Screens.Favorite.route
+                label = "Favoritter", icon = Icons.Filled.Favorite, route = Screens.Favorite.route
             ),
             BottomNavigationItem(
-                label = "Søk",
-                icon = Icons.Filled.Search,
-                route = Screens.Search.route
+                label = "Søk", icon = Icons.Filled.Search, route = Screens.Search.route
             ),
         )
     }

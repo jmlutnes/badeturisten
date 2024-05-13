@@ -225,7 +225,9 @@ class OsloKommuneRepositoryImp @Inject constructor(
                 val position = Pos(lat, lon)
                 if (!beachNameConverted.contains("Badstu") && !beachNameConverted.contains("Tømmerholtjern") && !beachNameConverted.contains(
                         "Smalvannet"
-                    ) && !beachNameConverted.contains("Solbergvannet")
+                    ) && !beachNameConverted.contains(
+                        "Solbergvannet"
+                    )
                 ) {
                     beachList.add(Beach(beachNameConverted, position, null))
                 }

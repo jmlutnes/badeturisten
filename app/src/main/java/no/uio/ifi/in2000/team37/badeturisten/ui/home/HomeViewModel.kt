@@ -67,8 +67,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     val forecastState: StateFlow<ForecastUIState> =
         _locationForecastRepository.observeForecastNextHour()
-            .map { ForecastUIState(forecastNextHour = it) }
-            .stateIn(
+            .map { ForecastUIState(forecastNextHour = it) }.stateIn(
                 viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ForecastUIState()
@@ -80,8 +79,7 @@ class HomeViewModel @Inject constructor(
     private var beachState: MutableStateFlow<BeachesUIState> = MutableStateFlow(BeachesUIState())
 
     val metAlertsState: StateFlow<MetAlertsUIState> =
-        _metAlertsRepository.getMetAlertsObservations()
-            .map { MetAlertsUIState(alerts = it) }
+        _metAlertsRepository.getMetAlertsObservations().map { MetAlertsUIState(alerts = it) }
             .stateIn(
                 viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
@@ -98,8 +96,8 @@ class HomeViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _ingenLokasjon = MutableStateFlow(false)
-    val ingenLokasjon: StateFlow<Boolean> = _ingenLokasjon.asStateFlow()
+    private val _noLocation = MutableStateFlow(false)
+    val noLocation: StateFlow<Boolean> = _noLocation.asStateFlow()
 
     private val _isConnectivityIssue = MutableStateFlow(false)
     val isConnectivityIssue = _isConnectivityIssue.asStateFlow()
@@ -115,8 +113,7 @@ class HomeViewModel @Inject constructor(
                 beachState.update {
                     BeachesUIState(
                         CombineBeachesUseCase(
-                            _beachRepository,
-                            _osloKommuneRepository
+                            _beachRepository, _osloKommuneRepository
                         )()
                     )
                 }
@@ -128,9 +125,7 @@ class HomeViewModel @Inject constructor(
             } catch (e: UnknownHostException) {
                 _isConnectivityIssue.update { true }
                 Log.e(
-                    "HomeViewModel",
-                    "No internet connection available, unable to resolve host",
-                    e
+                    "HomeViewModel", "No internet connection available, unable to resolve host", e
                 )
             } catch (e: IOException) {
                 _isConnectivityIssue.update { true }
@@ -155,7 +150,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun _refreshBeachLocation() {
+    private fun modelRefreshBeachLocation() {
         viewModelScope.launch {
             try {
                 Log.d("HomeViewModel", "Updating beach locations")
@@ -168,21 +163,15 @@ class HomeViewModel @Inject constructor(
 
             } catch (e: UnknownHostException) {
                 Log.e(
-                    "HomeViewModel",
-                    "Unable to resolve host: Internet connection might be down",
-                    e
+                    "HomeViewModel", "Unable to resolve host: Internet connection might be down", e
                 )
             } catch (e: IOException) {
                 Log.e(
-                    "HomeViewModel",
-                    "Network I/O error occurred during beach location refresh",
-                    e
+                    "HomeViewModel", "Network I/O error occurred during beach location refresh", e
                 )
             } catch (e: Exception) {
                 Log.e(
-                    "HomeViewModel",
-                    "An unexpected error occurred during beach location refresh",
-                    e
+                    "HomeViewModel", "An unexpected error occurred during beach location refresh", e
                 )
             } finally {
                 _isLoading.value = false
@@ -192,7 +181,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun refreshBeachLocations() {
-        _refreshBeachLocation()
+        modelRefreshBeachLocation()
     }
 
     private fun loadBeachInfo() {
@@ -232,17 +221,17 @@ class HomeViewModel @Inject constructor(
         beachState.value.beaches.forEach { beach ->
             if (_location.value?.latitude != null) {
                 locationMap[beach] = locationDistance(beach.pos, _location.value)
-                _ingenLokasjon.value = false
+                _noLocation.value = false
             } else {
                 locationMap[beach] = teller
                 teller--
-                _ingenLokasjon.value = true
+                _noLocation.value = true
 
             }
         }
         viewModelScope.launch {
             try {
-                if (ingenLokasjon.value) {
+                if (noLocation.value) {
                     _beachLocation.value = locationMap.toSortedMap(compareBy { it.name }).toList()
                 } else {
                     val sortedBeachesByDistance = sortBeachesByValue(locationMap)
@@ -263,9 +252,7 @@ class HomeViewModel @Inject constructor(
         val lon2 = Math.toRadians(loc2?.longitude ?: 999.0)
         val dLat = lat2 - lat1
         val dLon = lon2 - lon1
-        val a = sin(dLat / 2).pow(2) +
-                cos(lat1) * cos(lat2) *
-                sin(dLon / 2).pow(2)
+        val a = sin(dLat / 2).pow(2) + cos(lat1) * cos(lat2) * sin(dLon / 2).pow(2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         val avstand = earthRadius * c
         return avstand.roundToInt()

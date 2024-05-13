@@ -12,7 +12,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class MetAlertsRepositoryImp(
-    private val datasource: MetAlertsDataSource
+    private val datasource: MetAlertsDataSource,
 ) : MetAlertsRepository {
 
     private val metAlertsObservations = MutableStateFlow<List<WeatherWarning>>(listOf())

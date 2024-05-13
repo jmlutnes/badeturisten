@@ -9,11 +9,11 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.OsloKommuneHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
+import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.OsloKommuneHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import org.jsoup.Jsoup
 import java.lang.reflect.Type
@@ -107,7 +107,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
         kiosk: Boolean,
         accessible: Boolean,
         toilets: Boolean,
-        divingTower: Boolean
+        divingTower: Boolean,
     ): jsontokotlin_kommune {
         val badevaktUrl = if (lifeguard) "&f_facilities_lifeguard=true" else ""
         val barnevennligUrl = if (childFriendly) "&f_facilities_child_friendly=true" else ""
@@ -118,8 +118,8 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
         val badebryggeUrl = if (divingTower) "&f_facilities_diving_tower=true" else ""
         val url =
             "https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
-        val urlString = url +
-                badevaktUrl + barnevennligUrl + grillUrl + kioskUrl + tilpasningUrl + toalettUrl + badebryggeUrl
+        val urlString =
+            url + badevaktUrl + barnevennligUrl + grillUrl + kioskUrl + tilpasningUrl + toalettUrl + badebryggeUrl
         val data = client.get(urlString)
         return data.body<jsontokotlin_kommune>()
     }
@@ -153,7 +153,7 @@ class ItemDeserializer : JsonDeserializer<Item> {
     override fun deserialize(
         json: JsonElement,
         typeOfT: Type,
-        context: JsonDeserializationContext
+        context: JsonDeserializationContext,
     ): Item {
         val jsonObject = json.asJsonObject
         // Extract common areas

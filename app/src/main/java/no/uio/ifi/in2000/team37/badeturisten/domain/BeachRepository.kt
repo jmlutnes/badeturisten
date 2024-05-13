@@ -18,7 +18,7 @@ interface BeachRepository {
     /**
      * Fetch an information flow of favourite beaches
      */
-    fun getFavouriteObservations(): StateFlow<List<Beach>>
+    fun getFavoriteObservations(): StateFlow<List<Beach>>
 
     /**
      * Updates flow that contains all beaches
@@ -40,10 +40,10 @@ interface BeachRepository {
      * Recieves a beach object and adds or removes the beach based on the favourite beach list
      * Returns list of favourite beaches
      */
-    suspend fun updateFavourites(beach: Beach?): List<Beach>
+    suspend fun updateFavorites(beach: Beach?): List<Beach>
 
     /**
      * checks and return ture or false depending on if a beach is favourite list
      */
-    fun checkFavourite(beach: Beach): Boolean
+    fun checkFavorite(beach: Beach): Boolean
 }
