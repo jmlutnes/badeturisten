@@ -2,10 +2,10 @@
 Applikasjonen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. 
 
 
-# Funksjonalitet: Visning av badestedsinformasjon 
+## Funksjonalitet: Visning av badestedsinformasjon 
 Når brukeren trykker på et badested, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, badetemperatur, fasiliteter og kollektivruter. 
 
-## Tekstlig beskrivelse 
+### Tekstlig beskrivelse 
 1. Brukeren får en oversikt over badesteder 
 2. Brukeren velger et badested 
 3. Systemet henter informasjon om badestedet fra API-er 
