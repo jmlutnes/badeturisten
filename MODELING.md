@@ -13,7 +13,7 @@
 <img width="1163" alt="Skjermbilde 2024-05-06 kl  16 00 15" src="https://media.github.uio.no/user/9706/files/6b1027ae-4a98-423d-8fca-18f17490250c">
 
 
-# Funksjonalitet: Visning av kollektiv rute 
+# Funksjonalitet: Visning av kollektivtransport
 
 # Use Case-diagram
 
