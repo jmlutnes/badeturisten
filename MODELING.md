@@ -1,3 +1,11 @@
+# Funksjonalitet: Visning av badestedsinformasjon 
+Når brukeren trykker på et badekort, presenteres de for nyttig informasjon om det aktuelle badestedet. Dersom dette er tilgjengelig, inneholder visningen informasjon om vannkvalitet, vanntemperatur, fasiliteter og kollektivruter i nærheten. 
+
+# Use Case-diagram 
+
+<img width="757" alt="Skjermbilde 2024-05-13 kl  11 57 58" src="https://media.github.uio.no/user/9706/files/602f387d-7273-4ddc-b267-a262e3e90fbf">
+
+
 # Funksjonalitet: Filtrert søk 
 Appen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter som de blir presentert for (hentet fra Oslo Kommune); badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
 
