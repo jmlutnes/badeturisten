@@ -15,6 +15,10 @@ Når brukeren trykker på et badested, presenteres de for nyttig informasjon om 
 
 <img width="757" alt="Skjermbilde 2024-05-13 kl  11 57 58" src="https://media.github.uio.no/user/9706/files/602f387d-7273-4ddc-b267-a262e3e90fbf">
 
+### Klassediagram
+
+<img width="678" alt="Skjermbilde 2024-05-14 kl  13 19 08" src="https://media.github.uio.no/user/9706/files/33f01c9f-9540-448e-a156-5287118ca104">
+
 
 ## Funksjonalitet: Filtrert søk 
 Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter som de blir presentert for (hentet fra Oslo Kommune); badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
