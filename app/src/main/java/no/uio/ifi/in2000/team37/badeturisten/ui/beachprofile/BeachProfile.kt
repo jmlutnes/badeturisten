@@ -40,10 +40,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -606,6 +609,15 @@ fun BeachProfile(
     val isFavorited by beachViewModel.isFavorited.collectAsState()
     beach.beach?.let { beachViewModel.checkFavorite(it) }
 
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+    val isConnectivityIssue = beachViewModel.isConnectivityIssue.collectAsState()
+
+    LaunchedEffect(isFavorited) {
+        // Upon initial composition, check and update the favorites
+        beach.beach?.let { beachViewModel.checkFavorite(it) }
+    }
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "Badested") }, navigationIcon = {
@@ -617,7 +629,17 @@ fun BeachProfile(
                 }
             })
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) { paddingValues ->
+        if (isConnectivityIssue.value) {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(
+                    message = "Kunne ikke laste informasjon.\nVennligst sjekk nettverkstilkoblingen din"
+                )
+            }
+        }
         Box(
             modifier = Modifier.fillMaxSize()
         ) {

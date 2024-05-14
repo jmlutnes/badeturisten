@@ -42,8 +42,8 @@ class BeachViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepository,
     private val _beachRepository: BeachRepository,
-    private val _enTurRepositoryGeocoderRepository: EnTurGeocoderRepository,
-    private val _enTurRepositoryJourneyPlanner: EnTurJourneyPlannerRepository,
+    private val _enTurGeocoderRepository: EnTurGeocoderRepository,
+    private val _enTurJourneyPlannerRepository: EnTurJourneyPlannerRepository,
 ) : ViewModel() {
     private val beachName: String = checkNotNull(savedStateHandle["beachName"])
 
@@ -62,6 +62,9 @@ class BeachViewModel @Inject constructor(
 
     private val _isFavorited = MutableStateFlow(false)
     val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
+
+    private val _isConnectivityIssue = MutableStateFlow(false)
+    val isConnectivityIssue = _isConnectivityIssue.asStateFlow()
 
     /**
      * Update favorite list
@@ -97,22 +100,31 @@ class BeachViewModel @Inject constructor(
             val lat = beachInfo?.pos?.lat
             var busStations: Busstations?
 
+
             if ((lon == null) || (lat == null)) {
                 //Fetch ID for all buss stations based on name
-                busStations = _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
+                busStations = _enTurGeocoderRepository.fetchBusRouteName(beachName)
             } else {
                 //Fetch ID for all buss stations based on location
-                busStations = _enTurRepositoryGeocoderRepository.fetchBusRouteLoc(
+                busStations = _enTurGeocoderRepository.fetchBusRouteLoc(
                     lat.toDouble(), lon.toDouble()
                 )
                 if (busStations?.busstation?.isEmpty() == true) {
-                    busStations = _enTurRepositoryGeocoderRepository.fetchBusRouteName(beachName)
+                    busStations = _enTurGeocoderRepository.fetchBusRouteName(beachName)
                 }
+            }
+            // The EnTurGeocoderRepository-methods for getting bus routes
+            // only return null when there is an error, and will
+            // return an empty object if there simply are no routes near the beach.
+            // busStations being null is therefore indicative of an error
+            if (busStations == null) {
+                Log.d("snackbar", "$busStations")
+                _isConnectivityIssue.update { true }
             }
             val uniqueBusRoutes = mutableSetOf<BusRoute>()
             busStations?.busstation?.forEach { station ->
                 station.id?.let { id ->
-                    _enTurRepositoryJourneyPlanner.fetchBusroutesById(id, station)
+                    _enTurJourneyPlannerRepository.fetchBusroutesById(id, station)
                         ?.let { busroutes ->
                             uniqueBusRoutes.addAll(busroutes)
                         }
@@ -120,6 +132,7 @@ class BeachViewModel @Inject constructor(
             }
             val allBusRoutes: MutableList<BusRoute> = uniqueBusRoutes.toMutableList()
             val waterQuality: OsloKommuneBeachInfo? = _osloKommuneRepository.findWebPage(beachName)
+
             _beachUIState.update { currentUIState ->
                 if (beachInfo != null) {
                     currentUIState.copy(
@@ -139,6 +152,8 @@ class BeachViewModel @Inject constructor(
                 checkFavorite(beachInfo)
             } else if (osloKommuneBeachInfo != null) {
                 checkFavorite(osloKommuneBeachInfo)
+            } else {
+                _isConnectivityIssue.update { true }
             }
             _isLoading.value = false
         }
