@@ -1,5 +1,5 @@
 # Applikasjonens funksjonelle krav 
-Applikasjonen vår tilbyr en rekke ulike funksjonaliteter, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. 
+Applikasjonen vår tilbyr en rekke ulike funksjonaliteter, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport, favorisering av badesteder og visning av nærmeste badesteder. 
 
 
 ## Funksjonalitet: Visning av badestedsinformasjon 
@@ -86,18 +86,17 @@ A1.1. Systemet fjerner badestedet fra favoritter
 
 <img width="757" alt="Skjermbilde 2024-05-09 kl  22 44 25" src="https://media.github.uio.no/user/9706/files/42fda48c-d58b-45a0-8ccd-e305424c98cc">
 
-## Funksjonalitet: Sortering av badesteder 
-Applikasjonen vår har to ulike måter å sortere badestedene i hjemskjermen på; alfabetisk eller etter avstand. Hvis brukeren tillater stedstilgang, så blir badestedene sortert etter avstand, slik at brukerne lett kan finne ut om deres nærmeste badesteder tilfredsstiller deres ønsker. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
+## Funksjonalitet: Visning av nærmeste badesteder 
+Hvis brukeren tillater stedstilgang, blir badestedene sortert etter avstand. På denne måten kan brukerne lett finne fram til sine nærmeste badesteder uten å måtte scrolle langt. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
 
 ### Tekstlig beskrivelse 
 **Hovedflyt**
 1. Systemet ber om stedstilgang 
+2. Brukeren godtar forespørselen 
+3. Brukeren får en oversikt over badesteder sortert etter avstand 
 
 **Alternativ flyt 1, steg 1:** Brukeren avslår forespørselen \
 A1.1. Brukeren får en oversikt over badesteder i alfabetisk rekkefølge 
-
-**Alternativ flyt 2, steg 1:** Brukeren godtar forespørselen \
-A2.1. Brukeren får en oversikt over badesteder sortert etter avstand 
 
 ### Sekvensdiagram
 
