@@ -46,6 +46,8 @@ Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badesteden
 
 <img width="1163" alt="Skjermbilde 2024-05-06 kl  16 00 15" src="https://media.github.uio.no/user/9706/files/6b1027ae-4a98-423d-8fca-18f17490250c">
 
+### Klassediagram 
+
 
 ## Funksjonalitet: Visning av kollektivtransport
 Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport brukeren kan benytte seg av for å komme seg til badestedet.
