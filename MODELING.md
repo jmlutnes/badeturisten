@@ -1,5 +1,5 @@
 # Applikasjonens funksjonelle krav 
-Applikasjonen vår tilbyr en rekke ulike funksjonaliteter for brukerne, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. 
+Applikasjonen vår tilbyr en rekke ulike funksjonaliteter, der de viktigste er; visning av badestedsinformasjon, filtrert søk, visning av kollektivtransport og favorisering av badesteder. 
 
 
 ## Funksjonalitet: Visning av badestedsinformasjon 
