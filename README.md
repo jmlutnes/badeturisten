@@ -164,7 +164,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 - Versjon: 😵‍💫
 - Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling#compose-tooling-library)
 
-### Kotlinx Coroutines Test 😵‍💫
+### Kotlinx Coroutines Test 
 - Formål: Bibliotek som inneholder testingversktøy for Kotlin Coroutines.
 - Versjon: 1.8.1-Beta
 - Dokumentasjon: [Kotlinx Coroutines Test](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/)
