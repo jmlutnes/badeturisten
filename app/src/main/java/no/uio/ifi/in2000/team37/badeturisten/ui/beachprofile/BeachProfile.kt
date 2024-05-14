@@ -563,7 +563,7 @@ fun Transportation(beach: BeachUIState) {
                                 modifier = Modifier.size(30.dp)
                             )
                             Text(
-                                text = it.busstation.name.toString(),
+                                text = it.busStation.name.toString(),
                                 modifier = Modifier.basicMarquee(),
                                 fontWeight = FontWeight.Medium,
                                 fontStyle = FontStyle.Normal,

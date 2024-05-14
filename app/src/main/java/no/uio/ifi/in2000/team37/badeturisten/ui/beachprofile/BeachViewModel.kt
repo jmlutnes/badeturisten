@@ -33,7 +33,7 @@ data class BusRoute(
     val line: String?,
     val name: String,
     val transportMode: String?,
-    val busstation: Busstation,
+    val busStation: Busstation,
 )
 
 @HiltViewModel
@@ -81,7 +81,7 @@ class BeachViewModel @Inject constructor(
      */
     fun checkFavorite(beach: Beach) {
         _isFavorited.value = _beachRepository.checkFavorite(beach)
-        Log.d("beachviewmodel, checkFavorite", "Favorittstatus changed: ${_isFavorited.value}")
+        Log.d("beachviewmodel, checkFavorite", "Favorite-status changed: ${_isFavorited.value}")
     }
 
     init {
@@ -125,8 +125,8 @@ class BeachViewModel @Inject constructor(
             busStations?.busstation?.forEach { station ->
                 station.id?.let { id ->
                     _enTurJourneyPlannerRepository.fetchBusroutesById(id, station)
-                        ?.let { busroutes ->
-                            uniqueBusRoutes.addAll(busroutes)
+                        ?.let { busRoutes ->
+                            uniqueBusRoutes.addAll(busRoutes)
                         }
                 }
             }
