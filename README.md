@@ -61,17 +61,14 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 
 ### AndroidX Compose UI
 - Formål: Grunnleggende UI-terkomponenter for å bygge apps med Jetpack Compose.
-- Versjon: 😵‍💫
 - Dokumentasjon: [Compose UI](https://developer.android.com/jetpack/compose/setup#compose-compiler)
 
 ### AndroidX Compose UI Graphics
 - Formål: Grafikkrelaterte API-er for Jetpack Compose.
-- Versjon: 😵‍💫
 - Dokumentasjon: [Compose Graphics](https://developer.android.com/jetpack/compose/graphics)
 
 ### AndroidX Compose UI Tooling Preview
 - Formål: Forhåndsvisningsfunksjoner for UI-komponenter innenfor Android Studio.
-- Versjon: 😵‍💫
 - Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling)
 
 ### AndroidX Compose Material 3
@@ -161,7 +158,6 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 
 ### AndroidX UI Tooling
 - Formål: Tilleggsverktøy for feilsøking og ytelsesanalyse av Compose UI.
-- Versjon: 😵‍💫
 - Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling#compose-tooling-library)
 
 ### Kotlinx Coroutines Test 
