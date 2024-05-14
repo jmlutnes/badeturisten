@@ -1,6 +1,10 @@
 # 🌟Badeturisme
 I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
 
+
+## 📸Screenshots av appen
+![Screenshot]()
+
 ## 🧑‍🍳Oppskrift
 1. For å kunne få tilgang til applikasjonen må du først laste ned [latest version of Android Studio](https://developer.android.com/studio)
 2. Klon dette repoet til din lokale maskin ved å bruke skrive inn denne kommandoen på terminalen din. \
