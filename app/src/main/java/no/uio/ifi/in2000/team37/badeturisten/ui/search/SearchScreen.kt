@@ -23,6 +23,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -152,165 +155,183 @@ fun SearchScreen(
     val accessible = searchViewModel.accessible.value
     val toilets = searchViewModel.toilets.value
     val divingTower = searchViewModel.divingTower.value
+    val isConnectivityIssue = searchViewModel.isConnectivityIssue.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        LaunchedEffect(
-            lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
-        ) {
-            searchViewModel.loadIntersectedBeaches(
-                lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
-            )
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
+    ) {paddingValues ->
+        if (isConnectivityIssue.value) {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(
+                    message = "Kunne ikke laste informasjon.\nVennligst sjekk nettverkstilkoblingen din"
+                )
+            }
         }
         Column(
-            Modifier.background(MaterialTheme.colorScheme.background),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.fillMaxSize().padding(paddingValues)
         ) {
-            Column(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
-                    .fillMaxWidth()
+            LaunchedEffect(
+                lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
             ) {
-                Column(
-                    modifier = Modifier.padding(horizontal = 60.dp),
-                ) {
-                    Spacer(Modifier.height(10.dp))
-                    Text(
-                        text = "Søk etter badesteder",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-                    TextField(
-                        value = searchText,
-                        onValueChange = { searchText = it },
-                        label = { Text("Søk") },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = MaterialTheme.colorScheme.background,
-                            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                            disabledContainerColor = MaterialTheme.colorScheme.background
-                        )
-                    )
-
-                }
+                searchViewModel.loadIntersectedBeaches(
+                    lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
+                )
+            }
+            Column(
+                Modifier.background(MaterialTheme.colorScheme.background),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Column(
                     modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .background(MaterialTheme.colorScheme.primary)
+                        .fillMaxWidth()
                 ) {
-                    FilterButtons(badevakt = lifeGuard, onBadevaktChange = {
-                        searchViewModel.updateFilterState(
-                            "Badevakt", !lifeGuard
-                        )
-                    }, barnevennlig = childFriendly, onBarnevennligChange = {
-                        searchViewModel.updateFilterState(
-                            "Barnevennlig", !childFriendly
-                        )
-                    }, grill = grill, onGrillChange = {
-                        searchViewModel.updateFilterState(
-                            "Grill", !grill
-                        )
-                    }, kiosk = kiosk, onKioskChange = {
-                        searchViewModel.updateFilterState(
-                            "Kiosk", !kiosk
-                        )
-                    }, tilpasning = accessible, onTilpasningChange = {
-                        searchViewModel.updateFilterState(
-                            "Tilpasning", !accessible
-                        )
-                    }, toalett = toilets, onToalettChange = {
-                        searchViewModel.updateFilterState(
-                            "Toalett", !toilets
-                        )
-                    }, badebrygge = divingTower, onBadebryggeChange = {
-                        searchViewModel.updateFilterState(
-                            "Badebrygge", !divingTower
-                        )
-                    })
-                }
-            }
-            val filtrerte = beachState.beaches.filter { strand ->
-                strand.name.contains(searchText, ignoreCase = true)
-            }
-            val anyActiveFiltering =
-                (lifeGuard || childFriendly || grill || kiosk || accessible || toilets || divingTower)
-            Text(
-                text = "Søkeresultater",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 15.dp, bottom = 8.dp),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Box(
-                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-            ) {
-                LaunchedEffect(
-                    Unit,
-                    filtrerte,
-                    isLoading,
-                    lifeGuard,
-                    childFriendly,
-                    grill,
-                    kiosk,
-                    accessible,
-                    toilets,
-                    divingTower
-                ) {
-                    noResultsMessage = ""
-                    delay(500)
-                    noResultsMessage = "Ingen resultater"
-                }
-                if (localLoading.value) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(180.dp),
-                        state = state,
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
-                        verticalArrangement = Arrangement.Top,
-                        userScrollEnabled = !(localLoading.value)
+                    Column(
+                        modifier = Modifier.padding(horizontal = 60.dp),
                     ) {
-                        val currentList = if (searchText == "" && !anyActiveFiltering) {
-                            beachState.beaches.sortedBy { it.name }
-                        } else if (!anyActiveFiltering) {
-                            filtrerte
-                        } else {
-                            searchResult.beachList.intersect(filtrerte.toSet()).toList()
-                        }
-                        if (currentList.isEmpty() && !(localLoading.value)) {
-                            item {
-                                Box(modifier = Modifier.fillMaxSize()) {
-                                    Text(
-                                        text = noResultsMessage,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterStart)
-                                            .padding(vertical = 30.dp, horizontal = 30.dp),
-                                        fontSize = 18.sp,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
+                        Spacer(Modifier.height(10.dp))
+                        Text(
+                            text = "Søk etter badesteder",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.inverseOnSurface
+                        )
+                        TextField(
+                            value = searchText,
+                            onValueChange = { searchText = it },
+                            label = { Text("Søk") },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = MaterialTheme.colorScheme.background,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                                disabledContainerColor = MaterialTheme.colorScheme.background
+                            )
+                        )
+
+                    }
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        FilterButtons(badevakt = lifeGuard, onBadevaktChange = {
+                            searchViewModel.updateFilterState(
+                                "Badevakt", !lifeGuard
+                            )
+                        }, barnevennlig = childFriendly, onBarnevennligChange = {
+                            searchViewModel.updateFilterState(
+                                "Barnevennlig", !childFriendly
+                            )
+                        }, grill = grill, onGrillChange = {
+                            searchViewModel.updateFilterState(
+                                "Grill", !grill
+                            )
+                        }, kiosk = kiosk, onKioskChange = {
+                            searchViewModel.updateFilterState(
+                                "Kiosk", !kiosk
+                            )
+                        }, tilpasning = accessible, onTilpasningChange = {
+                            searchViewModel.updateFilterState(
+                                "Tilpasning", !accessible
+                            )
+                        }, toalett = toilets, onToalettChange = {
+                            searchViewModel.updateFilterState(
+                                "Toalett", !toilets
+                            )
+                        }, badebrygge = divingTower, onBadebryggeChange = {
+                            searchViewModel.updateFilterState(
+                                "Badebrygge", !divingTower
+                            )
+                        })
+                    }
+                }
+                val filtrerte = beachState.beaches.filter { strand ->
+                    strand.name.contains(searchText, ignoreCase = true)
+                }
+                val anyActiveFiltering =
+                    (lifeGuard || childFriendly || grill || kiosk || accessible || toilets || divingTower)
+                Text(
+                    text = "Søkeresultater",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 15.dp, bottom = 8.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Box(
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                ) {
+                    LaunchedEffect(
+                        Unit,
+                        filtrerte,
+                        isLoading,
+                        lifeGuard,
+                        childFriendly,
+                        grill,
+                        kiosk,
+                        accessible,
+                        toilets,
+                        divingTower
+                    ) {
+                        noResultsMessage = ""
+                        delay(500)
+                        noResultsMessage = "Ingen resultater"
+                    }
+                    if (localLoading.value) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                    if (isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(180.dp),
+                            state = state,
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
+                            verticalArrangement = Arrangement.Top,
+                            userScrollEnabled = !(localLoading.value)
+                        ) {
+                            val currentList = if (searchText == "" && !anyActiveFiltering) {
+                                beachState.beaches.sortedBy { it.name }
+                            } else if (!anyActiveFiltering) {
+                                filtrerte
+                            } else {
+                                searchResult.beachList.intersect(filtrerte.toSet()).toList()
                             }
-                        } else {
-                            items(currentList) { beach ->
-                                localLoading.value = false
-                                BeachCard(beach, -1, navController, beachinfo)
+                            if (currentList.isEmpty() && !(localLoading.value)) {
+                                item {
+                                    Box(modifier = Modifier.fillMaxSize()) {
+                                        Text(
+                                            text = noResultsMessage,
+                                            modifier = Modifier
+                                                .align(Alignment.CenterStart)
+                                                .padding(vertical = 30.dp, horizontal = 30.dp),
+                                            fontSize = 18.sp,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
+                                }
+                            } else {
+                                items(currentList) { beach ->
+                                    localLoading.value = false
+                                    BeachCard(beach, -1, navController, beachinfo)
+                                }
                             }
                         }
                     }
