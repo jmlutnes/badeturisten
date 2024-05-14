@@ -3,7 +3,7 @@ I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikas
 
 
 ## 📸Screenshots av appen
-![Screenshot]()
+![Screenshot](https://github.uio.no/IN2000-V24/team-37/blob/master/Screenshot%202024-05-14%20at%2008.48.45.png)
 
 ## 🧑‍🍳Oppskrift
 1. For å kunne få tilgang til applikasjonen må du først laste ned [latest version of Android Studio](https://developer.android.com/studio)
