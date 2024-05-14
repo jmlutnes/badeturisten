@@ -21,7 +21,7 @@ Når brukeren trykker på et badested, presenteres de for nyttig informasjon om 
 
 
 ## Funksjonalitet: Filtrert søk 
-Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike kategorier/fasiliteter (hentet fra Oslo Kommune) som de blir presentert for; badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett, badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
+Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badestedene etter ulike fasilitetskategorier (hentet fra Oslo Kommune) som de blir presentert for; badevakt, barnevennlig, grill, kiosk, tilpasset bevegelseshemmede, toalett og badebrygge. Dersom flere fasiliteter blir huket av, presenteres krysningen av resultatene fra hvert valgte fasilitetskategori. 
 
 ### Tekstlig beskrivelse 
 1. Brukeren går inn til funksjonen gjennom Navigation-bar 
@@ -52,7 +52,7 @@ Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badesteden
 
 
 ## Funksjonalitet: Visning av kollektivtransport
-Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport brukeren kan benytte seg av for å komme seg til badestedet.
+Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport brukeren kan benytte seg av for å komme seg til badestedet. 
 
 ### Tekstlig beskrivelse 
 1. Brukeren får en oversikt over badesteder 
@@ -66,7 +66,7 @@ Når brukeren trykker på et badekort, vises det et utvalg av kollektivtransport
 
 
 ## Funksjonalitet: Legge til favoritter 
-Applikasjonen gir brukeren muligheten til å favorisere badesteder. Disse badestedene blir lagt i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig.
+Applikasjonen gir brukeren muligheten til å favorisere badesteder, som gjøres ved å trykke på hjerteikonet inne på valgt badestedsprofil. Disse badestedene blir lagt inn i en egen skjerm slik at det blir lettere for brukeren å finne fram til dem på et senere tidspunkt. Badestedene kan også enkelt fjernes fra favoritter dersom det er ønskelig. Dette gjøres ved å trykke på hjerteikonet som allerede har blitt trykket på. 
 
 ### Tekstlig beskrivelse 
 **Hovedflyt**
