@@ -1,5 +1,10 @@
-# 🌟Team-37
-I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
+# 🌟Badeturisme
+Badeturisme er en applikasjon som tilbyr en detaljert oversikt om å vær- og bade forhold, fasiliteter og tilgang til kollektiv transport over badestedet i Oslo-området! En applikasjon som passer perfekt for badeentusiaster i alle aldre som liker å bade i Oslo. 
+
+I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
+
+## 📸Screenshots av appen
+<img width="984" alt="Screenshot 2024-05-14 at 08 48 45" src="https://media.github.uio.no/user/9646/files/a6ca5c21-a987-413a-b406-225aaa14e0cd">
 
 ## 🧑‍🍳Oppskrift
 1. For å kunne få tilgang til applikasjonen må du først laste ned [latest version of Android Studio](https://developer.android.com/studio)
@@ -56,17 +61,14 @@ I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikas
 
 ### AndroidX Compose UI
 - Formål: Grunnleggende UI-terkomponenter for å bygge apps med Jetpack Compose.
-- Versjon: 😵‍💫
 - Dokumentasjon: [Compose UI](https://developer.android.com/jetpack/compose/setup#compose-compiler)
 
 ### AndroidX Compose UI Graphics
 - Formål: Grafikkrelaterte API-er for Jetpack Compose.
-- Versjon: 😵‍💫
 - Dokumentasjon: [Compose Graphics](https://developer.android.com/jetpack/compose/graphics)
 
 ### AndroidX Compose UI Tooling Preview
 - Formål: Forhåndsvisningsfunksjoner for UI-komponenter innenfor Android Studio.
-- Versjon: 😵‍💫
 - Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling)
 
 ### AndroidX Compose Material 3
@@ -122,7 +124,7 @@ I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikas
 ### Lottie for Compose
 - Formål: Bibliotek for å lage avanserte animasjoner med Adobe After Effects.
 - Versjon: 6.4.0
-- Dokumentasjon: [Lottie Compose](https://lottiefiles.com/lottie-for-android) 😵‍💫
+- Dokumentasjon: [Lottie Compose][https://lottiefiles.com/lottie-for-android](https://lottiefiles.com/animations/fish-animation-w9ZWyXIvoI?from=search) 
 
 ### Dagger Hilt
 - Formål: Dependency injection bibliotek.
@@ -156,17 +158,16 @@ I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikas
 
 ### AndroidX UI Tooling
 - Formål: Tilleggsverktøy for feilsøking og ytelsesanalyse av Compose UI.
-- Versjon: 😵‍💫
 - Dokumentasjon: [UI Tooling](https://developer.android.com/jetpack/compose/tooling#compose-tooling-library)
 
-### Kotlinx Coroutines Test 😵‍💫
+### Kotlinx Coroutines Test 
 - Formål: Bibliotek som inneholder testingversktøy for Kotlin Coroutines.
 - Versjon: 1.8.1-Beta
 - Dokumentasjon: [Kotlinx Coroutines Test](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-test/)
 
 ### Android Test Manifest
 - Formål: Hjelper med å inkludere manifestinformasjon for testing.
-- Versjon: 😵‍💫
+- Versjon: 3.5.1
 - Dokumentasjon: [Test Manifest](https://developer.android.com/training/testing/set-up-project)
 
 ### Hilt Compiler
@@ -175,7 +176,7 @@ I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikas
 - Dokumentasjon: [Hilt Compiler](https://dagger.dev/hilt/compiler.html)
 
 
-## 🧑‍💻Gruppemedlemer 
+## 🧑‍💻Gruppemedlemmer 
 Adam Nils Giæver (adamng) \
 Bleron Strana (blerons) \
 Danela Sabamali (danelas) \

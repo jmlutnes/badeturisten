@@ -23,6 +23,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -152,55 +155,72 @@ fun SearchScreen(
     val accessible = searchViewModel.accessible.value
     val toilets = searchViewModel.toilets.value
     val divingTower = searchViewModel.divingTower.value
+    val isConnectivityIssue = searchViewModel.isConnectivityIssue.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        LaunchedEffect(
-            lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
-        ) {
-            searchViewModel.loadIntersectedBeaches(
-                lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
-            )
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
+    ) {paddingValues ->
+        if (isConnectivityIssue.value) {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(
+                    message = "Kunne ikke laste informasjon.\nVennligst sjekk nettverkstilkoblingen din"
+                )
+            }
         }
         Column(
-            Modifier.background(MaterialTheme.colorScheme.background),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.fillMaxSize().padding(paddingValues)
         ) {
+            LaunchedEffect(
+                lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
+            ) {
+                searchViewModel.loadIntersectedBeaches(
+                    lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
+                )
+            }
             Column(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary)
-                    .fillMaxWidth()
+                Modifier.background(MaterialTheme.colorScheme.background),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Column(
-                    modifier = Modifier.padding(horizontal = 60.dp),
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary)
+                        .fillMaxWidth()
                 ) {
-                    Spacer(Modifier.height(10.dp))
-                    Text(
-                        text = "Søk etter badesteder",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 10.dp),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.inverseOnSurface
-                    )
-                    TextField(
-                        value = searchText,
-                        onValueChange = { searchText = it },
-                        label = { Text("Søk") },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = MaterialTheme.colorScheme.background,
-                            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                            disabledContainerColor = MaterialTheme.colorScheme.background
+                    Column(
+                        modifier = Modifier.padding(horizontal = 60.dp),
+                    ) {
+                        Spacer(Modifier.height(10.dp))
+                        Text(
+                            text = "Søk etter badesteder",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp),
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.inverseOnSurface
                         )
-                    )
+                        TextField(
+                            value = searchText,
+                            onValueChange = { searchText = it },
+                            label = { Text("Søk") },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = MaterialTheme.colorScheme.background,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                                disabledContainerColor = MaterialTheme.colorScheme.background
+                            )
+                        )
 
                 }
                 Column(

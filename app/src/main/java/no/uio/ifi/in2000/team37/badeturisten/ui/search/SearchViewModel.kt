@@ -53,6 +53,10 @@ class SearchViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _isConnectivityIssue = MutableStateFlow(false)
+    val isConnectivityIssue = _isConnectivityIssue.asStateFlow()
+
+
     init {
         viewModelScope.launch {
             try {
@@ -62,6 +66,7 @@ class SearchViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
                 _beachDetails.value = emptyMap()
+                _isConnectivityIssue.update { true }
             }
             loadIntersectedBeaches(
                 lifeguard = false,
@@ -75,6 +80,10 @@ class SearchViewModel @Inject constructor(
             beachState.update {
                 BeachesUIState(CombineBeachesUseCase(_beachRepository, _osloKommuneRepository)())
             }
+
+            if (beachState.value.beaches.isEmpty()) {
+                _isConnectivityIssue.update { true }
+            } else _isConnectivityIssue.update { false }
         }
     }
 
@@ -183,11 +192,13 @@ class SearchViewModel @Inject constructor(
                 })
                 val results = tasks.awaitAll()
                 val intersectedResults = findIntersection(results)
+                _isConnectivityIssue.update { false }
                 _searchResults.value = SokKommuneBeachList(intersectedResults)
             }
         } catch (e: Exception) {
             Log.e("SearchViewModel", "Error loading intersected beaches: ${e.message}")
             _searchResults.value = SokKommuneBeachList(emptyList())
+            _isConnectivityIssue.update { true }
         } finally {
             _isLoading.value = false
         }
