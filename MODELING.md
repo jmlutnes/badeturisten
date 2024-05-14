@@ -44,7 +44,7 @@ Applikasjonen tilbyr filtrering av søk slik at brukerne kan filtrere badesteden
 
 ### Sekvensdiagram
 
-<img width="1163" alt="Skjermbilde 2024-05-06 kl  16 00 15" src="https://media.github.uio.no/user/9706/files/6b1027ae-4a98-423d-8fca-18f17490250c">
+<img width="921" alt="Skjermbilde 2024-05-14 kl  22 36 31" src="https://media.github.uio.no/user/9706/files/fd63b7b1-0084-4cb3-9d4f-224ad691895b">
 
 ### Klassediagram 
 
@@ -101,6 +101,7 @@ A2.1. Brukeren får en oversikt over badesteder sortert etter avstand
 
 ### Sekvensdiagram
 
-<img width="581" alt="Skjermbilde 2024-05-06 kl  15 45 19" src="https://media.github.uio.no/user/9706/files/cc9ca785-14d4-4dec-b9de-ae67a60bdd60">
+<img width="540" alt="Skjermbilde 2024-05-14 kl  22 37 13" src="https://media.github.uio.no/user/9706/files/75497acf-21c3-4124-97fe-0a1d076a49b4">
+
 
 
