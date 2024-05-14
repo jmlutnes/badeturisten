@@ -95,8 +95,9 @@ Hvis brukeren tillater stedstilgang, blir badestedene sortert etter avstand. På
 2. Brukeren godtar forespørselen 
 3. Brukeren får en oversikt over badesteder sortert etter avstand 
 
-**Alternativ flyt 1, steg 1:** Brukeren avslår forespørselen \
-A1.1. Brukeren får en oversikt over badesteder i alfabetisk rekkefølge 
+**Alternativ flyt 1, steg 2:** Brukeren avslår forespørselen \
+A1.1. Brukeren får en oversikt over badesteder i alfabetisk rekkefølge \
+Avslutt flyt 
 
 ### Sekvensdiagram
 
