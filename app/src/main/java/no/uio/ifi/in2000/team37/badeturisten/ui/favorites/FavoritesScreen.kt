@@ -99,7 +99,7 @@ fun FavoritesScreen(
                             }))
                             Text(
                                 text = buildAnnotatedString {
-                                    append("Legg til dine favoritter ved å trykke på hjerte ikonet (")
+                                    append("Legg til dine favoritter ved å trykke på hjerteikonet (")
                                     appendInlineContent("heartIcon", "[heartIcon]")
                                     append(") i profilen til et badested!")
                                 },

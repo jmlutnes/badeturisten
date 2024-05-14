@@ -112,7 +112,7 @@ fun BeachCard(
                         ),
                         modifier = Modifier.padding(
                                 top = 16.dp, start = 16.dp, end = 16.dp, bottom = 4.dp
-                            ), // Redusert bunnpadding
+                            ), // Reduced bottom padding
                         textAlign = TextAlign.Center
                     )
 

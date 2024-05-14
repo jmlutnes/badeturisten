@@ -76,13 +76,13 @@ fun CustomToggleButton(
 
 @Composable
 fun FilterButtons(
-    badevakt: Boolean, onBadevaktChange: () -> Unit,
-    barnevennlig: Boolean, onBarnevennligChange: () -> Unit,
-    grill: Boolean, onGrillChange: () -> Unit,
-    kiosk: Boolean, onKioskChange: () -> Unit,
-    tilpasning: Boolean, onTilpasningChange: () -> Unit,
-    toalett: Boolean, onToalettChange: () -> Unit,
-    badebrygge: Boolean, onBadebryggeChange: () -> Unit,
+    lifeguardOn: Boolean, onLifeguardChange: () -> Unit,
+    childFriendlyOn: Boolean, onChildFriendlyChange: () -> Unit,
+    grillOn: Boolean, onGrillChange: () -> Unit,
+    kioskOn: Boolean, onKioskChange: () -> Unit,
+    accessibleOn: Boolean, onAccessibleChange: () -> Unit,
+    toiletsOn: Boolean, onToiletsChange: () -> Unit,
+    divingTowerOn: Boolean, onDivingTowerChange: () -> Unit,
 ) {
     Box {
         Row(
@@ -91,41 +91,41 @@ fun FilterButtons(
                 .padding(8.dp)
         ) {
             CustomToggleButton(
-                checked = badevakt, onCheckedChange = onBadevaktChange, text = "Badevakt"
+                checked = lifeguardOn, onCheckedChange = onLifeguardChange, text = "Badevakt"
             )
             Spacer(Modifier.width(8.dp))
 
             CustomToggleButton(
-                checked = barnevennlig,
-                onCheckedChange = onBarnevennligChange,
+                checked = childFriendlyOn,
+                onCheckedChange = onChildFriendlyChange,
                 text = "Barnevennlig"
             )
             Spacer(Modifier.width(8.dp))
 
             CustomToggleButton(
-                checked = grill, onCheckedChange = onGrillChange, text = "Grill"
+                checked = grillOn, onCheckedChange = onGrillChange, text = "Grill"
             )
             Spacer(Modifier.width(8.dp))
 
             CustomToggleButton(
-                checked = kiosk, onCheckedChange = onKioskChange, text = "Kiosk"
+                checked = kioskOn, onCheckedChange = onKioskChange, text = "Kiosk"
             )
             Spacer(Modifier.width(8.dp))
 
             CustomToggleButton(
-                checked = tilpasning,
-                onCheckedChange = onTilpasningChange,
+                checked = accessibleOn,
+                onCheckedChange = onAccessibleChange,
                 text = "Tilpasset bevegelseshemmede"
             )
             Spacer(Modifier.width(8.dp))
 
             CustomToggleButton(
-                checked = toalett, onCheckedChange = onToalettChange, text = "Toalett"
+                checked = toiletsOn, onCheckedChange = onToiletsChange, text = "Toalett"
             )
             Spacer(Modifier.width(8.dp))
 
             CustomToggleButton(
-                checked = badebrygge, onCheckedChange = onBadebryggeChange, text = "Badebrygge"
+                checked = divingTowerOn, onCheckedChange = onDivingTowerChange, text = "Badebrygge"
             )
         }
     }
@@ -209,39 +209,39 @@ fun SearchScreen(
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    FilterButtons(badevakt = lifeGuard, onBadevaktChange = {
+                    FilterButtons(lifeguardOn = lifeGuard, onLifeguardChange = {
                         searchViewModel.updateFilterState(
                             "Badevakt", !lifeGuard
                         )
-                    }, barnevennlig = childFriendly, onBarnevennligChange = {
+                    }, childFriendlyOn = childFriendly, onChildFriendlyChange = {
                         searchViewModel.updateFilterState(
                             "Barnevennlig", !childFriendly
                         )
-                    }, grill = grill, onGrillChange = {
+                    }, grillOn = grill, onGrillChange = {
                         searchViewModel.updateFilterState(
                             "Grill", !grill
                         )
-                    }, kiosk = kiosk, onKioskChange = {
+                    }, kioskOn = kiosk, onKioskChange = {
                         searchViewModel.updateFilterState(
                             "Kiosk", !kiosk
                         )
-                    }, tilpasning = accessible, onTilpasningChange = {
+                    }, accessibleOn = accessible, onAccessibleChange = {
                         searchViewModel.updateFilterState(
                             "Tilpasning", !accessible
                         )
-                    }, toalett = toilets, onToalettChange = {
+                    }, toiletsOn = toilets, onToiletsChange = {
                         searchViewModel.updateFilterState(
                             "Toalett", !toilets
                         )
-                    }, badebrygge = divingTower, onBadebryggeChange = {
+                    }, divingTowerOn = divingTower, onDivingTowerChange = {
                         searchViewModel.updateFilterState(
                             "Badebrygge", !divingTower
                         )
                     })
                 }
             }
-            val filtrerte = beachState.beaches.filter { strand ->
-                strand.name.contains(searchText, ignoreCase = true)
+            val filtered = beachState.beaches.filter { beach ->
+                beach.name.contains(searchText, ignoreCase = true)
             }
             val anyActiveFiltering =
                 (lifeGuard || childFriendly || grill || kiosk || accessible || toilets || divingTower)
@@ -259,7 +259,7 @@ fun SearchScreen(
             ) {
                 LaunchedEffect(
                     Unit,
-                    filtrerte,
+                    filtered,
                     isLoading,
                     lifeGuard,
                     childFriendly,
@@ -290,9 +290,9 @@ fun SearchScreen(
                         val currentList = if (searchText == "" && !anyActiveFiltering) {
                             beachState.beaches.sortedBy { it.name }
                         } else if (!anyActiveFiltering) {
-                            filtrerte
+                            filtered
                         } else {
-                            searchResult.beachList.intersect(filtrerte.toSet()).toList()
+                            searchResult.beachList.intersect(filtered.toSet()).toList()
                         }
                         if (currentList.isEmpty() && !(localLoading.value)) {
                             item {
