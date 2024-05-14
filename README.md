@@ -1,4 +1,4 @@
-# 🌟Team-37
+# 🌟Badeturisme
 I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
 
 ## 🧑‍🍳Oppskrift
