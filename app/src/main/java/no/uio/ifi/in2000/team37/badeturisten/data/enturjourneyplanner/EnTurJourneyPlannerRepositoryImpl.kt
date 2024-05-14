@@ -43,6 +43,7 @@ class EnTurJourneyPlannerRepositoryImp @Inject constructor(
             lines
         } catch (e: Exception) {
             e.message?.let { Log.d("journeyplanner", it) }
+
             null
         }
     }
