@@ -9,7 +9,7 @@ Når brukeren trykker på et badested, presenteres de for nyttig informasjon om 
 1. Brukeren får en oversikt over badesteder 
 2. Brukeren velger et badested 
 3. Systemet henter informasjon om badestedet fra API-er 
-4. Brukeren får tilgjengelig informasjon om badestedet 
+4. Brukeren får tilgjengelig informasjon om badestedet (vannkvalitet, badetemperatur, fasiliteter og kollektivruter) 
 
 ### Use Case-diagram 
 
