@@ -171,7 +171,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 
 ### Android Test Manifest
 - Formål: Hjelper med å inkludere manifestinformasjon for testing.
-- Versjon: 😵‍💫
+- Versjon: 3.5.1
 - Dokumentasjon: [Test Manifest](https://developer.android.com/training/testing/set-up-project)
 
 ### Hilt Compiler
