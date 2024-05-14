@@ -3,7 +3,7 @@ Badeturisme er en applikasjon som tilbyr en detaljert oversikt om å vær- og ba
 
 I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
 
-## 📸Screenshots av applikasjonen
+## 📸Skjermbilder av applikasjonen
 <img width="984" alt="Screenshot 2024-05-14 at 08 48 45" src="https://media.github.uio.no/user/9646/files/a6ca5c21-a987-413a-b406-225aaa14e0cd">
 
 ## 🧑‍🍳Oppskrift
