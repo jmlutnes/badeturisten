@@ -37,7 +37,7 @@ class EnTurJourneyPlannerRepositoryImp @Inject constructor(
             }
             lines
         } catch (e: Exception) {
-            println("En feil oppstod ved henting av bussruter: ${e.message}")
+            println("En error occured collecting busroutes: ${e.message}")
             null
         }
     }

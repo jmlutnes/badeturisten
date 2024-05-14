@@ -100,7 +100,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
      * Send in the facilities (boolean) to be searched for on the Oslo Commune website.
      * Adds the different parameters to the URL for to the API GET-call. Returns all the results.
      */
-    suspend fun getDataForFasilitet(
+    suspend fun getDataForFacility(
         lifeguard: Boolean,
         childFriendly: Boolean,
         grill: Boolean,
@@ -109,17 +109,17 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
         toilets: Boolean,
         divingTower: Boolean,
     ): jsontokotlin_kommune {
-        val badevaktUrl = if (lifeguard) "&f_facilities_lifeguard=true" else ""
-        val barnevennligUrl = if (childFriendly) "&f_facilities_child_friendly=true" else ""
+        val lifeguardUrl = if (lifeguard) "&f_facilities_lifeguard=true" else ""
+        val childFriendlyUrl = if (childFriendly) "&f_facilities_child_friendly=true" else ""
         val grillUrl = if (grill) "&f_facilities_grill=true" else ""
         val kioskUrl = if (kiosk) "&f_facilities_kiosk=true" else ""
-        val tilpasningUrl = if (accessible) "&f_facilities_accessible=true" else ""
-        val toalettUrl = if (toilets) "&f_facilities_toilets=true" else ""
-        val badebryggeUrl = if (divingTower) "&f_facilities_diving_tower=true" else ""
+        val accessibleUrl = if (accessible) "&f_facilities_accessible=true" else ""
+        val toiletsUrl = if (toilets) "&f_facilities_toilets=true" else ""
+        val divingTowerUrl = if (divingTower) "&f_facilities_diving_tower=true" else ""
         val url =
             "https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
         val urlString =
-            url + badevaktUrl + barnevennligUrl + grillUrl + kioskUrl + tilpasningUrl + toalettUrl + badebryggeUrl
+            url + lifeguardUrl + childFriendlyUrl + grillUrl + kioskUrl + accessibleUrl + toiletsUrl + divingTowerUrl
         val data = client.get(urlString)
         return data.body<jsontokotlin_kommune>()
     }

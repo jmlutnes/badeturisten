@@ -27,7 +27,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         val results = mutableListOf<jsontokotlin_kommune>()
         if (lifeguard) results.addAll(
             listOf(
-                datasource.getDataForFasilitet(
+                datasource.getDataForFacility(
                     lifeguard = true,
                     childFriendly = false,
                     grill = false,
@@ -40,7 +40,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         )
         if (childFriendly) results.addAll(
             listOf(
-                datasource.getDataForFasilitet(
+                datasource.getDataForFacility(
                     lifeguard = false,
                     childFriendly = true,
                     grill = false,
@@ -53,7 +53,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         )
         if (grill) results.addAll(
             listOf(
-                datasource.getDataForFasilitet(
+                datasource.getDataForFacility(
                     lifeguard = false,
                     childFriendly = false,
                     grill = true,
@@ -66,7 +66,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         )
         if (kiosk) results.addAll(
             listOf(
-                datasource.getDataForFasilitet(
+                datasource.getDataForFacility(
                     lifeguard = false,
                     childFriendly = false,
                     grill = false,
@@ -79,7 +79,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         )
         if (accessible) results.addAll(
             listOf(
-                datasource.getDataForFasilitet(
+                datasource.getDataForFacility(
                     lifeguard = false,
                     childFriendly = false,
                     grill = false,
@@ -92,7 +92,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         )
         if (toilets) results.addAll(
             listOf(
-                datasource.getDataForFasilitet(
+                datasource.getDataForFacility(
                     lifeguard = false,
                     childFriendly = false,
                     grill = false,
@@ -105,7 +105,7 @@ class OsloKommuneRepositoryImp @Inject constructor(
         )
         if (divingTower) results.addAll(
             listOf(
-                datasource.getDataForFasilitet(
+                datasource.getDataForFacility(
                     lifeguard = false,
                     childFriendly = false,
                     grill = false,

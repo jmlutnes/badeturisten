@@ -207,14 +207,14 @@ class HomeViewModel @Inject constructor(
 
     private fun sortDistances() {
         val locationMap = emptyMap<Beach, Int>().toMutableMap()
-        var teller = -1
+        var counter = -1
         beachState.value.beaches.forEach { beach ->
             if (_location.value?.latitude != null) {
                 locationMap[beach] = locationDistance(beach.pos, _location.value)
                 _noLocation.value = false
             } else {
-                locationMap[beach] = teller
-                teller--
+                locationMap[beach] = counter
+                counter--
                 _noLocation.value = true
 
             }
@@ -244,8 +244,8 @@ class HomeViewModel @Inject constructor(
         val dLon = lon2 - lon1
         val a = sin(dLat / 2).pow(2) + cos(lat1) * cos(lat2) * sin(dLon / 2).pow(2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        val avstand = earthRadius * c
-        return avstand.roundToInt()
+        val distance = earthRadius * c
+        return distance.roundToInt()
     }
 
     private fun sortBeachesByValue(beaches: Map<Beach, Int>): List<Pair<Beach, Int>> {
