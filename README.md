@@ -1,6 +1,7 @@
 # 🌟Badeturisme
-I dette repositoriet finnes det en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
+Badeturisme er en applikasjon som tilbyr en detaljert oversikt om å vær- og bade forhold, fasiliteter og tilgang til kollektiv transport over badestedet i Oslo-området! En applikasjon som passer perfekt for badeentusiaster i alle aldre som liker å bade i Oslo. \
 
+I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
 
 ## 📸Screenshots av appen
 ![Screenshot](https://github.uio.no/IN2000-V24/team-37/blob/master/Screenshot%202024-05-14%20at%2008.48.45.png)
