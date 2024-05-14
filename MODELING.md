@@ -17,7 +17,7 @@ Når brukeren trykker på et badested, presenteres de for nyttig informasjon om 
 
 ### Klassediagram
 
-<img width="678" alt="Skjermbilde 2024-05-14 kl  13 19 08" src="https://media.github.uio.no/user/9706/files/33f01c9f-9540-448e-a156-5287118ca104">
+<img width="681" alt="Skjermbilde 2024-05-14 kl  22 34 38" src="https://media.github.uio.no/user/9706/files/82f1c89a-cb57-4c43-9907-f17df65398e8">
 
 
 ## Funksjonalitet: Filtrert søk 
