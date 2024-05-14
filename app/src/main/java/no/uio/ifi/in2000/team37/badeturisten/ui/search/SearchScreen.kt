@@ -165,7 +165,7 @@ fun SearchScreen(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         }
-    ) {paddingValues ->
+    ) { paddingValues ->
         if (isConnectivityIssue.value) {
             LaunchedEffect(snackbarHostState) {
                 snackbarHostState.showSnackbar(
@@ -174,7 +174,9 @@ fun SearchScreen(
             }
         }
         Column(
-            modifier = Modifier.fillMaxSize().padding(paddingValues)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
             LaunchedEffect(
                 lifeGuard, childFriendly, grill, kiosk, accessible, toilets, divingTower
@@ -222,115 +224,116 @@ fun SearchScreen(
                             )
                         )
 
-                }
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp)
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    FilterButtons(lifeguardOn = lifeGuard, onLifeguardChange = {
-                        searchViewModel.updateFilterState(
-                            "Badevakt", !lifeGuard
-                        )
-                    }, childFriendlyOn = childFriendly, onChildFriendlyChange = {
-                        searchViewModel.updateFilterState(
-                            "Barnevennlig", !childFriendly
-                        )
-                    }, grillOn = grill, onGrillChange = {
-                        searchViewModel.updateFilterState(
-                            "Grill", !grill
-                        )
-                    }, kioskOn = kiosk, onKioskChange = {
-                        searchViewModel.updateFilterState(
-                            "Kiosk", !kiosk
-                        )
-                    }, accessibleOn = accessible, onAccessibleChange = {
-                        searchViewModel.updateFilterState(
-                            "Tilpasning", !accessible
-                        )
-                    }, toiletsOn = toilets, onToiletsChange = {
-                        searchViewModel.updateFilterState(
-                            "Toalett", !toilets
-                        )
-                    }, divingTowerOn = divingTower, onDivingTowerChange = {
-                        searchViewModel.updateFilterState(
-                            "Badebrygge", !divingTower
-                        )
-                    })
-                }
-            }
-            val filtered = beachState.beaches.filter { beach ->
-                beach.name.contains(searchText, ignoreCase = true)
-            }
-            val anyActiveFiltering =
-                (lifeGuard || childFriendly || grill || kiosk || accessible || toilets || divingTower)
-            Text(
-                text = "Søkeresultater",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 15.dp, bottom = 8.dp),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Box(
-                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-            ) {
-                LaunchedEffect(
-                    Unit,
-                    filtered,
-                    isLoading,
-                    lifeGuard,
-                    childFriendly,
-                    grill,
-                    kiosk,
-                    accessible,
-                    toilets,
-                    divingTower
-                ) {
-                    noResultsMessage = ""
-                    delay(500)
-                    noResultsMessage = "Ingen resultater"
-                }
-                if (localLoading.value) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-                if (isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(180.dp),
-                        state = state,
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
-                        verticalArrangement = Arrangement.Top,
-                        userScrollEnabled = !(localLoading.value)
+                    }
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 10.dp)
+                            .fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        val currentList = if (searchText == "" && !anyActiveFiltering) {
-                            beachState.beaches.sortedBy { it.name }
-                        } else if (!anyActiveFiltering) {
-                            filtered
-                        } else {
-                            searchResult.beachList.intersect(filtered.toSet()).toList()
-                        }
-                        if (currentList.isEmpty() && !(localLoading.value)) {
-                            item {
-                                Box(modifier = Modifier.fillMaxSize()) {
-                                    Text(
-                                        text = noResultsMessage,
-                                        modifier = Modifier
-                                            .align(Alignment.CenterStart)
-                                            .padding(vertical = 30.dp, horizontal = 30.dp),
-                                        fontSize = 18.sp,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
+                        FilterButtons(lifeguardOn = lifeGuard, onLifeguardChange = {
+                            searchViewModel.updateFilterState(
+                                "Badevakt", !lifeGuard
+                            )
+                        }, childFriendlyOn = childFriendly, onChildFriendlyChange = {
+                            searchViewModel.updateFilterState(
+                                "Barnevennlig", !childFriendly
+                            )
+                        }, grillOn = grill, onGrillChange = {
+                            searchViewModel.updateFilterState(
+                                "Grill", !grill
+                            )
+                        }, kioskOn = kiosk, onKioskChange = {
+                            searchViewModel.updateFilterState(
+                                "Kiosk", !kiosk
+                            )
+                        }, accessibleOn = accessible, onAccessibleChange = {
+                            searchViewModel.updateFilterState(
+                                "Tilpasning", !accessible
+                            )
+                        }, toiletsOn = toilets, onToiletsChange = {
+                            searchViewModel.updateFilterState(
+                                "Toalett", !toilets
+                            )
+                        }, divingTowerOn = divingTower, onDivingTowerChange = {
+                            searchViewModel.updateFilterState(
+                                "Badebrygge", !divingTower
+                            )
+                        })
+                    }
+                }
+                val filtered = beachState.beaches.filter { beach ->
+                    beach.name.contains(searchText, ignoreCase = true)
+                }
+                val anyActiveFiltering =
+                    (lifeGuard || childFriendly || grill || kiosk || accessible || toilets || divingTower)
+                Text(
+                    text = "Søkeresultater",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 15.dp, bottom = 8.dp),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Box(
+                    modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                ) {
+                    LaunchedEffect(
+                        Unit,
+                        filtered,
+                        isLoading,
+                        lifeGuard,
+                        childFriendly,
+                        grill,
+                        kiosk,
+                        accessible,
+                        toilets,
+                        divingTower
+                    ) {
+                        noResultsMessage = ""
+                        delay(500)
+                        noResultsMessage = "Ingen resultater"
+                    }
+                    if (localLoading.value) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                    if (isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Adaptive(180.dp),
+                            state = state,
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
+                            verticalArrangement = Arrangement.Top,
+                            userScrollEnabled = !(localLoading.value)
+                        ) {
+                            val currentList = if (searchText == "" && !anyActiveFiltering) {
+                                beachState.beaches.sortedBy { it.name }
+                            } else if (!anyActiveFiltering) {
+                                filtered
+                            } else {
+                                searchResult.beachList.intersect(filtered.toSet()).toList()
                             }
-                        } else {
-                            items(currentList) { beach ->
-                                localLoading.value = false
-                                BeachCard(beach, -1, navController, beachinfo)
+                            if (currentList.isEmpty() && !(localLoading.value)) {
+                                item {
+                                    Box(modifier = Modifier.fillMaxSize()) {
+                                        Text(
+                                            text = noResultsMessage,
+                                            modifier = Modifier
+                                                .align(Alignment.CenterStart)
+                                                .padding(vertical = 30.dp, horizontal = 30.dp),
+                                            fontSize = 18.sp,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
+                                }
+                            } else {
+                                items(currentList) { beach ->
+                                    localLoading.value = false
+                                    BeachCard(beach, -1, navController, beachinfo)
+                                }
                             }
                         }
                     }
