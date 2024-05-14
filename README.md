@@ -127,7 +127,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 ### Lottie for Compose
 - Formål: Bibliotek for å lage avanserte animasjoner med Adobe After Effects.
 - Versjon: 6.4.0
-- Dokumentasjon: [Lottie Compose]([https://lottiefiles.com/lottie-for-android](https://lottiefiles.com/animations/fish-animation-w9ZWyXIvoI?from=search) 
+- Dokumentasjon: [Lottie Compose][https://lottiefiles.com/lottie-for-android](https://lottiefiles.com/animations/fish-animation-w9ZWyXIvoI?from=search) 
 
 ### Dagger Hilt
 - Formål: Dependency injection bibliotek.
