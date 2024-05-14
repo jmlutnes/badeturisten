@@ -1,4 +1,4 @@
-#🌟Badeturisme
+# 🌟Badeturisme
 Badeturisme er en applikasjon som tilbyr en detaljert oversikt om å vær- og badeforhold, fasiliteter og tilgang til kollektiv transport over badestedet i Oslo-området! En applikasjon som passer perfekt for badeentusiaster i alle aldre som liker å bade i Oslo. 
 
 I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
