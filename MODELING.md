@@ -87,7 +87,7 @@ A1.1. Systemet fjerner badestedet fra favoritter
 <img width="757" alt="Skjermbilde 2024-05-09 kl  22 44 25" src="https://media.github.uio.no/user/9706/files/42fda48c-d58b-45a0-8ccd-e305424c98cc">
 
 ## Funksjonalitet: Visning av nærmeste badesteder 
-Hvis brukeren tillater stedstilgang, blir badestedene sortert etter avstand. På denne måten kan brukerne lett finne fram til sine nærmeste badesteder uten å måtte scrolle langt. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert etter alfabetisk rekkefølge.
+Hvis brukeren tillater stedstilgang, blir badestedene sortert etter avstand. På denne måten kan brukerne lett finne fram til sine nærmeste badesteder uten å måtte scrolle langt. Hvis brukeren derimot avslår stedstilgang, blir badestedene sortert alfabetisk.
 
 ### Tekstlig beskrivelse 
 **Hovedflyt**
