@@ -1,15 +1,12 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
-import okhttp3.internal.wait
 import org.junit.Test
 import org.junit.Assert.*
-class BeachRepositoryTest {
 
-    private val beachRepository = BeachRepository()
+class BeachRepositoryTest {
+    private val beachRepository = BeachRepositoryTestImp()
 
     init {
         runTest {
@@ -18,7 +15,7 @@ class BeachRepositoryTest {
     }
 
     @Test
-    fun testShouldReturnEmptyListWhenResultFromDataSourceIsEmpty() {
+    fun testMakeBeachesShouldReturnEmptyListWhenResultFromDataSourceIsEmpty() {
 
         val beachList = beachRepository.makeBeaches(listOf())
         assertEquals(beachList, listOf<Beach>())
@@ -37,7 +34,6 @@ class BeachRepositoryTest {
 
     @Test
     fun testGetBeachShouldReturnNull() = runTest {
-        val beachRepository = BeachRepository()
         val beachName = "Tullenavn"
 
         val beach = beachRepository.getBeach(beachName)

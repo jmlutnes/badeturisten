@@ -1,11 +1,14 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
+import io.ktor.client.HttpClient
 import org.junit.Test
 import kotlinx.coroutines.test.runTest
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
+import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import org.junit.Assert.*
 class OsloKommuneRepositoryTest {
 
-    private val repo = OsloKommuneRepository()
+    private val repo = OsloKommuneRepositoryImp(OsloKommuneDatasource(HttpClient()))
 
     @Test
     fun testFindWebsiteShouldReturnBeachInfo() = runTest {
