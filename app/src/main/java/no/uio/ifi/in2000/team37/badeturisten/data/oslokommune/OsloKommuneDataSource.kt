@@ -19,7 +19,6 @@ import org.jsoup.Jsoup
 import java.lang.reflect.Type
 
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
 class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClient) {
     /**
      * Send in URL. Using Jsoup to scrape the website on Oslo Commune.
@@ -55,9 +54,9 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
     private fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
         val document = Jsoup.parse(responseBody)
 
-        //Get waterquality
+        //Get water quality
         val qualitySection = document.select("div.io-bathingsite").firstOrNull()
-        //Show only the visible text(remove colorcoding)
+        //Show only the visible text(remove color coding)
         val firstQualityH3 = qualitySection?.select("div.ods-collapsible-content h3")?.firstOrNull()
         //Result of water quality
         val waterQuality = firstQualityH3?.ownText()?.trim() ?: "Ingen informasjon."
@@ -65,7 +64,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
         //Facilities
         val facilitiesSection = document.select("div.io-facts").firstOrNull()
         val facilitiesBuilder = StringBuilder()
-        //Some of the text is formatted with '•' inbetween facilities.
+        //Some of the text is formatted with '•' in between facilities.
         //This codes iterate and separate areas in the text where that occurs:
         facilitiesSection?.let { section ->
             val facilityList = section.select("h2:contains(Fasiliteter) + div ul li")
@@ -142,13 +141,13 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
 val gson = Gson()
 
 /**
- * Help class to seperate data class objects with the same names.
+ * Help class to separate data class objects with the same names.
  */
 @Suppress("IMPLICIT_CAST_TO_ANY")
 class ItemDeserializer : JsonDeserializer<Item> {
 
     /**
-     * Manual desearialize because Value has two equal variables
+     * Manual deserialize because Value has two equal variables
      */
     override fun deserialize(
         json: JsonElement,
