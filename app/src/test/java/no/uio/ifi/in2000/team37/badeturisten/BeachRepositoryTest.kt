@@ -1,18 +1,13 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
-import io.ktor.client.HttpClient
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
-import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
-import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import org.junit.Test
 import org.junit.Assert.*
 
 class BeachRepositoryTest {
+    private val beachRepository = BeachRepositoryTestImp()
 
-    private val beachRepository = BeachRepositoryImp(WaterTemperatureDataSource(HttpClient()))
     init {
         runTest {
             beachRepository.loadBeaches()
@@ -20,7 +15,7 @@ class BeachRepositoryTest {
     }
 
     @Test
-    fun testShouldReturnEmptyListWhenResultFromDataSourceIsEmpty() {
+    fun testMakeBeachesShouldReturnEmptyListWhenResultFromDataSourceIsEmpty() {
 
         val beachList = beachRepository.makeBeaches(listOf())
         assertEquals(beachList, listOf<Beach>())

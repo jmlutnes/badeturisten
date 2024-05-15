@@ -28,7 +28,7 @@ class EnturGeoCoderRepositoryTest {
         val lat = 59.54
         val lon = 10.44
 
-        val result = repo.hentBussruteLoc(lat, lon)
+        val result = repo.fetchBusRouteLoc(lat, lon)
 
         assertNotNull("$result", result)
     }
@@ -38,7 +38,7 @@ class EnturGeoCoderRepositoryTest {
         val lat = -999999.9
         val lon =  999999.9
 
-        val result = repo.hentBussruteLoc(lat, lon)
+        val result = repo.fetchBusRouteLoc(lat, lon)
 
         assertNull(result)
     }
@@ -47,7 +47,7 @@ class EnturGeoCoderRepositoryTest {
     fun getBusRouteNameShouldReturnRoute() = runTest {
         val beachName = "Ulvøya"
 
-        val result = repo.hentBussruteName(beachName)
+        val result = repo.fetchBusRouteName(beachName)
 
         assertNotNull("$result", result)
     }
@@ -56,7 +56,7 @@ class EnturGeoCoderRepositoryTest {
     fun getBusRouteNameShouldReturnNull() = runTest {
         val beachName = "anwvownvowisnv"
 
-        val result = repo.hentBussruteName(beachName)
+        val result = repo.fetchBusRouteName(beachName)
 
         assertNull(result)
     }

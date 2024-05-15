@@ -6,17 +6,23 @@ import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasou
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Pos
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.CombineBeachesUseCase
+import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import org.junit.Test
 import org.junit.Assert.*
+import javax.inject.Inject
 
-class CombineBeachesTest {
+class CombineBeachesTest @Inject constructor(
+    beachRepository: BeachRepository,
+    osloKommuneRepository: OsloKommuneRepository
+) {
 
     private val useCase = CombineBeachesUseCase(
-        BeachRepositoryImp(WaterTemperatureDataSource(HttpClient())), OsloKommuneRepositoryImp(
-        OsloKommuneDatasource(HttpClient()))
+        beachRepository, osloKommuneRepository
     )
+
     @Test
     fun testCombineBeachesShouldReturnBeachFromListB() {
         val beachListA = listOf(
@@ -39,13 +45,12 @@ class CombineBeachesTest {
             Beach("Stranda", Pos("1.1", "1.1"), 5.5),
         )
         val beachlistB = listOf(
-            Beach("Stupet", Pos("1.1", "1.1"), null),
-            Beach("Badeplassen", Pos("1.1", "1.1"), null)
+            Beach("Stupet", Pos("1.1", "1.1"), null), Beach("Badeplassen", Pos("1.1", "1.1"), null)
         )
 
         val combinedBeaches = useCase.combineBeaches(beachListA, beachlistB)
 
-        assertEquals(combinedBeaches.toSet(), (beachListA+beachlistB).toSet())
+        assertEquals(combinedBeaches.toSet(), (beachListA + beachlistB).toSet())
     }
 
     @Test
