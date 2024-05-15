@@ -8,7 +8,7 @@ import io.ktor.serialization.gson.gson
 import kotlinx.coroutines.test.runTest
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.BusStation
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -42,7 +42,7 @@ class EnturGeoCoderRepositoryTest {
         val result = repo.fetchBusRouteLoc(lat, lon)
 
         if (result != null) {
-            assertEquals(result.busstation, listOf<Busstation>())
+            assertEquals(result.busStation, listOf<BusStation>())
         } else {
             throw AssertionError("Expected empty result, was null")
         }
@@ -64,7 +64,7 @@ class EnturGeoCoderRepositoryTest {
         val result = repo.fetchBusRouteName(beachName)
 
         if (result != null) {
-            assertEquals(result.busstation, listOf<Busstation>())
+            assertEquals(result.busStation, listOf<BusStation>())
         } else {
             throw AssertionError("Expected empty result, was null")
         }
