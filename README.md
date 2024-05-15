@@ -1,5 +1,5 @@
 # 🌟Badeturisme
-Badeturisme er en applikasjon som tilbyr en detaljert oversikt om å vær- og badeforhold, fasiliteter og tilgang til kollektiv transport over badestedet i Oslo-området! En applikasjon som passer perfekt for badeentusiaster i alle aldre som liker å bade i Oslo. 
+Badeturisme er en applikasjon som tilbyr en detaljert oversikt om vær- og badeforhold, fasiliteter og tilgang til kollektiv transport for badesteder i Oslo-området! En applikasjon som passer perfekt for badeentusiaster i alle aldre som liker å bade i Oslo. 
 
 I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
 
@@ -174,6 +174,15 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 - Formål: Annotation Processor for Dagger Hilt.
 - Versjon: 2.51.1
 - Dokumentasjon: [Hilt Compiler](https://dagger.dev/hilt/compiler.html)
+
+
+## Warnings fra Android Studio
+- HomeViewModel: "This field leaks a context object", "Property <context> is never used"
+- MainActivity: "Function <openApplicationSettings> is never used"
+- RepositoryModule: Ubrukt
+- ViewModelModule: Ubrukt
+- OsloKommuneDataSource: "Class <ItemDeserializer> is never used"
+- build.gradle.kts: Bruker ikke nyeste versjon av AndroixX Activity Compose, den fungerer ikke med appen vår
 
 
 ## 🧑‍💻Gruppemedlemmer 
