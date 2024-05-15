@@ -2,12 +2,8 @@ package no.uio.ifi.in2000.team37.badeturisten
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -147,15 +143,6 @@ class MainActivity : ComponentActivity() {
         return ContextCompat.checkSelfPermission(
             this, Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun Activity.openApplicationSettings() {
-        Intent(
-            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-            Uri.fromParts("package", packageName, null)
-        ).also {
-            startActivity(it)
-        }
     }
 
     private fun decideCurrentPermissionStatus(granted: Boolean, rationale: Boolean): String {
