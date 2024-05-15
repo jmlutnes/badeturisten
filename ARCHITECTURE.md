@@ -23,7 +23,7 @@ ViewModel-komponenter håndterer tilstandsstyringen for applikasjonen. De henter
 Repositories abstraherer tilgangen til datakilder, og tillater ViewModel å hente data uten å måtte kjenne til detaljene om datakildene. De sikrer en ren separasjon og kapsling av datahåndtering.
 5. Datasources (API):
 Datasources representerer de eksterne APIene som faktisk henter og lagrer data. Dette kan omfatte kommunikasjon med server-baserte APIer, databaser, filsystemer, etc.
-# API-Nivå og plattformvalg
+# API-nivå og plattformvalg
 Valget av API-nivå er en balanse mellom å støtte eldre enheter og å kunne utnytte nyere plattformfunksjoner som forbedrer ytelse, sikkerhet og brukeropplevelse.
 - Minimum API-nivå: Det laveste Andorid API-nivået som kreves av appen er 26.
 - Anbefalt API-nivå: Android API-nivå 34 anbefales for å sikre optimal ytelse av appen.
