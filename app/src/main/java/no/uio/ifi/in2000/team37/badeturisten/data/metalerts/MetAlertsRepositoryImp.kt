@@ -26,7 +26,8 @@ class MetAlertsRepositoryImp(
         metAlertsObservations.update {
             featuresArray.mapNotNull { feature ->
                 val endTimeStr = feature.whenX.interval[1]
-                if (calculateStatus(endTimeStr) == "Aktiv" && feature.properties.county.contains("03")) {
+                val currentTimeStr = LocalDateTime.now(ZoneId.systemDefault()).withNano(0)
+                if (calculateStatus(endTimeStr, currentTimeStr) == "Aktiv" && feature.properties.county.contains("03")) {
                     createWeatherWarning(feature, endTimeStr)
                 } else null
             }.distinctBy { it.area + it.event + it.description }
@@ -35,9 +36,8 @@ class MetAlertsRepositoryImp(
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun calculateStatus(eventEndingTime: String?): String {
+    override fun calculateStatus(eventEndingTime: String?, currentTime: LocalDateTime): String {
         val endTime = LocalDateTime.parse(eventEndingTime, DateTimeFormatter.ISO_DATE_TIME)
-        val currentTime = LocalDateTime.now(ZoneId.systemDefault()).withNano(0)
         return if (endTime.isAfter(currentTime)) "Aktiv" else "Inaktiv"
     }
 
