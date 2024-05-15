@@ -11,7 +11,6 @@ import no.uio.ifi.in2000.team37.badeturisten.data.metalerts.MetAlertsRepositoryI
 import org.junit.Test
 import org.junit.Assert.*
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class MetAlertsRepositoryTest {
