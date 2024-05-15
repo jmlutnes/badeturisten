@@ -50,7 +50,7 @@ class EnturGeoCoderRepositoryTest {
 
     @Test
     fun getBusRouteNameShouldReturnRoute() = runTest {
-        val beachName = "Ulvøya"
+        val beachName = "Tjuvholmen"
 
         val result = repo.fetchBusRouteName(beachName)
 
