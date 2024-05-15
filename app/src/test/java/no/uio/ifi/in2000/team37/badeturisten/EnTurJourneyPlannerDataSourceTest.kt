@@ -47,6 +47,8 @@ class EnTurJourneyPlannerDataSourceTest {
 
         val result = dataSource.getRoute(stopId)
 
-        assertNull("Expected null, was a result", result)
+        if (result != null) {
+            assertNull("Expected null, was a result", result.data.stopPlace)
+        } else throw AssertionError("Expected empty result, but object was null")
     }
 }
