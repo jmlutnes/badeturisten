@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Busstations
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.BusStations
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
@@ -94,7 +94,7 @@ class BeachViewModel @Inject constructor(
             val osloKommuneBeachInfo: Beach? = _osloKommuneRepository.getBeach(beachName)
             val lon = beachInfo?.pos?.lon
             val lat = beachInfo?.pos?.lat
-            var busStations: Busstations?
+            var busStations: BusStations?
 
 
             if ((lon == null) || (lat == null)) {
@@ -105,7 +105,7 @@ class BeachViewModel @Inject constructor(
                 busStations = _enTurGeocoderRepository.fetchBusRouteLoc(
                     lat.toDouble(), lon.toDouble()
                 )
-                if (busStations?.busstation?.isEmpty() == true) {
+                if (busStations?.busStation?.isEmpty() == true) {
                     busStations = _enTurGeocoderRepository.fetchBusRouteName(beachName)
                 }
             }
@@ -118,7 +118,7 @@ class BeachViewModel @Inject constructor(
                 _isConnectivityIssue.update { true }
             }
             val uniqueBusRoutes = mutableSetOf<BusRoute>()
-            busStations?.busstation?.forEach { station ->
+            busStations?.busStation?.forEach { station ->
                 station.id?.let { id ->
                     _enTurJourneyPlannerRepository.fetchBusroutesById(id, station)
                         ?.let { busRoutes ->

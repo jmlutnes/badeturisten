@@ -9,7 +9,7 @@ import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.EnTurHttpGeocod
 import no.uio.ifi.in2000.team37.badeturisten.model.enTur.BusStation
 
 
-data class Busstations(val busstation: List<BusStation>)
+data class BusStations(val busStation: List<BusStation>)
 
 class EnTurGeocoderDataSource(@EnTurHttpGeocoderHttpClient private val client: HttpClient) {
     /**

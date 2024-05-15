@@ -1,6 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Busstations
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.BusStations
 
 interface EnTurGeocoderRepository {
 
@@ -9,11 +9,11 @@ interface EnTurGeocoderRepository {
      * To change the radius for search, change the radius in EnTurGeocoderDataSource
      */
 
-    suspend fun fetchBusRouteLoc(lat: Double, lon: Double): Busstations?
+    suspend fun fetchBusRouteLoc(lat: Double, lon: Double): BusStations?
 
     /**
      * Send in site name to fetch all the stop places in the nearby area.
      */
 
-    suspend fun fetchBusRouteName(name: String): Busstations?
+    suspend fun fetchBusRouteName(name: String): BusStations?
 }

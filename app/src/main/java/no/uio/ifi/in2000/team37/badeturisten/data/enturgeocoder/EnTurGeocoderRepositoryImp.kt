@@ -7,7 +7,7 @@ class EnTurGeocoderRepositoryImp(
     private val datasource: EnTurGeocoderDataSource,
 ) : EnTurGeocoderRepository {
 
-    override suspend fun fetchBusRouteLoc(lat: Double, lon: Double): Busstations? {
+    override suspend fun fetchBusRouteLoc(lat: Double, lon: Double): BusStations? {
         val nearestStopPlace = datasource.getDataLoc(lat, lon) ?: return null
         val busStations = nearestStopPlace.features.map { feature ->
             BusStation(
@@ -16,10 +16,10 @@ class EnTurGeocoderRepositoryImp(
                 )
             )
         }
-        return if (busStations.isNotEmpty()) Busstations(busStations) else Busstations(emptyList())
+        return if (busStations.isNotEmpty()) BusStations(busStations) else BusStations(emptyList())
     }
 
-    override suspend fun fetchBusRouteName(name: String): Busstations? {
+    override suspend fun fetchBusRouteName(name: String): BusStations? {
         val stops = datasource.getDataName(name) ?: return null
         val busStations = stops.features.map { feature ->
             BusStation(
@@ -28,6 +28,6 @@ class EnTurGeocoderRepositoryImp(
                 )
             )
         }
-        return if (busStations.isNotEmpty()) Busstations(busStations) else Busstations(emptyList())
+        return if (busStations.isNotEmpty()) BusStations(busStations) else BusStations(emptyList())
     }
 }
