@@ -46,7 +46,7 @@ interface OsloKommuneRepository {
     fun extractUrl(inputString: String): String
 
     /**
-     * Send in URL, and Oslo Commune will be scraped for facilities, waterquality and image URL.
+     * Send in URL, and Oslo Commune will be scraped for facilities, water quality and image URL.
      * Returns a OsloKommuneBeachInfo object
      */
     suspend fun scrapeUrl(input: String): OsloKommuneBeachInfo?
@@ -62,7 +62,7 @@ interface OsloKommuneRepository {
     fun extractBeachFromHTML(html: String): String
 
     /**
-     * Method to make a map with the name of the beach as key and the bathinginformation as value.
+     * Method to make a map with the name of the beach as key and the beach information as value.
      * Is used to get image on beachCard, and possibility to use information from Oslo Commune on different screens.
      * Fetches all the bathing sites from Oslo Commune website.
      * Get the name and URL for the site using extractBeachFromHTML method.
