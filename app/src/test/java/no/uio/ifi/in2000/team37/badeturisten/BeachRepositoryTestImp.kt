@@ -66,7 +66,7 @@ class BeachRepositoryTestImp: BeachRepository {
     }
 
     override suspend fun waterTempGetData(): List<Tsery> {
-        return waterTempDataSource.getData()
+        return waterTempDataSource.getData(7)
     }
 
     override fun getBeachObservations(): StateFlow<List<Beach>> {
