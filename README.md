@@ -46,7 +46,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 
 ### AndroidX Core KTX
 - Formål: Forenkler bruken av sentrale Android API-er med Kotlin utvidelser.
-- Versjon: 1.12.0
+- Versjon: 1.13.1 
 - Dokumentasjon: [Core KTX](https://developer.android.com/kotlin/ktx#core)
 
 ### AndroidX Lifecycle Runtime KTX
