@@ -1,25 +1,17 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
 import com.google.gson.Gson
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Algolia
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Item
-import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.Value
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.jsontokotlinoslokommune.jsontokotlin_kommune
 import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.OsloKommuneHttpClient
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
 import org.jsoup.Jsoup
-import java.lang.reflect.Type
 
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
 class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClient) {
     /**
      * Send in URL. Using Jsoup to scrape the website on Oslo Commune.
@@ -117,7 +109,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
         val toiletsUrl = if (toilets) "&f_facilities_toilets=true" else ""
         val divingTowerUrl = if (divingTower) "&f_facilities_diving_tower=true" else ""
         val url =
-            "https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
+            "/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=0"
         val urlString =
             url + lifeguardUrl + childFriendlyUrl + grillUrl + kioskUrl + accessibleUrl + toiletsUrl + divingTowerUrl
         val data = client.get(urlString)
@@ -131,7 +123,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
     ): jsontokotlin_kommune? {
         return try {
             val data =
-                client.get("https://www.oslo.kommune.no/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
+                client.get("/xmlhttprequest.php?category=340&rootCategory=340&template=78&service=filterList.render&offset=30")
             data.body<jsontokotlin_kommune>()
         } catch (e: Exception) {
             null
@@ -141,39 +133,3 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
 
 val gson = Gson()
 
-/**
- * Help class to seperate data class objects with the same names.
- */
-@Suppress("IMPLICIT_CAST_TO_ANY")
-class ItemDeserializer : JsonDeserializer<Item> {
-
-    /**
-     * Manual desearialize because Value has two equal variables
-     */
-    override fun deserialize(
-        json: JsonElement,
-        typeOfT: Type,
-        context: JsonDeserializationContext,
-    ): Item {
-        val jsonObject = json.asJsonObject
-        // Extract common areas
-        val id = jsonObject.get("id").asString
-        val name = jsonObject.get("name").asString
-        val label = jsonObject.get("label").asString
-        val placeholder = jsonObject.get("placeholder").asString
-
-        // Manual deserialization
-        val algolia = if (jsonObject.has("algolia")) {
-            gson.fromJson(jsonObject.get("algolia"), Algolia::class.java)
-        } else {
-            null
-        }
-        val valueElement = jsonObject.get("value")
-        val value = if (valueElement.isJsonObject) {
-            gson.fromJson(valueElement, Value::class.java)
-        } else {
-            valueElement.asString
-        }
-        return Item(id, name, label, placeholder, algolia, value)
-    }
-}
