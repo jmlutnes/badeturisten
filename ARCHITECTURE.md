@@ -5,16 +5,16 @@ Høy-Nivå oversikt \
 Badeturisten er designet med en klar separasjon av bekymringer gjennom en flerlagsarkitektur, som inkluderer:
 - Presentasjonslag – Håndterer all brukerinteraksjon og presenterer data. Utviklet med Jetpack Compose.
 - Forretningslogikklag – Inneholder all forretningslogikk og applikasjonsstatshåndtering. Dette laget bruker MVVM og UDF prinsipper for å sikre høy kohesjon og lav kobling.
-- Data Access Layer (DAL) – Abstraherer tilgang til datakilder som nettverks APIer ved bruk av ktor og lokale databaser. Det er implementert ved bruk av datastore og Dagger Hilt i et Repository-mønstret for fleksibilitet og isolasjon.
+- Data Access Layer (DAL) – Abstraherer tilgang til datakilder som nettverks-APIer ved bruk av ktor og lokale databaser. Det er implementert ved bruk av DataStore og Dagger Hilt i et Repository-mønstret for fleksibilitet og isolasjon.
 # Arkitektoniske mønstre og prinsipper
 - Model-View-ViewModel (MVVM): Brukes for å isolere forretningslogikken fra UI-koden. ViewModeller håndterer presentasjonslogikk og kommuniserer med modeller som representerer ekte data og forretningsoperasjoner.
-- Unidirectional Data Flow (UDF): Garanterer at all tilstandsforvaltning er forutsigbar og enkel å følge, ved at data kun strømmer i en retning gjennom systemet.
+- Unidirectional Data Flow (UDF): Garanterer at all tilstandsforvaltning er forutsigbar og enkel å følge, ved at data kun strømmer i én retning gjennom systemet.
 # Teknologivalg
 Frontend: Utviklet med Jetpack Compose for å maksimere gjenbruk av kode mellom plattformene og forbedre vedlikeholdbarheten.
 Backend: Implementert med ktor(json to kotlin), og tilbyr APIer til mobilklientene.
 # Komponentbeskrivelse
-1. Brukerens Interaksjon:
-Brukeren interagerer med applikasjonens brukergrensesnitt gjennom en mobilapp. Dette inkluderer å klikke, scrolle, og andre former for input.
+1. Brukerens interaksjon:
+Brukeren interagerer med applikasjonens brukergrensesnitt gjennom en mobilapplikasjon. Dette inkluderer å klikke, scrolle, og andre former for input.
 2. Skjermer med ViewModels:
 Skjermbaserte komponenter (screens) som kommuniserer direkte med ViewModels, og som fungerer som abstraksjonslag mellom UI og  presentasjonslogikken.
 3. ViewModel:
