@@ -10,7 +10,7 @@ interface EnTurJourneyPlannerRepository {
      * returns a mutable list with all the busses related to the buss station.
      */
     suspend fun fetchBusroutesById(
-        busstationId: String,
-        busstation: BusStation,
+        busStationId: String,
+        busStation: BusStation,
     ): MutableList<BusRoute>?
 }

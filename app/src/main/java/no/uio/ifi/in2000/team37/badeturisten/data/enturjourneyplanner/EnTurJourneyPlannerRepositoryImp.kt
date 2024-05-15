@@ -12,21 +12,21 @@ class EnTurJourneyPlannerRepositoryImp @Inject constructor(
 ) : EnTurJourneyPlannerRepository {
 
     override suspend fun fetchBusroutesById(
-        busstationId: String,
-        busstation: BusStation,
+        busStationId: String,
+        busStation: BusStation,
     ): MutableList<BusRoute>? {
         val lines = mutableListOf<BusRoute>() // Local instance of list
 
         return try {
             // fetch planning data based on buss station ID
 
-            val routeData: jsontokotlinenturjourneyplanner? = datasource.getRoute(busstationId)
+            val routeData: jsontokotlinenturjourneyplanner? = datasource.getRoute(busStationId)
             if (routeData != null) {
                 if (routeData.data.stopPlace.estimatedCalls.isEmpty() && routeData.data.stopPlace.transportMode[0] != "bus") {
                     val line = routeData.data.stopPlace
                     lines.add(
                         BusRoute(
-                            null, line.name, line.transportMode[0], busstation
+                            null, line.name, line.transportMode[0], busStation
                         )
                     )
                 } else {
@@ -34,7 +34,7 @@ class EnTurJourneyPlannerRepositoryImp @Inject constructor(
                         val line = estimatedCall.serviceJourney.journeyPattern.line
                         lines.add(
                             BusRoute(
-                                line.publicCode, line.name, line.transportMode, busstation
+                                line.publicCode, line.name, line.transportMode, busStation
                             )
                         )
                     }
