@@ -1,5 +1,5 @@
 # 🌟Badeturisme
-Badeturisme er en applikasjon som tilbyr en detaljert oversikt om å vær- og badeforhold, fasiliteter og tilgang til kollektiv transport over badestedet i Oslo-området! En applikasjon som passer perfekt for badeentusiaster i alle aldre som liker å bade i Oslo. 
+Badeturisme er en applikasjon som tilbyr en detaljert oversikt om vær- og badeforhold, fasiliteter og tilgang til kollektiv transport for badesteder i Oslo-området! En applikasjon som passer perfekt for badeentusiaster i alle aldre som liker å bade i Oslo. 
 
 I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasjonen, informasjon om hvor dokumentasjon av prosjektet ligger og en oversikt over biblioteker som er brukt i prosjektet.
 
@@ -182,7 +182,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 - RepositoryModule: Ubrukt
 - ViewModelModule: Ubrukt
 - OsloKommuneDataSource: "Class <ItemDeserializer> is never used"
-- build.gradle.kts: Bruker ikke nyeste versjon av AndroixX Activity-compose, den fungerer ikke med appen vår
+- build.gradle.kts: Bruker ikke nyeste versjon av AndroixX Activity Compose, den fungerer ikke med appen vår
 
 
 ## 🧑‍💻Gruppemedlemmer 
