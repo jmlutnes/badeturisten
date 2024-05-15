@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,7 +35,6 @@ data class BusRoute(
 )
 
 @HiltViewModel
-@RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepository,
@@ -60,8 +57,8 @@ class BeachViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _isFavorited = MutableStateFlow(false)
-    val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
 
     private val _isConnectivityIssue = MutableStateFlow(false)
     val isConnectivityIssue = _isConnectivityIssue.asStateFlow()
@@ -72,7 +69,7 @@ class BeachViewModel @Inject constructor(
     fun checkAndUpdateFavorites(beach: Beach) {
         viewModelScope.launch {
             _beachRepository.updateFavorites(beach)
-            _isFavorited.value = _beachRepository.checkFavorite(beach)
+            _isFavorite.value = _beachRepository.checkFavorite(beach)
         }
     }
 
@@ -80,8 +77,8 @@ class BeachViewModel @Inject constructor(
      * Check if beach is in favorite list
      */
     fun checkFavorite(beach: Beach) {
-        _isFavorited.value = _beachRepository.checkFavorite(beach)
-        Log.d("beachviewmodel, checkFavorite", "Favorite-status changed: ${_isFavorited.value}")
+        _isFavorite.value = _beachRepository.checkFavorite(beach)
+        Log.d("beachviewmodel, checkFavorite", "Favorite-status changed: ${_isFavorite.value}")
     }
 
     init {
@@ -89,7 +86,6 @@ class BeachViewModel @Inject constructor(
         Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true

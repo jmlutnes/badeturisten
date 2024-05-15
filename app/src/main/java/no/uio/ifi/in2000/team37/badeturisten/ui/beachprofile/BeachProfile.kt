@@ -603,7 +603,7 @@ fun BeachProfile(
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
-    val isFavorite by beachViewModel.isFavorited.collectAsState()
+    val isFavorite by beachViewModel.isFavorite.collectAsState()
     beach.beach?.let { beachViewModel.checkFavorite(it) }
 
     val snackbarHostState = remember {
