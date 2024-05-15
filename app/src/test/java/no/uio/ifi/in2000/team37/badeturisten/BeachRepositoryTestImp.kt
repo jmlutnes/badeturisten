@@ -7,12 +7,14 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.serialization.gson.gson
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.WaterTemperatureDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.watertemperature.jsontokotlin.Tsery
+import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-class BeachRepositoryTestImp {
+class BeachRepositoryTestImp: BeachRepository {
 
     private val beachObservations = MutableStateFlow<List<Beach>>(listOf())
 
@@ -29,7 +31,7 @@ class BeachRepositoryTestImp {
     }
     private val waterTempDataSource = WaterTemperatureDataSource(client)
 
-    suspend fun loadBeaches() {
+    override suspend fun loadBeaches() {
         val observationsFromDataSource = waterTempGetData()
 
         beachObservations.update {
@@ -37,10 +39,10 @@ class BeachRepositoryTestImp {
         }
     }
 
-    fun getBeach(beachName: String): Beach? =
+    override suspend fun getBeach(beachName: String): Beach? =
         beachObservations.value.firstOrNull { beach -> beach.name == beachName }
 
-    fun makeBeaches(observations: List<Tsery>): List<Beach> {
+    override fun makeBeaches(observations: List<Tsery>): List<Beach> {
         return try {
             observations.map { tsery ->
                 Beach(
@@ -55,8 +57,24 @@ class BeachRepositoryTestImp {
         }
     }
 
-    private suspend fun waterTempGetData(): List<Tsery> {
+    override suspend fun updateFavorites(beach: Beach?): List<Beach> {
+        TODO("Not yet implemented")
+    }
+
+    override fun checkFavorite(beach: Beach): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun waterTempGetData(): List<Tsery> {
         return waterTempDataSource.getData()
+    }
+
+    override fun getBeachObservations(): StateFlow<List<Beach>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getFavoriteObservations(): StateFlow<List<Beach>> {
+        TODO("Not yet implemented")
     }
 
 }

@@ -1,6 +1,11 @@
 package no.uio.ifi.in2000.team37.badeturisten
 
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.header
+import io.ktor.serialization.gson.gson
 import no.uio.ifi.in2000.team37.badeturisten.data.beach.BeachRepositoryImp
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneDatasource
 import no.uio.ifi.in2000.team37.badeturisten.data.oslokommune.OsloKommuneRepositoryImp
@@ -14,13 +19,22 @@ import org.junit.Test
 import org.junit.Assert.*
 import javax.inject.Inject
 
-class CombineBeachesTest @Inject constructor(
-    beachRepository: BeachRepository,
-    osloKommuneRepository: OsloKommuneRepository
-) {
+class CombineBeachesTest {
 
+    private val client = HttpClient {
+        defaultRequest {
+            url("https://www.oslo.kommune.no")
+            header("X-Gravitee-API-Key", "your-api-key-here")
+        }
+        install(ContentNegotiation) { gson {} }
+        install(HttpTimeout) {
+            this.requestTimeoutMillis = 5000
+            this.connectTimeoutMillis = 5000
+            this.socketTimeoutMillis = 5000
+        }
+    }
     private val useCase = CombineBeachesUseCase(
-        beachRepository, osloKommuneRepository
+        BeachRepositoryTestImp(), OsloKommuneRepositoryImp(OsloKommuneDatasource(client))
     )
 
     @Test
