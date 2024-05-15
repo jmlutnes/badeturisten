@@ -2,8 +2,6 @@ package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +18,6 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 @Module
 @InstallIn(SingletonComponent::class)
 object ViewModelModule {
-    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideHomeViewModel(
         @SuppressLint("StaticFieldLeak") context: Context,
@@ -40,7 +37,6 @@ object ViewModelModule {
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideFavoritesViewModel(
         osloKommuneRepository: OsloKommuneRepository,
@@ -49,7 +45,6 @@ object ViewModelModule {
         return FavoritesViewModel(osloKommuneRepository, beachRepository)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     fun provideSearchViewModel(
         osloKommuneRepository: OsloKommuneRepository,
