@@ -65,7 +65,7 @@ fun BeachCard(
     val brushUp = Brush.verticalGradient(listOf(customBlue.copy(alpha = 0.9F), Color.Transparent))
     val brushDown = Brush.verticalGradient(listOf(Color.Transparent, customBlue.copy(alpha = 0.8F)))
 
-    val beachinfo = beachInfoMap[beach.name]
+    val beachInfo = beachInfoMap[beach.name]
 
     Card(
         onClick = { navController.navigate("beachProfile/${beach.name}") },
@@ -79,7 +79,7 @@ fun BeachCard(
         ) {
             val km = distance / 1000.0
             Box(Modifier.fillMaxSize()) {
-                val imageUrl = beachinfo?.info?.imageUrl
+                val imageUrl = beachInfo?.info?.imageUrl
                     ?: "https://i.ibb.co/N9mppGz/DALL-E-2024-04-15-20-16-55-A-surreal-wide-underwater-scene-with-a-darker-shade-of-blue-depicting-a-s.webp"
                 AsyncImage(
                     model = imageUrl,
