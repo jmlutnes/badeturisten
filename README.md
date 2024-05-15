@@ -176,6 +176,10 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 - Dokumentasjon: [Hilt Compiler](https://dagger.dev/hilt/compiler.html)
 
 
+# Warnings fra Android Studio
+- Redegjøre for warnings
+
+
 ## 🧑‍💻Gruppemedlemmer 
 Adam Nils Giæver (adamng) \
 Bleron Strana (blerons) \
