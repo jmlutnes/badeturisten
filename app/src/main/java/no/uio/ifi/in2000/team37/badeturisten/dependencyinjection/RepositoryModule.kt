@@ -2,8 +2,6 @@ package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
 import LocationRepositoryImp
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.datastore.core.DataStore
 import dagger.Module
 import dagger.Provides
@@ -35,7 +33,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
-    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton
     fun provideBeachRepository(
