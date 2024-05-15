@@ -117,7 +117,6 @@ object NetworkModule {
         return HttpClient {
             defaultRequest {
                 url("https://www.oslo.kommune.no")
-                header("X-Gravitee-API-Key", "your-api-key-here")
             }
             install(ContentNegotiation) { gson {} }
             install(HttpTimeout) {

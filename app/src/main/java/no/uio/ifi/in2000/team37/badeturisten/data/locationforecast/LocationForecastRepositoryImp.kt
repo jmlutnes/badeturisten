@@ -13,8 +13,14 @@ class LocationForecastRepositoryImp @Inject constructor(
 
     private val forecastNextHour = MutableStateFlow<ForecastNextHour?>(null)
 
+    /**
+     * Fetches the forecast for the next hour for Oslo from the datasource. Coordinates can be changed
+     * to get data for a different location, but the app currently is only meant for the Oslo area.
+     */
     override suspend fun loadForecastNextHour() {
-        val result = datasource.getForecastData()
+        val lat = 59.91276
+        val lon = 10.74608
+        val result = datasource.getForecastData(lat, lon)
 
         if (result != null) {
             val temp = result.properties.timeseries[0].data.instant.details.airTemperature

@@ -8,12 +8,12 @@ import no.uio.ifi.in2000.team37.badeturisten.dependencyinjection.LocationForecas
 
 class LocationForecastDataSource(@LocationForecastHttpClient private val client: HttpClient) {
     /**
-     * Fetches the forecast for Oslo from METs locationforecast Api
+     * Fetches the forecast from METs locationforecast Api based on the given latitude and longitude
      */
-    suspend fun getForecastData(): LocationForecastData? {
+        suspend fun getForecastData(lat: Double, lon: Double): LocationForecastData? {
 
         val response =
-            client.get("weatherapi/locationforecast/2.0/compact?lat=59.91276&lon=10.74608")
+            client.get("weatherapi/locationforecast/2.0/compact?lat=${lat}6&lon=${lon}")
 
         return if (response.status.value in 200..299) {
             response.body<LocationForecastData>()
