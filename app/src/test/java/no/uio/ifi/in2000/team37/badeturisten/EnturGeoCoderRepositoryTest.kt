@@ -8,6 +8,7 @@ import io.ktor.serialization.gson.gson
 import kotlinx.coroutines.test.runTest
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDataSource
 import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -34,13 +35,17 @@ class EnturGeoCoderRepositoryTest {
     }
 
     @Test
-    fun getBusRouteLocShouldReturnNull() = runTest {
+    fun getBusRouteLocShouldReturnEmptyList() = runTest {
         val lat = -999999.9
         val lon =  999999.9
 
         val result = repo.fetchBusRouteLoc(lat, lon)
 
-        assertNull(result)
+        if (result != null) {
+            assertEquals(result.busstation, listOf<Busstation>())
+        } else {
+            throw AssertionError("Expected empty result, was null")
+        }
     }
 
     @Test
@@ -49,15 +54,19 @@ class EnturGeoCoderRepositoryTest {
 
         val result = repo.fetchBusRouteName(beachName)
 
-        assertNotNull("$result", result)
+        assertNotNull("Expected a route, was null", result)
     }
 
     @Test
-    fun getBusRouteNameShouldReturnNull() = runTest {
+    fun getBusRouteNameShouldReturnEmptyList() = runTest {
         val beachName = "anwvownvowisnv"
 
         val result = repo.fetchBusRouteName(beachName)
 
-        assertNull(result)
+        if (result != null) {
+            assertEquals(result.busstation, listOf<Busstation>())
+        } else {
+            throw AssertionError("Expected empty result, was null")
+        }
     }
 }
