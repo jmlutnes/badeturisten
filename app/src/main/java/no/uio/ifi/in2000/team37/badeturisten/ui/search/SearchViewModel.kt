@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.search
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,7 +26,6 @@ data class SokKommuneBeachList(
     val beachList: List<Beach> = listOf(),
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
@@ -64,7 +61,7 @@ class SearchViewModel @Inject constructor(
                 _beachDetails.value = beachDetails
 
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
+                Log.e("HomeViewModel", "Feil ved henting av beachDetails: ${e.message}")
                 _beachDetails.value = emptyMap()
                 _isConnectivityIssue.update { true }
             }
@@ -215,7 +212,7 @@ class SearchViewModel @Inject constructor(
     }
 
     /**
-     * Updates the boolean values in viewmodel for each facility that has been selected
+     * Updates the boolean values in the view model for each facility that has been selected
      */
     fun updateFilterState(filter: String, state: Boolean) {
         when (filter) {
