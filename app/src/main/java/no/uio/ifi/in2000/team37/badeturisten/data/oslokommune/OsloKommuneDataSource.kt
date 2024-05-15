@@ -1,6 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.oslokommune
 
-import com.google.gson.Gson
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -47,9 +46,9 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
     private fun scrapeBeachInfoFromResponse(responseBody: String): OsloKommuneBeachInfo {
         val document = Jsoup.parse(responseBody)
 
-        //Get waterquality
+        //Get water quality
         val qualitySection = document.select("div.io-bathingsite").firstOrNull()
-        //Show only the visible text(remove colorcoding)
+        //Show only the visible text(remove color coding)
         val firstQualityH3 = qualitySection?.select("div.ods-collapsible-content h3")?.firstOrNull()
         //Result of water quality
         val waterQuality = firstQualityH3?.ownText()?.trim() ?: "Ingen informasjon."
@@ -57,7 +56,7 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
         //Facilities
         val facilitiesSection = document.select("div.io-facts").firstOrNull()
         val facilitiesBuilder = StringBuilder()
-        //Some of the text is formatted with '•' inbetween facilities.
+        //Some of the text is formatted with '•' in between facilities.
         //This codes iterate and separate areas in the text where that occurs:
         facilitiesSection?.let { section ->
             val facilityList = section.select("h2:contains(Fasiliteter) + div ul li")
@@ -131,5 +130,5 @@ class OsloKommuneDatasource(@OsloKommuneHttpClient private val client: HttpClien
     }
 }
 
-val gson = Gson()
+
 

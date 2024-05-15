@@ -1,12 +1,9 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 
-@RequiresApi(Build.VERSION_CODES.O)
 class CombineBeachesUseCase(
     private val beachRepository: BeachRepository,
     private val osloKommuneRepository: OsloKommuneRepository,

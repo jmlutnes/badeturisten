@@ -1,7 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -595,7 +593,6 @@ fun Gradient() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(
     ExperimentalMaterial3Api::class,
 )
@@ -606,7 +603,7 @@ fun BeachProfile(
     val beachViewModel: BeachViewModel = hiltViewModel()
     val beach = beachViewModel.beachUIState.collectAsState().value
     val isLoading by beachViewModel.isLoading.collectAsState()
-    val isFavorited by beachViewModel.isFavorited.collectAsState()
+    val isFavorite by beachViewModel.isFavorite.collectAsState()
     beach.beach?.let { beachViewModel.checkFavorite(it) }
 
     val snackbarHostState = remember {
@@ -614,7 +611,7 @@ fun BeachProfile(
     }
     val isConnectivityIssue = beachViewModel.isConnectivityIssue.collectAsState()
 
-    LaunchedEffect(isFavorited) {
+    LaunchedEffect(isFavorite) {
         // Upon initial composition, check and update the favorites
         beach.beach?.let { beachViewModel.checkFavorite(it) }
     }
@@ -707,9 +704,9 @@ fun BeachProfile(
                                         }
                                     }) {
                                         Icon(
-                                            imageVector = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                                            imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
                                             contentDescription = "Heart",
-                                            tint = if (isFavorited) Color.Red else Color.White,
+                                            tint = if (isFavorite) Color.Red else Color.White,
                                             modifier = Modifier.size(50.dp)
                                         )
                                     }

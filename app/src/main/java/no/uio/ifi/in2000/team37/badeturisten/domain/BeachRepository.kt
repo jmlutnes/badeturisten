@@ -31,13 +31,13 @@ interface BeachRepository {
     fun makeBeaches(observations: List<Tsery>): List<Beach>
 
     /**
-     * Recieves a beach name and filter all beaches based on that name.
+     * Receives a beach name and filter all beaches based on that name.
      * Returns one beach og NULL if beach does not exists
      */
     suspend fun getBeach(beachName: String): Beach?
 
     /**
-     * Recieves a beach object and adds or removes the beach based on the favourite beach list
+     * Receives a beach object and adds or removes the beach based on the favourite beach list
      * Returns list of favourite beaches
      */
     suspend fun updateFavorites(beach: Beach?): List<Beach>

@@ -1,15 +1,10 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.location.Location
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -55,10 +50,8 @@ data class BeachesUIState(
 )
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    @SuppressLint("StaticFieldLeak") @ApplicationContext private val context: Context,
     private val _locationRepository: LocationRepository,
     private val _locationForecastRepository: LocationForecastRepository,
     private val _osloKommuneRepository: OsloKommuneRepository,

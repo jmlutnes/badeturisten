@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.beach
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +15,6 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 class BeachRepositoryImp @Inject constructor(
     private val waterTempDataSource: WaterTemperatureDataSource,
     private val beachListDataStore: DataStore<List<Beach>>,
