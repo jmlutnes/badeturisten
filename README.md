@@ -26,7 +26,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 
 ### Kotlinx Coroutines for Google Play Services
 - Formål: Utvidelse av Kotlin Coroutines for å støtte Google Play Services-tjenester.
-- Versjon: 1.6.0
+- Versjon: 1.7.3
 - Dokumentasjon: [Kotlinx Coroutines](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-play-services)
 
 ### Android Data Transport Runtime
