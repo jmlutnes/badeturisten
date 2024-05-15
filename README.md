@@ -182,6 +182,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 - RepositoryModule: Ubrukt
 - ViewModelModule: Ubrukt
 - OsloKommuneDataSource: "Class <ItemDeserializer> is never used"
+- build.gradle.kts: Bruker ikke nyeste versjon av AndroixX Activity-compose, den fungerer ikke med appen vår
 
 
 ## 🧑‍💻Gruppemedlemmer 
