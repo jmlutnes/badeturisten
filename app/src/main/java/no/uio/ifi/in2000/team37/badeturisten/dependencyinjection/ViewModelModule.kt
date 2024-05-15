@@ -1,7 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
-import android.annotation.SuppressLint
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +18,6 @@ import no.uio.ifi.in2000.team37.badeturisten.ui.search.SearchViewModel
 object ViewModelModule {
     @Provides
     fun provideHomeViewModel(
-        @SuppressLint("StaticFieldLeak") context: Context,
         locationRepository: LocationRepository,
         locationForecastRepository: LocationForecastRepository,
         osloKommuneRepository: OsloKommuneRepository,
@@ -28,7 +25,6 @@ object ViewModelModule {
         metAlertsRepository: MetAlertsRepository,
     ): HomeViewModel {
         return HomeViewModel(
-            context,
             locationRepository,
             locationForecastRepository,
             osloKommuneRepository,
