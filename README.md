@@ -177,11 +177,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 
 
 ## Warnings fra Android Studio
-- HomeViewModel: "This field leaks a context object", "Property <context> is never used"
 - MainActivity: "Function <openApplicationSettings> is never used"
-- RepositoryModule: Ubrukt
-- ViewModelModule: Ubrukt
-- OsloKommuneDataSource: "Class <ItemDeserializer> is never used"
 - build.gradle.kts: Bruker ikke nyeste versjon av AndroixX Activity Compose, den fungerer ikke med appen vår
 
 
