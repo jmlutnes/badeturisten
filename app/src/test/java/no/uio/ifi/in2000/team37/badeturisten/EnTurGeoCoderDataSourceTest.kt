@@ -10,7 +10,7 @@ import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.EnTurGeocoderDat
 import org.junit.Test
 import org.junit.Assert.*
 
-class EnTurDataSourceTest {
+class EnTurGeoCoderDataSourceTest {
     private val client = HttpClient {
         defaultRequest {
             url("https://api.entur.io/geocoder/v1/")
