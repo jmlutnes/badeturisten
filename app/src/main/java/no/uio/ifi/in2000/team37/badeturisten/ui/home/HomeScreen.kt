@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.home
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -253,7 +251,6 @@ fun WarningIcon(warningVector: ImageVector) {
 
 @SuppressLint("MissingPermission", "SuspiciousIndentation")
 @OptIn(ExperimentalFoundationApi::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     navController: NavController,
