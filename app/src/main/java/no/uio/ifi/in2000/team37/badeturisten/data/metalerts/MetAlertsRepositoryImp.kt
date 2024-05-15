@@ -1,7 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.data.metalerts
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +16,6 @@ class MetAlertsRepositoryImp(
     private val metAlertsObservations = MutableStateFlow<List<WeatherWarning>>(listOf())
     override fun getMetAlertsObservations() = metAlertsObservations.asStateFlow()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getWeatherWarnings() {
         val result = datasource.getData()
         val featuresArray = result.features
@@ -35,13 +32,11 @@ class MetAlertsRepositoryImp(
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun calculateStatus(eventEndingTime: String?, currentTime: LocalDateTime): String {
         val endTime = LocalDateTime.parse(eventEndingTime, DateTimeFormatter.ISO_DATE_TIME)
         return if (endTime.isAfter(currentTime)) "Aktiv" else "Inaktiv"
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createWeatherWarning(feature: Feature, endTimeStr: String): WeatherWarning {
         return feature.properties.let { prop ->
             WeatherWarning(

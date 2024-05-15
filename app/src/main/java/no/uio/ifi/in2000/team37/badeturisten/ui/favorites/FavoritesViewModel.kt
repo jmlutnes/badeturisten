@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.favorites
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,16 +22,15 @@ data class FavouritesUIState(
 )
 
 @HiltViewModel
-@RequiresApi(Build.VERSION_CODES.O)
 class FavoritesViewModel @Inject constructor(
     private val _osloKommuneRepository: OsloKommuneRepository,
-    private val _beachRepository: BeachRepository,
+    beachRepository: BeachRepository,
 ) : ViewModel() {
     private val _beachDetails = MutableStateFlow<Map<String, BeachAndBeachInfo?>>(emptyMap())
     val beachDetails: StateFlow<Map<String, BeachAndBeachInfo?>> = _beachDetails.asStateFlow()
 
     val favouritesState: StateFlow<FavouritesUIState> =
-        _beachRepository.getFavoriteObservations().map { FavouritesUIState(favourites = it) }
+        beachRepository.getFavoriteObservations().map { FavouritesUIState(favourites = it) }
             .stateIn(
                 viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
@@ -51,7 +48,7 @@ class FavoritesViewModel @Inject constructor(
                 _beachDetails.value = beachDetails
 
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Feil ved beachinfo: ${e.message}")
+                Log.e("FavoritesViewModel", "Feil ved henting av beachDetails: ${e.message}")
                 _beachDetails.value = emptyMap()
             }
         }

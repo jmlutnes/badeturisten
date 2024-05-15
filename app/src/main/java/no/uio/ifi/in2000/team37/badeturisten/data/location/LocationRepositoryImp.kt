@@ -1,3 +1,5 @@
+package no.uio.ifi.in2000.team37.badeturisten.data.location
+
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location

@@ -1,7 +1,5 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.search
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -134,7 +132,6 @@ fun FilterButtons(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SearchScreen(
     navController: NavController,
@@ -142,7 +139,7 @@ fun SearchScreen(
     val searchViewModel: SearchViewModel = hiltViewModel()
     val searchResult by searchViewModel.searchResults.collectAsState()
     val beachState = searchViewModel.beachState.collectAsState().value
-    val beachinfo = searchViewModel.beachDetails.collectAsState().value
+    val beachInfo = searchViewModel.beachDetails.collectAsState().value
     val state = rememberLazyGridState()
     var searchText by rememberSaveable { mutableStateOf("") }
     val isLoading by searchViewModel.isLoading.collectAsState()
@@ -332,7 +329,7 @@ fun SearchScreen(
                             } else {
                                 items(currentList) { beach ->
                                     localLoading.value = false
-                                    BeachCard(beach, -1, navController, beachinfo)
+                                    BeachCard(beach, -1, navController, beachInfo)
                                 }
                             }
                         }

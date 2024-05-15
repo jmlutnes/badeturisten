@@ -1,8 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,14 +11,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.Busstations
+import no.uio.ifi.in2000.team37.badeturisten.data.enturgeocoder.BusStations
 import no.uio.ifi.in2000.team37.badeturisten.domain.BeachRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurGeocoderRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.BusStation
 import javax.inject.Inject
 
 data class BeachUIState(
@@ -33,11 +31,10 @@ data class BusRoute(
     val line: String?,
     val name: String,
     val transportMode: String?,
-    val busStation: Busstation,
+    val busStation: BusStation,
 )
 
 @HiltViewModel
-@RequiresApi(Build.VERSION_CODES.O)
 class BeachViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val _osloKommuneRepository: OsloKommuneRepository,
@@ -60,8 +57,8 @@ class BeachViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
-    private val _isFavorited = MutableStateFlow(false)
-    val isFavorited: StateFlow<Boolean> = _isFavorited.asStateFlow()
+    private val _isFavorite = MutableStateFlow(false)
+    val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
 
     private val _isConnectivityIssue = MutableStateFlow(false)
     val isConnectivityIssue = _isConnectivityIssue.asStateFlow()
@@ -72,7 +69,7 @@ class BeachViewModel @Inject constructor(
     fun checkAndUpdateFavorites(beach: Beach) {
         viewModelScope.launch {
             _beachRepository.updateFavorites(beach)
-            _isFavorited.value = _beachRepository.checkFavorite(beach)
+            _isFavorite.value = _beachRepository.checkFavorite(beach)
         }
     }
 
@@ -80,8 +77,8 @@ class BeachViewModel @Inject constructor(
      * Check if beach is in favorite list
      */
     fun checkFavorite(beach: Beach) {
-        _isFavorited.value = _beachRepository.checkFavorite(beach)
-        Log.d("beachviewmodel, checkFavorite", "Favorite-status changed: ${_isFavorited.value}")
+        _isFavorite.value = _beachRepository.checkFavorite(beach)
+        Log.d("beachviewmodel, checkFavorite", "Favorite-status changed: ${_isFavorite.value}")
     }
 
     init {
@@ -89,7 +86,6 @@ class BeachViewModel @Inject constructor(
         Log.d("ViewModelInit", "BeachViewModel using repository: $_beachRepository")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun loadBeachInfo() {
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
@@ -98,7 +94,7 @@ class BeachViewModel @Inject constructor(
             val osloKommuneBeachInfo: Beach? = _osloKommuneRepository.getBeach(beachName)
             val lon = beachInfo?.pos?.lon
             val lat = beachInfo?.pos?.lat
-            var busStations: Busstations?
+            var busStations: BusStations?
 
 
             if ((lon == null) || (lat == null)) {
@@ -109,7 +105,7 @@ class BeachViewModel @Inject constructor(
                 busStations = _enTurGeocoderRepository.fetchBusRouteLoc(
                     lat.toDouble(), lon.toDouble()
                 )
-                if (busStations?.busstation?.isEmpty() == true) {
+                if (busStations?.busStation?.isEmpty() == true) {
                     busStations = _enTurGeocoderRepository.fetchBusRouteName(beachName)
                 }
             }
@@ -122,7 +118,7 @@ class BeachViewModel @Inject constructor(
                 _isConnectivityIssue.update { true }
             }
             val uniqueBusRoutes = mutableSetOf<BusRoute>()
-            busStations?.busstation?.forEach { station ->
+            busStations?.busStation?.forEach { station ->
                 station.id?.let { id ->
                     _enTurJourneyPlannerRepository.fetchBusroutesById(id, station)
                         ?.let { busRoutes ->

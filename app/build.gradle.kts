@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "no.uio.ifi.in2000.team37.badeturisten"
-        minSdk = 25
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -56,13 +56,13 @@ android {
 dependencies {
     //Location
     implementation("com.google.android.gms:play-services-location:21.2.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
 
     implementation("com.google.android.datatransport:transport-runtime:3.3.0")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.wear.compose:compose-material:1.3.1")
     implementation("com.google.android.gms:play-services-location:21.2.0")
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.ui:ui")
