@@ -18,7 +18,7 @@ import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepositor
 import no.uio.ifi.in2000.team37.badeturisten.domain.OsloKommuneRepository
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.Beach
 import no.uio.ifi.in2000.team37.badeturisten.model.beach.OsloKommuneBeachInfo
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.BusStation
 import javax.inject.Inject
 
 data class BeachUIState(
@@ -31,7 +31,7 @@ data class BusRoute(
     val line: String?,
     val name: String,
     val transportMode: String?,
-    val busStation: Busstation,
+    val busStation: BusStation,
 )
 
 @HiltViewModel

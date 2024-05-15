@@ -1,6 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.domain
 
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.BusStation
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BusRoute
 
 interface EnTurJourneyPlannerRepository {
@@ -11,6 +11,6 @@ interface EnTurJourneyPlannerRepository {
      */
     suspend fun fetchBusroutesById(
         busstationId: String,
-        busstation: Busstation,
+        busstation: BusStation,
     ): MutableList<BusRoute>?
 }

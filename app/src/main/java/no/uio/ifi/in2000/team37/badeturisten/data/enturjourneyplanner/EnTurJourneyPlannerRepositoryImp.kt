@@ -4,7 +4,7 @@ import android.util.Log
 import no.uio.ifi.in2000.team37.badeturisten.data.enturjourneyplanner.jsontokotlinenturjourneyplanner.jsontokotlinenturjourneyplanner
 import no.uio.ifi.in2000.team37.badeturisten.ui.beachprofile.BusRoute
 import no.uio.ifi.in2000.team37.badeturisten.domain.EnTurJourneyPlannerRepository
-import no.uio.ifi.in2000.team37.badeturisten.model.enTur.Busstation
+import no.uio.ifi.in2000.team37.badeturisten.model.enTur.BusStation
 import javax.inject.Inject
 
 class EnTurJourneyPlannerRepositoryImp @Inject constructor(
@@ -13,7 +13,7 @@ class EnTurJourneyPlannerRepositoryImp @Inject constructor(
 
     override suspend fun fetchBusroutesById(
         busstationId: String,
-        busstation: Busstation,
+        busstation: BusStation,
     ): MutableList<BusRoute>? {
         val lines = mutableListOf<BusRoute>() // Local instance of list
 
