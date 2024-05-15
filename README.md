@@ -177,8 +177,7 @@ I dette repositoriet finner du en oppskrift på hvordan man kan kjøre applikasj
 
 
 ## Warnings fra Android Studio
-- MainActivity: "Function <openApplicationSettings> is never used"
-- build.gradle.kts: Bruker ikke nyeste versjon av AndroixX Activity Compose, den fungerer ikke med appen vår
+Det er kun én IDE warning i prosjektet. I build.gradle.kts: "A newer version of androidx.activity:activity-compose than 1.8.2 is available: 1.9.0". Å oppdatere til nyeste versjon av dette biblioteket ødelegger deler av appens kode, og gjør at den ikke er kjørbar. Denne versjonen ble utgitt 2024-04-17, og vi oppdaget derfor ikke dette før svært nærme innleveringsfristen for prosjektet. Vi har derfor valgt å ikke oppdatere appen til å bruke versjon 1.9.0
 
 
 ## 🧑‍💻Gruppemedlemmer 
