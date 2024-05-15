@@ -1,6 +1,6 @@
 package no.uio.ifi.in2000.team37.badeturisten.dependencyinjection
 
-import LocationRepositoryImp
+import no.uio.ifi.in2000.team37.badeturisten.data.location.LocationRepositoryImp
 import android.content.Context
 import androidx.datastore.core.DataStore
 import dagger.Module
